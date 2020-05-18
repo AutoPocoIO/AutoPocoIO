@@ -71,7 +71,6 @@ namespace AutoPocoIO.SwaggerAddons
                 return c =>
                 {
                     c.DocumentTitle("AutoPoco");
-                    c.InjectStylesheet(thisAssembly, $"{thisAssembly.GetName().Name}.SwaggerAddons.swagger.css");
                     c.EnableApiKeySupport("Authorization", "header");
                 };
             }

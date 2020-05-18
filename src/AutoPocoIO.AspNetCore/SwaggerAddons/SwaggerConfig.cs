@@ -60,7 +60,6 @@ namespace AutoPocoIO
                 c.RoutePrefix = dashPath.Trim('/') + "/swagger";
                 c.SwaggerEndpoint("v1/swagger.json", "AutoPoco v1");
                 c.DocExpansion(DocExpansion.None);
-                c.InjectStylesheet("/" + dashPath.Trim('/') + "/swagger-ui/swaggercss");
             };
         }
 
