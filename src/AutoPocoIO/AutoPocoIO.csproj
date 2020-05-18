@@ -1,0 +1,109 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net461;</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Configurations>Debug;Release;</Configurations>
+    
+   <!-- <DocumentationFile>SwaggerAddons\AutoPoco.xml</DocumentationFile>
+   -->
+  </PropertyGroup>
+
+  <Import Project="..\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'net461'" />
+  <Import Project="..\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'netstandard2.0' " />
+  <ItemGroup>
+  <Compile Remove="Dashboard\Content\**" />
+    <EmbeddedResource Remove="Dashboard\Content\**" />
+    <None Remove="Dashboard\Content\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="SwaggerAddons\AutoPoco.xml" />
+    <None Remove="SwaggerAddons\swagger.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SwaggerAddons\AutoPoco.xml" />
+    <EmbeddedResource Include="SwaggerAddons\swagger.css" />
+  </ItemGroup>
+
+  <!--Shared -->
+  <ItemGroup>
+    <!--Code Analysis don't include in nuget-->
+   
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime;build;analyzers</IncludeAssets>
+    </PackageReference>
+    
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
+   
+    
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.16" />
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
+    
+  </ItemGroup>
+
+  <!-- .NET CORE 2.2 references, compilation flags and build options -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>NETCORE;NETCORE2_2</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters " Version="4.5.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="7.9.1" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+    
+  </ItemGroup>
+ 
+  <!-- .NET 4.5 references, compilation flags and build options -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
+    <DefineConstants>net461;NETFULL;</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWarn>1701;1702;1307</NoWarn>
+    <RepositoryUrl>https://github.com/AutoPocoIO</RepositoryUrl>
+    <!--<OutputPath>..\..\bin\</OutputPath>-->
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <PackageReference Include="Swashbuckle.Core" Version="5.6.0" />
+    <PackageReference Include="Microsoft.AspNet.OData" Version="7.1.0" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.7" />
+    <PackageReference Include="X.PagedList.Mvc" Version="7.9.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Constants\ExceptionMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ExceptionMessages.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Constants\ExceptionMessages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <Description>Dynamically create Poco classes on request.</Description>
+    <PackageId>AutoPoco</PackageId>
+    <Company>AutoPocoIO</Company>
+    <Authors>AutoPocoIO</Authors>
+  </PropertyGroup>
+  
+
+</Project>

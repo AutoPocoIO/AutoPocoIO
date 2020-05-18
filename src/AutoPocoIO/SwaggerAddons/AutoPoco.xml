@@ -1,0 +1,1285 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AutoPoco</name>
+    </assembly>
+    <members>
+        <member name="T:AutoPoco.Api.SchemaOperations">
+            <summary>
+            View all schema objects
+            </summary>
+        </member>
+        <member name="M:AutoPoco.Api.SchemaOperations.Definition(System.String,AutoPoco.Services.ILoggingService)">
+            <summary>
+            List of objects in the database by type
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="loggingService">Pass in logging service if the request needs to be logged</param>
+            <returns></returns>
+        </member>
+        <member name="T:AutoPoco.Api.StoredProcedureOperations">
+            <summary>
+            Call Stored Procedures
+            </summary>
+        </member>
+        <member name="M:AutoPoco.Api.StoredProcedureOperations.ExecuteNoParameters(System.String,System.String,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Execute Stored Procedure (No Params)
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="procedureName">Stored Procedure name in the database.</param>
+            <param name="loggingService">Pass </param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPoco.Api.StoredProcedureOperations.Execute(System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPoco.Services.ILoggingService)">
+            <summary>
+            
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="procedureName">Stored Procedure name in the database.</param>
+            <param name="parameters"></param>
+            <param name="loggingService"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPoco.Api.StoredProcedureOperations.Execute``1(System.String,System.String,``0,AutoPoco.Services.ILoggingService)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="procedureName">Stored Procedure name in the database.</param>
+            <param name="parameters"></param>
+            <param name="loggingService"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPoco.Api.StoredProcedureOperations.Definition(System.String,System.String,AutoPoco.Services.ILoggingService)">
+            <summary>
+            
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="procedureName">Stored Procedure name in the database.</param>
+            <param name="loggingService"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPoco.Api.StoredProcedureOperations.Definition(System.String,System.String,System.String,AutoPoco.Services.ILoggingService)">
+            <summary>
+            
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="procedureName">Stored Procedure name in the database.</param>
+            <param name="parameterName"></param>
+            <param name="loggingService"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AutoPoco.Api.TableOperations">
+            <summary>
+            Dynamicly access database tables
+            </summary>
+        </member>
+        <member name="M:AutoPoco.Api.TableOperations.GetAll(System.String,System.String,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Get all records from <paramref name="tableName"/>. Intended for WebAPI controller requests.
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>Dyanamic IQueryable of the results and the connector max.</returns>
+        </member>
+        <member name="M:AutoPoco.Api.TableOperations.GetAll``1(System.String,System.String,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Get all records from <paramref name="tableName"/> and projects the to a view model. Intended to be used as the initial part of a linq query.
+            </summary>
+            <typeparam name="TViewModel">Type to project the results to.</typeparam>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>IQueryable of <typeparamref name="TViewModel"/></returns>
+        </member>
+        <member name="M:AutoPoco.Api.TableOperations.GetById(System.String,System.String,System.String,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Retrieves a single record from a table by Primary Key. Note: for composite PKs,
+            use a semicolon separated string.
+            </summary>
+            <param name="connectorName">The name of the connector to the table's schema.</param>
+            <param name="tableName">The name of the table to retrieve the record from.</param>
+            <param name="id">The primary key value of the record to be retrieved as a string. 
+            For composite keys, use semicolon separated string</param>
+            <param name="loggingService">LoggingService object to log the request. Null by default if no logging is required.</param>
+            <returns>The record with matching PK. Null if not found.</returns>
+        </member>
+        <member name="M:AutoPoco.Api.TableOperations.GetById``1(System.String,System.String,System.String,AutoPoco.Services.ILoggingService)">
+            <summary>
+            
+            </summary>
+            <typeparam name="TViewModel">View Model Type</typeparam>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="id"></param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPoco.Api.TableOperations.CreateNewRow(System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Insert a recored into a given table
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="value">JSON object to insert</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>An instance of the object inserted</returns>
+        </member>
+        <member name="M:AutoPoco.Api.TableOperations.CreateNewRow``1(System.String,System.String,``0,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Insert a recored into a given table
+            </summary>
+            <typeparam name="TViewModel">Type of view model</typeparam>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="value">Object to insert into <paramref name="tableName"/></param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>An instance of the object inserted. </returns>
+        </member>
+        <member name="M:AutoPoco.Api.TableOperations.UpdateRow(System.String,System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Update record in a given table
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="keys">Primary key(s)</param>
+            <param name="value">JSON object to update</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>The updated object</returns>
+        </member>
+        <member name="M:AutoPoco.Api.TableOperations.UpdateRow``1(System.String,System.String,System.String,``0,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Update record in a given table
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="id">Primary Key(s)</param>
+            <param name="value">Object to updated in <paramref name="tableName"/></param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>The updated object</returns>
+        </member>
+        <member name="M:AutoPoco.Api.TableOperations.DeleteRow(System.String,System.String,System.String,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Remove record from a given table
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="id">Primary Key(s)</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>The removed object</returns>
+        </member>
+        <member name="M:AutoPoco.Api.TableOperations.Definition(System.String,System.String,AutoPoco.Services.ILoggingService)">
+            <summary>
+             Describes the table and includes list of columns that exists in a given table
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>A description of <paramref name="tableName"/></returns>
+        </member>
+        <member name="M:AutoPoco.Api.TableOperations.Definition(System.String,System.String,System.String,AutoPoco.Services.ILoggingService)">
+            <summary>
+            View column attirbutes
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="columnName">Name of the column in the database.</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>Column attributes</returns>
+        </member>
+        <member name="T:AutoPoco.Api.ViewOperations">
+            <summary>
+            Dynamicly access database views
+            </summary>
+        </member>
+        <member name="M:AutoPoco.Api.ViewOperations.GetAllAndRecordLimit(System.String,System.String,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Retrieve data from a given view
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="viewName">Name of the view in the database.</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>Dyanamic IQueryable of the results and the connector max.</returns>
+        </member>
+        <member name="M:AutoPoco.Api.ViewOperations.GetAll(System.String,System.String,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Retrieve data from a given view
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="viewName">Name of the view in the database.</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>Dyanamic IQueryable of the results</returns>
+        </member>
+        <member name="M:AutoPoco.Api.ViewOperations.GetAll``1(System.String,System.String,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Retrieve data from a given view and project them to <typeparamref name="TViewModel"/>
+            </summary>
+            <typeparam name="TViewModel">Type to project the results to.</typeparam>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="viewName">Name of the view in the database.</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>IQueryable of <typeparamref name="TViewModel"/></returns>
+        </member>
+        <member name="T:AutoPoco.Constants.ExceptionMessages">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.ApplicationIdMustBeGuid">
+            <summary>
+              Looks up a localized string similar to DashboardAppId is required and must be a GUID string..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.ApplicationIdNotFound">
+            <summary>
+              Looks up a localized string similar to Error finding Application Id..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.AssemblyFoundWithNoTypes">
+            <summary>
+              Looks up a localized string similar to Assemblies found with no types loaded..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.CharToDbObjecType">
+            <summary>
+              Looks up a localized string similar to Parameter excpected to be &quot;U&quot; or &quot;V&quot;.
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.DbAdapterNotFound">
+            <summary>
+              Looks up a localized string similar to The DbAdapter type requested is not found..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.DbObjectType">
+            <summary>
+              Looks up a localized string similar to Db object type must be a Table or View..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.DbTypeNotRegistered">
+            <summary>
+              Looks up a localized string similar to The request is expecting a {0} database but it is not registered in Startup..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.HierarchyIdNotSupported">
+            <summary>
+              Looks up a localized string similar to EF Core does not support HierarchyId types yet..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.InvalidSqlDataType">
+            <summary>
+              Looks up a localized string similar to Invalid Sql Data Type..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.LoadDashboardCss">
+            <summary>
+              Looks up a localized string similar to Could not load manifest resource stream..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.MiddlewarePath">
+            <summary>
+              Looks up a localized string similar to Middleware path must start with a &apos;/&apos; followed by one or more characters..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.MySqlNotRegistered">
+            <summary>
+              Looks up a localized string similar to The request is expecting a MySQL database but it is not registered in Startup..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.NoDbTypesRegistered">
+            <summary>
+              Looks up a localized string similar to No database types registered. Setup at least one database type in startup..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.OracleNotRegistered">
+            <summary>
+              Looks up a localized string similar to The request is expecting a Oracle database but it is not registered in Startup..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.ServiceNotRegistered">
+            <summary>
+              Looks up a localized string similar to The requested service was not registered in startup..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.SqlNotRegistered">
+            <summary>
+              Looks up a localized string similar to The request is expecting a SQL database but it is not registered in Startup..
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Constants.ExceptionMessages.TypeNotSequence">
+            <summary>
+              Looks up a localized string similar to Type not a sequence..
+            </summary>
+        </member>
+        <member name="T:AutoPoco.CustomAttributes.CompoundPrimaryKeyAttribute">
+            <summary>
+            Associates property with as a Primary key in a database table in OData
+            </summary>
+        </member>
+        <member name="P:AutoPoco.CustomAttributes.CompoundPrimaryKeyAttribute.Order">
+            <summary>
+            PK Order
+            </summary>
+        </member>
+        <member name="T:AutoPoco.CustomAttributes.DatabaseNameAttribute">
+            <summary>
+            Used by EF visit table to query across same server databases
+            </summary>
+        </member>
+        <member name="M:AutoPoco.CustomAttributes.DatabaseNameAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the AutoPoco.CustomAttributes.DatabaseNameAttribute class
+            </summary>
+            <param name="databaseName">The name of the Database</param>
+        </member>
+        <member name="P:AutoPoco.CustomAttributes.DatabaseNameAttribute.DatabaseName">
+            <summary>
+            The name of the Database
+            </summary>
+        </member>
+        <member name="T:AutoPoco.CustomAttributes.ReferencedDbObjectAttribute">
+            <summary>
+            Specifies the referenced Database Object of a property
+            </summary>
+        </member>
+        <member name="P:AutoPoco.CustomAttributes.ReferencedDbObjectAttribute.DbName">
+            <summary>
+            Database name of the referenced database object
+            </summary>
+        </member>
+        <member name="P:AutoPoco.CustomAttributes.ReferencedDbObjectAttribute.SchemaName">
+            <summary>
+            Schema name of the referenced database object
+            </summary>
+        </member>
+        <member name="P:AutoPoco.CustomAttributes.ReferencedDbObjectAttribute.TableName">
+            <summary>
+            Table name of the referenced database object
+            </summary>
+        </member>
+        <member name="P:AutoPoco.CustomAttributes.ReferencedDbObjectAttribute.ColumnName">
+            <summary>
+            Column name (if referenced object is a column, null otherwise) of the referenced database object
+            </summary>
+        </member>
+        <member name="M:AutoPoco.CustomAttributes.ReferencedDbObjectAttribute.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the AutoPoco.CustomAttributes.ReferencedDbObjectAttribute class (use when referenced object is a table, not a specific column)
+            </summary>
+            <param name="dbName">Database name of the referenced database object</param>
+            <param name="schemaName">Schema name of the referenced database object</param>
+            <param name="tableName">Table name of the referenced database object</param>
+        </member>
+        <member name="M:AutoPoco.CustomAttributes.ReferencedDbObjectAttribute.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the AutoPoco.CustomAttributes.ReferencedDbObjectAttribute class (use when referenced object is a specific column)
+            </summary>
+            <param name="dbName">Database name of the referenced database object</param>
+            <param name="schemaName">Schema name of the referenced database object</param>
+            <param name="tableName">Table name of the referenced database object</param>
+            <param name="columnName">Column name of the referenced database object</param>
+        </member>
+        <member name="T:AutoPoco.CustomAttributes.RoutePrefixAttribute">
+            <summary>
+            Core workaround for no RoutePrefix Attribute
+            </summary>
+        </member>
+        <member name="T:AutoPoco.DynamicSchema.Db.DbContextBase">
+            <summary>
+            Dynamic schema context
+            </summary>
+        </member>
+        <member name="M:AutoPoco.DynamicSchema.Db.DbContextBase.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            Set up Virtual Entity relationships, Compund PKs and create Entity methods
+            </summary>
+            <param name="modelBuilder">Builder to add relationships to in this context</param>
+        </member>
+        <member name="M:AutoPoco.DynamicSchema.Db.DbSchema.GetHashCode">
+            <summary>
+            Overall hash code for the request
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:AutoPoco.DynamicSchema.Db.ISchemaQueries">
+            <summary>
+            Methods to pull query for schema information from a database
+            </summary>
+        </member>
+        <member name="M:AutoPoco.DynamicSchema.Db.ISchemaQueries.BuildColumns">
+            <summary>
+            List all requested database tables, views, and columns.
+            </summary>
+            <returns>string database query for tables, views, and columns.</returns>
+        </member>
+        <member name="M:AutoPoco.DynamicSchema.Db.ISchemaQueries.BuildStoredProcedureCommand">
+            <summary>
+            List all stored procedures
+            </summary>
+            <returns>string database query for stored procedures</returns>
+        </member>
+        <member name="M:AutoPoco.DynamicSchema.Db.ISchemaQueries.BuildTablesViewCommand">
+            <summary>
+            List all requested database tables, views.
+            </summary>
+            <returns>string database query for tables, views.</returns>
+        </member>
+        <member name="T:AutoPoco.DynamicSchema.Enums.ResourceType">
+            <summary>
+            Database Types
+            </summary>
+        </member>
+        <member name="T:AutoPoco.DynamicSchema.Models.Column">
+            <summary>
+            Details about a database column 
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.Table">
+            <summary>
+            Parent table
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.View">
+            <summary>
+            Parent view
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.TableSchema">
+            <summary>
+            Database schema name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.TableName">
+            <summary>
+            Database object name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.ColumnName">
+            <summary>
+            Column name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.ColumnType">
+            <summary>
+            Data type
+            </summary>
+            <example>Varchar</example>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.ColumnLength">
+            <summary>
+            Data length
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.ColumnIsNullable">
+            <summary>
+            Does the column allow nulls
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.IsComputed">
+            <summary>
+            Is the column a computed column
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.PKName">
+            <summary>
+            Name of the primary key, if the column is the primary key. 
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.PKPosition">
+            <summary>
+            Primary key order
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.PKIsIdentity">
+            <summary>
+            Is the database responsible for creating the value on insert
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.FKName">
+            <summary>
+            Name of the forign key, if the column is referenced by another table
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.ReferencedDatabase">
+            <summary>
+            Database of the forign keyed table
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.ReferencedSchema">
+            <summary>
+            Schema of the forgien keyed table
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.ReferencedTable">
+            <summary>
+            Name of the forgien keyed table
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.ReferencedColumn">
+            <summary>
+            Name of the column forgien keyed 
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.UserDefinedFKAlias">
+            <summary>
+            Forgien key name if defiend in the dashboard
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.DataType">
+            <summary>
+            Database and c# datatypes
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.IsPK">
+            <summary>
+            Flag denoting if the column the Primary key
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.IsFK">
+            <summary>
+            Flag denoting if the column is a forgien key
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Column.ReferencedVariableName">
+            <summary>
+            Full name of the forigen keyed table
+            </summary>
+        </member>
+        <member name="M:AutoPoco.DynamicSchema.Models.Column.ToString">
+            <summary>
+              A string that represents the current object.
+            </summary>
+            <returns>Column Name</returns>
+        </member>
+        <member name="M:AutoPoco.DynamicSchema.Models.Column.GetHashCode">
+            <summary>
+            Combined hash codes of Schema, Table, Column and ColumnType
+            </summary>
+            <returns>A hash code for the current object</returns>
+        </member>
+        <member name="T:AutoPoco.DynamicSchema.Models.Config">
+            <summary>
+            Configuration settings for dynamically pulling DB objects
+            </summary>
+        </member>
+        <member name="M:AutoPoco.DynamicSchema.Models.Config.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Config.FilterSchema">
+            <summary>
+            Target schema.
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Config.IncludedTable">
+            <summary>
+            Target table.
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Config.IncludedStoredProcedure">
+            <summary>
+            Target stored procedure.
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Config.ConnectionString">
+            <summary>
+            Database connection string.
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Config.PropertyPreFixName">
+            <summary>
+            Additional column prefix
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Config.UserDefinedJoins">
+            <summary>
+            User created joins
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Config.DatabaseConnectorName">
+            <summary>
+            Connector name.
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Config.JoinsAsString">
+            <summary>
+            Formated user joins and virtual entity joins for schema call.
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.Config.UsedConnectors">
+            <summary>
+            All connectors used to call database object.  Used to link cross database calls.
+            </summary>
+        </member>
+        <member name="T:AutoPoco.DynamicSchema.Models.DataType">
+            <summary>
+            Combine the Database type and the C# type
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.DataType.DbType">
+            <summary>
+            Database Type
+            </summary>
+        </member>
+        <member name="P:AutoPoco.DynamicSchema.Models.DataType.SystemType">
+            <summary>
+            C# Type
+            </summary>
+        </member>
+        <member name="M:AutoPoco.DynamicSchema.Models.DataType.ToString">
+            <summary>
+            Display both types
+            </summary>
+            <returns> A string that represents the current object.</returns>
+        </member>
+        <member name="T:AutoPoco.DynamicSchema.Models.PocoBase">
+            <summary>
+            Base type for all dynamically generated database models
+            </summary>
+        </member>
+        <member name="M:AutoPoco.DynamicSchema.Models.PocoBase.ToString">
+            <summary>
+            Cleanly show table name
+            </summary>
+            <returns> A string that represents the current object.</returns>
+        </member>
+        <member name="E:AutoPoco.DynamicSchema.Models.PocoBase.PropertyChanged">
+            <summary>
+            Event delegate to show changers
+            </summary>
+        </member>
+        <member name="M:AutoPoco.DynamicSchema.Models.PocoBase.OnRaisePropertyChanged(System.Object,System.String)">
+            <summary>
+            Raise the on change event
+            </summary>
+            <param name="sender">Dbcontext</param>
+            <param name="PropertyName">Column name</param>
+        </member>
+        <member name="T:AutoPoco.DynamicSchema.Models.View">
+            <summary>
+            Created for clarity
+            </summary>
+        </member>
+        <member name="M:AutoPoco.DynamicSchema.Runtime.ReflectionExtensions.FlattendVEColumnSelect(System.Type,System.String)">
+            <summary>
+            Called on second pass after type is annoymous
+            </summary>
+        </member>
+        <member name="T:AutoPoco.DynamicSchema.Services.CrossDb.RelationalQueryModelVisitor">
+            <summary>
+                The default relational <see cref="T:Remotion.Linq.QueryModel" /> visitor.
+            </summary>
+        </member>
+        <member name="T:AutoPoco.Exceptions.BaseCaughtException">
+            <summary>
+            Base exception to show in logger
+            </summary>
+        </member>
+        <member name="M:AutoPoco.Extensions.DynamicObjectExtensions.GroupJoin``1(System.Linq.IQueryable{``0},System.Linq.IQueryable{``0},System.String,System.String,System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <typeparam name="T">dynamic list</typeparam>
+            <param name="outer">outer side of the join</param>
+            <param name="inner">inner side of the join</param>
+            <param name="outerSelector">key value to join on. Example 1: outer.id, Example 2: new(outer.id, outer.name) </param>
+            <param name="innerSelector">key value to join on. Example 1: inner.id, Example 2: new(inner.id, inner.name)</param>
+            <param name="resultsSelector">How to display results. Example : new(group as Address, outer.name as Homeowner)</param>
+            <param name="values">Parameters</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPoco.Extensions.SchemaBuilderExtensions.SetObjectType(System.String)">
+             <summary>
+             Convert db result to DbObject Enum
+             </summary>
+             <param name="objectType">string value from Db</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+             <returns></returns>
+        </member>
+        <member name="M:AutoPoco.Extensions.ServiceCollectionExtensions.ConfigureApplicationDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Microsoft.EntityFrameworkCore.DbContextOptionsBuilder})">
+            <summary>
+            Used for provider specific configuration.
+            </summary>
+            <param name="services"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AutoPoco.Extensions.AppBuilderExtensions">
+            <summary>
+            AspNet Core Extenstions to set up the dashboard 
+            </summary>
+        </member>
+        <member name="M:AutoPoco.Extensions.AppBuilderExtensions.UseAutoPocoDashboard(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Default dashboard set up for basic license with dash prefix "/autopoco"
+            </summary>
+            <param name="builder">The builder being used to configure the context.</param>
+            <returns>The options builder so that further configuration can be chained.</returns>
+        </member>
+        <member name="M:AutoPoco.Extensions.AppBuilderExtensions.UseAutoPocoDashboard(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String)">
+            <summary>
+            Set up the dashboard
+            </summary>
+            <param name="builder">The builder being used to configure the context.</param>
+            <param name="dashPath">Dashboard route prefix</param>
+            <returns>The options builder so that further configuration can be chained.</returns>
+        </member>
+        <member name="M:AutoPoco.Extensions.AppBuilderExtensions.UseAutoPocoWithoutDashboard(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Enable Logging service dependency injection when not using the dashboard
+            </summary>
+            <param name="builder">The builder being used to configure the context.</param>
+            <returns>The options builder so that further configuration can be chained.</returns>
+        </member>
+        <member name="M:AutoPoco.Extensions.AppBuilderExtensions.UseSqlServer(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String,System.String,System.Int32)">
+            <summary>
+            Set up application database with encryption
+            </summary>
+            <param name="builder">Application builder</param>
+            <param name="encryptionSalt">Initialization value for encryption</param>
+            <param name="encryptionSecretKey">Encryption secret key</param>
+            <param name="cacheTimeoutMinutes">Cache length</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPoco.Extensions.AppBuilderExtensions.UseSqlServer(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Set up application database without encryption
+            </summary>
+            <param name="builder">Application builder</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPoco.Extensions.AppBuilderExtensions.UseMiddlewareWhen``1(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Http.PathString,System.Object[])">
+            <summary>
+            Conditionally creates a branch in the request pipeline that is rejoined to the main pipeline.
+            </summary>
+            <param name="builder"></param>
+            <param name="pathMatch"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AutoPoco.Extensions.ServicesCollectionExtensions">
+            <summary>
+            Configure AspNet Core Services 
+            </summary>
+        </member>
+        <member name="M:AutoPoco.Extensions.ServicesCollectionExtensions.AddAutoPoco(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Include Swagger and Odata services 
+            </summary>
+            <param name="services">The services being used to configure the context.</param>
+            <returns>The services collection so that further configuration can be chained.</returns>
+        </member>
+        <member name="T:AutoPoco.Models.ColumnDefinition">
+            <summary>
+            Database column information
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.ColumnDefinition.Name">
+            <summary>
+            Column Name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.ColumnDefinition.Type">
+            <summary>
+            Database type
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.ColumnDefinition.Length">
+            <summary>
+            Max length of the column
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.ColumnDefinition.IsNullable">
+            <summary>
+            Does the column allow null values
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.ColumnDefinition.IsPrimaryKey">
+            <summary>
+            Is the column the primary key or one of the primary keys
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.ColumnDefinition.IsForigenKey">
+            <summary>
+            Is attached to a forigen key constrant
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.ColumnDefinition.ReferencedDatabase">
+            <summary>
+            Forigen key table's database name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.ColumnDefinition.ReferencedSchema">
+            <summary>
+            Forigen key table's schema name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.ColumnDefinition.ReferencedTable">
+            <summary>
+            Forigen key table name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.ColumnDefinition.ReferencedColumn">
+            <summary>
+            Forigen key column
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.ColumnDefinition.IsComputed">
+            <summary>
+            Is the column definition a computed column
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.ColumnDefinition.IsPrimaryKeyIdentity">
+            <summary>
+            Flag to specify that the column is a primary key identiy column
+            </summary>
+        </member>
+        <member name="T:AutoPoco.Models.SchemaDefinition">
+            <summary>
+            Information about the database schema
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.SchemaDefinition.ConnectorId">
+            <summary>
+            Database id for the connector
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.SchemaDefinition.ConnectorName">
+            <summary>
+            Alias of the connector
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.SchemaDefinition.Name">
+            <summary>
+            Schema name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.SchemaDefinition.DbName">
+            <summary>
+            Database name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.SchemaDefinition.Tables">
+            <summary>
+            List of available table names
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.SchemaDefinition.Views">
+            <summary>
+            List of available view names
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.SchemaDefinition.StoredProcedures">
+            <summary>
+            List of available stored procedure names
+            </summary>
+        </member>
+        <member name="T:AutoPoco.Models.StoredProcedureDefinition">
+            <summary>
+            Information about a given stored procedure
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.StoredProcedureDefinition.Name">
+            <summary>
+            Store procedure name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.StoredProcedureDefinition.Parameters">
+            <summary>
+            List of stored procedure parameter definitions
+            </summary>
+        </member>
+        <member name="T:AutoPoco.Models.StoredProcedureParameterDefinition">
+            <summary>
+            Properties of a stored procedure parameter
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.StoredProcedureParameterDefinition.Name">
+            <summary>
+            Parameter name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.StoredProcedureParameterDefinition.Type">
+            <summary>
+            Database type of the parameter value
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.StoredProcedureParameterDefinition.IsOutput">
+            <summary>
+            Is the parameter an output of the stored procedure
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.StoredProcedureParameterDefinition.IsNullable">
+            <summary>
+            Does the procedure except null as a value
+            </summary>
+        </member>
+        <member name="T:AutoPoco.Models.TableDefinition">
+            <summary>
+            Database table information
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.TableDefinition.ConnectorId">
+            <summary>
+            AutoPoco connector id
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.TableDefinition.ConnectorName">
+            <summary>
+            AutoPoco connector name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.TableDefinition.SchemaName">
+            <summary>
+            Database schema name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.TableDefinition.DbName">
+            <summary>
+            Database name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.TableDefinition.Name">
+            <summary>
+            Table name
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Models.TableDefinition.Columns">
+            <summary>
+            List of table column details
+            </summary>
+        </member>
+        <member name="T:AutoPoco.Models.UserJoinConfiguration">
+            <summary>
+            Flatten User Join information
+            </summary>
+        </member>
+        <member name="M:AutoPoco.Resources.OperationResource.GetResourceRecordById(System.String)">
+            <summary>
+            Retrieve single row by primary key
+            </summary>
+            <param name="keys">Primary key.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPoco.Resources.OperationResource.UpdateResourceRecordById``1(``0,System.String)">
+            <summary>
+             Update record
+            </summary>
+            <typeparam name="TViewModel">Model of values.</typeparam>
+            <param name="value">Instance of model to update.</param>
+            <param name="keys">Primary Key.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPoco.Resources.OperationResource.UpdateResourceRecordById(Newtonsoft.Json.Linq.JToken,System.String)">
+            <summary>
+             Update record
+            </summary>
+            <param name="value">JSON object representing values</param>
+            <param name="keys">Primary Key.</param>
+            <returns>Updated record</returns>
+        </member>
+        <member name="M:AutoPoco.Resources.OperationResource.CreateNewResourceRecord``1(``0)">
+            <summary>
+             Insert a recored
+            </summary>
+            <typeparam name="TViewModel">Model of values.</typeparam>
+            <param name="value">Instance of model to update.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPoco.Resources.OperationResource.GetColumnDefinition(System.String)">
+            <summary>
+            Detailed information about a table column
+            </summary>
+            <param name="columnName">Column to look up</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPoco.Services.AppDatabaseSetupService.SetupEncryption(System.String,System.String,System.Int32)">
+            <summary>
+            Set the encryption settings
+            </summary>
+            <param name="encryptionSalt">Must be length 16</param>
+            <param name="encryptionSecretKey">Must be 128 characters</param>
+            <param name="cacheTimeoutMinutes">Length in minutes how long database configuration values stay in cache.</param>
+        </member>
+        <member name="T:AutoPoco.Services.LoggingService">
+            <summary>
+            Log AutoPoco commands
+            </summary>
+        </member>
+        <member name="M:AutoPoco.Services.LoggingService.#ctor(AutoPoco.Services.ITimeProvider)">
+            <summary>
+             Set up new logging for a request
+            This constructor is not meant to be called in code.  Used for DI. 
+            </summary>
+        </member>
+        <member name="P:AutoPoco.Services.LoggingService.LogCount">
+            <summary>
+            Check number of API request to be logged for a request
+            </summary>
+        </member>
+        <member name="M:AutoPoco.Services.LoggingService.AddApiRequest(AutoPoco.Models.LoggingApiContextValues,System.DateTime)">
+            <summary>
+            Appended an API request to be logged
+            </summary>
+            <param name="values">Request infomation</param>
+            <param name="requestTime">Time of request</param>
+        </member>
+        <member name="M:AutoPoco.Services.LoggingService.AddTableToLogger(System.String,System.String,AutoPoco.Constants.HttpMethodType)">
+            <summary>
+            Appened a table request
+            </summary>
+            <param name="connectorName">AutoPoco Connector name</param>
+            <param name="tableName">Table accessed</param>
+            <param name="httpMethod">Requst type (GET, POST, PUT, DELETE)</param>
+        </member>
+        <member name="M:AutoPoco.Services.LoggingService.AddViewToLogger(System.String,System.String)">
+            <summary>
+            Append a view request
+            </summary>
+            <param name="connectorName">AutoPoco connector name</param>
+            <param name="viewName">View accessed</param>
+            
+        </member>
+        <member name="M:AutoPoco.Services.LoggingService.AddSprocToLogger(System.String,System.String,AutoPoco.Constants.HttpMethodType)">
+            <summary>
+            Append a stored procedure request
+            </summary>
+            <param name="connectorName">AutoPoco connector name</param>
+            <param name="sprocName">Stored Procedure name</param>
+            <param name="httpMethod">Requst type (GET, POST, PUT, DELETE)</param>
+        </member>
+        <member name="M:AutoPoco.Services.LoggingService.AddSchemaToLogger(System.String)">
+            <summary>
+            Append a schema request
+            </summary>
+            <param name="connectorName">AutoPoco connector name</param>
+        </member>
+        <member name="M:AutoPoco.Services.LoggingService.LogAll(Microsoft.Extensions.DependencyInjection.IServiceScope)">
+            <summary>
+            Log all pendeing API request
+            </summary>
+        </member>
+        <member name="T:AutoPoco.SwaggerAddons.JTokenExample">
+            <summary>
+            Gives example object for JToken parameters in swagger
+            </summary>
+        </member>
+        <member name="T:AutoPoco.SwaggerAddons.ODataParametersSwaggerDefinition">
+            <summary>
+            Adds the supported odata parameters for IQueryable endpoints 
+            ONLY if no parameters are defined already.
+            </summary>
+        </member>
+        <member name="T:AutoPoco.WebApi.SchemaController">
+            <summary>
+            Schema Definition End Points
+            </summary>
+        </member>
+        <member name="M:AutoPoco.WebApi.SchemaController.#ctor(AutoPoco.Api.ISchemaOperations,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Default constructor with logging injected
+            </summary>
+            <param name="loggingService">Dependency injected logging for all end points</param>
+        </member>
+        <member name="M:AutoPoco.WebApi.SchemaController.Get(System.String)">
+            <summary>
+            List all database objects
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <returns>A list for each object type (Table, View, Stored Procedure)</returns>
+        </member>
+        <member name="T:AutoPoco.WebApi.StoredProcedureController">
+            <summary>
+            Execute Stored Procedures
+            </summary>
+        </member>
+        <member name="M:AutoPoco.WebApi.StoredProcedureController.#ctor(AutoPoco.Api.IStoredProcedureOperations,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Default constructor with logging injected
+            </summary>
+            <param name="storedProcedureOperations">Access stored procedures</param>
+            <param name="loggingService">Dependency injected logging for all end points</param>
+        </member>
+        <member name="M:AutoPoco.WebApi.StoredProcedureController.Get(System.String,System.String)">
+            <summary>
+            Execute Stored Procedure (No Params)
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="sprocName">Stored Procedure name in the database.</param>
+        </member>
+        <member name="M:AutoPoco.WebApi.StoredProcedureController.Post(System.String,System.String,Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            Execute Stored Procedure (Params)
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="sprocName">Stored Procedure name in the database.</param>
+            <param name="value">JSON object of parameters.</param>
+        </member>
+        <member name="T:AutoPoco.WebApi.StoredProcedureDefinitionController">
+            <summary>
+            Stored Procedure Definition End Points
+            </summary>
+        </member>
+        <member name="M:AutoPoco.WebApi.StoredProcedureDefinitionController.#ctor(AutoPoco.Api.IStoredProcedureOperations,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Default constructor with logging injected
+            </summary>
+            <param name="loggingService">Dependency injected logging for all end points</param>
+        </member>
+        <member name="M:AutoPoco.WebApi.StoredProcedureDefinitionController.Get(System.String,System.String)">
+            <summary>
+            List all parameters
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="sprocName">Stored Procedure name in the database.</param>
+        </member>
+        <member name="M:AutoPoco.WebApi.StoredProcedureDefinitionController.Get(System.String,System.String,System.String)">
+            <summary>
+            Get a single parameter
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="sprocName">Stored Procedure name in the database.</param>
+            <param name="paramName">Parameters name in the database</param>
+        </member>
+        <member name="T:AutoPoco.WebApi.TableDefinitionController">
+            <summary>
+            Table Definition End Points
+            </summary>
+        </member>
+        <member name="M:AutoPoco.WebApi.TableDefinitionController.#ctor(AutoPoco.Api.ITableOperations,AutoPoco.Services.ILoggingService)">
+            <summary>
+            Default constructor with logging injected
+            </summary>
+            <param name="tableOperations">Access tables</param>
+            <param name="loggingService">Dependency injected logging for all end points</param>
+        </member>
+        <member name="M:AutoPoco.WebApi.TableDefinitionController.Get(System.String,System.String)">
+            <summary>
+            List of columns that exists in a given table
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+        </member>
+        <member name="M:AutoPoco.WebApi.TableDefinitionController.Get(System.String,System.String,System.String)">
+            <summary>
+            View column attirbutes
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="columnName">Name of the column in the database.</param>
+        </member>
+        <member name="T:AutoPoco.WebApi.TablesController">
+            <summary>
+            Table Operation End Points
+            </summary>
+        </member>
+        <member name="M:AutoPoco.WebApi.TablesController.#ctor(AutoPoco.Api.ITableOperations,AutoPoco.Services.ILoggingService,AutoPoco.Services.IRequestQueryStringService)">
+            <summary>
+            Default constructor
+            </summary>
+            <param name="tableOps">Database table operation</param>
+            <param name="loggingService">Dependency injected logging for all end points</param>
+            <param name="queryStringService">Injected service to read http request information</param>
+        </member>
+        <member name="M:AutoPoco.WebApi.TablesController.Get(System.String,System.String)">
+            <summary>
+            Retrieve data from a given table
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+        </member>
+        <member name="M:AutoPoco.WebApi.TablesController.Get(System.String,System.String,System.String)">
+            <summary>
+            Retrieve single row by primary key
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="id">Primary key.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPoco.WebApi.TablesController.Post(System.String,System.String,System.Object)">
+            <summary>
+            Insert a recored into a given table
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="value">JSON object to insert</param>
+            <returns>Inserted object</returns>
+        </member>
+        <member name="M:AutoPoco.WebApi.TablesController.Put(System.String,System.String,System.String,System.Object)">
+            <summary>
+            Update record in a given table
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="id">Primary Key.</param>
+            <param name="value">JSON object to update.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPoco.WebApi.TablesController.Delete(System.String,System.String,System.String)">
+            <summary>
+            Remove record from a given table
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="id">Primary key.</param>
+            <returns></returns>
+        </member>
+        <member name="T:AutoPoco.WebApi.ViewsController">
+            <summary>
+            View Operations End Point
+            </summary>
+        </member>
+        <member name="M:AutoPoco.WebApi.ViewsController.#ctor(AutoPoco.Api.IViewOperations,AutoPoco.Services.ILoggingService,AutoPoco.Services.IRequestQueryStringService)">
+            <summary>
+            Default constructor with logging injected
+            </summary>
+            <param name="viewOperations">Access view data</param>
+            <param name="loggingService">Dependency injected logging for all end points</param>
+            <param name="queryStringService">Injected service to read http request information</param>
+        </member>
+        <member name="M:AutoPoco.WebApi.ViewsController.Get(System.String,System.String)">
+            <summary>
+            Retrieve data from a given view
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="viewName">Name of the view in the database.</param>
+        </member>
+        <member name="T:AutoPoco.WebApi.ApiController">
+            <summary>
+            For same naming between .Net Framework and .Net Core
+            </summary>
+        </member>
+        <member name="T:System.Linq.AutoPoco.DynamicQueryable">
+            <summary>
+            Microsoft provided class. It allows dynamic string based querying. 
+            Very handy when, at compile time, you don't know the type of queries that will be generated.
+            </summary>
+            
+        </member>
+        <member name="M:System.Linq.AutoPoco.DynamicClass.ToString">
+            <summary>
+             A string that represents the current object.
+            </summary>
+            <returns> A string that represents the current object.</returns>
+        </member>
+        <member name="T:System.Linq.AutoPoco.ParseException">
+            <summary>
+            Dynamic Linq internal exception
+            </summary>
+        </member>
+    </members>
+</doc>

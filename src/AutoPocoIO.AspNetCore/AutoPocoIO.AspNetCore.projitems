@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="SharedProjectFile_SccProperties">
+    <SharedProjectFile_ProjectGuid>{98735661-dbe4-40f3-8d92-e6a93e1f9780}</SharedProjectFile_ProjectGuid>
+    <SharedProjectFile_SccProjectName>SAK</SharedProjectFile_SccProjectName>
+    <SharedProjectFile_SccAuxPath>SAK</SharedProjectFile_SccAuxPath>
+    <SharedProjectFile_SccLocalPath>SAK</SharedProjectFile_SccLocalPath>
+    <SharedProjectFile_SccProvider>SAK</SharedProjectFile_SccProvider>
+  </PropertyGroup>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>e2d69d9d-44ac-41ce-9bd8-ac886be7312e</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>AutoPoco</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ApiController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomAttributes\UseJsonAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\AspNetCoreDashboardMiddleware.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\AspNetCoreMiddelwareContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\AspNetCoreMiddlewareRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\AspNetCoreMiddlewareResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\AppBuilderExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ODataQueryExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\RouteExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ServicesCollectionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoggingMiddleware\ContextLogPameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoggingMiddleware\LogRequestAndResponseMiddleware.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomAttributes\RoutePrefixAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\RequestQueryStringService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SwaggerAddons\JTokenExample.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SwaggerAddons\ODataParametersSwaggerDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SwaggerAddons\SwaggerConfig.cs" />
+  </ItemGroup>
+</Project>
