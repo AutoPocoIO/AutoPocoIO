@@ -68,13 +68,6 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             Assert.IsTrue(result.Contains("<title>AutoPoco</title>"));
         }
 
-        [TestMethod]
-        public void IncludeAutoPocoSwaggerCssInUi()
-        {
-            var result = client.GetStringAsync("autoPocoPath/swagger/index.html").Result;
-            Assert.IsTrue(result.Contains("<link href='/autoPocoPath/swagger-ui/swaggercss' rel='stylesheet' media='screen' type='text/css'"));
-        }
-
 
         [TestMethod]
         public void SingApiVersionSetToV1AndAutoPoco()

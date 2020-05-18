@@ -92,28 +92,7 @@ namespace AutoPocoIO.test.Extensions
             };
 
             resource.Object.ConfigureAction(connector,OperationType.read, "obj");
-            resource.Object.LoadSchema(false);
-
-            Assert.AreEqual("sch1", config.FilterSchema);
-            Assert.AreEqual("aa", config.DatabaseConnectorName);
-            Assert.IsNull(config.IncludedTable);
-
-            schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-        }
-
-        [TestMethod]
-        public void LoadSchemaWithVe()
-        {
-            var connector = new Models.Connector
-            {
-                Name = "aa",
-                Schema = "sch1",
-                ResourceType = 1,
-                ConnectionStringDecrypted = "connStr"
-            };
-
-            resource.Object.ConfigureAction(connector,OperationType.read, "obj");
-            resource.Object.LoadSchema(true);
+            resource.Object.LoadSchema();
 
             Assert.AreEqual("sch1", config.FilterSchema);
             Assert.AreEqual("aa", config.DatabaseConnectorName);

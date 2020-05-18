@@ -30,7 +30,7 @@ namespace AutoPocoIO.Resources
         StoredProcedureParameterDefinition GetStoredProcedureDefinition(string parameterName);
         TableDefinition GetTableDefinition();
 
-        void LoadSchema(bool includeVirtualEntities);
+        void LoadSchema();
         void LoadProc(string schemaName, string storedProcedureName);
     }
 }

@@ -381,7 +381,7 @@ namespace AutoPocoIO.Resources
 
         public virtual SchemaDefinition GetSchemaDefinition()
         {
-            this.LoadSchema(false);
+            this.LoadSchema();
             return new SchemaDefinition
             {
                 Tables = DbSchema.Tables.Select(c => c.Name).ToList().AsReadOnly(),
@@ -475,13 +475,11 @@ namespace AutoPocoIO.Resources
             SchemaInitializer.Initilize();
         }
 
-        public virtual void LoadSchema(bool includeVirtualEntities)
+        public virtual void LoadSchema()
         {
             Config.FilterSchema = SchemaName;
             Config.DatabaseConnectorName = Connector.Name;
             SchemaInitializer.Initilize();
         }
-
-       
     }
 }
