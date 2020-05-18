@@ -1,0 +1,97 @@
+﻿using AutoPocoIO.Api;
+using AutoPocoIO.Context;
+using AutoPocoIO.Factories;
+using AutoPocoIO.Migrations;
+using AutoPocoIO.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
+namespace AutoPocoIO.Extensions
+{
+    public static partial class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddDatabaseOperations(this IServiceCollection services)
+        {
+            //Operations
+            services.TryAddTransient<ITableOperations, TableOperations>();
+            services.TryAddTransient<IViewOperations, ViewOperations>();
+            services.TryAddTransient<IStoredProcedureOperations, StoredProcedureOperations>();
+            services.TryAddTransient<ISchemaOperations, SchemaOperations>();
+
+            //Resources
+            services.TryAddTransient<IResourceFactory, ResourceFactory>();
+            services.TryAddTransient<IAppAdminService, AppAdminService>();
+            services.TryAddTransient<IRequestQueryStringService, RequestQueryStringService>();
+
+            //logging
+            services.TryAddSingleton<ITimeProvider, DefaultTimeProvider>();
+            services.TryAddScoped<ILoggingService, LoggingService>();
+
+            //db access
+            services.TryAddTransient<IConnectionStringFactory, ConnectionStringFactory>();
+            services.TryAddTransient<IAppDatabaseSetupService, AppDatabaseSetupService>();
+            services.TryAddTransient<LogDbContext>();
+            services.TryAddTransient<AppDbContext>();
+            services.TryAddTransient<LoggingMigrationContext>();
+            services.TryAddTransient<AppMigrationContext>();
+
+            return services;
+        }
+
+
+
+
+        /// <summary>
+        /// Used for provider specific configuration.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public static IServiceCollection ConfigureApplicationDatabase(this IServiceCollection services, Action<DbContextOptionsBuilder> options)
+        {
+            var dbContexts = services.Where(c => typeof(DbContext).IsAssignableFrom(c.ServiceType.BaseType))
+                                     .ToList();
+            foreach (var dbService in dbContexts)
+            {
+
+                typeof(ServiceCollectionExtensions).GetMethod(nameof(AddOptions), BindingFlags.NonPublic | BindingFlags.Static)
+                    .MakeGenericMethod(dbService.ServiceType)
+                    .Invoke(null, new object[] { services, options });
+            }
+
+            return services;
+        }
+
+        private static IServiceCollection AddOptions<TContext>(IServiceCollection services, Action<DbContextOptionsBuilder> options)
+            where TContext : DbContext
+        {
+            Action<IServiceProvider, DbContextOptionsBuilder> optionAction = (p, b) => options.Invoke(b);
+
+            services.TryAddSingleton(c => DbContextOptionsFactory<TContext>(c, optionAction));
+
+            return services;
+        }
+
+        private static DbContextOptions<TContext> DbContextOptionsFactory<TContext>(
+             IServiceProvider applicationServiceProvider,
+             Action<IServiceProvider, DbContextOptionsBuilder> optionsAction)
+            where TContext : DbContext
+        {
+            var builder = new DbContextOptionsBuilder<TContext>(
+                new DbContextOptions<TContext>(new Dictionary<Type, IDbContextOptionsExtension>()));
+
+            builder.UseApplicationServiceProvider(applicationServiceProvider);
+
+            optionsAction.Invoke(applicationServiceProvider, builder);
+
+            return builder.Options;
+        }
+
+    }
+}

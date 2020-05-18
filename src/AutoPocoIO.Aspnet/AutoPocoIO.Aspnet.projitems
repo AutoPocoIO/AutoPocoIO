@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="SharedProjectFile_SccProperties">
+    <SharedProjectFile_ProjectGuid>{1dfd285f-3f29-47bb-ab38-98f7f1bfa02b}</SharedProjectFile_ProjectGuid>
+    <SharedProjectFile_SccProjectName>SAK</SharedProjectFile_SccProjectName>
+    <SharedProjectFile_SccAuxPath>SAK</SharedProjectFile_SccAuxPath>
+    <SharedProjectFile_SccLocalPath>SAK</SharedProjectFile_SccLocalPath>
+    <SharedProjectFile_SccProvider>SAK</SharedProjectFile_SccProvider>
+  </PropertyGroup>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>38f8d4ff-ff0f-48ad-8cb1-1618ef4d1de9</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>AutoPoco</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CustomAttributes\UseJsonAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ODataQueryExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoggingMiddleware\ContextLogPameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Owin\DashboardMiddleware.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Owin\OwinMiddlewareContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\AppBuilderExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DependencyResolverExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\RouteExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ServiceCollectionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoggingMiddleware\LogRequestAndResponseMiddleware.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Owin\IOwinMiddlewareWithDI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Owin\OwinContainerWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Owin\OwinMiddlewareRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Owin\OwinMiddlewareResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\RequestQueryStringService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SwaggerAddons\AddSchemaExamples.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SwaggerAddons\ODataParametersSwaggerDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SwaggerAddons\SwaggerConfig.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Services\" />
+  </ItemGroup>
+</Project>
