@@ -11,8 +11,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Extends AutoPoco to work with MsSql Server databases</Description>
+    <PackageId>AutoPocoIO.MsSql</PackageId>
     <Company>AutoPocoIO</Company>
     <Authors>AutoPocoIO</Authors>
+    <RepositoryUrl>https://github.com/AutoPocoIO/AutoPocoIO</RepositoryUrl>
   </PropertyGroup>
 
   <!--<PropertyGroup>
