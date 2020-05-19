@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.Middleware
 {
-    public interface IMiddlewareResponse
+    internal interface IMiddlewareResponse
     {
        string ContentType { get; set; }
        int StatusCode { get; set; }

@@ -1,11 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  
+  </PropertyGroup>
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461;</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Configurations>Debug;Release;</Configurations>
-    
+    <Description>Dynamically create Poco classes on request.</Description>
+    <PackageId>AutoPocoIO</PackageId>
+    <Company>AutoPocoIO</Company>
+    <Authors>AutoPocoIO</Authors>
+    <RepositoryUrl>https://github.com/AutoPocoIO/AutoPocoIO</RepositoryUrl>
    <!-- <DocumentationFile>SwaggerAddons\AutoPoco.xml</DocumentationFile>
    -->
   </PropertyGroup>
@@ -49,17 +59,12 @@
     <DefineConstants>NETCORE;NETCORE2_2</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="4.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="4.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters " Version="4.5.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.1.0" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="7.9.1" />
     <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
-    
   </ItemGroup>
  
   <!-- .NET 4.5 references, compilation flags and build options -->
@@ -68,7 +73,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <NoWarn>1701;1702;1307</NoWarn>
-    <RepositoryUrl>https://github.com/AutoPocoIO</RepositoryUrl>
     <!--<OutputPath>..\..\bin\</OutputPath>-->
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
@@ -100,9 +104,10 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccLocalPath>SAK</SccLocalPath>
     <Description>Dynamically create Poco classes on request.</Description>
-    <PackageId>AutoPoco</PackageId>
+    <PackageId>AutoPocoIO</PackageId>
     <Company>AutoPocoIO</Company>
     <Authors>AutoPocoIO</Authors>
+    <RepositoryUrl>https://github.com/AutoPocoIO/AutoPocoIO</RepositoryUrl>
   </PropertyGroup>
   
 

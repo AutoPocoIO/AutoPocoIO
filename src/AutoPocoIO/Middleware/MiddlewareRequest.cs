@@ -4,7 +4,7 @@ using System.IO;
 
 namespace AutoPocoIO.Middleware
 {
-    public interface IMiddlewareRequest
+    internal interface IMiddlewareRequest
     {
         string Method { get; }
         string Path { get; }

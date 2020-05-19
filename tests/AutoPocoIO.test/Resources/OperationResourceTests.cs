@@ -7,7 +7,7 @@ using AutoPocoIO.DynamicSchema.Util;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
-using AutoPocoIO.Services.Interface;
+using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

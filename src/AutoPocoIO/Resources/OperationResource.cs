@@ -8,7 +8,7 @@ using AutoPocoIO.Exceptions;
 using AutoPocoIO.Extensions;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Models;
-using AutoPocoIO.Services.Interface;
+using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;

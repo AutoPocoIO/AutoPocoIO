@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace AutoPocoIO.Services.Interface
+namespace AutoPocoIO.Services
 {
     public interface IReplaceServices<TClass>
     {
