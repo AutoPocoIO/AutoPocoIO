@@ -1,6 +1,10 @@
-name: build1
+name: .NET Core
 
-on: push
+on:
+  push:
+    branches: [ test-workflow ]
+  pull_request:
+    branches: [ test-workflow ]
 
 jobs:
   build:
