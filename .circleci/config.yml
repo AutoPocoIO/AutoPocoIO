@@ -1,0 +1,19 @@
+version: 2.1
+
+orbs:
+  win: circleci/windows@2.2.0
+
+jobs:
+   build:
+     executor: win/default     
+    
+     steps:
+       - checkout
+       - run: 
+          name: "Build"
+          command: dotnet build sln/AutoPocoIO.sln
+       - run: 
+          name: "Run Tests"
+          command: dotnet test sln/AutoPocoIO.sln --no-build  --results-directory:test_coverage --collect:"Code Coverage"
+       - store_artifacts:
+          path: C:\Users\circleci\project\test_coverage
