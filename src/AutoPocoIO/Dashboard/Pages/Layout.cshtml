@@ -1,0 +1,83 @@
+﻿@* Generator: Template TypeVisibility: internal GeneratePrettyNames: True DisableLinePragmas: true  Namespace: AutoPocoIO.Dashboard.Pages *@
+
+@using AutoPocoIO.Middleware
+@inherits RazorPage
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    @RenderSection("css")
+    
+
+    <!--Custom CSS-->
+    <style>
+
+        .container {
+            max-width: 1400px;
+        }
+
+        a {
+            color: darkcyan;
+        }
+
+        .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+            background-color: darkcyan;
+        }
+    </style>
+
+
+    <title>Overview - AutoPoco</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+        <a class="navbar-brand" href="@TransmformUrl("/")">AutoPoco Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="@TransmformUrl("/Connectors")">Connectors <span class="badge badge-pill badge-info">@ConnectorCount()</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Roles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Permissions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Request History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@TransmformUrl("/swagger")">Developer Console</a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                Brandon Atkison
+            </span>
+        </div>
+    </nav>
+
+    <div>
+        @RenderBody()
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+    @RenderSection("script")
+</body>
+</html>

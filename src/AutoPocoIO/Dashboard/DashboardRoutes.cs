@@ -13,6 +13,9 @@ namespace AutoPocoIO.Dashboard
             Routes = new RouteCollection();
             Routes.Add("/", new RazorPageDispatcher<DashboardPage>((p, m) => p.DailyStats()));
             Routes.Add("/Weekly", new RazorPageDispatcher<DashboardPage>((p, m) => p.WeeklyStats()));
+
+            //Connector
+            Routes.Add("/Connectors", new RazorPageDispatcher<ConnectorsPage>((p, m) => p.ListConnectors()));
         }
     }
 }

@@ -11,22 +11,25 @@ namespace AutoPocoIO.Middleware
 {
     internal abstract class RazorPage
     {
-        private readonly StringBuilder _content = new StringBuilder();
+        private StringBuilder _content = new StringBuilder();
         private string _body;
+        
 
         protected RazorPage()
         {
             ViewBag = new ExpandoObject();
+            Sections = new Dictionary<string, string>();
+            _content = new StringBuilder();
         }
 
         public RazorPage Layout { get; protected set; }
-     //   public UrlHelper Url { get; private set; }
 
         internal IMiddlewareContext Context { get; private set; }
 
         internal IMiddlewareRequest Request => Context.Request;
         internal IMiddlewareResponse Response => Context.Response;
 
+        public IDictionary<string, string> Sections { get; }
         public IDictionary<string, object> ViewBag { get; }
         public string RequestPath => Request.Path;
 
@@ -47,13 +50,41 @@ namespace AutoPocoIO.Middleware
         public void Assign(RazorPage parentPage)
         {
             Context = parentPage.Context;
-         //   Url = parentPage.Url;
         }
 
         internal void Assign(IMiddlewareContext context)
         {
             Context = context;
-         //   Url = new UrlHelper(context);
+        }
+
+        protected virtual object RenderBody()
+        {
+            return new NonEscapedString(_body);
+        }
+
+        protected virtual object RenderSection(string scriptTag)
+        {
+            if (Sections.ContainsKey(scriptTag))
+                return new NonEscapedString(Sections[scriptTag]);
+            else
+                return new NonEscapedString(string.Empty);
+        }
+
+        protected virtual void DefineSection(string scriptTag, Action renderAction)
+        {
+            var bufferContent = new StringBuilder();
+            bufferContent.Append(_content.ToString());
+
+            _content.Clear();
+            renderAction.Invoke();
+            string section = _content.ToString();
+
+            if (Layout != null)
+                Layout.Sections[scriptTag] = section;
+
+            _content.Clear();
+            _content.Append(bufferContent.ToString());
+
         }
 
         protected void WriteLiteral(string textToAppend)
@@ -124,11 +155,6 @@ namespace AutoPocoIO.Middleware
             WriteLiteral(html?.ToString() ?? Encode(value.ToString()));
         }
 
-        protected virtual object RenderBody()
-        {
-            return _body;
-        }
-
         private string TransformText(string body)
         {
             _body = body;
@@ -137,6 +163,7 @@ namespace AutoPocoIO.Middleware
             if (Layout != null)
             {
                 Layout.Assign(this);
+
                 return Layout.TransformText(_content.ToString());
             }
 

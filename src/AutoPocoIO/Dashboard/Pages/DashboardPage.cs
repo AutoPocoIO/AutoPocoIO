@@ -1,13 +1,15 @@
 ﻿using AutoPocoIO.Dashboard.Repos;
+using System;
 
 namespace AutoPocoIO.Dashboard.Pages
 {
     internal partial class DashboardPage
     {
         private readonly IDashboardRepo _repo;
-        public DashboardPage(IDashboardRepo repo)
+        public DashboardPage(IDashboardRepo repo, Layout layoutPage)
         {
             _repo = repo;
+            Layout = layoutPage;
         }
 
         public virtual void DailyStats()
@@ -46,5 +48,7 @@ namespace AutoPocoIO.Dashboard.Pages
             ViewBag["FailCountTime"] = _repo.FailedRequestsTime(addDays);
             ViewBag["UnauthorizedTime"] = _repo.UnauthorizedRequestTime(addDays);
         }
+
+       
     }
 }
