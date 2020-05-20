@@ -40,7 +40,7 @@ WriteLiteral("\r\n<div class=\"container pt-4 mt-5\">\r\n    <h1>\r\n        <di
 WriteLiteral("\" onclick=\"window.location=\'");
 
 
-                                                                                  Write(TransmformUrl("/"));
+                                                                                  Write(TransformUrl("/"));
 
 WriteLiteral("\'\">\r\n                <input type=\"radio\" name=\"options\" id=\"option1\" autocomplete" +
 "=\"off\"> Day\r\n            </label>\r\n            <label class=\"btn btn-light ");
@@ -51,7 +51,7 @@ WriteLiteral("\'\">\r\n                <input type=\"radio\" name=\"options\" id
 WriteLiteral("\" onclick=\"window.location=\'");
 
 
-                                                                                   Write(TransmformUrl("/Weekly"));
+                                                                                   Write(TransformUrl("/Weekly"));
 
 WriteLiteral(@"'"">
                 <input type=""radio"" name=""options"" id=""option2"" autocomplete=""off""> Week

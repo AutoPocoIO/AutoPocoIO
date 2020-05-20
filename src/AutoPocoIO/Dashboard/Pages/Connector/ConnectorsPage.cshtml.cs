@@ -16,6 +16,7 @@ namespace AutoPocoIO.Dashboard.Pages
     using System.Linq;
     using System.Text;
     using AutoPocoIO.Middleware;
+    using AutoPocoIO.Models;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     internal partial class ConnectorsPage : RazorPage
@@ -27,6 +28,7 @@ namespace AutoPocoIO.Dashboard.Pages
 
 
 WriteLiteral("\r\n\r\n");
+
 
 
 
@@ -55,16 +57,21 @@ WriteLiteral(@"
 ");
 
 
-             foreach (var row in (IEnumerable<Models.Connector>)ViewBag["Connectors"])
+             foreach (var row in (IEnumerable<Connector>)ViewBag["Connectors"])
             {
                 
 
-WriteLiteral("                <tr>\r\n                    <th scope=\"row\">");
+WriteLiteral("                <tr>\r\n                    <th scope=\"row\"><a href=\"");
 
 
-                               Write(row.Name);
+                                        Write(TransformUrl("/Connectors/Connector/" + row.Id));
 
-WriteLiteral("</th>\r\n                    <td>");
+WriteLiteral("\">");
+
+
+                                                                                          Write(row.Name);
+
+WriteLiteral("</a></th>\r\n                    <td>");
 
 
                    Write(row.DataSource);

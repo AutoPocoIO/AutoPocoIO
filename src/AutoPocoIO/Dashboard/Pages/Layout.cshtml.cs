@@ -74,7 +74,7 @@ WriteLiteral(@"
         <a class=""navbar-brand"" href=""");
 
 
-                                 Write(TransmformUrl("/"));
+                                 Write(TransformUrl("/"));
 
 WriteLiteral(@""">AutoPoco Dashboard</a>
         <button class=""navbar-toggler"" type=""button"" data-toggle=""collapse"" data-target=""#navbarText"" aria-controls=""navbarText"" aria-expanded=""false"" aria-label=""Toggle navigation"">
@@ -86,7 +86,7 @@ WriteLiteral(@""">AutoPoco Dashboard</a>
                     <a class=""nav-link"" href=""");
 
 
-                                         Write(TransmformUrl("/Connectors"));
+                                         Write(TransformUrl("/Connectors"));
 
 WriteLiteral("\">Connectors <span class=\"badge badge-pill badge-info\">");
 
@@ -111,7 +111,7 @@ WriteLiteral(@"</span></a>
                     <a class=""nav-link"" href=""");
 
 
-                                         Write(TransmformUrl("/swagger"));
+                                         Write(TransformUrl("/swagger"));
 
 WriteLiteral("\">Developer Console</a>\r\n                </li>\r\n            </ul>\r\n            <s" +
 "pan class=\"navbar-text\">\r\n                Brandon Atkison\r\n            </span>\r\n" +

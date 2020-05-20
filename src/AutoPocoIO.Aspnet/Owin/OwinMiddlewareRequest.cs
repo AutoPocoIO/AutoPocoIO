@@ -44,10 +44,15 @@ namespace AutoPocoIO.Owin
         public Stream Body => _bodyCopy;
         public Uri RequestUri => _context.Request.Uri;
 
+        public async Task<IDictionary<string, string[]>> ReadFormAsync()
+        {
+            return (await _context.Request.ReadFormAsync())
+                            .ToDictionary(c => c.Key, c => c.Value);
+        }
 
         public (T Entity, IDictionary<string, string> ErrorMessages) GetFormValues<T>() where T : class
         {
-            var form = Task.Run(async () => await _context.Request.ReadFormAsync().ConfigureAwait(false))
+            var form = _context.Request.ReadFormAsync()
                             .Result
                             .ToDictionary(c => c.Key, c => c.Value);
 

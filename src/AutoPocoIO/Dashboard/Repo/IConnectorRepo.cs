@@ -7,5 +7,8 @@ namespace AutoPocoIO.Dashboard.Repo
     {
         int ConnectorCount();
         IEnumerable<Connector> ListConnectors();
+        void Save(Connector model);
+        Connector GetById(int id);
+        void Insert(Connector model);
     }
 }

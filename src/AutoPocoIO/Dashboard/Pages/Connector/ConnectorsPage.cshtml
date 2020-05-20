@@ -1,6 +1,7 @@
 ﻿@* Generator: Template TypeVisibility: internal GeneratePrettyNames: True DisableLinePragmas: true  Namespace: AutoPocoIO.Dashboard.Pages *@
 
 @using AutoPocoIO.Middleware
+@using AutoPocoIO.Models
 @inherits RazorPage
 
 <div class="container pt-4 mt-5">
@@ -24,11 +25,11 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var row in (IEnumerable<Models.Connector>)ViewBag["Connectors"])
+            @foreach (var row in (IEnumerable<Connector>)ViewBag["Connectors"])
             {
                 
                 <tr>
-                    <th scope="row">@row.Name</th>
+                    <th scope="row"><a href="@TransformUrl("/Connectors/Connector/" + row.Id)">@row.Name</a></th>
                     <td>@row.DataSource</td>
                     <td>@row.InitialCatalog</td>
                     <td>@row.Schema</td>

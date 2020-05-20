@@ -25,7 +25,6 @@ namespace AutoPocoIO.Dashboard
                 var services = new ServiceCollection();
 
                 services.AddSingleton<DashboardRoutes>();
-
                 services.TryAddSingleton<ITimeProvider, DefaultTimeProvider>();
 
                 services.AddScoped<AppDbContext>();
@@ -40,6 +39,7 @@ namespace AutoPocoIO.Dashboard
                 //Connector
                 services.AddTransient<IConnectorRepo, ConnectorRepo>();
                 services.AddTransient<ConnectorsPage>();
+                services.AddTransient<ConnectorForm>();
 
                 services.AddScoped<IDashboardRepo, DashboardRepo>();
                 services.AddScoped<DashboardPage>();

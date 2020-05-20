@@ -1,4 +1,5 @@
-﻿using AutoPocoIO.Services;
+﻿using AutoPocoIO.DynamicSchema.Models;
+using AutoPocoIO.Services;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -28,12 +29,10 @@ namespace AutoPocoIO.Middleware
 
         internal IMiddlewareRequest Request => Context.Request;
         internal IMiddlewareResponse Response => Context.Response;
-
+        public ILoggingService  LoggingService { get; set; }
         public IDictionary<string, string> Sections { get; }
         public IDictionary<string, object> ViewBag { get; }
         public string RequestPath => Request.Path;
-
-        protected ILoggingService LoggingService { get; set; }
 
         public abstract void Execute();
 
@@ -94,7 +93,7 @@ namespace AutoPocoIO.Middleware
             _content.Append(textToAppend);
         }
 
-        protected string TransmformUrl(string url)
+        protected string TransformUrl(string url)
         {
             return Context.Request.PathBase +  url;
         }
@@ -203,6 +202,11 @@ namespace AutoPocoIO.Middleware
             builder.Append("]");
 
             return new NonEscapedString(builder.ToString());
+        }
+
+        protected T GetViewBagValue<T>(string key) where T: class
+        {
+            return ViewBag[key] as T;
         }
     }
 }
