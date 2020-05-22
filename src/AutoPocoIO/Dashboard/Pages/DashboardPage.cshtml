@@ -6,10 +6,10 @@
 <div class="container pt-4 mt-5">
     <h1>
         <div class="btn-group btn-group-toggle mt-2" style="float: right !important" data-toggle="buttons">
-            <label class="btn btn-light @ViewBag["IsDaily"]" onclick="window.location='@TransmformUrl("/")'">
+            <label class="btn btn-light @ViewBag["IsDaily"]" onclick="window.location='@TransformUrl("/")'">
                 <input type="radio" name="options" id="option1" autocomplete="off"> Day
             </label>
-            <label class="btn btn-light @ViewBag["IsWeekly"]" onclick="window.location='@TransmformUrl("/Weekly")'">
+            <label class="btn btn-light @ViewBag["IsWeekly"]" onclick="window.location='@TransformUrl("/Weekly")'">
                 <input type="radio" name="options" id="option2" autocomplete="off"> Week
             </label>
         </div>

@@ -1,10 +1,10 @@
 ﻿using AutoPocoIO.Constants;
 using AutoPocoIO.Dashboard.Extensions;
 using AutoPocoIO.Dashboard.Repo;
+using AutoPocoIO.Dashboard.ViewModels;
 using AutoPocoIO.DynamicSchema.Util;
 using AutoPocoIO.Middleware.Dispatchers;
 using AutoPocoIO.Models;
-using AutoPocoIO.Services;
 using System.Collections.Generic;
 using static AutoPocoIO.AutoPocoConstants;
 
@@ -13,7 +13,7 @@ namespace AutoPocoIO.Dashboard.Pages
     internal partial class ConnectorForm: IRazorForm
     {
         private readonly IConnectorRepo _repo;
-        private Connector model;
+        private ConnectorViewModel model;
 
         public ConnectorForm(IConnectorRepo repo, Layout layout)
         {
@@ -54,17 +54,22 @@ namespace AutoPocoIO.Dashboard.Pages
 
         public void SetForm(IDictionary<string, string[]> values)
         {
-            model = new Connector()
+            model = new ConnectorViewModel()
             {
                 Id = values.FindValue<int>("id"),
                 Name = values.FindValue<string>("connectorName"),
-                DataSource = values.FindValue<string>("serverName")
+                DataSource = values.FindValue<string>("serverName"),
+                InitialCatalog = values.FindValue<string>("databaseName"),
+                Schema = values.FindValue<string>("schema"),
+                UserId = values.FindValue<string>("userId"),
+                Password = values.FindValue<string>("password"),
+                RecordLimit = values.FindValue<int>("recordLimit")
             };
         }
 
         public void NewConnector()
         {
-            ViewBag["model"] = new Connector();
+            ViewBag["model"] = new ConnectorViewModel();
         }
     }
 }

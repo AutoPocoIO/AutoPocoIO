@@ -32,7 +32,7 @@ namespace AutoPocoIO.Factories
                 }
                 catch (InvalidOperationException)
                 {
-                    throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, ExceptionMessages.DbTypeNotRegistered, resourceType), nameof(resourceType));
+                    throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, ExceptionMessages.DbTypeNotRegistered, (ResourceType)resourceType), nameof(resourceType));
                 }
             }
             else

@@ -32,12 +32,15 @@ WriteLiteral("\r\n\r\n");
 
 
 
-WriteLiteral(@"
-<div class=""container pt-4 mt-5"">
-    <h1>
-        <div class=""btn-group btn-group-toggle mt-2"" style=""float: right !important"" data-toggle=""buttons"">
-            <label class=""btn btn-info active"">
-                <input type=""radio"" name=""options"" id=""option1"" autocomplete=""off"" checked> + Create Connector
+WriteLiteral("\r\n<div class=\"container pt-4 mt-5\">\r\n    <h1>\r\n        <div class=\"btn-group btn-" +
+"group-toggle mt-2\" style=\"float: right !important\" data-toggle=\"buttons\">\r\n     " +
+"       <label class=\"btn btn-info active\" onclick=\"window.location=\'");
+
+
+                                                                    Write(TransformUrl("/Connectors/Connector/New"));
+
+WriteLiteral(@"'"">
+                <input type=""radio"" name=""options"" id=""option1"" autocomplete=""off"" checked > + Create Connector
             </label>
         </div>
         Connectors

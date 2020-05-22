@@ -15,8 +15,8 @@ namespace AutoPocoIO.Dashboard.Pages
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using AutoPocoIO.Dashboard.ViewModels;
     using AutoPocoIO.Middleware;
-    using AutoPocoIO.Models;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     internal partial class ConnectorForm : RazorPage
@@ -37,7 +37,7 @@ WriteLiteral("\r\n<div class=\"container pt-4 mt-5\">\r\n    <h1>Create Connecto
 "ue=\"");
 
 
-                                          Write(GetViewBagValue<Connector>("model").Id);
+                                          Write(GetViewBagValue<ConnectorViewModel>("model").Id);
 
 WriteLiteral(@""" />
         <div class=""form-group"">
@@ -46,18 +46,53 @@ WriteLiteral(@""" />
                    value=""");
 
 
-                      Write(GetViewBagValue<Connector>("model").Name);
+                      Write(GetViewBagValue<ConnectorViewModel>("model").Name);
 
-WriteLiteral(@"""/>
+WriteLiteral(@""" />
             <small id=""connectorHelp"" class=""form-text text-muted"">This is the name used in all calls to this schema</small>
         </div>
         <div class=""form-group"">
             <label for=""serverName"">Servername</label>
-            <input type=""text"" class=""form-control"" name=""serverName"" placeholder=""Database Server Name"" 
+            <input type=""text"" class=""form-control"" name=""serverName"" placeholder=""Database Server Name""
                    value=""");
 
 
-                      Write(GetViewBagValue<Connector>("model").DataSource);
+                      Write(GetViewBagValue<ConnectorViewModel>("model").DataSource);
+
+WriteLiteral("\" />\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label for=\"d" +
+"atabaseName\">\"Database Name</label>\r\n            <input type=\"text\" class=\"form-" +
+"control\" name=\"databaseName\"\r\n                   value=\"");
+
+
+                      Write(GetViewBagValue<ConnectorViewModel>("model").InitialCatalog);
+
+WriteLiteral("\" />\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label for=\"s" +
+"chema\">Schema</label>\r\n            <input type=\"text\" class=\"form-control\" name=" +
+"\"schema\"\r\n                   value=\"");
+
+
+                      Write(GetViewBagValue<ConnectorViewModel>("model").Schema);
+
+WriteLiteral("\" />\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label for=\"u" +
+"serId\">Database User Account Name</label>\r\n            <input type=\"text\" class=" +
+"\"form-control\" name=\"userId\"\r\n                   value=\"");
+
+
+                      Write(GetViewBagValue<ConnectorViewModel>("model").UserId);
+
+WriteLiteral("\" />\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label for=\"p" +
+"assword\">Database User Account Password</label>\r\n            <input type=\"text\" " +
+"class=\"form-control\" name=\"password\"\r\n                   value=\"");
+
+
+                      Write(GetViewBagValue<ConnectorViewModel>("model").Password);
+
+WriteLiteral("\" />\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label for=\"r" +
+"ecordLimit\">Maximum Records Returned</label>\r\n            <input type=\"text\" cla" +
+"ss=\"form-control\" name=\"recordLimit\"\r\n                   value=\"");
+
+
+                      Write(GetViewBagValue<ConnectorViewModel>("model").RecordLimit);
 
 WriteLiteral(@""" />
         </div>
