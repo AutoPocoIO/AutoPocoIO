@@ -9,7 +9,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <TargetFrameworks>net461;netstandard2.0;</TargetFrameworks>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Configurations>Debug;Release;</Configurations>
     <Description>Dynamically create Poco classes on request.</Description>
     <PackageId>AutoPocoIO</PackageId>

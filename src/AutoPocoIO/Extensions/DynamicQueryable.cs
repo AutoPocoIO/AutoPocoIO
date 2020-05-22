@@ -1,10 +1,12 @@
-﻿using AutoPocoIO.Exceptions;
+﻿using AutoPocoIO.DynamicSchema.Enums;
+using AutoPocoIO.Exceptions;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
@@ -23,9 +25,10 @@ namespace System.Linq.AutoPoco
             Type sourceType = source.ElementType;
             Type destType = typeof(T);
 
-            string selector = AddProperties(sourceType, destType);
+            var values = new List<object>();
+            string selector = AddProperties(sourceType, destType, values);
 
-            LambdaExpression lambda = DynamicExpression.ParseLambda(source.ElementType, destType, selector);
+            LambdaExpression lambda = DynamicExpression.ParseLambda(source.ElementType, destType, selector, values.ToArray());
             return (IQueryable<T>)source.Provider.CreateQuery(
                 Expression.Call(
                     typeof(Queryable), "Select",
@@ -34,55 +37,69 @@ namespace System.Linq.AutoPoco
 
 
         }
-        public static string AddProperties(Type souceType, Type destType, string navPropertyNamePlusDot = "")
-        {
-            string selector = $"new {destType}(";
-            return AddProperties(souceType, destType, selector, navPropertyNamePlusDot);
-        }
 
-        public static string AddListProperties(Type souceType, Type destType, string navPropertyNamePlusDot = "")
+        public static string AddProperties(Type souceType, Type destType, List<object> values, string navPropertyNamePlusDot = "")
         {
-            string selector = $"new {destType.FullName}(";
-            return AddProperties(souceType, destType, selector, navPropertyNamePlusDot);
-        }
+            
+         
+            var destProperties = destType.GetProperties();
+            List<string> matchingProperties = new List<string>();
 
-
-        private static string AddProperties(Type souceType, Type destType, string selector, string navPropertyNamePlusDot = "")
-        {
-            var properties = destType.GetProperties();
-            string initialSelector = selector;
-            foreach (var propertyInfo in properties)
+            foreach (var destProperty in destProperties)
             {
-                if (propertyInfo != null)
+                var sourcePropertyInfo = souceType.GetProperty(destProperty.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+                if (sourcePropertyInfo != null)
                 {
-                    var sourcePropertyInfo = souceType.GetProperty(propertyInfo.Name);
-                    if (sourcePropertyInfo != null)
-                    {
-                        if (propertyInfo.PropertyType.IsClass && propertyInfo.PropertyType != typeof(string))
+                    if (destProperty.PropertyType.IsClass && destProperty.PropertyType != typeof(string))
 
+                    {
+                        //string navToOneSelector = $"new {destType.FullName}(";
+                        string navToOneSelector = AddProperties(sourcePropertyInfo.PropertyType, destProperty.PropertyType, values, sourcePropertyInfo.Name + ".");
+                        navToOneSelector += $" as {navPropertyNamePlusDot + destProperty.Name}";
+
+                        matchingProperties.Add(navToOneSelector);
+                    }
+                    else if (destProperty.PropertyType.IsGenericType && destProperty.PropertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>)
+                        && !destProperty.PropertyType.GenericTypeArguments[0].IsPrimitive)
+                    {
+                        string navToManySelector = $"{ navPropertyNamePlusDot}{ destProperty.Name}.Select(";
+                        navToManySelector += AddProperties(sourcePropertyInfo.PropertyType.GenericTypeArguments[0], 
+                                                                destProperty.PropertyType.GenericTypeArguments[0],
+                                                                values);
+                        navToManySelector += $") as {navPropertyNamePlusDot}{destProperty.Name}";
+                        matchingProperties.Add(navToManySelector);
+                    }
+                    else if (Nullable.GetUnderlyingType(sourcePropertyInfo.PropertyType) != null)
+                    {
+                        if (destProperty.PropertyType.Name == "Nullable`1")
                         {
-                            selector += AddProperties(sourcePropertyInfo.PropertyType, propertyInfo.PropertyType, propertyInfo.Name + ".")
-                                        + $" as {navPropertyNamePlusDot + propertyInfo.Name}, ";
-                        }
-                        else if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>)
-                            && !propertyInfo.PropertyType.GenericTypeArguments[0].IsPrimitive)
-                        {
-                            string nestedSelect = AddListProperties(sourcePropertyInfo.PropertyType.GenericTypeArguments[0], propertyInfo.PropertyType.GenericTypeArguments[0]);
-                            selector += $"{navPropertyNamePlusDot}{propertyInfo.Name}.Select({nestedSelect}) as {navPropertyNamePlusDot}{propertyInfo.Name}, ";
+                            //If model has nullable type dont cast in select(new())
+                            matchingProperties.Add(navPropertyNamePlusDot + destProperty.Name);
                         }
                         else
-                            selector += navPropertyNamePlusDot + propertyInfo.Name + ", ";
+                        {
+                            string sourcePropTypeName = navPropertyNamePlusDot + sourcePropertyInfo.Name;
+                            matchingProperties.Add($"{destProperty.PropertyType.Name}({sourcePropTypeName} == null ? @{values.Count} : {sourcePropTypeName}) as {destProperty.Name}");
+                            //SQL min date
+                            if (destProperty.PropertyType == typeof(DateTime))
+                                values.Add(new DateTime(1753, 1, 1));
+                            else
+                                values.Add(Activator.CreateInstance(destProperty.PropertyType));
+                        }
                     }
+                    else
+                        matchingProperties.Add($"{navPropertyNamePlusDot + destProperty.Name} as {destProperty.Name}");
                 }
             }
 
-            if (initialSelector.Equals(selector, StringComparison.InvariantCultureIgnoreCase))
-                selector += ")";
-            else
-                selector = selector.Substring(0, selector.Length - 2) + ")";
 
-            return selector;
+            return  $"new {destType.FullName}(" +
+                     string.Join(", ", matchingProperties) + 
+                     ")";
         }
+
+
+
     }
 
     [ExcludeFromCodeCoverage]
@@ -360,6 +377,7 @@ namespace System.Linq.AutoPoco
         }
     }
 
+    
     [ExcludeFromCodeCoverage]
     internal class ExpressionParser
     {
@@ -538,7 +556,7 @@ namespace System.Linq.AutoPoco
         public Expression Parse(Type resultType)
         {
             int exprPos = token.pos;
-            Expression expr = ParsePrimary();
+            Expression expr = ParseExpression();
             if (resultType != null)
                 if ((expr = PromoteExpression(expr, resultType, true)) == null)
                     throw ParseError(exprPos, Res.ExpressionTypeMismatch, GetTypeName(resultType));
@@ -566,6 +584,119 @@ namespace System.Linq.AutoPoco
                 }
             }
             return expr;
+        }
+
+        // ?: operator
+        Expression ParseExpression()
+        {
+            int errorPos = token.pos;
+            Expression expr = ParseComparison();
+            if (token.id == TokenId.Question)
+            {
+                NextToken();
+                Expression expr1 = ParseExpression();
+                ValidateToken(TokenId.Colon, Res.ColonExpected);
+                NextToken();
+                Expression expr2 = ParseExpression();
+                expr = GenerateConditional(expr, expr1, expr2, errorPos);
+            }
+            return expr;
+        }
+
+        Expression ParseComparison()
+        {
+            Expression left = ParsePrimary();
+            while (token.id == TokenId.Equal || token.id == TokenId.DoubleEqual ||
+                token.id == TokenId.ExclamationEqual || token.id == TokenId.LessGreater ||
+                token.id == TokenId.GreaterThan || token.id == TokenId.GreaterThanEqual ||
+                token.id == TokenId.LessThan || token.id == TokenId.LessThanEqual)
+            {
+                Token op = token;
+                NextToken();
+                Expression right = ParsePrimary();
+                bool isEquality = op.id == TokenId.Equal || op.id == TokenId.DoubleEqual ||
+                    op.id == TokenId.ExclamationEqual || op.id == TokenId.LessGreater;
+                if (isEquality && !left.Type.IsValueType && !right.Type.IsValueType)
+                {
+                    if (left.Type != right.Type)
+                    {
+                        if (left.Type.IsAssignableFrom(right.Type))
+                        {
+                            right = Expression.Convert(right, left.Type);
+                        }
+                        else if (right.Type.IsAssignableFrom(left.Type))
+                        {
+                            left = Expression.Convert(left, right.Type);
+                        }
+                        else
+                        {
+                            throw IncompatibleOperandsError(op.text, left, right, op.pos);
+                        }
+                    }
+                }
+                else if (IsEnumType(left.Type) || IsEnumType(right.Type))
+                {
+                    if (left.Type == right.Type)
+                    {
+                        // Convert both enums to integer
+                        Expression e;
+                        if ((e = PromoteExpression(right, typeof(Int32), true)) != null)
+                        {
+                            right = e;
+                        }
+                        if ((e = PromoteExpression(left, typeof(Int32), true)) != null)
+                        {
+                            left = e;
+                        }
+                    }
+                    else
+                    {
+                        Expression e;
+                        if ((e = PromoteExpression(right, left.Type, true)) != null)
+                        {
+                            right = e;
+                        }
+                        else if ((e = PromoteExpression(left, right.Type, true)) != null)
+                        {
+                            left = e;
+                        }
+                        else
+                        {
+                            throw IncompatibleOperandsError(op.text, left, right, op.pos);
+                        }
+                    }
+                }
+                else
+                {
+                    CheckAndPromoteOperands(isEquality ? typeof(IEqualitySignatures) : typeof(IRelationalSignatures),
+                        op.text, ref left, ref right, op.pos);
+                }
+                switch (op.id)
+                {
+                    case TokenId.Equal:
+                    case TokenId.DoubleEqual:
+                        left = GenerateEqual(left, right);
+                        break;
+                }
+            }
+            return left;
+        }
+
+
+        void CheckAndPromoteOperands(Type signatures, string opName, ref Expression left, ref Expression right, int errorPos)
+        {
+            Expression[] args = new Expression[] { left, right };
+            MethodBase method;
+            if (FindMethod(signatures, "F", false, args, out method) != 1)
+                throw IncompatibleOperandsError(opName, left, right, errorPos);
+            left = args[0];
+            right = args[1];
+        }
+
+        Exception IncompatibleOperandsError(string opName, Expression left, Expression right, int pos)
+        {
+            return ParseError(pos, Res.IncompatibleOperands,
+                opName, GetTypeName(left.Type), GetTypeName(right.Type));
         }
 
         Expression ParsePrimaryStart()
@@ -666,7 +797,7 @@ namespace System.Linq.AutoPoco
         {
             ValidateToken(TokenId.OpenParen, Res.OpenParenExpected);
             NextToken();
-            Expression e = ParsePrimary();
+            Expression e = ParseExpression();
             ValidateToken(TokenId.CloseParen, Res.CloseParenOrOperatorExpected);
             NextToken();
             return e;
@@ -729,6 +860,12 @@ namespace System.Linq.AutoPoco
             return GenerateConditional(args[0], args[1], args[2], errorPos);
         }
 
+        Expression GenerateEqual(Expression left, Expression right)
+        {
+            return Expression.Equal(left, right);
+        }
+
+
         Expression GenerateConditional(Expression test, Expression expr1, Expression expr2, int errorPos)
         {
             if (test.Type != typeof(bool))
@@ -755,6 +892,45 @@ namespace System.Linq.AutoPoco
                 }
             }
             return Expression.Condition(test, expr1, expr2);
+        }
+
+        interface IEqualitySignatures : IRelationalSignatures
+        {
+            void F(bool x, bool y);
+            void F(bool? x, bool? y);
+            void F(Guid x, Guid y);
+            void F(Guid? x, Guid? y);
+        }
+
+        interface IRelationalSignatures : IArithmeticSignatures
+        {
+            void F(string x, string y);
+            void F(char x, char y);
+            void F(DateTime x, DateTime y);
+            void F(DateTimeOffset x, DateTimeOffset y);
+            void F(TimeSpan x, TimeSpan y);
+            void F(char? x, char? y);
+            void F(DateTime? x, DateTime? y);
+            void F(DateTimeOffset? x, DateTimeOffset? y);
+            void F(TimeSpan? x, TimeSpan? y);
+        }
+
+        interface IArithmeticSignatures
+        {
+            void F(int x, int y);
+            void F(uint x, uint y);
+            void F(long x, long y);
+            void F(ulong x, ulong y);
+            void F(float x, float y);
+            void F(double x, double y);
+            void F(decimal x, decimal y);
+            void F(int? x, int? y);
+            void F(uint? x, uint? y);
+            void F(long? x, long? y);
+            void F(ulong? x, ulong? y);
+            void F(float? x, float? y);
+            void F(double? x, double? y);
+            void F(decimal? x, decimal? y);
         }
 
         Expression ParseNew()
@@ -832,7 +1008,8 @@ namespace System.Linq.AutoPoco
             Type type = anonymous ? DynamicExpression.CreateClass(properties) : class_type;
             MemberBinding[] bindings = new MemberBinding[properties.Count];
             for (int i = 0; i < bindings.Length; i++)
-                bindings[i] = Expression.Bind(type.GetProperty(properties[i].Name), expressions[i]);
+                bindings[i] = Expression.Bind(type.GetProperty(properties[i].Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase), expressions[i]);
+
             return Expression.MemberInit(Expression.New(type), bindings);
         }
 
@@ -1011,7 +1188,7 @@ namespace System.Linq.AutoPoco
             List<Expression> argList = new List<Expression>();
             while (true)
             {
-                argList.Add(ParsePrimary());
+                argList.Add(ParseExpression());
                 if (token.id != TokenId.Comma) break;
                 NextToken();
             }
@@ -1783,6 +1960,8 @@ namespace System.Linq.AutoPoco
             return d;
         }
     }
+    
+
 
     [ExcludeFromCodeCoverage]
     static class Res

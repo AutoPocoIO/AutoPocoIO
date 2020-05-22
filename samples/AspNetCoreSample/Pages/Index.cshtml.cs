@@ -1,6 +1,7 @@
 ﻿using AspNetCoreSample.ViewModels;
 using AutoPocoIO.Api;
 using AutoPocoIO.Exceptions;
+using AutoPocoIO.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,11 @@ namespace AutoPocoIO.Sample.AspNetCore.Pages
     public class IndexModel : PageModel
     {
         private readonly ITableOperations _tableOperations;
-
-        public IndexModel(ITableOperations tableOperations)
+        private readonly ILoggingService _loggingService;
+        public IndexModel(ITableOperations tableOperations, ILoggingService loggingService)
         {
             _tableOperations = tableOperations;
+            _loggingService =  loggingService;
         }
 
         public IEnumerable<OrdersViewModel> Orders { get; private set; }
@@ -23,7 +25,7 @@ namespace AutoPocoIO.Sample.AspNetCore.Pages
         {
             try
             {
-                Orders = _tableOperations.GetAll<OrdersViewModel>("sampleSales", "orders");
+                Orders = _tableOperations.GetAll<OrdersViewModel>("sampleSales", "orders", _loggingService);
             }
             catch (ConnectorNotFoundException)
             {
