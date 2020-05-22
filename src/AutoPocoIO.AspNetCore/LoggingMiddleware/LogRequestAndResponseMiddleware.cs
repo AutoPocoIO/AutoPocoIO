@@ -42,6 +42,7 @@ namespace AutoPocoIO.LoggingMiddleware
             RequestBuffer = new MemoryStream();
             context.Request.Body.CopyTo(RequestBuffer);
             RequestBuffer.Position = 0; // rewind
+            context.Request.Body = RequestBuffer;
 
             // Buffer the response
             ResponseBuffer = new MemoryStream();

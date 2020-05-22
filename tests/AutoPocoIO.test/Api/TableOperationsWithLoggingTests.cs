@@ -55,7 +55,6 @@ namespace AutoPocoIO.test.Api
             }.AsQueryable();
 
             var resource = new Mock<IOperationResource>();
-            resource.Setup(c => c.LoadDbAdapter()).Verifiable();
             resource.Setup(c => c.GetResourceRecords(new Dictionary<string, string>()))
                 .Returns(resultsList);
 
@@ -66,7 +65,6 @@ namespace AutoPocoIO.test.Api
             Assert.AreEqual(1, loggingService.LogCount);
             Assert.AreEqual("GET", loggingService.ApiRequests.First().RequestType);
 
-            resource.Verify(c => c.LoadDbAdapter(), Times.Once);
             Assert.AreEqual(typeof(IQueryableType), results.ElementType);
             Assert.IsInstanceOfType(results, typeof(IQueryable<object>));
             Assert.IsInstanceOfType(results, typeof(IQueryable<IQueryableType>));

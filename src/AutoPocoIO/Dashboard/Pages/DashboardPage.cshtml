@@ -3,145 +3,84 @@
 @using AutoPocoIO.Middleware
 @inherits RazorPage
 
-<!doctype html>
-<html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<div class="container pt-4 mt-5">
+    <h1>
+        <div class="btn-group btn-group-toggle mt-2" style="float: right !important" data-toggle="buttons">
+            <label class="btn btn-light @ViewBag["IsDaily"]" onclick="window.location='@TransmformUrl("/")'">
+                <input type="radio" name="options" id="option1" autocomplete="off"> Day
+            </label>
+            <label class="btn btn-light @ViewBag["IsWeekly"]" onclick="window.location='@TransmformUrl("/Weekly")'">
+                <input type="radio" name="options" id="option2" autocomplete="off"> Week
+            </label>
+        </div>
+        Overview
+    </h1>
+    <hr />
+    <h2>Request statistics</h2>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="text-center">Total</h3>
+                        <h1 class="text-center" style="font-weight:100 !important;">@ViewBag["TotalCount"]</h1>
+                        <hr />
+                        <p class="text-center">Average reponse time: @ViewBag["TotalTime"]ms</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="text-center">Successful</h3>
+                        <h1 class="text-center text-success" style="font-weight:100 !important;">@ViewBag["SuccessfulCount"]</h1>
+                        <hr />
+                        <p class="text-center">Average reponse time: @ViewBag["SuccessfulTime"]ms</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="text-center">Failed</h3>
+                        <h1 class="text-center text-danger" style="font-weight:100 !important;">@ViewBag["FailCount"]</h1>
+                        <hr />
+                        <p class="text-center">Average reponse time: @ViewBag["FailCountTime"]ms</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="text-center">Unauthorized</h3>
+                        <h1 class="text-center text-danger" style="font-weight:100 !important;">@ViewBag["UnauthorizedCount"]</h1>
+                        <hr />
+                        <p class="text-center">Average reponse time: @ViewBag["UnauthorizedTime"]ms</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-5">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <h2>Request graph</h2>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="chart-container" style="height:400px; width: 1400px">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section css
+{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" crossorigin="anonymous" />
+}
 
-    <!--Custom CSS-->
-    <style>
-
-        .container {
-            max-width: 1400px;
-        }
-
-        a {
-            color: darkcyan;
-        }
-
-        .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-            background-color: darkcyan;
-        }
-    </style>
-
-
-    <title>Overview - AutoPoco</title>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
-        <a class="navbar-brand" href="#">AutoPoco Dashboard</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Connectors <span class="badge badge-pill badge-info">4</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Users</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Roles</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Permissions</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Request History</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Developer Console</a>
-                </li>
-            </ul>
-            <span class="navbar-text">
-                Brandon Atkison
-            </span>
-        </div>
-    </nav>
-    <div class="container pt-4 mt-5">
-        <h1>
-            <div class="btn-group btn-group-toggle mt-2" style="float: right !important" data-toggle="buttons">
-                <label class="btn btn-light @ViewBag["IsDaily"]" onclick="window.location='@TransmformUrl("/")'">
-                    <input type="radio" name="options" id="option1" autocomplete="off"> Day
-                </label>
-                <label class="btn btn-light @ViewBag["IsWeekly"]" onclick="window.location='@TransmformUrl("/Weekly")'">
-                    <input type="radio" name="options" id="option2" autocomplete="off"> Week
-                </label>
-            </div>
-            Overview
-        </h1>
-        <hr />
-        <h2>Request statistics</h2>
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="text-center">Total</h3>
-                            <h1 class="text-center" style="font-weight:100 !important;">@ViewBag["TotalCount"]</h1>
-                            <hr />
-                            <p class="text-center">Average reponse time: @ViewBag["TotalTime"]ms</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="text-center">Successful</h3>
-                            <h1 class="text-center text-success" style="font-weight:100 !important;">@ViewBag["SuccessfulCount"]</h1>
-                            <hr />
-                            <p class="text-center">Average reponse time: @ViewBag["SuccessfulTime"]ms</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="text-center">Failed</h3>
-                            <h1 class="text-center text-danger" style="font-weight:100 !important;">@ViewBag["FailCount"]</h1>
-                            <hr />
-                            <p class="text-center">Average reponse time: @ViewBag["FailCountTime"]ms</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="text-center">Unauthorized</h3>
-                            <h1 class="text-center text-danger" style="font-weight:100 !important;">@ViewBag["UnauthorizedCount"]</h1>
-                            <hr />
-                            <p class="text-center">Average reponse time: @ViewBag["UnauthorizedTime"]ms</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container mt-5">
-
-        <h2>Request graph</h2>
-        <div class="container mt-4">
-            <div class="row">
-                <div class="chart-container" style="height:400px; width: 1400px">
-                    <canvas id="myChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+@section script
+    {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js" crossorigin="anonymous"></script>
     <script>
           var ctx = document.getElementById('myChart');
@@ -187,5 +126,4 @@
               }
           });
     </script>
-</body>
-</html>
+}

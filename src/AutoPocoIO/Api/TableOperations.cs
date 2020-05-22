@@ -64,8 +64,6 @@ namespace AutoPocoIO.Api
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET);
             IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.read, tableName);
 
-            resource.LoadDbAdapter();
-
             //Manually $expand to prevent nulls on non pk joins
             var joinProperties = typeof(TViewModel).GetProperties()
                                        .Where(c => (c.PropertyType.IsClass && c.PropertyType != typeof(string)) ||

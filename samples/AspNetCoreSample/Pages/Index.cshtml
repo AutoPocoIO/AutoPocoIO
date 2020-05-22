@@ -4,7 +4,43 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <h4 style="color:red">@ViewData["ConnectorNeeded"]</h4>
 </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Order Id
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Customer
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Orders)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Order_Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Order_Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a href="Edit/@item.Order_Id">Edit</a> |
+                    <a href="Details/@item.Order_Id">Details</a> |
+                    <a href="Delete/@item.Order_Id">Delete</a> |
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

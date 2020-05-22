@@ -6,6 +6,7 @@ using Microsoft.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -53,7 +54,10 @@ namespace AutoPocoIO.Owin
 
                 var dashContext = new OwinMiddlewareContext(env, _serviceProvider);
 
-                var findResult = _routes.Routes.FindDispatcher(context.Request.Path.Value);
+                var findResult = _routes.Routes.FindDispatcher(dashContext, context.Request.Path.Value);
+
+                if (context.Response.StatusCode != (int)HttpStatusCode.MethodNotAllowed)
+                    return;
 
                 if (findResult == null)
                 {

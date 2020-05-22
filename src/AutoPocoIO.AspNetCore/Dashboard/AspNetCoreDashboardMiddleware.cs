@@ -4,6 +4,7 @@ using AutoPocoIO.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace AutoPocoIO.Dashboard
@@ -31,8 +32,11 @@ namespace AutoPocoIO.Dashboard
             if (!httpContext.Request.PathBase.ToString().Equals(basePath, StringComparison.InvariantCultureIgnoreCase))
                 routeToSearch = httpContext.Request.Path.Value.Replace(basePath, "");
 
-            var findResult = _routes.Routes.FindDispatcher(routeToSearch);
+            var findResult = _routes.Routes.FindDispatcher(context, routeToSearch);
 
+
+            if (context.Response.StatusCode == (int)HttpStatusCode.MethodNotAllowed)
+                return;
             if (findResult == null)
             {
                 await _next.Invoke(httpContext)

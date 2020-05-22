@@ -1,0 +1,41 @@
+﻿@* Generator: Template TypeVisibility: internal GeneratePrettyNames: True DisableLinePragmas: true  Namespace: AutoPocoIO.Dashboard.Pages *@
+
+@using AutoPocoIO.Middleware
+@using AutoPocoIO.Models
+@inherits RazorPage
+
+<div class="container pt-4 mt-5">
+    <h1>
+        <div class="btn-group btn-group-toggle mt-2" style="float: right !important" data-toggle="buttons">
+            <label class="btn btn-info active">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked> + Create Connector
+            </label>
+        </div>
+        Connectors
+    </h1>
+    <hr />
+    <table class="table table-hover mt-5">
+        <thead>
+            <tr class="table-secondary">
+                <th scope="col">Name</th>
+                <th scope="col">Server</th>
+                <th scope="col">Database</th>
+                <th scope="col">Schema</th>
+                <th scope="col">User</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in (IEnumerable<Connector>)ViewBag["Connectors"])
+            {
+                
+                <tr>
+                    <th scope="row"><a href="@TransformUrl("/Connectors/Connector/" + row.Id)">@row.Name</a></th>
+                    <td>@row.DataSource</td>
+                    <td>@row.InitialCatalog</td>
+                    <td>@row.Schema</td>
+                    <td>@row.UserId</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

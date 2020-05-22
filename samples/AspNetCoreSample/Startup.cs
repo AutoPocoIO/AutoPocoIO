@@ -1,3 +1,4 @@
+using AspNetCoreSample.Migration;
 using AutoPocoIO.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,7 +21,7 @@ namespace AspNetCoreSample
         {
             services.AddAutoPoco()
                     .ConfigureSqlServerApplicationDatabase(Configuration.GetConnectionString("AppDb"))
-                   .WithSqlServerResources();
+                    .WithSqlServerResources();
             services.AddMvc();
         }
 
@@ -40,8 +41,13 @@ namespace AspNetCoreSample
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Order}/{action=Index}/{id?}");
             });
+
+
+            //Migrate sample database
+            var migrator = new Migrator(Configuration.GetConnectionString("AppDb"));
+            migrator.Migrate();
         }
     }
 }

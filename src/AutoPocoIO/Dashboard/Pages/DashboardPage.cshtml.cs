@@ -30,161 +30,154 @@ WriteLiteral("\r\n\r\n");
 
 
 
-WriteLiteral("\r\n<!doctype html>\r\n<html lang=\"en\">\r\n<head>\r\n    <!-- Required meta tags -->\r\n   " +
-" <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, " +
-"initial-scale=1, shrink-to-fit=no\">\r\n\r\n    <!-- Bootstrap CSS -->\r\n    <link rel" +
-"=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstra" +
-"p.min.css\" integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiG" +
-"gFAW/dAiS6JXm\" crossorigin=\"anonymous\">\r\n    <link rel=\"stylesheet\" href=\"https:" +
-"//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css\" crossorigin=\"anon" +
-"ymous\" />\r\n\r\n    <!--Custom CSS-->\r\n    <style>\r\n\r\n        .container {\r\n       " +
-"     max-width: 1400px;\r\n        }\r\n\r\n        a {\r\n            color: darkcyan;\r" +
-"\n        }\r\n\r\n        .nav-pills .nav-link.active, .nav-pills .show > .nav-link " +
-"{\r\n            background-color: darkcyan;\r\n        }\r\n    </style>\r\n\r\n\r\n    <ti" +
-"tle>Overview - AutoPoco</title>\r\n</head>\r\n<body>\r\n    <nav class=\"navbar navbar-" +
-"expand-lg fixed-top navbar-light bg-light\">\r\n        <a class=\"navbar-brand\" hre" +
-"f=\"#\">AutoPoco Dashboard</a>\r\n        <button class=\"navbar-toggler\" type=\"butto" +
-"n\" data-toggle=\"collapse\" data-target=\"#navbarText\" aria-controls=\"navbarText\" a" +
-"ria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n            <span class=\"n" +
-"avbar-toggler-icon\"></span>\r\n        </button>\r\n        <div class=\"collapse nav" +
-"bar-collapse\" id=\"navbarText\">\r\n            <ul class=\"navbar-nav mr-auto\">\r\n   " +
-"             <li class=\"nav-item\">\r\n                    <a class=\"nav-link\" href" +
-"=\"#\">Connectors <span class=\"badge badge-pill badge-info\">4</span></a>\r\n        " +
-"        </li>\r\n                <li class=\"nav-item\">\r\n                    <a cla" +
-"ss=\"nav-link\" href=\"#\">Users</a>\r\n                </li>\r\n                <li cla" +
-"ss=\"nav-item\">\r\n                    <a class=\"nav-link\" href=\"#\">Roles</a>\r\n    " +
-"            </li>\r\n                <li class=\"nav-item\">\r\n                    <a" +
-" class=\"nav-link\" href=\"#\">Permissions</a>\r\n                </li>\r\n             " +
-"   <li class=\"nav-item\">\r\n                    <a class=\"nav-link\" href=\"#\">Reque" +
-"st History</a>\r\n                </li>\r\n                <li class=\"nav-item\">\r\n  " +
-"                  <a class=\"nav-link\" href=\"#\">Developer Console</a>\r\n          " +
-"      </li>\r\n            </ul>\r\n            <span class=\"navbar-text\">\r\n        " +
-"        Brandon Atkison\r\n            </span>\r\n        </div>\r\n    </nav>\r\n    <d" +
-"iv class=\"container pt-4 mt-5\">\r\n        <h1>\r\n            <div class=\"btn-group" +
-" btn-group-toggle mt-2\" style=\"float: right !important\" data-toggle=\"buttons\">\r\n" +
-"                <label class=\"btn btn-light ");
+WriteLiteral("\r\n<div class=\"container pt-4 mt-5\">\r\n    <h1>\r\n        <div class=\"btn-group btn-" +
+"group-toggle mt-2\" style=\"float: right !important\" data-toggle=\"buttons\">\r\n     " +
+"       <label class=\"btn btn-light ");
 
 
-                                       Write(ViewBag["IsDaily"]);
+                                   Write(ViewBag["IsDaily"]);
 
 WriteLiteral("\" onclick=\"window.location=\'");
 
 
-                                                                                      Write(TransmformUrl("/"));
+                                                                                  Write(TransformUrl("/"));
 
-WriteLiteral("\'\">\r\n                    <input type=\"radio\" name=\"options\" id=\"option1\" autocomp" +
-"lete=\"off\"> Day\r\n                </label>\r\n                <label class=\"btn btn" +
-"-light ");
+WriteLiteral("\'\">\r\n                <input type=\"radio\" name=\"options\" id=\"option1\" autocomplete" +
+"=\"off\"> Day\r\n            </label>\r\n            <label class=\"btn btn-light ");
 
 
-                                       Write(ViewBag["IsWeekly"]);
+                                   Write(ViewBag["IsWeekly"]);
 
 WriteLiteral("\" onclick=\"window.location=\'");
 
 
-                                                                                       Write(TransmformUrl("/Weekly"));
+                                                                                   Write(TransformUrl("/Weekly"));
 
 WriteLiteral(@"'"">
-                    <input type=""radio"" name=""options"" id=""option2"" autocomplete=""off""> Week
-                </label>
+                <input type=""radio"" name=""options"" id=""option2"" autocomplete=""off""> Week
+            </label>
+        </div>
+        Overview
+    </h1>
+    <hr />
+    <h2>Request statistics</h2>
+    <div class=""container mt-4"">
+        <div class=""row"">
+            <div class=""col-sm-3"">
+                <div class=""card"">
+                    <div class=""card-body"">
+                        <h3 class=""text-center"">Total</h3>
+                        <h1 class=""text-center"" style=""font-weight:100 !important;"">");
+
+
+                                                                               Write(ViewBag["TotalCount"]);
+
+WriteLiteral("</h1>\r\n                        <hr />\r\n                        <p class=\"text-cen" +
+"ter\">Average reponse time: ");
+
+
+                                                                Write(ViewBag["TotalTime"]);
+
+WriteLiteral(@"ms</p>
+                    </div>
+                </div>
             </div>
-            Overview
-        </h1>
-        <hr />
-        <h2>Request statistics</h2>
-        <div class=""container mt-4"">
-            <div class=""row"">
-                <div class=""col-sm-3"">
-                    <div class=""card"">
-                        <div class=""card-body"">
-                            <h3 class=""text-center"">Total</h3>
-                            <h1 class=""text-center"" style=""font-weight:100 !important;"">");
+            <div class=""col-sm-3"">
+                <div class=""card"">
+                    <div class=""card-body"">
+                        <h3 class=""text-center"">Successful</h3>
+                        <h1 class=""text-center text-success"" style=""font-weight:100 !important;"">");
 
 
-                                                                                   Write(ViewBag["TotalCount"]);
+                                                                                            Write(ViewBag["SuccessfulCount"]);
 
-WriteLiteral("</h1>\r\n                            <hr />\r\n                            <p class=\"" +
-"text-center\">Average reponse time: ");
+WriteLiteral("</h1>\r\n                        <hr />\r\n                        <p class=\"text-cen" +
+"ter\">Average reponse time: ");
 
 
-                                                                    Write(ViewBag["TotalTime"]);
+                                                                Write(ViewBag["SuccessfulTime"]);
 
 WriteLiteral(@"ms</p>
-                        </div>
                     </div>
                 </div>
-                <div class=""col-sm-3"">
-                    <div class=""card"">
-                        <div class=""card-body"">
-                            <h3 class=""text-center"">Successful</h3>
-                            <h1 class=""text-center text-success"" style=""font-weight:100 !important;"">");
+            </div>
+            <div class=""col-sm-3"">
+                <div class=""card"">
+                    <div class=""card-body"">
+                        <h3 class=""text-center"">Failed</h3>
+                        <h1 class=""text-center text-danger"" style=""font-weight:100 !important;"">");
 
 
-                                                                                                Write(ViewBag["SuccessfulCount"]);
+                                                                                           Write(ViewBag["FailCount"]);
 
-WriteLiteral("</h1>\r\n                            <hr />\r\n                            <p class=\"" +
-"text-center\">Average reponse time: ");
+WriteLiteral("</h1>\r\n                        <hr />\r\n                        <p class=\"text-cen" +
+"ter\">Average reponse time: ");
 
 
-                                                                    Write(ViewBag["SuccessfulTime"]);
+                                                                Write(ViewBag["FailCountTime"]);
 
 WriteLiteral(@"ms</p>
-                        </div>
                     </div>
                 </div>
-                <div class=""col-sm-3"">
-                    <div class=""card"">
-                        <div class=""card-body"">
-                            <h3 class=""text-center"">Failed</h3>
-                            <h1 class=""text-center text-danger"" style=""font-weight:100 !important;"">");
+            </div>
+            <div class=""col-sm-3"">
+                <div class=""card"">
+                    <div class=""card-body"">
+                        <h3 class=""text-center"">Unauthorized</h3>
+                        <h1 class=""text-center text-danger"" style=""font-weight:100 !important;"">");
 
 
-                                                                                               Write(ViewBag["FailCount"]);
+                                                                                           Write(ViewBag["UnauthorizedCount"]);
 
-WriteLiteral("</h1>\r\n                            <hr />\r\n                            <p class=\"" +
-"text-center\">Average reponse time: ");
+WriteLiteral("</h1>\r\n                        <hr />\r\n                        <p class=\"text-cen" +
+"ter\">Average reponse time: ");
 
 
-                                                                    Write(ViewBag["FailCountTime"]);
+                                                                Write(ViewBag["UnauthorizedTime"]);
 
 WriteLiteral(@"ms</p>
-                        </div>
                     </div>
                 </div>
-                <div class=""col-sm-3"">
-                    <div class=""card"">
-                        <div class=""card-body"">
-                            <h3 class=""text-center"">Unauthorized</h3>
-                            <h1 class=""text-center text-danger"" style=""font-weight:100 !important;"">");
+            </div>
+        </div>
+    </div>
+</div>
+<div class=""container mt-5"">
+
+    <h2>Request graph</h2>
+    <div class=""container mt-4"">
+        <div class=""row"">
+            <div class=""chart-container"" style=""height:400px; width: 1400px"">
+                <canvas id=""myChart""></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+");
 
 
-                                                                                               Write(ViewBag["UnauthorizedCount"]);
+DefineSection("css", () => {
 
-WriteLiteral("</h1>\r\n                            <hr />\r\n                            <p class=\"" +
-"text-center\">Average reponse time: ");
+WriteLiteral("\r\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.j" +
+"s/2.9.3/Chart.min.css\" crossorigin=\"anonymous\" />\r\n");
 
 
-                                                                    Write(ViewBag["UnauthorizedTime"]);
+});
 
-WriteLiteral("ms</p>\r\n                        </div>\r\n                    </div>\r\n             " +
-"   </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"conta" +
-"iner mt-5\">\r\n\r\n        <h2>Request graph</h2>\r\n        <div class=\"container mt-" +
-"4\">\r\n            <div class=\"row\">\r\n                <div class=\"chart-container\"" +
-" style=\"height:400px; width: 1400px\">\r\n                    <canvas id=\"myChart\">" +
-"</canvas>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div" +
-">\r\n\r\n\r\n    <!-- Optional JavaScript -->\r\n    <!-- jQuery first, then Popper.js, " +
-"then Bootstrap JS -->\r\n    <script src=\"https://code.jquery.com/jquery-3.2.1.sli" +
-"m.min.js\" integrity=\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpG" +
-"FF93hXpG5KkN\" crossorigin=\"anonymous\"></script>\r\n    <script src=\"https://cdnjs." +
-"cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\" integrity=\"sha384-A" +
-"pNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q\" crossorigin=\"an" +
-"onymous\"></script>\r\n    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4" +
-".0.0/js/bootstrap.min.js\" integrity=\"sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQx" +
-"SfFWpi1MquVdAyjUar5+76PVCmYl\" crossorigin=\"anonymous\"></script>\r\n    <script src" +
-"=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js\" cro" +
-"ssorigin=\"anonymous\"></script>\r\n    <script>\r\n          var ctx = document.getEl" +
-"ementById(\'myChart\');\r\n          var myChart = new Chart(ctx, {\r\n              t" +
-"ype: \'line\',\r\n              data: {\r\n                  labels: ");
+WriteLiteral("\r\n\r\n");
+
+
+DefineSection("script", () => {
+
+WriteLiteral(@"
+    <script src=""https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"" crossorigin=""anonymous""></script>
+    <script>
+          var ctx = document.getElementById('myChart');
+          var myChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                  labels: ");
 
 
                      Write(TransformArray(ViewBag["GraphLabels"]));
@@ -236,8 +229,10 @@ WriteLiteral(@",
               }
           });
     </script>
-</body>
-</html>");
+");
+
+
+});
 
 
         }

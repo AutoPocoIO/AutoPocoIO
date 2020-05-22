@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AutoPocoIO.Middleware
 {
@@ -62,6 +63,12 @@ namespace AutoPocoIO.Middleware
             //    ((IValidatable)entity).Validate(ErrorMessages, _appDb);
 
             return (entity, ErrorMessages);
+        }
+
+        public async Task<IDictionary<string, string[]>> ReadFormAsync()
+        {
+            var form = await _context.Request.ReadFormAsync();
+            return form.ToDictionary(c => c.Key, c => c.Value.ToArray());
         }
     }
 }

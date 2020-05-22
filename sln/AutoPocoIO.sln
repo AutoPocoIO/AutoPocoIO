@@ -34,7 +34,7 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\src\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems*{38f8d4ff-ff0f-48ad-8cb1-1618ef4d1de9}*SharedItemsImports = 13
-		..\src\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems*{49c8b4cf-e24b-4698-ab80-bdb1f3adeeff}*SharedItemsImports = 5
+		..\src\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems*{49c8b4cf-e24b-4698-ab80-bdb1f3adeeff}*SharedItemsImports = 5
 		..\src\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems*{e2d69d9d-44ac-41ce-9bd8-ac886be7312e}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
