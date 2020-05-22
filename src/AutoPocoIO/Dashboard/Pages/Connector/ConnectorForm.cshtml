@@ -1,24 +1,49 @@
 ﻿@* Generator: Template TypeVisibility: internal GeneratePrettyNames: True DisableLinePragmas: true  Namespace: AutoPocoIO.Dashboard.Pages *@
 
 @using AutoPocoIO.Middleware
-@using AutoPocoIO.Models
+@using AutoPocoIO.Dashboard.ViewModels
 @inherits RazorPage
 
 <div class="container pt-4 mt-5">
     <h1>Create Connector</h1>
     <hr />
     <form class="mt-5" method="post">
-        <input type="hidden" name="id" value="@(GetViewBagValue<Connector>("model").Id)" />
+        <input type="hidden" name="id" value="@(GetViewBagValue<ConnectorViewModel>("model").Id)" />
         <div class="form-group">
             <label for="connectorName">Connector Name</label>
             <input type="text" class="form-control" name="connectorName" aria-describedby="connectorHelp" placeholder="e.g. Adventureworks"
-                   value="@(GetViewBagValue<Connector>("model").Name)"/>
+                   value="@(GetViewBagValue<ConnectorViewModel>("model").Name)" />
             <small id="connectorHelp" class="form-text text-muted">This is the name used in all calls to this schema</small>
         </div>
         <div class="form-group">
             <label for="serverName">Servername</label>
-            <input type="text" class="form-control" name="serverName" placeholder="Database Server Name" 
-                   value="@(GetViewBagValue<Connector>("model").DataSource)" />
+            <input type="text" class="form-control" name="serverName" placeholder="Database Server Name"
+                   value="@(GetViewBagValue<ConnectorViewModel>("model").DataSource)" />
+        </div>
+        <div class="form-group">
+            <label for="databaseName">"Database Name</label>
+            <input type="text" class="form-control" name="databaseName"
+                   value="@(GetViewBagValue<ConnectorViewModel>("model").InitialCatalog)" />
+        </div>
+        <div class="form-group">
+            <label for="schema">Schema</label>
+            <input type="text" class="form-control" name="schema"
+                   value="@(GetViewBagValue<ConnectorViewModel>("model").Schema)" />
+        </div>
+        <div class="form-group">
+            <label for="userId">Database User Account Name</label>
+            <input type="text" class="form-control" name="userId"
+                   value="@(GetViewBagValue<ConnectorViewModel>("model").UserId)" />
+        </div>
+        <div class="form-group">
+            <label for="password">Database User Account Password</label>
+            <input type="text" class="form-control" name="password"
+                   value="@(GetViewBagValue<ConnectorViewModel>("model").Password)" />
+        </div>
+        <div class="form-group">
+            <label for="recordLimit">Maximum Records Returned</label>
+            <input type="text" class="form-control" name="recordLimit"
+                   value="@(GetViewBagValue<ConnectorViewModel>("model").RecordLimit)" />
         </div>
         <div class="form-check">
             <input type="checkbox" class="form-check-input" id="isEnabled">

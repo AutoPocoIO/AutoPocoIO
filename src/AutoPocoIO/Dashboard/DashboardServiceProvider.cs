@@ -2,11 +2,15 @@
 using AutoPocoIO.Dashboard.Pages;
 using AutoPocoIO.Dashboard.Repo;
 using AutoPocoIO.Dashboard.Repos;
+using AutoPocoIO.Factories;
+using AutoPocoIO.Resources;
 using AutoPocoIO.Services;
+using Microsoft.AspNet.OData.Formatter.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
+using System.Collections.Generic;
 
 namespace AutoPocoIO.Dashboard
 {
@@ -26,6 +30,13 @@ namespace AutoPocoIO.Dashboard
 
                 services.AddSingleton<DashboardRoutes>();
                 services.TryAddSingleton<ITimeProvider, DefaultTimeProvider>();
+
+
+                var builders = rootProvider.GetService<IEnumerable<IConnectionStringBuilder>>();
+                foreach (var builder in builders)
+                    services.TryAddTransient(c => builder);
+
+                services.AddScoped<IConnectionStringFactory, ConnectionStringFactory>();
 
                 services.AddScoped<AppDbContext>();
                 services.AddScoped<LogDbContext>();

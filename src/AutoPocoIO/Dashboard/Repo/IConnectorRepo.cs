@@ -1,4 +1,5 @@
-﻿using AutoPocoIO.Models;
+﻿using AutoPocoIO.Dashboard.ViewModels;
+using AutoPocoIO.Models;
 using System.Collections.Generic;
 
 namespace AutoPocoIO.Dashboard.Repo
@@ -7,8 +8,8 @@ namespace AutoPocoIO.Dashboard.Repo
     {
         int ConnectorCount();
         IEnumerable<Connector> ListConnectors();
-        void Save(Connector model);
-        Connector GetById(int id);
-        void Insert(Connector model);
+        void Save(ConnectorViewModel model);
+        ConnectorViewModel GetById(int id);
+        void Insert(ConnectorViewModel model);
     }
 }
