@@ -82,11 +82,9 @@ workflows:
   build_deploy:
     jobs:
       - test-framework
-      - test-core
       - deploy:
          requires:
             - test-framework
-            - test-core
          filters:
             branches:
                only: master
