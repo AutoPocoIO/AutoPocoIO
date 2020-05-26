@@ -12,7 +12,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5FE67E7F-1C40-4D01-8FBF-2AE6A26A3F49}"
 	ProjectSection(SolutionItems) = preProject
 		..\.gitignore = ..\.gitignore
-		..\nuget.config = ..\nuget.config
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreSample", "..\samples\AspNetCoreSample\AspNetCoreSample.csproj", "{6310A72C-9BFB-40AE-8DED-1E6574D2C9FE}"
