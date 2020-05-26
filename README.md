@@ -4,7 +4,7 @@
 ## Build Status
 `master` | `dev`
 --- | --- 
-[![CircleCI](https://circleci.com/gh/AutoPocoIO/AutoPocoIO/tree/master.svg?style=svg&circle-token=a0952bbeb6f0ee49221b2e57d1f70518473ca3b7)](https://circleci.com/gh/AutoPocoIO/AutoPocoIO/tree/master)  | [![CircleCI](https://circleci.com/gh/AutoPocoIO/AutoPocoIO/tree/dev.svg?style=svg&circle-token=a0952bbeb6f0ee49221b2e57d1f70518473ca3b7)](https://circleci.com/gh/AutoPocoIO/AutoPocoIO/tree/dev) 
+[![Build status](https://ci.appveyor.com/api/projects/status/4qe1ffp77uaecy29/branch/master?retina=true)](https://ci.appveyor.com/project/autopocoio/autopocoio/branch/master)  | [![Build status](https://ci.appveyor.com/api/projects/status/4qe1ffp77uaecy29/branch/dev?retina=true)](https://ci.appveyor.com/project/autopocoio/autopocoio/branch/dev)
 
 ## Overview
 Auto generate Entity Framework POCO classes at runtime to build dynamic type ASP.NET applications. Classes are generated from your database's current schema. Supports CRUD and execute operations on SQL, mysql, & Oracle tables, views, and stored procedures. Requests are logged automatically, so there is no need to write custom logging. Grant or restrict column-level access using the Role Based authorization service.
