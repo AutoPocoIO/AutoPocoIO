@@ -9,6 +9,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using DynamicExpression = System.Linq.Dynamic.Core.DynamicExpressionParser;
 
 namespace AutoPocoIO.Extensions
@@ -53,19 +54,30 @@ namespace AutoPocoIO.Extensions
             if (source == null)
                 return null;
 
-            var entity = Activator.CreateInstance<T>();
+            T entity;
+            if(typeof(T).GetCustomAttribute<CompilerGeneratedAttribute>() == null)
+                entity = Activator.CreateInstance<T>();
+            else
+            {
+                var annonProperties = typeof(T).GetProperties();
+                var values = new List<object>();
+                foreach (var propertyInfo in annonProperties)
+                {
+                    values.Add(propertyInfo.GetValue(source));
+                }
+
+                entity = (T)Activator.CreateInstance(typeof(T), values.ToArray());
+            }
+
             var sourcetype = source.GetType();
 
-            var properties = typeof(T).GetProperties();
+            var properties = typeof(T).GetProperties().Where(c => c.CanWrite);
 
             foreach (var propertyInfo in properties)
             {
-                if (propertyInfo != null)
-                {
-                    var sourcePropertyInfo = sourcetype.GetProperty(propertyInfo.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
-                    if (sourcePropertyInfo != null)
-                        propertyInfo.SetValue(entity, sourcePropertyInfo.GetValue(source), null);
-                }
+                var sourcePropertyInfo = sourcetype.GetProperty(propertyInfo.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+                if (sourcePropertyInfo != null)
+                    propertyInfo.SetValue(entity, sourcePropertyInfo.GetValue(source), null);
             }
 
             return entity;
@@ -96,16 +108,13 @@ namespace AutoPocoIO.Extensions
 
         public static void PopulateModel(this object source, object model)
         {
-            var properties = model.GetType().GetProperties();
+            var properties = model.GetType().GetProperties().Where(c => c.CanWrite);
             var sourcetype = source.GetType();
             foreach (var propertyInfo in properties)
             {
-                if (propertyInfo != null)
-                {
                     var sourcePropertyInfo = sourcetype.GetProperty(propertyInfo.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
                     if (sourcePropertyInfo != null)
                         propertyInfo.SetValue(model, sourcePropertyInfo.GetValue(source), null);
-                }
             }
         }
 

@@ -1,9 +1,14 @@
 using AspNetCoreSample.Migration;
+using AutoPocoIO.Api;
+using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.Extensions;
+using AutoPocoIO.Factories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq.Expressions;
 
 namespace AspNetCoreSample
 {
@@ -48,6 +53,27 @@ namespace AspNetCoreSample
             //Migrate sample database
             var migrator = new Migrator(Configuration.GetConnectionString("AppDb"));
             migrator.Migrate();
+
+            //Try Seed sampleDb connection
+            var tableOp = app.ApplicationServices.GetRequiredService<ITableOperations>();
+
+            var connection = new
+            {
+                Name = "sampleSales",
+                ResourceType = 1,
+                Schema = "sales",
+                ConnectionString = @"Data Source=""(localdb)\MSSQLLocalDB"";Initial Catalog=autopocoCore;Persist Security Info=False;User ID=;Password=;MultipleActiveResultSets=False;Connect Timeout=30;TrustServerCertificate=False",
+                RecordLimit = 500,
+                InitialCatalog = "autopocoCore",
+                DataSource = @"(localdb)\MSSQLLocalDB"
+            };
+
+            try
+            {
+                tableOp.CreateNewRow("appDb", "connector", connection);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException) { }
+
         }
     }
 }
