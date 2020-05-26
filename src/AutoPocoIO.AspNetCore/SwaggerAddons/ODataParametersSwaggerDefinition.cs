@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.CustomAttributes;
+using AutoPocoIO.Exceptions;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -16,6 +17,9 @@ namespace AutoPocoIO.SwaggerAddons
     {
         public void Apply(Operation operation, OperationFilterContext context)
         {
+            Check.NotNull(operation, nameof(operation));
+            Check.NotNull(context, nameof(context));
+
             if (context.MethodInfo.GetCustomAttributes(false).Any(c => c.GetType() == typeof(UseOdataInSwaggerAttribute)))
             {
                 if (operation.Parameters == null)

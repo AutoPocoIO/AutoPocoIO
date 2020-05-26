@@ -25,8 +25,10 @@ namespace AutoPocoIO.Extensions
             config.EnableDependencyInjection();
             config.Count().Filter().OrderBy().Expand().Select().MaxTop(1000);
 
-            var request = new HttpRequestMessage();
-            request.RequestUri = uri;
+            var request = new HttpRequestMessage
+            {
+                RequestUri = uri
+            };
             request.SetConfiguration(config);
 
             return new ODataQueryOptions(context, request);

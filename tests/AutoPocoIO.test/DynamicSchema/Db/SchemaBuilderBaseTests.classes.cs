@@ -18,11 +18,11 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             private IDbCommand createdCommand;
             private int cmdCount;
 
-            public DataTable[] dts{ get; set; }
-            public DataTable dt => dts[cmdCount];
+            public DataTable[] Dts{ get; set; }
+            public DataTable Dt => Dts[cmdCount];
             public SchemaBuilder1(Config config, IDbSchema dbSchema, IDbTypeMapper typeMapper) : base(config, dbSchema, typeMapper)
             {
-                dts = new[] { new DataTable() };
+                Dts = new[] { new DataTable() };
             }
 
             public override ResourceType ResourceType => throw new NotImplementedException();
@@ -30,7 +30,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             public override DataTable ExecuteSchemaCommand(IDbCommand command)
             {
                 if (createdCommand == command)
-                    return dts[cmdCount++];
+                    return Dts[cmdCount++];
 
                 return null;
             }

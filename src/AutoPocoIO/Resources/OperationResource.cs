@@ -384,9 +384,9 @@ namespace AutoPocoIO.Resources
             this.LoadSchema();
             return new SchemaDefinition
             {
-                Tables = DbSchema.Tables.Select(c => c.Name).ToList().AsReadOnly(),
-                Views = DbSchema.Views.Select(c => c.Name).ToList().AsReadOnly(),
-                StoredProcedures = DbSchema.StoredProcedures.Select(c => c.Name).ToList().AsReadOnly(),
+                Tables = DbSchema.Tables.Select(c => c.Name),
+                Views = DbSchema.Views.Select(c => c.Name),
+                StoredProcedures = DbSchema.StoredProcedures.Select(c => c.Name),
                 ConnectorId = Connector.Id,
                 ConnectorName = Connector.Name,
                 Name = Connector.Schema,

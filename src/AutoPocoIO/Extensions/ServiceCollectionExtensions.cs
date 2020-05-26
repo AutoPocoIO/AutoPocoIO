@@ -71,7 +71,7 @@ namespace AutoPocoIO.Extensions
         private static IServiceCollection AddOptions<TContext>(IServiceCollection services, Action<DbContextOptionsBuilder> options)
             where TContext : DbContext
         {
-            Action<IServiceProvider, DbContextOptionsBuilder> optionAction = (p, b) => options.Invoke(b);
+            void optionAction(IServiceProvider p, DbContextOptionsBuilder b) => options.Invoke(b);
 
             services.TryAddSingleton(c => DbContextOptionsFactory<TContext>(c, optionAction));
 

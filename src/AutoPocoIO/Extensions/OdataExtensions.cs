@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.CustomAttributes;
+using AutoPocoIO.Exceptions;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Query;
@@ -14,6 +15,9 @@ namespace AutoPocoIO.Extensions
     {
         public static IQueryable<object> ApplyQuery<T>(this IQueryable<T> query, int recordLimit, IDictionary<string, string> queryString)
         {
+            Check.NotNull(query, nameof(query));
+            Check.NotNull(queryString, nameof(queryString));
+
             var defaultOdataQuerySettings = new ODataQuerySettings();
             var settings = new ODataValidationSettings
             {
@@ -80,9 +84,7 @@ namespace AutoPocoIO.Extensions
 
                 foreach(var key in keys)
                 {
-                    EntityTypeConfiguration entity = entityType as EntityTypeConfiguration;
-
-                    if (entity != null)
+                    if (entityType is EntityTypeConfiguration entity)
                     {
                         entity.HasKey(key.PropertyInfo);
                     }

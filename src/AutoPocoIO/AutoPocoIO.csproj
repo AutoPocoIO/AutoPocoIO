@@ -108,6 +108,7 @@
     <Company>AutoPocoIO</Company>
     <Authors>AutoPocoIO</Authors>
     <RepositoryUrl>https://github.com/AutoPocoIO/AutoPocoIO</RepositoryUrl>
+    <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
   
 

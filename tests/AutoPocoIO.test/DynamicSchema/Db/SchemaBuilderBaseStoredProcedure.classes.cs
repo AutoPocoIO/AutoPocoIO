@@ -16,11 +16,11 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             private IDbConnection createdConn;
             private IDbCommand createdCommand;
 
-            public DataTable dtProcs { get; set; }
+            public DataTable DtProcs { get; set; }
 
             public SchemaBuilder1(Config config, IDbSchema dbSchema, IDbTypeMapper typeMapper) : base(config, dbSchema, typeMapper)
             {
-                dtProcs = new DataTable();
+                DtProcs = new DataTable();
             }
 
             public override ResourceType ResourceType => throw new NotImplementedException();
@@ -29,7 +29,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             {
                 if (createdCommand == command)
                 {
-                        return dtProcs;
+                        return DtProcs;
                 }
 
                 return null;

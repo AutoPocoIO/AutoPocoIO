@@ -55,7 +55,7 @@ namespace AutoPocoIO.test.Services
             db.SaveChanges();
 
             IAppAdminService appAdminService = new AppAdminService(db);
-            var connector = appAdminService.GetConnection("connName123");
+            _ = appAdminService.GetConnection("connName123");
         }
 
         [TestMethod]

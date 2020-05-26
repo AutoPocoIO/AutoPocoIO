@@ -116,7 +116,7 @@ namespace AutoPocoIO.DynamicSchema.Db
         private Table AddTableAndColumns(DataRow row, Table currentTable)
         {
             var objectType = row["ObjectType"].ToString().Trim();
-            DBOjectTypes currentObjectType = objectType.SetObjectType();
+            DBOjectType currentObjectType = objectType.SetObjectType();
 
 
             if (currentTable == null || $"{currentTable.Database}.{currentTable.Schema}.Tables{currentTable.Name}" !=
@@ -124,7 +124,7 @@ namespace AutoPocoIO.DynamicSchema.Db
             {
                 switch (currentObjectType)
                 {
-                    case DBOjectTypes.Table:
+                    case DBOjectType.Table:
                         currentTable = new Table()
                         {
                             Schema = row["TableSchema"].ToString(),
@@ -135,7 +135,7 @@ namespace AutoPocoIO.DynamicSchema.Db
 
                         _dbSchema.Tables.Add(currentTable);
                         break;
-                    case DBOjectTypes.View:
+                    case DBOjectType.View:
                         currentTable = new View()
                         {
                             Schema = row["TableSchema"].ToString(),
@@ -163,7 +163,7 @@ namespace AutoPocoIO.DynamicSchema.Db
             switch (currentObjectType)
             {
                 //Table only fields 
-                case DBOjectTypes.Table:
+                case DBOjectType.Table:
                     {
                         column.Table = currentTable;
                         column.PKName = row["PKName"].ToString();
@@ -177,7 +177,7 @@ namespace AutoPocoIO.DynamicSchema.Db
                         currentTable.Columns.Add(column);
                         break;
                     }
-                case DBOjectTypes.View:
+                case DBOjectType.View:
                     column.View = (View)currentTable;
                     currentTable.Columns.Add(column);
                     break;

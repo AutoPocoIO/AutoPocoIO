@@ -19,15 +19,17 @@ namespace AutoPocoIO.test.DynamicSchema.Models
         [TestMethod]
         public void UnionPKAndFkInformation()
         {
-            var config = new Config();
-            config.UserDefinedJoins = new List<UserJoinConfiguration>
+            var config = new Config
             {
-                new UserJoinConfiguration
+                UserDefinedJoins = new List<UserJoinConfiguration>
                 {
-                    PrincipalSchema = "sch1",
-                    PrincipalTable = "pktbl",
-                    DependentSchema = "sch1",
-                    DependentTable = "fktbl"
+                    new UserJoinConfiguration
+                    {
+                        PrincipalSchema = "sch1",
+                        PrincipalTable = "pktbl",
+                        DependentSchema = "sch1",
+                        DependentTable = "fktbl"
+                    }
                 }
             };
 

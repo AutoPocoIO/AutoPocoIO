@@ -20,18 +20,20 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             config = new Config();
             schema = new DbSchema();
 
-            builder = new SchemaBuilder1(config, schema, new DbTypeMapper());
-            builder.dtProcs = SchmeaBuilderDataTableBuilder.CreatProcTable();
+            builder = new SchemaBuilder1(config, schema, new DbTypeMapper())
+            {
+                DtProcs = SchmeaBuilderDataTableBuilder.CreatProcTable()
+            };
         }
 
         [TestMethod]
         public void ListProcs()
         {
-            var row = builder.dtProcs.NewRow();
+            var row = builder.DtProcs.NewRow();
             row["ProcSchema"] = "sch1";
             row["ProcName"] = "proc1";
             row["DatabaseName"] = "db1";
-            builder.dtProcs.Rows.Add(row);
+            builder.DtProcs.Rows.Add(row);
 
             builder.GetStoredProcedures();
 
@@ -45,17 +47,17 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         [TestMethod]
         public void ListProcs2()
         {
-            var row = builder.dtProcs.NewRow();
+            var row = builder.DtProcs.NewRow();
             row["ProcSchema"] = "sch1";
             row["ProcName"] = "proc1";
             row["DatabaseName"] = "db1";
-            builder.dtProcs.Rows.Add(row);
+            builder.DtProcs.Rows.Add(row);
 
-            row = builder.dtProcs.NewRow();
+            row = builder.DtProcs.NewRow();
             row["ProcSchema"] = "sch1";
             row["ProcName"] = "proc2";
             row["DatabaseName"] = "db1";
-            builder.dtProcs.Rows.Add(row);
+            builder.DtProcs.Rows.Add(row);
 
             builder.GetStoredProcedures();
 
@@ -65,7 +67,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         [TestMethod]
         public void ListProcParams()
         {
-            var row = builder.dtProcs.NewRow();
+            var row = builder.DtProcs.NewRow();
             row["ProcSchema"] = "sch1";
             row["ProcName"] = "proc1";
             row["DatabaseName"] = "db1";
@@ -73,9 +75,9 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             row["ParamType"] = "varchar";
             row["IsOutput"] = "true";
             row["IsNullable"] = "false";
-            builder.dtProcs.Rows.Add(row);
+            builder.DtProcs.Rows.Add(row);
 
-            row = builder.dtProcs.NewRow();
+            row = builder.DtProcs.NewRow();
             row["ProcSchema"] = "sch1";
             row["ProcName"] = "proc1";
             row["DatabaseName"] = "db1";
@@ -83,7 +85,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             row["ParamType"] = "int";
             row["IsOutput"] = "true";
             row["IsNullable"] = "false";
-            builder.dtProcs.Rows.Add(row);
+            builder.DtProcs.Rows.Add(row);
 
             builder.GetStoredProcedures();
 

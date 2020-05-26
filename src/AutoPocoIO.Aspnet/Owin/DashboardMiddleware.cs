@@ -36,7 +36,7 @@ namespace AutoPocoIO.Owin
 
         }
 
-        public OwinMiddleware Next { get; set; }
+        public OwinMiddleware NextComponent { get; set; }
 
         public async Task Invoke(IOwinContext context)
         {
@@ -61,7 +61,7 @@ namespace AutoPocoIO.Owin
 
                 if (findResult == null)
                 {
-                    await Next.Invoke(context).ConfigureAwait(false);
+                    await NextComponent.Invoke(context).ConfigureAwait(false);
                     return;
                 }
 
@@ -75,7 +75,7 @@ namespace AutoPocoIO.Owin
                 await findResult.Item1.Dispatch(dashContext, _loggingService).ConfigureAwait(false);
             }
             else
-                await Next.Invoke(context).ConfigureAwait(false);
+                await NextComponent.Invoke(context).ConfigureAwait(false);
         }
     }
 }

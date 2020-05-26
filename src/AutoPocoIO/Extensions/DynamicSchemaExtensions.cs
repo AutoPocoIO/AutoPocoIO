@@ -10,6 +10,11 @@ namespace AutoPocoIO.Extensions
     {
         public static Table GetTable(this IDbSchema dbSchemaBuilder, string databaseName, string schemaName, string tableName)
         {
+            Check.NotNull(dbSchemaBuilder, nameof(dbSchemaBuilder));
+            Check.NotNull(databaseName, nameof(databaseName));
+            Check.NotNull(schemaName, nameof(schemaName));
+            Check.NotNull(tableName, nameof(tableName));
+
             try
             {
                 return dbSchemaBuilder.Tables.First(c => c.Name.ToUpperInvariant() == tableName.ToUpperInvariant()

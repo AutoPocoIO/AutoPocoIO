@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace AutoPocoIO.Models
@@ -8,6 +9,11 @@ namespace AutoPocoIO.Models
     /// </summary>
     public class SchemaDefinition
     {
+        public SchemaDefinition()
+        {
+            Tables = new List<string>();
+        }
+
         /// <summary>
         /// Database id for the connector
         /// </summary>
@@ -36,19 +42,20 @@ namespace AutoPocoIO.Models
         /// List of available table names
         /// </summary>
         [JsonProperty(Order = -2)]
-        public ReadOnlyCollection<string> Tables { get; set; }
+        
+        public IEnumerable<string> Tables { get; set; }
 
         /// <summary>
         /// List of available view names
         /// </summary>
         [JsonProperty(Order = -2)]
-        public ReadOnlyCollection<string> Views { get; set; }
+        public IEnumerable<string> Views { get; set; }
 
         /// <summary>
         /// List of available stored procedure names
         /// </summary>
         [JsonProperty(Order = -2)]
-        public ReadOnlyCollection<string> StoredProcedures { get; set; }
+        public IEnumerable<string> StoredProcedures { get; set; }
 
        
     }

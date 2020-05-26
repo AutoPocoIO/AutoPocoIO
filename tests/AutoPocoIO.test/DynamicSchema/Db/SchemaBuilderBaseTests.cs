@@ -29,7 +29,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             schema = new DbSchema();
 
             builder = new SchemaBuilder1(config, schema, new DbTypeMapper());
-            builder.dts[0] = SchmeaBuilderDataTableBuilder.CreateColumnTable();
+            builder.Dts[0] = SchmeaBuilderDataTableBuilder.CreateColumnTable();
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             config.UsedConnectors = new List<string> { "conn1" };
             config.PropertyPreFixName = "pre123_";
 
-            var row = builder.dt.CreateRowWithColReqValues();
+            var row = builder.Dt.CreateRowWithColReqValues();
             row["ObjectType"] = "U";
             row["TableName"] = "tbl1";
             row["TableSchema"] = "sch1";
@@ -49,7 +49,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             row["ColumnName"] = "col1";
             row["ColumnType"] = "varchar";
 
-            builder.dt.Rows.Add(row);
+            builder.Dt.Rows.Add(row);
             builder.GetTableViews();
 
             //Verify object counts/not null
@@ -79,10 +79,10 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         [TestMethod]
         public void GetTableSingleColumnsForSchema()
         {
-            var row = builder.dt.CreateRowWithColReqValues();
+            var row = builder.Dt.CreateRowWithColReqValues();
             row["ObjectType"] = "U";
             row["TableName"] = "tbl1";
-            builder.dt.Rows.Add(row);
+            builder.Dt.Rows.Add(row);
 
             builder.GetColumns();
 
@@ -97,22 +97,22 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             config.IncludedTable = "tbl123";
             config.UsedConnectors = new List<string> { "conn1" };
 
-            var row = builder.dt.CreateRowWithColReqValues();
+            var row = builder.Dt.CreateRowWithColReqValues();
             row["ObjectType"] = "V";
             row["TableName"] = "vw1";
             row["TableSchema"] = "sch1";
             row["DatabaseName"] = "db1";
             row["ColumnName"] = "col1";
 
-            var row2 = builder.dt.CreateRowWithColReqValues();
+            var row2 = builder.Dt.CreateRowWithColReqValues();
             row2["ObjectType"] = "V";
             row2["TableName"] = "vw1";
             row2["TableSchema"] = "sch1";
             row2["DatabaseName"] = "db1";
             row2["ColumnName"] = "col2";
 
-            builder.dt.Rows.Add(row);
-            builder.dt.Rows.Add(row2);
+            builder.Dt.Rows.Add(row);
+            builder.Dt.Rows.Add(row2);
 
             builder.GetTableViews();
 
@@ -152,9 +152,9 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             config.IncludedTable = "tbl123";
             config.UsedConnectors = new List<string> { "conn1" };
 
-            var row = builder.dt.CreateRowWithColReqValues();
+            var row = builder.Dt.CreateRowWithColReqValues();
             row["ObjectType"] = "Other";
-            builder.dt.Rows.Add(row);
+            builder.Dt.Rows.Add(row);
 
             builder.GetColumns();
         }
@@ -166,7 +166,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             config.UsedConnectors = new List<string> { "conn1" };
             config.PropertyPreFixName = "pre123_";
 
-            var row = builder.dt.CreateRowWithColReqValues();
+            var row = builder.Dt.CreateRowWithColReqValues();
             row["ObjectType"] = "U";
             row["TableName"] = "tbl1";
             row["TableSchema"] = "sch1";
@@ -181,7 +181,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             row["ReferencedTable"] = "tbl2";
             row["ReferencedColumn"] = "colfk2";
 
-            builder.dt.Rows.Add(row);
+            builder.Dt.Rows.Add(row);
 
             builder.GetColumns();
 
@@ -200,7 +200,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             config.UsedConnectors = new List<string> { "conn1" };
             config.PropertyPreFixName = "pre123_";
 
-            var row = builder.dt.CreateRowWithColReqValues();
+            var row = builder.Dt.CreateRowWithColReqValues();
             row["ObjectType"] = "V";
             row["TableName"] = "tbl1";
             row["TableSchema"] = "sch1";
@@ -215,7 +215,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             row["ReferencedTable"] = "tbl2";
             row["ReferencedColumn"] = "colfk2";
 
-            builder.dt.Rows.Add(row);
+            builder.Dt.Rows.Add(row);
 
             builder.GetColumns();
 
@@ -234,8 +234,8 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
             config.IncludedTable = "tbl123";
             config.UsedConnectors = new List<string> { "conn1", "conn2" };
-            var dt1 = builder.dt.Clone();
-            var dt2 = builder.dt.Clone();
+            var dt1 = builder.Dt.Clone();
+            var dt2 = builder.Dt.Clone();
 
             var row1 = dt1.CreateRowWithColReqValues();
             row1["ObjectType"] = "V";
@@ -247,7 +247,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             row2["TableName"] = "tbl2";
             dt2.Rows.Add(row2);
 
-            builder.dts = new[] { dt1, dt2 };
+            builder.Dts = new[] { dt1, dt2 };
             builder.GetColumns();
 
             Assert.AreEqual(2, schema.Views.Count());

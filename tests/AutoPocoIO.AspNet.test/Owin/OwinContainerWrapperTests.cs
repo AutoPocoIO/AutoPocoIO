@@ -18,11 +18,11 @@ namespace AutoPocoIO.AspNet.test.Owin
     {
         private class DiMiddleware : IOwinMiddlewareWithDI
         {
-            public OwinMiddleware Next { get; set; }
+            public OwinMiddleware NextComponent { get; set; }
 
             public Task Invoke(IOwinContext context)
             {
-                return Next.Invoke(context);
+                return NextComponent.Invoke(context);
             }
         }
 
