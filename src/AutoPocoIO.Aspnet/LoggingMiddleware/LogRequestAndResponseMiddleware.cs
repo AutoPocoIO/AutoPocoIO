@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace AutoPocoIO.LoggingMiddleware
 {
 
-    public class LogRequestAndResponseMiddleware : IOwinMiddlewareWithDI, IDisposable
+    internal class LogRequestAndResponseMiddleware : IOwinMiddlewareWithDI, IDisposable
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly ILoggingService _loggingService;
@@ -29,7 +29,7 @@ namespace AutoPocoIO.LoggingMiddleware
             _loggingService = loggingService;
         }
 
-        public OwinMiddleware Next { get; set; }
+        public OwinMiddleware NextComponent { get; set; }
 
         public async Task Invoke(IOwinContext context)
         {
@@ -49,7 +49,7 @@ namespace AutoPocoIO.LoggingMiddleware
 
             try
             {
-                await Next.Invoke(context).ConfigureAwait(false);
+                await NextComponent.Invoke(context).ConfigureAwait(false);
             }
 #pragma warning disable CA1031 // Catch to allow for logging to continue to process
             catch (Exception ex)

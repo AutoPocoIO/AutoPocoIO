@@ -12,13 +12,13 @@ namespace AutoPocoIO.Dashboard.Repos
         private readonly LogDbContext _db;
         private readonly ITimeProvider _timeProvider;
 
-        private static string[] requestTypes = new[]
-            {
-                nameof(HttpMethodType.GET),
-                nameof(HttpMethodType.POST),
-                nameof(HttpMethodType.PUT),
-                nameof(HttpMethodType.DELETE)
-            };
+        private static readonly string[] requestTypes = new[]
+        {
+            nameof(HttpMethodType.GET),
+            nameof(HttpMethodType.POST),
+            nameof(HttpMethodType.PUT),
+            nameof(HttpMethodType.DELETE)
+        };
         public DashboardRepo(LogDbContext db, ITimeProvider timeProvider)
         {
             _db = db;

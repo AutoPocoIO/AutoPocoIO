@@ -67,7 +67,7 @@ namespace AutoPocoIO.Middleware
 
         public async Task<IDictionary<string, string[]>> ReadFormAsync()
         {
-            var form = await _context.Request.ReadFormAsync();
+            var form = await _context.Request.ReadFormAsync().ConfigureAwait(false);
             return form.ToDictionary(c => c.Key, c => c.Value.ToArray());
         }
     }

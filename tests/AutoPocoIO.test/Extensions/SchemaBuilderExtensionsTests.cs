@@ -40,14 +40,14 @@ namespace AutoPocoIO.test.Extensions
         public void TableIsU()
         {
             var tableType = "U".SetObjectType();
-            Assert.AreEqual(DBOjectTypes.Table, tableType);
+            Assert.AreEqual(DBOjectType.Table, tableType);
         }
 
         [TestMethod]
         public void ViewIsV()
         {
             var viewType = "V".SetObjectType();
-            Assert.AreEqual(DBOjectTypes.View, viewType);
+            Assert.AreEqual(DBOjectType.View, viewType);
         }
 
         [TestMethod]

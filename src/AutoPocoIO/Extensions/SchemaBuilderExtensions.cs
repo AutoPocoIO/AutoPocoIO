@@ -17,14 +17,14 @@ namespace AutoPocoIO.Extensions
         /// <param name="objectType">string value from Db</param>
         ///<exception cref="ArgumentOutOfRangeException"></exception>
         /// <returns></returns>
-        public static DBOjectTypes SetObjectType(this string objectType)
+        public static DBOjectType SetObjectType(this string objectType)
         {
             switch (objectType)
             {
                 case "U":
-                    return DBOjectTypes.Table;
+                    return DBOjectType.Table;
                 case "V":
-                    return DBOjectTypes.View;
+                    return DBOjectType.View;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(objectType), ExceptionMessages.CharToDbObjecType);
             }

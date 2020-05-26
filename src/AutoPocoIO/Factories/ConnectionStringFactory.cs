@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.Constants;
 using AutoPocoIO.DynamicSchema.Enums;
+using AutoPocoIO.Exceptions;
 using AutoPocoIO.Resources;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -59,6 +60,8 @@ namespace AutoPocoIO.Factories
 
         public ConnectionInformation GetConnectionInformation(DatabaseFacade database)
         {
+            Check.NotNull(database, nameof(database));
+
             int resourceType = ResourceTypeFromProviderName(database);
             IConnectionStringBuilder builder = GetBuilder(resourceType);
             string connectionString = database.GetDbConnection().ConnectionString;
@@ -67,6 +70,9 @@ namespace AutoPocoIO.Factories
 
         public string CreateConnectionString(DatabaseFacade database, ConnectionInformation connectionInformation)
         {
+            Check.NotNull(database, nameof(database));
+            Check.NotNull(connectionInformation, nameof(connectionInformation));
+
             int resourceType = ResourceTypeFromProviderName(database);
             IConnectionStringBuilder builder = GetBuilder(resourceType);
             return builder.CreateConnectionString(connectionInformation);

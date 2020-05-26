@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using AutoPocoIO.Exceptions;
+using Newtonsoft.Json.Linq;
 using Swashbuckle.Swagger;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,10 @@ namespace AutoPocoIO.SwaggerAddons
     {
         public void Apply(Schema schema, SchemaRegistry schemaRegistry, Type type)
         {
+            Check.NotNull(schema, nameof(schema));
+            Check.NotNull(schemaRegistry, nameof(schemaRegistry));
+            Check.NotNull(type, nameof(type));
+
             if (type == typeof(JToken))
             {
                 if (!schemaRegistry.Definitions.ContainsKey("JSON"))

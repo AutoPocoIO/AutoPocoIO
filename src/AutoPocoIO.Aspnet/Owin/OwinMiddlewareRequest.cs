@@ -46,7 +46,7 @@ namespace AutoPocoIO.Owin
 
         public async Task<IDictionary<string, string[]>> ReadFormAsync()
         {
-            return (await _context.Request.ReadFormAsync())
+            return (await _context.Request.ReadFormAsync().ConfigureAwait(false))
                             .ToDictionary(c => c.Key, c => c.Value);
         }
 

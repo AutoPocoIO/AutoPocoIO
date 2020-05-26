@@ -11,7 +11,7 @@ namespace AutoPocoIO.Owin
         /// <summary>
         /// Next middleware in the owin pipeline
         /// </summary>
-        OwinMiddleware Next { get; set; }
+        OwinMiddleware NextComponent { get; set; }
         /// <summary>
         /// 
         /// </summary>

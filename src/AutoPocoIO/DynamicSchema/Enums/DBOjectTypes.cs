@@ -1,6 +1,6 @@
 ﻿namespace AutoPocoIO.DynamicSchema.Enums
 {
-    public enum DBOjectTypes
+    public enum DBOjectType
     {
         Table,
         View,

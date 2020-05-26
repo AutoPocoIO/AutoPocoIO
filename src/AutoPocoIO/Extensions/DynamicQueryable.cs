@@ -686,14 +686,13 @@ namespace System.Linq.AutoPoco
         void CheckAndPromoteOperands(Type signatures, string opName, ref Expression left, ref Expression right, int errorPos)
         {
             Expression[] args = new Expression[] { left, right };
-            MethodBase method;
-            if (FindMethod(signatures, "F", false, args, out method) != 1)
+            if (FindMethod(signatures, "F", false, args, out _) != 1)
                 throw IncompatibleOperandsError(opName, left, right, errorPos);
             left = args[0];
             right = args[1];
         }
 
-        Exception IncompatibleOperandsError(string opName, Expression left, Expression right, int pos)
+        static Exception IncompatibleOperandsError(string opName, Expression left, Expression right, int pos)
         {
             return ParseError(pos, Res.IncompatibleOperands,
                 opName, GetTypeName(left.Type), GetTypeName(right.Type));
@@ -860,7 +859,7 @@ namespace System.Linq.AutoPoco
             return GenerateConditional(args[0], args[1], args[2], errorPos);
         }
 
-        Expression GenerateEqual(Expression left, Expression right)
+        static Expression GenerateEqual(Expression left, Expression right)
         {
             return Expression.Equal(left, right);
         }

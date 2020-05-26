@@ -5,9 +5,9 @@ using System.Web.Http;
 
 namespace AutoPocoIO.CustomAttributes
 {
-    public class DynamicRoutePrefixAttribute : RoutePrefixAttribute
+    internal class DynamicRoutePrefixAttribute : RoutePrefixAttribute
     {
-        public string _prefix;
+        private readonly string _prefix;
         public DynamicRoutePrefixAttribute(string prefix) : base(prefix)
         {
             _prefix = prefix;

@@ -8,7 +8,7 @@ using System.Web.Http;
 
 namespace AutoPocoIO.Owin
 {
-    public class OwinContainerWrapper<T> : OwinMiddleware
+    internal class OwinContainerWrapper<T> : OwinMiddleware
         where T : class, IOwinMiddlewareWithDI
     {
         private readonly HttpConfiguration _config;
@@ -34,7 +34,7 @@ namespace AutoPocoIO.Owin
             if (middleware == null)
                 middleware = _config.DependencyResolver.GetRequiredService<T>();
 
-            middleware.Next = Next;
+            middleware.NextComponent = Next;
             return middleware.Invoke(context);
         }
     }

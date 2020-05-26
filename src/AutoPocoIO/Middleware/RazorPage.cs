@@ -12,7 +12,7 @@ namespace AutoPocoIO.Middleware
 {
     internal abstract class RazorPage
     {
-        private StringBuilder _content = new StringBuilder();
+        private readonly StringBuilder _content;
         private string _body;
         
 
@@ -184,7 +184,7 @@ namespace AutoPocoIO.Middleware
                 return new NonEscapedString(list.ToString());
 
         }
-        protected NonEscapedString TransformArray(string[] list)
+        protected static NonEscapedString TransformArray(string[] list)
         {
             StringBuilder builder = new StringBuilder();
             builder.Append("[");
@@ -194,7 +194,7 @@ namespace AutoPocoIO.Middleware
             return new NonEscapedString(builder.ToString());
         }
 
-        protected NonEscapedString TransformArray(int[] list)
+        protected static NonEscapedString TransformArray(int[] list)
         {
             StringBuilder builder = new StringBuilder();
             builder.Append("[");

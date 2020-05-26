@@ -1,6 +1,5 @@
 ﻿using AutoPocoIO.Constants;
 using AutoPocoIO.DynamicSchema.Models;
-//using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,7 @@ using System.Reflection;
 
 namespace AutoPocoIO.DynamicSchema.Util
 {
-    public static class Utils
+    internal static class Utils
     {
         public static string AssemblyName(Table table, string parentTableName, int requestHashCode)
         {

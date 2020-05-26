@@ -138,6 +138,9 @@ namespace AutoPocoIO.Services
 
         protected virtual void LogHttpRequestAndResponse(IServiceScope scope, LogRequestAndResponseCommand command)
         {
+            Check.NotNull(scope, nameof(scope));
+            Check.NotNull(command, nameof(command));
+
             var provider = scope.ServiceProvider;
             var db = provider.GetRequiredService<LogDbContext>();
             LogHttpRequest(command, db);

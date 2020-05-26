@@ -115,7 +115,7 @@ namespace AutoPocoIO.DynamicSchema.Runtime
             }
         }
 
-        private void CreateNavigationProperties<T>(List<T> tables, List<Table> baseTables = null) where T : Table
+        private void CreateNavigationProperties<T>(List<T> tables) where T : Table
         {
             foreach (Table table in tables)
             {
