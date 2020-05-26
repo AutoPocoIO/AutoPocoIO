@@ -3,6 +3,7 @@ using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.Exceptions;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace AutoPocoIO.Extensions
 {
@@ -67,6 +68,17 @@ namespace AutoPocoIO.Extensions
             catch (InvalidOperationException)
             {
                 throw new StoreProcedureNotFoundException(schemaName, sprocName);
+            }
+        }
+
+        internal static object InvokeWithException(this MethodBase method, object obj, object[] parameters)
+        {
+            try
+            {
+                return method.Invoke(obj, parameters);
+            } catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
             }
         }
     }

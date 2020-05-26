@@ -11,7 +11,6 @@ using Swashbuckle.Swagger.Annotations;
 #else
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Microsoft.AspNetCore.Authorization;
 #endif
 
 
@@ -52,7 +51,7 @@ namespace AutoPocoIO.WebApi
         [SwaggerResponse(200, "List of values from the view", typeof(IQueryable<SwaggerExampleType>))]
         [HttpGet]
         [UseOdataInSwagger]
-        public IQueryable<dynamic> Get(string connectorName, string viewName)
+        public IQueryable<object> Get(string connectorName, string viewName)
         {
             var (list, recordLimit) = _viewOperations.GetAllAndRecordLimit(connectorName, viewName, _loggingService);
             return list.ApplyQuery(recordLimit, _queryStringService.GetQueryStrings());

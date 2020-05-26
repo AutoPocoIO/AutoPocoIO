@@ -66,7 +66,7 @@ namespace AutoPocoIO.DynamicSchema.Db
 
             var dbSetEntity = _dynamicClassBuilder.ExistingAssemblies.Where(x => x.Key.Equals(assemblyName, StringComparison.InvariantCultureIgnoreCase)).Single().Value;
 
-            var dbTable = typeof(DbContextBase).GetMethod("Set", Array.Empty<Type>()).MakeGenericMethod(dbSetEntity).Invoke(Instance, null);
+            var dbTable = typeof(DbContextBase).GetMethod("Set", Array.Empty<Type>()).MakeGenericMethod(dbSetEntity).InvokeWithException(Instance, null);
 
             return dbTable;
         }
@@ -74,7 +74,7 @@ namespace AutoPocoIO.DynamicSchema.Db
         public object GetDbSet()
         {
             var getDbSetMethod = typeof(DbAdapter).GetMethod("GetDbSet", BindingFlags.Instance | BindingFlags.NonPublic);
-            var dbset = getDbSetMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).Invoke(this, null);
+            var dbset = getDbSetMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).InvokeWithException(this, null);
 
             return dbset;
         }
@@ -84,7 +84,7 @@ namespace AutoPocoIO.DynamicSchema.Db
             SetupDataContext(tableName);
 
             var getByIdMethod = typeof(DbAdapter).GetMethod("GetById", BindingFlags.Instance | BindingFlags.NonPublic);
-            var singleRecord = getByIdMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).Invoke(this, new object[] { keys });
+            var singleRecord = getByIdMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).InvokeWithException(this, new object[] { keys });
 
             return singleRecord;
         }
@@ -98,20 +98,20 @@ namespace AutoPocoIO.DynamicSchema.Db
         public void Add(object obj)
         {
             var insertMethod = typeof(DbAdapter).GetMethod("InsertRecord", BindingFlags.Instance | BindingFlags.NonPublic);
-            insertMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).Invoke(this, new object[] { obj });
+            insertMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).InvokeWithException(this, new object[] { obj });
         }
 
         public void Update(object obj)
         {
             var insertMethod = typeof(DbAdapter).GetMethod("UpdateRecord", BindingFlags.Instance | BindingFlags.NonPublic);
-            insertMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).Invoke(this, new object[] { obj });
+            insertMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).InvokeWithException(this, new object[] { obj });
 
         }
 
         public void Delete(dynamic obj)
         {
             var deleteMethod = typeof(DbAdapter).GetMethod("DeleteRecord", BindingFlags.Instance | BindingFlags.NonPublic);
-            deleteMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).Invoke(this, new object[] { obj });
+            deleteMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).InvokeWithException(this, new object[] { obj });
         }
 
         public int Save()
@@ -132,7 +132,7 @@ namespace AutoPocoIO.DynamicSchema.Db
 
         private DbSet<T> GetDbSet<T>() where T : class
         {
-            return (DbSet<T>)typeof(DbContextBase).GetMethod("Set", Array.Empty<Type>()).MakeGenericMethod(DbSetEntityType).Invoke(Instance, null);
+            return (DbSet<T>)typeof(DbContextBase).GetMethod("Set", Array.Empty<Type>()).MakeGenericMethod(DbSetEntityType).InvokeWithException(Instance, null);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Called by reflection")]
