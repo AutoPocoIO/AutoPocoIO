@@ -20,28 +20,28 @@ namespace AutoPocoIO.test.Exceptions
         [TestMethod]
         public void IsBaseException()
         {
-            var ex = new NoPrimaryKeyFoundException("a", "b");
+            var ex = new NoPrimaryKeyFoundException("a");
             Assert.IsInstanceOfType(ex, typeof(BaseCaughtException));
         }
 
         [TestMethod]
         public void ErrorMessageIsPopulated()
         {
-            var ex = new NoPrimaryKeyFoundException("entity", "tbl");
-            Assert.AreEqual("Virtual Entity 'entity' references tbl and does not contain a primary key.", ex.Message);
+            var ex = new NoPrimaryKeyFoundException("entity");
+            Assert.AreEqual("Entity 'entity' does not contain a primary key.", ex.Message);
         }
 
         [TestMethod]
         public void HttpErrorMessageIsPopulated()
         {
-            var ex = new NoPrimaryKeyFoundException("entity", "tbl");
+            var ex = new NoPrimaryKeyFoundException("entity");
             Assert.AreEqual("EntityKeyNotFound", ex.HttpErrorMessage);
         }
 
         [TestMethod]
         public void HttpStatusCodeIsPopulated()
         {
-            var ex = new NoPrimaryKeyFoundException("entity", "tbl");
+            var ex = new NoPrimaryKeyFoundException("entity");
             Assert.AreEqual(HttpStatusCode.InternalServerError, ex.ResponseCode);
         }
 

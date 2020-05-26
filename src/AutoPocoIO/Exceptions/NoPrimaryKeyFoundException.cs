@@ -6,13 +6,11 @@ namespace AutoPocoIO.Exceptions
     public class NoPrimaryKeyFoundException : BaseCaughtException
     {
         private readonly string _entityName;
-        private readonly string _baseTable;
-        public NoPrimaryKeyFoundException(string entityName, string baseTable) : base()
+        public NoPrimaryKeyFoundException(string entityName) : base()
         {
             _entityName = entityName;
-            _baseTable = baseTable;
         }
-        public override string Message => $"Virtual Entity '{_entityName}' references {_baseTable} and does not contain a primary key.";
+        public override string Message => $"Entity '{_entityName}' does not contain a primary key.";
 
         public override string HttpErrorMessage => "EntityKeyNotFound";
 

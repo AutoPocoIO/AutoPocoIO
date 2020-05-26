@@ -4,6 +4,7 @@ using AutoPocoIO.Extensions;
 using AutoPocoIO.Services;
 using AutoPocoIO.SwaggerAddons;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 #if NETFULL
 using System.Web.Http;
@@ -11,7 +12,6 @@ using Swashbuckle.Swagger.Annotations;
 #else
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Microsoft.AspNetCore.Authorization;
 #endif
 
 namespace AutoPocoIO.WebApi
@@ -67,7 +67,7 @@ namespace AutoPocoIO.WebApi
         [SwaggerResponse(200, "Single value found by the primary key", typeof(SwaggerExampleType))]
         [SwaggerOperation("getTableById")]
         [HttpGet]
-        public dynamic Get(string connectorName, string tableName, string id) =>
+        public object Get(string connectorName, string tableName, string id) =>
              _tableOps.GetById(connectorName, tableName, id, _loggingService);
 
 
@@ -81,7 +81,7 @@ namespace AutoPocoIO.WebApi
         [Route("")]
         [SwaggerResponse(200, "Inserted object", typeof(SwaggerExampleType))]
         [HttpPost]
-        public dynamic Post(string connectorName, string tableName, [FromBody]object value) =>
+        public object Post(string connectorName, string tableName, [FromBody]JToken value) =>
              _tableOps.CreateNewRow(connectorName, tableName, value, _loggingService);
 
 
@@ -96,7 +96,7 @@ namespace AutoPocoIO.WebApi
         [Route("{id}")]
         [SwaggerResponse(200, "Updated object", typeof(SwaggerExampleType))]
         [HttpPut]
-        public dynamic Put(string connectorName, string tableName, string id, [FromBody]object value) =>
+        public object Put(string connectorName, string tableName, string id, [FromBody]JToken value) =>
              _tableOps.UpdateRow(connectorName, tableName, id, value, _loggingService);
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace AutoPocoIO.WebApi
         [Route("{id}")]
         [SwaggerResponse(200, "Deleted object", typeof(SwaggerExampleType))]
         [HttpDelete]
-        public dynamic Delete(string connectorName, string tableName, string id) =>
+        public object Delete(string connectorName, string tableName, string id) =>
              _tableOps.DeleteRow(connectorName, tableName, id, _loggingService);
     }
 }

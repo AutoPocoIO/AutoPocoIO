@@ -45,9 +45,10 @@ namespace AutoPocoIO.DynamicSchema.Db
 
                 var tableType = GetTypeFromAssemblies(table.VariableName);
 
-                //If no PK from table definition [Key] attribute is added to a virtualPK
                 if (pks.Any())
                     modelBuilder.Entity(tableType).HasKey(pks.ToArray());
+                else
+                    throw new NoPrimaryKeyFoundException($"{table.Database}.{table.Schema}.{table.Name}");    
             }
         }
 

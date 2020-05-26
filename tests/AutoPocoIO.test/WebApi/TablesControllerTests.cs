@@ -1,8 +1,11 @@
 ﻿using AutoPocoIO.Api;
+using AutoPocoIO.Extensions;
 using AutoPocoIO.Services;
 using AutoPocoIO.WebApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -61,36 +64,38 @@ namespace AutoPocoIO.test.WebApi
 
             var controller = new TablesController(Ops.Object, LoggingService, _queryStringService);
 
-            var results = controller.Get("conn", "tbl", "14");
+            dynamic results = controller.Get("conn", "tbl", "14");
             Assert.AreEqual(1, results.a);
         }
 
         [TestMethod]
         public void PostCallsPostOp()
         {
-            var obj = new { a = 1 };
+            JToken obj = JObject.FromObject(new { a = 1 });
 
-            Ops.Setup(c => c.CreateNewRow<object>("conn", "tbl", obj, LoggingService))
+            Ops.Setup(c => c.CreateNewRow("conn", "tbl", obj, LoggingService))
                 .Returns(obj);
 
             var controller = new TablesController(Ops.Object, LoggingService, _queryStringService);
 
-            var results = controller.Post("conn", "tbl", obj);
-            Assert.AreEqual(1, results.a);
+            JToken results = (JToken)controller.Post("conn", "tbl", obj);
+            dynamic resultsToObject = results.JTokenToConventionalDotNetObject();
+            Assert.AreEqual(1, resultsToObject["a"]);
         }
 
         [TestMethod]
         public void PutCallsPutOp()
         {
-            var obj = new { a = 1 };
+            JToken obj = JObject.FromObject(new { a = 1 });
 
-            Ops.Setup(c => c.UpdateRow<object>("conn", "tbl", "14", obj, LoggingService))
+            Ops.Setup(c => c.UpdateRow("conn", "tbl", "14", obj, LoggingService))
                 .Returns(obj);
 
             var controller = new TablesController(Ops.Object, LoggingService, _queryStringService);
 
-            var results = controller.Put("conn", "tbl", "14", obj);
-            Assert.AreEqual(1, results.a);
+            JToken results = (JToken)controller.Put("conn", "tbl", "14", obj);
+            dynamic resultsToObject = results.JTokenToConventionalDotNetObject();
+            Assert.AreEqual(1, resultsToObject["a"]);
         }
         [TestMethod]
         public void DeleteCallsDeleteOp()
@@ -102,7 +107,7 @@ namespace AutoPocoIO.test.WebApi
 
             var controller = new TablesController(Ops.Object, LoggingService, _queryStringService);
 
-            var results = controller.Delete("conn", "tbl", "14");
+            dynamic results = controller.Delete("conn", "tbl", "14");
             Assert.AreEqual(1, results.a);
         }
     }

@@ -331,7 +331,7 @@ namespace AutoPocoIO.DynamicSchema.Runtime
                 }
             }
 
-            if (!hasPKColumn)
+            if (!hasPKColumn && table is View)
             {
                 //Create Fake pk
                 //Key Attribute
