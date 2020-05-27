@@ -1,5 +1,4 @@
-﻿using AutoPocoIO.DynamicSchema.Models;
-using AutoPocoIO.Services;
+﻿using AutoPocoIO.Services;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -207,6 +206,14 @@ namespace AutoPocoIO.Middleware
         protected T GetViewBagValue<T>(string key) where T: class
         {
             return ViewBag[key] as T;
+        }
+
+        protected string GetError(string errorName, string errorKey) 
+        {
+            if (ViewBag[errorName] is IDictionary<string, string> errors && errors.TryGetValue(errorKey, out string errorMessage))
+                return errorMessage;
+            else
+                return string.Empty;
         }
     }
 }
