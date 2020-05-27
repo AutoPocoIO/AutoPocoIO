@@ -128,16 +128,15 @@ WriteLiteral("\" />\r\n            <div class=\"errorMessage\"><span class=\"tex
 
                                                            Write(GetError("errors", nameof(ConnectorViewModel.RecordLimit)));
 
-WriteLiteral(@"</span></div>
-        </div>
-        <div class=""form-check"">
-            <input type=""checkbox"" class=""form-check-input"" id=""isEnabled"">
-            <label class=""form-check-label"" for=""isEnabledcheckbox"">Active</label>
-        </div>
-        <button type=""submit"" class=""btn btn-info mt-3"">Submit</button>
-    </form>
-</div>
-");
+WriteLiteral("</span></div>\r\n        </div>\r\n        <div class=\"form-check\">\r\n            <inp" +
+"ut type=\"checkbox\" class=\"form-check-input\" name=\"isEnabled\" ");
+
+
+                                                                         Write(GetViewBagValue<ConnectorViewModel>("model").IsActive ? "checked" : "");
+
+WriteLiteral(">\r\n            <label class=\"form-check-label\" for=\"isEnabled\">Active</label>\r\n  " +
+"      </div>\r\n        <button type=\"submit\" class=\"btn btn-info mt-3\">Submit</bu" +
+"tton>\r\n    </form>\r\n</div>\r\n");
 
 
         }

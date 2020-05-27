@@ -43,6 +43,8 @@ namespace AutoPocoIO.Migrations
                     b.Property<string>("UserId")
                         .HasMaxLength(50);
 
+                    b.Property<bool>("IsActive");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
@@ -60,7 +62,8 @@ namespace AutoPocoIO.Migrations
                             Name = "appDb",
                             RecordLimit = 500,
                             ResourceType = 1,
-                            Schema = "AutoPoco"
+                            Schema = "AutoPoco",
+                            IsActive = true
                         },
                         new
                         {
@@ -69,7 +72,8 @@ namespace AutoPocoIO.Migrations
                             Name = "logDb",
                             RecordLimit = 500,
                             ResourceType = 1,
-                            Schema = "AutoPocoLog"
+                            Schema = "AutoPocoLog",
+                            IsActive = true
                         });
                 });
 

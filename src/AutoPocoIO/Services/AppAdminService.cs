@@ -19,7 +19,7 @@ namespace AutoPocoIO.Services
         {
             try
             {
-                return _db.Connector.Single(c => c.Name == connectionName);
+                return _db.Connector.Single(c => c.Name == connectionName && c.IsActive);
             }
             catch (InvalidOperationException)
             {
@@ -31,7 +31,7 @@ namespace AutoPocoIO.Services
         {
             try
             {
-                return _db.Connector.Single(c => c.Id == id);
+                return _db.Connector.Single(c => c.Id == id && c.IsActive);
             }
             catch (InvalidOperationException)
             {

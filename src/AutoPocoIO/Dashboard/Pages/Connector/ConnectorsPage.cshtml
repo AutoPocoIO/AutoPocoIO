@@ -22,19 +22,21 @@
                 <th scope="col">Database</th>
                 <th scope="col">Schema</th>
                 <th scope="col">User</th>
+                <th scope="col">Active</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var row in (IEnumerable<Connector>)ViewBag["Connectors"])
             {
                 
-                <tr>
-                    <th scope="row"><a href="@TransformUrl("/Connectors/Connector/" + row.Id)">@row.Name</a></th>
-                    <td>@row.DataSource</td>
-                    <td>@row.InitialCatalog</td>
-                    <td>@row.Schema</td>
-                    <td>@row.UserId</td>
-                </tr>
+            <tr>
+                <th scope="row"><a href="@TransformUrl("/Connectors/Connector/" + row.Id)">@row.Name</a></th>
+                <td>@row.DataSource</td>
+                <td>@row.InitialCatalog</td>
+                <td>@row.Schema</td>
+                <td>@row.UserId</td>
+                <td><span style="font-weight:bold; color:@(row.IsActive ? "green" : "red")">@(row.IsActive ? "Active" : "Disabled")</span></td>
+            </tr>
             }
         </tbody>
     </table>

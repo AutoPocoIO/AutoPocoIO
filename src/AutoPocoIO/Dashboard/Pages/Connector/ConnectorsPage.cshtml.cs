@@ -54,6 +54,7 @@ WriteLiteral(@"'"">
                 <th scope=""col"">Database</th>
                 <th scope=""col"">Schema</th>
                 <th scope=""col"">User</th>
+                <th scope=""col"">Active</th>
             </tr>
         </thead>
         <tbody>
@@ -64,37 +65,47 @@ WriteLiteral(@"'"">
             {
                 
 
-WriteLiteral("                <tr>\r\n                    <th scope=\"row\"><a href=\"");
+WriteLiteral("            <tr>\r\n                <th scope=\"row\"><a href=\"");
 
 
-                                        Write(TransformUrl("/Connectors/Connector/" + row.Id));
+                                    Write(TransformUrl("/Connectors/Connector/" + row.Id));
 
 WriteLiteral("\">");
 
 
-                                                                                          Write(row.Name);
+                                                                                      Write(row.Name);
 
-WriteLiteral("</a></th>\r\n                    <td>");
-
-
-                   Write(row.DataSource);
-
-WriteLiteral("</td>\r\n                    <td>");
+WriteLiteral("</a></th>\r\n                <td>");
 
 
-                   Write(row.InitialCatalog);
+               Write(row.DataSource);
 
-WriteLiteral("</td>\r\n                    <td>");
-
-
-                   Write(row.Schema);
-
-WriteLiteral("</td>\r\n                    <td>");
+WriteLiteral("</td>\r\n                <td>");
 
 
-                   Write(row.UserId);
+               Write(row.InitialCatalog);
 
-WriteLiteral("</td>\r\n                </tr>\r\n");
+WriteLiteral("</td>\r\n                <td>");
+
+
+               Write(row.Schema);
+
+WriteLiteral("</td>\r\n                <td>");
+
+
+               Write(row.UserId);
+
+WriteLiteral("</td>\r\n                <td><span style=\"font-weight:bold; color:");
+
+
+                                                     Write(row.IsActive ? "green" : "red");
+
+WriteLiteral("\">");
+
+
+                                                                                        Write(row.IsActive ? "Active" : "Disabled");
+
+WriteLiteral("</span></td>\r\n            </tr>\r\n");
 
 
             }

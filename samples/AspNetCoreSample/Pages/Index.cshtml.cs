@@ -29,7 +29,7 @@ namespace AutoPocoIO.Sample.AspNetCore.Pages
             }
             catch (ConnectorNotFoundException)
             {
-                ViewData["ConnectorNeeded"] = "Connector sampleSales not set up.  Go to the dashboard to set configure.";
+                ViewData["ConnectorNeeded"] = "Connector sampleSales not set up or disabled.  Go to the dashboard to configure.";
                 Orders = Array.Empty<OrdersViewModel>();
             }
         }

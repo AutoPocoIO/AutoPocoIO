@@ -65,7 +65,8 @@ namespace AspNetCoreSample
                 ConnectionString = @"Data Source=""(localdb)\MSSQLLocalDB"";Initial Catalog=autopocoCore;Persist Security Info=False;User ID=;Password=;MultipleActiveResultSets=False;Connect Timeout=30;TrustServerCertificate=False",
                 RecordLimit = 500,
                 InitialCatalog = "autopocoCore",
-                DataSource = @"(localdb)\MSSQLLocalDB"
+                DataSource = @"(localdb)\MSSQLLocalDB",
+                IsActive = true
             };
 
             try

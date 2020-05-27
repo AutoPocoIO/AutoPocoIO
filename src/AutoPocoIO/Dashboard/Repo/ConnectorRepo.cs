@@ -48,6 +48,7 @@ namespace AutoPocoIO.Dashboard.Repo
             connector.InitialCatalog = model.InitialCatalog;
             connector.DataSource = model.DataSource;
             connector.Port = model.Port;
+            connector.IsActive = model.IsActive;
 
             _db.SaveChanges();
 
@@ -64,7 +65,8 @@ namespace AutoPocoIO.Dashboard.Repo
                 ConnectionString = c.ConnectionString,
                 RecordLimit = c.RecordLimit,
                 DataSource = c.DataSource,
-                Port = c.Port
+                Port = c.Port,
+                IsActive = c.IsActive
 
             }).Single(c => c.Id == id);
 
@@ -101,7 +103,7 @@ namespace AutoPocoIO.Dashboard.Repo
                 InitialCatalog = model.InitialCatalog,
                 DataSource = model.DataSource,
                 Port = model.Port,
-
+                IsActive = model.IsActive
             };
 
             _db.Connector.Add(connector);

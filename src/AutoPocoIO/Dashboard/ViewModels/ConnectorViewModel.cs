@@ -27,5 +27,6 @@ namespace AutoPocoIO.Dashboard.ViewModels
         public string InitialCatalog { get; set; }
         public string DataSource { get; set; }
         public int? Port { get; set; }
+        public bool IsActive { get; set; }
     }
 }
