@@ -15,8 +15,10 @@ namespace AutoPocoIO.Dashboard.Extensions
                 TypeConverter converter = TypeDescriptor.GetConverter(typeof(TProperty));
                 if (typeof(TProperty) == typeof(string))
                     property = form[key][0];
+                else if (typeof(TProperty) == typeof(bool) && form[key][0].Equals("on", System.StringComparison.OrdinalIgnoreCase))
+                    property = true;
                 else
-                   property = (TProperty)converter.ConvertFromString(form[key][0]);
+                    property = (TProperty)converter.ConvertFromString(form[key][0]);
 
             }
 

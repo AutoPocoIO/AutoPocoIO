@@ -58,13 +58,15 @@ namespace AutoPocoIO.Dashboard.Pages
             model = new ConnectorViewModel()
             {
                 Id = values.FindValue<int?>("id"),
+                ResourceType = 1,
                 Name = values.FindValue<string>("connectorName"),
                 DataSource = values.FindValue<string>("serverName"),
                 InitialCatalog = values.FindValue<string>("databaseName"),
                 Schema = values.FindValue<string>("schema"),
                 UserId = values.FindValue<string>("userId"),
                 Password = values.FindValue<string>("password"),
-                RecordLimit = values.FindValue<int?>("recordLimit")
+                RecordLimit = values.FindValue<int?>("recordLimit"),
+                IsActive = values.FindValue<bool>("isEnabled")
             };
         }
 

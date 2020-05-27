@@ -26,6 +26,7 @@ namespace AutoPocoIO.Migrations
                     InitialCatalog = table.Column<string>(maxLength: 50, nullable: true),
                     DataSource = table.Column<string>(maxLength: 500, nullable: true),
                     Port = table.Column<int>(nullable: true),
+                    IsActive = table.Column<bool>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -69,14 +70,14 @@ namespace AutoPocoIO.Migrations
             migrationBuilder.InsertData(
                 schema: "AutoPoco",
                 table: "Connector",
-                columns: new[] { "Id", "ConnectionString", "DataSource", "InitialCatalog", "Name", "RecordLimit", "ResourceType", "Schema", "UserId" },
-                values: new object[] { 1, "", null, null, "appDb", 500, 1, "AutoPoco", null });
+                columns: new[] { "Id", "ConnectionString", "DataSource", "InitialCatalog", "Name", "RecordLimit", "ResourceType", "Schema", "UserId", "IsActive" },
+                values: new object[] { 1, "", null, null, "appDb", 500, 1, "AutoPoco", null, true });
 
             migrationBuilder.InsertData(
                 schema: "AutoPoco",
                 table: "Connector",
-                columns: new[] { "Id", "ConnectionString", "DataSource", "InitialCatalog", "Name", "RecordLimit", "ResourceType", "Schema", "UserId" },
-                values: new object[] { 2, "", null, null, "logDb", 500, 1, "AutoPocoLog", null });
+                columns: new[] { "Id", "ConnectionString", "DataSource", "InitialCatalog", "Name", "RecordLimit", "ResourceType", "Schema", "UserId", "IsActive" },
+                values: new object[] { 2, "", null, null, "logDb", 500, 1, "AutoPocoLog", null, true });
 
             migrationBuilder.InsertData(
                 schema: "AutoPoco",

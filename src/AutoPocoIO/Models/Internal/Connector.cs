@@ -36,5 +36,6 @@ namespace AutoPocoIO.Models
         [MaxLength(500)]
         public string DataSource { get; set; }
         public int? Port { get; set; }
+        public bool IsActive { get; set; }
     }
 }
