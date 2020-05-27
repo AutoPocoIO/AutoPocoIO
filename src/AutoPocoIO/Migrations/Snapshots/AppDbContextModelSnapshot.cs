@@ -37,6 +37,8 @@ namespace AutoPocoIO.Migrations
 
                     b.Property<int>("ResourceType");
 
+                    b.Property<int>("Port");
+
                     b.Property<string>("Schema")
                         .HasMaxLength(50);
 

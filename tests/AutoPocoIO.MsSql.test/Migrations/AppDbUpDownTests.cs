@@ -59,7 +59,7 @@ namespace AutoPocoIO.test.Migrations
             Assert.AreEqual("[Name] IS NOT NULL", idxOps.First(c => c.Name == "IDX_ConnectorName").Filter);
 
             //Columns
-            Assert.AreEqual(10, op.Columns.Count());
+            Assert.AreEqual(11, op.Columns.Count());
 
             Assert.AreEqual(typeof(int), op.Columns.First(c => c.Name == "Id").ClrType);
             Assert.IsFalse(op.Columns.First(c => c.Name == "Id").IsNullable);
@@ -96,6 +96,9 @@ namespace AutoPocoIO.test.Migrations
 
             Assert.AreEqual(typeof(int), op.Columns.First(c => c.Name == "Port").ClrType);
             Assert.IsTrue(op.Columns.First(c => c.Name == "Port").IsNullable);
+
+            Assert.AreEqual(typeof(bool), op.Columns.First(c => c.Name == "IsActive").ClrType);
+            Assert.IsFalse(op.Columns.First(c => c.Name == "IsActive").IsNullable);
 
         }
 
@@ -172,12 +175,12 @@ namespace AutoPocoIO.test.Migrations
             var dataOps = migration.UpOperations.Where(c => c.GetType() == typeof(InsertDataOperation) && ((InsertDataOperation)c).Table == "Connector").Cast<InsertDataOperation>();
 
             var id1 = dataOps.First(c => (int)c.Values[0, 0] == 1);
-            CollectionAssert.AreEqual(new[] { "Id", "ConnectionString", "DataSource", "InitialCatalog", "Name", "RecordLimit", "ResourceType", "Schema", "UserId" }, id1.Columns);
-            CollectionAssert.AreEqual(new object[] { 1, "", null, null, "appDb", 500, 1, "AutoPoco", null }, GetRow(id1.Values, 0));
+            CollectionAssert.AreEqual(new[] { "Id", "ConnectionString", "DataSource", "InitialCatalog", "Name", "RecordLimit", "ResourceType", "Schema", "UserId", "IsActive" }, id1.Columns);
+            CollectionAssert.AreEqual(new object[] { 1, "", null, null, "appDb", 500, 1, "AutoPoco", null, true }, GetRow(id1.Values, 0));
 
             var id2 = dataOps.First(c => (int)c.Values[0, 0] == 2);
-            CollectionAssert.AreEqual(new[] { "Id", "ConnectionString", "DataSource", "InitialCatalog", "Name", "RecordLimit", "ResourceType", "Schema", "UserId" }, id2.Columns);
-            CollectionAssert.AreEqual(new object[] { 2, "", null, null, "logDb", 500, 1, "AutoPocoLog", null }, GetRow(id2.Values, 0));
+            CollectionAssert.AreEqual(new[] { "Id", "ConnectionString", "DataSource", "InitialCatalog", "Name", "RecordLimit", "ResourceType", "Schema", "UserId", "IsActive" }, id2.Columns);
+            CollectionAssert.AreEqual(new object[] { 2, "", null, null, "logDb", 500, 1, "AutoPocoLog", null, true }, GetRow(id2.Values, 0));
         }
 
 

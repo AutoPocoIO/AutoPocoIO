@@ -57,7 +57,7 @@ namespace AutoPocoIO.test.Migrations
             Assert.AreEqual("[Name] IS NOT NULL", entity.GetIndexes().First(c => c.Relational().Name == "IDX_ConnectorName").Relational().Filter);
 
             //Columns (if column not found then will throw nullobject)
-            Assert.AreEqual(9, entity.GetProperties().Count());
+            Assert.AreEqual(11, entity.GetProperties().Count());
 
             Assert.AreEqual(typeof(int), entity.FindProperty("Id").ClrType);
             Assert.AreEqual(ValueGenerated.OnAdd, entity.FindProperty("Id").ValueGenerated);
@@ -77,6 +77,9 @@ namespace AutoPocoIO.test.Migrations
 
             Assert.AreEqual(typeof(string), entity.FindProperty("UserId").ClrType);
             Assert.AreEqual(50, entity.FindProperty("UserId").GetMaxLength());
+
+            Assert.AreEqual(typeof(int), entity.FindProperty("Port").ClrType);
+            Assert.AreEqual(typeof(bool), entity.FindProperty("IsActive").ClrType);
         }
 
         [TestMethod]

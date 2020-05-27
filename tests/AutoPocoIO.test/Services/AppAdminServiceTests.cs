@@ -29,7 +29,8 @@ namespace AutoPocoIO.test.Services
             db.Connector.Add(new Connector
             {
                 Id = 1,
-                Name = "connName1"
+                Name = "connName1",
+                IsActive = true
             });
             db.SaveChanges();
 
@@ -59,12 +60,30 @@ namespace AutoPocoIO.test.Services
         }
 
         [TestMethod]
-        public void FindConnectorBasicById()
+        [ExpectedException(typeof(ConnectorNotFoundException))]
+        public void ConnectorNotActive()
+        {
+
+            var db = new AppDbContext(appDbOptions);
+            db.Connector.Add(new Connector
+            {
+                Name = "connName1",
+                IsActive = false
+            });
+            db.SaveChanges();
+
+            IAppAdminService appAdminService = new AppAdminService(db);
+            _ = appAdminService.GetConnection("connName1");
+        }
+
+        [TestMethod]
+        public void FindConnectorById()
         {
             var db = new AppDbContext(appDbOptions);
             var conn1 = new Connector
             {
-                Name = "connName1"
+                Name = "connName1",
+                IsActive = true
             };
 
             db.Connector.Add(conn1);
@@ -85,7 +104,26 @@ namespace AutoPocoIO.test.Services
             var db = new AppDbContext(appDbOptions);
             db.Connector.Add(new Connector
             {
-                Name = "connName1"
+                Id = 12,
+                Name = "connName1",
+                IsActive = true
+            });
+            db.SaveChanges();
+
+            IAppAdminService appAdminService = new AppAdminService(db);
+            _ = appAdminService.GetConnection(45);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ConnectorNotFoundException))]
+        public void ConnectorNotFoundByIdDisabled()
+        {
+            var db = new AppDbContext(appDbOptions);
+            db.Connector.Add(new Connector
+            {
+                Id = 45,
+                Name = "connName1",
+                IsActive = false
             });
             db.SaveChanges();
 
