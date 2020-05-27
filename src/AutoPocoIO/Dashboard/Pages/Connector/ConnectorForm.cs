@@ -6,6 +6,7 @@ using AutoPocoIO.DynamicSchema.Util;
 using AutoPocoIO.Middleware.Dispatchers;
 using AutoPocoIO.Models;
 using System.Collections.Generic;
+using System.Linq;
 using static AutoPocoIO.AutoPocoConstants;
 
 namespace AutoPocoIO.Dashboard.Pages
@@ -14,16 +15,20 @@ namespace AutoPocoIO.Dashboard.Pages
     {
         private readonly IConnectorRepo _repo;
         private ConnectorViewModel model;
+        private IDictionary<string, string> errors;
 
         public ConnectorForm(IConnectorRepo repo, Layout layout)
         {
             _repo = repo;
             Layout = layout;
+            errors = new Dictionary<string, string>();
+            ViewBag["errors"] = errors;
         }
 
         public virtual IMiddlewareDispatcher Save()
         {
-            if (Validate())
+            _repo.Validate(model, errors);
+            if (errors.Count == 0)
             {
                 if (model.Id == 0)
                 {
@@ -39,12 +44,8 @@ namespace AutoPocoIO.Dashboard.Pages
                 return new RedirectDispatcher("/Connectors");
             }
 
+            ViewBag["model"] = model;
             return new RazorPageDispatcher(c => this);
-        }
-
-        private bool Validate()
-        {
-            return true;
         }
 
         public virtual void GetById(int id)
@@ -56,14 +57,14 @@ namespace AutoPocoIO.Dashboard.Pages
         {
             model = new ConnectorViewModel()
             {
-                Id = values.FindValue<int>("id"),
+                Id = values.FindValue<int?>("id"),
                 Name = values.FindValue<string>("connectorName"),
                 DataSource = values.FindValue<string>("serverName"),
                 InitialCatalog = values.FindValue<string>("databaseName"),
                 Schema = values.FindValue<string>("schema"),
                 UserId = values.FindValue<string>("userId"),
                 Password = values.FindValue<string>("password"),
-                RecordLimit = values.FindValue<int>("recordLimit")
+                RecordLimit = values.FindValue<int?>("recordLimit")
             };
         }
 

@@ -11,5 +11,6 @@ namespace AutoPocoIO.Dashboard.Repo
         void Save(ConnectorViewModel model);
         ConnectorViewModel GetById(int id);
         void Insert(ConnectorViewModel model);
+        void Validate(ConnectorViewModel model, IDictionary<string, string> errors);
     }
 }

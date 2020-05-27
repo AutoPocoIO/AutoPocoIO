@@ -48,53 +48,87 @@ WriteLiteral(@""" />
 
                       Write(GetViewBagValue<ConnectorViewModel>("model").Name);
 
-WriteLiteral(@""" />
-            <small id=""connectorHelp"" class=""form-text text-muted"">This is the name used in all calls to this schema</small>
-        </div>
-        <div class=""form-group"">
-            <label for=""serverName"">Servername</label>
-            <input type=""text"" class=""form-control"" name=""serverName"" placeholder=""Database Server Name""
-                   value=""");
+WriteLiteral("\" />\r\n            <small id=\"connectorHelp\" class=\"form-text text-muted\">This is " +
+"the name used in all calls to this schema</small>\r\n            <div class=\"error" +
+"Message\"><span class=\"text-danger\">");
+
+
+                                                           Write(GetError("errors", nameof(ConnectorViewModel.Name)));
+
+WriteLiteral("</span></div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <lab" +
+"el for=\"serverName\">Servername</label>\r\n            <input type=\"text\" class=\"fo" +
+"rm-control\" name=\"serverName\" placeholder=\"Database Server Name\"\r\n              " +
+"     value=\"");
 
 
                       Write(GetViewBagValue<ConnectorViewModel>("model").DataSource);
 
-WriteLiteral("\" />\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label for=\"d" +
-"atabaseName\">\"Database Name</label>\r\n            <input type=\"text\" class=\"form-" +
-"control\" name=\"databaseName\"\r\n                   value=\"");
+WriteLiteral("\" />\r\n            <div class=\"errorMessage\"><span class=\"text-danger\">");
+
+
+                                                           Write(GetError("errors", nameof(ConnectorViewModel.DataSource)));
+
+WriteLiteral("</span></div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <lab" +
+"el for=\"databaseName\">\"Database Name</label>\r\n            <input type=\"text\" cla" +
+"ss=\"form-control\" name=\"databaseName\"\r\n                   value=\"");
 
 
                       Write(GetViewBagValue<ConnectorViewModel>("model").InitialCatalog);
 
-WriteLiteral("\" />\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label for=\"s" +
-"chema\">Schema</label>\r\n            <input type=\"text\" class=\"form-control\" name=" +
-"\"schema\"\r\n                   value=\"");
+WriteLiteral("\" />\r\n            <div class=\"errorMessage\"><span class=\"text-danger\">");
+
+
+                                                           Write(GetError("errors", nameof(ConnectorViewModel.InitialCatalog)));
+
+WriteLiteral("</span></div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <lab" +
+"el for=\"schema\">Schema</label>\r\n            <input type=\"text\" class=\"form-contr" +
+"ol\" name=\"schema\"\r\n                   value=\"");
 
 
                       Write(GetViewBagValue<ConnectorViewModel>("model").Schema);
 
-WriteLiteral("\" />\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label for=\"u" +
-"serId\">Database User Account Name</label>\r\n            <input type=\"text\" class=" +
-"\"form-control\" name=\"userId\"\r\n                   value=\"");
+WriteLiteral("\" />\r\n            <div class=\"errorMessage\"><span class=\"text-danger\">");
+
+
+                                                           Write(GetError("errors", nameof(ConnectorViewModel.Schema)));
+
+WriteLiteral("</span></div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <lab" +
+"el for=\"userId\">Database User Account Name</label>\r\n            <input type=\"tex" +
+"t\" class=\"form-control\" name=\"userId\"\r\n                   value=\"");
 
 
                       Write(GetViewBagValue<ConnectorViewModel>("model").UserId);
 
-WriteLiteral("\" />\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label for=\"p" +
-"assword\">Database User Account Password</label>\r\n            <input type=\"text\" " +
-"class=\"form-control\" name=\"password\"\r\n                   value=\"");
+WriteLiteral("\" />\r\n            <div class=\"errorMessage\"><span class=\"text-danger\">");
+
+
+                                                           Write(GetError("errors", nameof(ConnectorViewModel.UserId)));
+
+WriteLiteral("</span></div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <lab" +
+"el for=\"password\">Database User Account Password</label>\r\n            <input typ" +
+"e=\"text\" class=\"form-control\" name=\"password\"\r\n                   value=\"");
 
 
                       Write(GetViewBagValue<ConnectorViewModel>("model").Password);
 
-WriteLiteral("\" />\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <label for=\"r" +
-"ecordLimit\">Maximum Records Returned</label>\r\n            <input type=\"text\" cla" +
-"ss=\"form-control\" name=\"recordLimit\"\r\n                   value=\"");
+WriteLiteral("\" />\r\n            <div class=\"errorMessage\"><span class=\"text-danger\">");
+
+
+                                                           Write(GetError("errors", nameof(ConnectorViewModel.Password)));
+
+WriteLiteral("</span></div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <lab" +
+"el for=\"recordLimit\">Maximum Records Returned</label>\r\n            <input type=\"" +
+"text\" class=\"form-control\" name=\"recordLimit\"\r\n                   value=\"");
 
 
                       Write(GetViewBagValue<ConnectorViewModel>("model").RecordLimit);
 
-WriteLiteral(@""" />
+WriteLiteral("\" />\r\n            <div class=\"errorMessage\"><span class=\"text-danger\">");
+
+
+                                                           Write(GetError("errors", nameof(ConnectorViewModel.RecordLimit)));
+
+WriteLiteral(@"</span></div>
         </div>
         <div class=""form-check"">
             <input type=""checkbox"" class=""form-check-input"" id=""isEnabled"">

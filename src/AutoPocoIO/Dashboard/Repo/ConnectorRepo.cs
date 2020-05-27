@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq.Dynamic.Core;
 using System.Linq;
 using AutoPocoIO.Factories;
+using System;
 
 namespace AutoPocoIO.Dashboard.Repo
 {
@@ -27,7 +28,7 @@ namespace AutoPocoIO.Dashboard.Repo
         {
             model.ResourceType = 1;
 
-            var connectionInfo = new AutoPocoIO.Resources.ConnectionInformation
+            var connectionInfo = new Resources.ConnectionInformation
             {
                 InitialCatalog = model.InitialCatalog,
                 DataSource = model.DataSource,
@@ -80,7 +81,7 @@ namespace AutoPocoIO.Dashboard.Repo
         {
             model.ResourceType = 1;
 
-            var connectionInfo = new AutoPocoIO.Resources.ConnectionInformation
+            var connectionInfo = new Resources.ConnectionInformation
             {
                 InitialCatalog = model.InitialCatalog,
                 DataSource = model.DataSource,
@@ -106,8 +107,44 @@ namespace AutoPocoIO.Dashboard.Repo
             _db.Connector.Add(connector);
 
             _db.SaveChanges();
+        }
 
-           // return connector.Id;
+        public void Validate(ConnectorViewModel model, IDictionary<string, string> errors)
+        {
+            errors.Clear();
+            if (string.IsNullOrEmpty(model.Name))
+                errors[nameof(model.Name)] = "Connector Name is required.";
+            else if(model.Name.Length > 50)
+                errors[nameof(model.Name)] = $"Connector Name has a max length of 50.  {model.Name.Length} was submitted.";
+            else if(_db.Connector.Any(c => c.Name.Equals(model.Name, StringComparison.OrdinalIgnoreCase) && c.Id != model.Id))
+            {
+                errors[nameof(model.Name)] =  $"The Connector Name {model.Name} already exists.";
+            }
+
+            if (model.ResourceType == null)
+                errors[nameof(model.ResourceType)] = "Resource Type is required.";
+
+            if (string.IsNullOrEmpty(model.Schema))
+                errors[nameof(model.Schema)] = "Schema Name is required.";
+            else if (model.Schema.Length > 50)
+                errors[nameof(model.Schema)] = $"Schema Name has a max length of 50.  {model.Schema.Length} was submitted.";
+
+            if (string.IsNullOrEmpty(model.InitialCatalog))
+                errors[nameof(model.InitialCatalog)] = "Database Name is required.";
+            else if (model.InitialCatalog.Length > 50)
+                errors[nameof(model.InitialCatalog)] = $"Database Name has a max length of 50.  {model.InitialCatalog.Length} was submitted.";
+
+            if (model.UserId.Length > 50)
+                errors[nameof(model.UserId)] = $"Database Name has a max length of 50.  {model.UserId.Length} was submitted.";
+
+            if (string.IsNullOrEmpty(model.DataSource))
+                errors[nameof(model.DataSource)] = "Server Name is required.";
+            else if (model.DataSource.Length > 50)
+                errors[nameof(model.DataSource)] = $"Server Name has a max length of 50.  {model.DataSource.Length} was submitted.";
+
+            if (model.RecordLimit == null)
+                errors[nameof(model.RecordLimit)] = "Record Limit is required.";
+
         }
     }
 }

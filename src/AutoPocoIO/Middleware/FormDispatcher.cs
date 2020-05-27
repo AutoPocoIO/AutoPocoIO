@@ -19,7 +19,7 @@ namespace AutoPocoIO.Middleware
             if (!"POST".Equals(request.Method, StringComparison.OrdinalIgnoreCase))
             {
                 response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
-                return ;
+                return;
             }
 
             TPage page = context.InternalServiceProvider.GetRequiredService<TPage>();
@@ -27,10 +27,9 @@ namespace AutoPocoIO.Middleware
 
             var form = await context.Request.ReadFormAsync().ConfigureAwait(false);
             page.SetForm(form);
-            page.Save();
+            IMiddlewareDispatcher result = page.Save();
 
-            return;
-        
+            await result.Dispatch(context, loggingService).ConfigureAwait(false);
         }
     }
 }
