@@ -1,10 +1,6 @@
 # AutoPocoIO
 
-[![Official Site](https://img.shields.io/badge/site-autopoco.io-blue.svg)](http://autopoco.io) [![License LGPLv3](https://img.shields.io/badge/license-LGPLv3-green.svg)](http://www.gnu.org/licenses/lgpl-3.0.html)
-## Build Status
-`master` | `dev`
---- | --- 
-[![Build status](https://ci.appveyor.com/api/projects/status/4qe1ffp77uaecy29/branch/master?retina=true)](https://ci.appveyor.com/project/autopocoio/autopocoio/branch/master)  | [![Build status](https://ci.appveyor.com/api/projects/status/4qe1ffp77uaecy29/branch/dev?retina=true)](https://ci.appveyor.com/project/autopocoio/autopocoio/branch/dev)
+[![Official Site](https://img.shields.io/badge/site-autopoco.io-blue.svg)](http://autopoco.io) [![License LGPLv3](https://img.shields.io/badge/license-LGPLv3-green.svg)](http://www.gnu.org/licenses/lgpl-3.0.html) [![Build status](https://ci.appveyor.com/api/projects/status/4qe1ffp77uaecy29/branch/master?svg=true&passingText=Master%20Passed&pendingText=Master%Building&failingText=Master%20Failed)](https://ci.appveyor.com/project/autopocoio/autopocoio/branch/master) [![Build status](https://ci.appveyor.com/api/projects/status/4qe1ffp77uaecy29/branch/dev?svg=true&passingText=Dev%20Passed&pendingText=Dev%Building&failingText=Dev%20Failed)](https://ci.appveyor.com/project/autopocoio/autopocoio/branch/dev) [![codecov](https://codecov.io/gh/AutoPocoIO/AutoPocoIO/branch/dev/graph/badge.svg)](https://codecov.io/gh/AutoPocoIO/AutoPocoIO)
 
 ## Overview
 Auto generate Entity Framework POCO classes at runtime to build dynamic type ASP.NET applications. Classes are generated from your database's current schema. Supports CRUD and execute operations on SQL, mysql, & Oracle tables, views, and stored procedures. Requests are logged automatically, so there is no need to write custom logging. Grant or restrict column-level access using the Role Based authorization service.
