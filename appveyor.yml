@@ -6,16 +6,11 @@ shallow_clone: true
 environment:
    VERSION: 1.0.0
    OPENCOVER_PREFIX: 'C:\Users\appveyor\.nuget\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe -register -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test'
-   OPENCOVER_SUFFIX: ' --no-build" -output:".\coverage.xml" -mergeoutput -oldStyle -filter:"+[AutoPocoIO*]* -[*.test*]*"'
+   OPENCOVER_SUFFIX: ' --no-build" -output:".\coverage.xml" -returntargetcode:1000 -mergeoutput -oldStyle -filter:"+[AutoPocoIO*]* -[*.test*]*"; $env:TEST_PASS = $?; if($env:Test_PASS -eq "False") {$host.SetShouldExit(1)}'
+   TEST_PASS: 'False'
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true
-install:
-  # Install repo specific stuff here
-before_build:
-  # Display .NET Core version
-  - cmd: dotnet --version
-    # Display minimal restore text
 build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish
   - cmd: dotnet build ./sln/AutoPocoIO.sln --verbosity m
