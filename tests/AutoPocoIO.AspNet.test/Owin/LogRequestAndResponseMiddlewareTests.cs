@@ -138,14 +138,18 @@ namespace AutoPocoIO.AspNet.test.Owin
                 app.Use<EndOfPipeLineTestMiddleware>();
             }))
             {
+                IServiceScope usedScope = null;
                 logger.Setup(c => c.LogCount).Returns(1);
+                logger.Setup(c => c.LogAll(It.IsAny<IServiceScope>()))
+                    .Callback<IServiceScope>(c => usedScope = c);
+                
 
                 HttpResponseMessage response = server.HttpClient.GetAsync("/").Result;
 
                 Assert.AreEqual(200, (int)response.StatusCode);
                 Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
-
-                logger.Verify(c => c.LogAll(scope.Object), Times.Once);
+                Assert.AreEqual(usedScope, scope.Object);
+                
             }
         }
 
