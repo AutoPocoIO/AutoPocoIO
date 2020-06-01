@@ -86,7 +86,6 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
             Assert.Single(classBuilder.ExistingAssemblies);
             Assert.Equal($"TBL_{guid1.ToString().ToUpper()}", classBuilder.ExistingAssemblies[asmName.ToUpperInvariant()].Name);
-            Assert.Equal(2, AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.ToUpperInvariant() == asmName.ToUpperInvariant()).Count());
         }
 
         [FactWithName]
