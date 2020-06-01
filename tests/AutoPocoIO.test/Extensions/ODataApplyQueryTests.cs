@@ -4,14 +4,14 @@ using AutoPocoIO.Models;
 using AutoPocoIO.test.TestHelpers;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.OData;
-using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
-using Xunit;
 
 namespace AutoPocoIO.test.Extensions
 {
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class ODataApplyQueryTests : DbAccessUnitTestBase
     {
         private IDictionary<string, string> queryString;
@@ -24,16 +24,17 @@ namespace AutoPocoIO.test.Extensions
             }
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ODataException))]
         public void ThrowExceptionIfRequestingOverLimit()
         {
             SetQueryString(("$top", "6"));
             var db = new AppDbContext(AppDbOptions);
-             void act() => db.Connector.ApplyQuery(2, queryString);
-            Assert.Throws<ODataException>(act);
+            db.Connector.ApplyQuery(2, queryString);
+            Assert.Fail("Apply Query should have failed");
         }
 
-        [FactWithName]
+        [TestMethod]
         public void TakeTopIfUnderLimit()
         {
             SetQueryString(("$top", "1"));
@@ -42,10 +43,10 @@ namespace AutoPocoIO.test.Extensions
             db.SaveChanges();
 
             var result = db.Connector.ApplyQuery(2, queryString);
-            Assert.Equal(1, result.Count());
+            Assert.AreEqual(1, result.Count());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void SetTopToLimitIfNotInQueryString()
         {
             SetQueryString();
@@ -54,10 +55,10 @@ namespace AutoPocoIO.test.Extensions
             db.SaveChanges();
 
             var result = db.Connector.ApplyQuery(2, queryString);
-            Assert.Equal(2, result.Count());
+            Assert.AreEqual(2, result.Count());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void AppenedTopAndKeepOtherParams()
         {
             SetQueryString(("abc", "123"));
@@ -66,11 +67,11 @@ namespace AutoPocoIO.test.Extensions
             db.SaveChanges();
 
             var result = db.Connector.ApplyQuery(2, queryString);
-            Assert.Equal(2, result.Count());
-            // Assert.Equal("http://test.com/site?abc=123&$top=2", url);
+            Assert.AreEqual(2, result.Count());
+            // Assert.AreEqual("http://test.com/site?abc=123&$top=2", url);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void OrderBy()
         {
             SetQueryString(("$orderby", "name"));
@@ -82,11 +83,11 @@ namespace AutoPocoIO.test.Extensions
             db.SaveChanges();
 
             IQueryable<dynamic> result = db.Connector.ApplyQuery(1, queryString);
-            Assert.Equal(1, result.Count());
-            Assert.Equal("a", result.First().Name);
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual<string>("a", result.First().Name);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void OrderByWithTop2()
         {
             SetQueryString(("$orderby", "name"), ("$top", "2"));
@@ -98,11 +99,11 @@ namespace AutoPocoIO.test.Extensions
             db.SaveChanges();
 
             IQueryable<dynamic> result = db.Connector.ApplyQuery(3, queryString);
-            Assert.Equal(2, result.Count());
-            Assert.Equal("a", result.First().Name);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual<string>("a", result.First().Name);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GetCount()
         {
             SetQueryString(("$count", "true"));
@@ -114,11 +115,11 @@ namespace AutoPocoIO.test.Extensions
             db.SaveChanges();
 
             IQueryable<dynamic> result = db.Connector.ApplyQuery(30, queryString);
-            Assert.Equal(1, result.Count());
-            Assert.Equal<int>(3, result.First().Count);
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual<int>(3, result.First().Count);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GetCountIgnoreLimit()
         {
             SetQueryString(("$count", "true"));
@@ -130,11 +131,11 @@ namespace AutoPocoIO.test.Extensions
             db.SaveChanges();
 
             IQueryable<dynamic> result = db.Connector.ApplyQuery(1, queryString);
-            Assert.Equal(1, result.Count());
-            Assert.Equal<int>(3, result.First().Count);
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual<int>(3, result.First().Count);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GetCountWithTop()
         {
             SetQueryString(("$count", "true"), ("$top", "2"));
@@ -146,11 +147,11 @@ namespace AutoPocoIO.test.Extensions
             db.SaveChanges();
 
             IQueryable<dynamic> result = db.Connector.ApplyQuery(30, queryString);
-            Assert.Equal(1, result.Count());
-            Assert.Equal<int>(2, result.First().Count);
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual<int>(2, result.First().Count);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GetCountWithFilter()
         {
             SetQueryString(("$count", "true"), ("$filter", "name eq 'a'"));
@@ -162,8 +163,8 @@ namespace AutoPocoIO.test.Extensions
             db.SaveChanges();
 
             IQueryable<dynamic> result = db.Connector.ApplyQuery(30, queryString);
-            Assert.Equal(1, result.Count());
-            Assert.Equal<int>(1, result.First().Count);
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual<int>(1, result.First().Count);
         }
     }
 }

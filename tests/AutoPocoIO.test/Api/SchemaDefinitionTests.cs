@@ -2,25 +2,26 @@
 using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Linq;
 
 namespace AutoPocoIO.test.Api
 {
-    
-     [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class SchemaDefinitionTests : ApiOperationBase
     {
-        private readonly SchemaOperations schemaOperations;
+        private SchemaOperations schemaOperations;
 
-        public SchemaDefinitionTests()
+        [TestInitialize]
+        public void InitOperation()
         {
             schemaOperations = new SchemaOperations(serviceProvider);
 
         }
 
-        [FactWithName]
+        [TestMethod]
         public void DefinitionNoLogging()
         {
             var definition = new SchemaDefinition { Name = "returned" };
@@ -34,11 +35,11 @@ namespace AutoPocoIO.test.Api
 
 
             var result = schemaOperations.Definition("conn1");
-            Assert.Equal(0, loggingService.LogCount);
-            Assert.Equal(definition, result);
+            Assert.AreEqual(0, loggingService.LogCount);
+            Assert.AreEqual(definition, result);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void DefinitionWithLogging()
         {
             var definition = new SchemaDefinition { Name = "returned" };
@@ -51,9 +52,9 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var result = schemaOperations.Definition("conn1", loggingService);
-            Assert.Equal(1, loggingService.LogCount);
-            Assert.Equal("GET", loggingService.ApiRequests.First().RequestType);
-            Assert.Equal(definition, result);
+            Assert.AreEqual(1, loggingService.LogCount);
+            Assert.AreEqual("GET", loggingService.ApiRequests.First().RequestType);
+            Assert.AreEqual(definition, result);
         }
     }
 }

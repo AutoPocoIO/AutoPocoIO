@@ -3,16 +3,16 @@ using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.Models;
 using AutoPocoIO.test;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace AutoPocoIO.Auth.test.DynamicSchema
 {
-    
-     [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class SchemaInitializerTests
     {
-        [FactWithName]
+        [TestMethod]
         public void ConfgiureAction()
         {
             var config = new Config();
@@ -23,10 +23,10 @@ namespace AutoPocoIO.Auth.test.DynamicSchema
              schemaBuilder.Object);
 
             schmea.ConfigureAction(new Connector { ConnectionStringDecrypted = "conn1" }, OperationType.read);
-            Assert.Equal("conn1", config.ConnectionString);
+            Assert.AreEqual("conn1", config.ConnectionString);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void InitializeTable()
         {
             var config = new Config
@@ -44,7 +44,7 @@ namespace AutoPocoIO.Auth.test.DynamicSchema
             schemaBuilder.Verify(c => c.GetColumns(), Times.Once);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void InitializeSchema()
         {
             var config = new Config();

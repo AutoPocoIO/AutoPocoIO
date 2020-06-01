@@ -2,6 +2,7 @@
 using AutoPocoIO.DynamicSchema.Db;
 using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Runtime;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -12,19 +13,20 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
-using Xunit;
 using DataType = AutoPocoIO.DynamicSchema.Models.DataType;
 
 namespace AutoPocoIO.test.DynamicSchema.Runtime
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class DynamicClassBuilderTests
     {
         Guid guid1 = Guid.NewGuid();
         Guid guid2 = Guid.NewGuid();
-        readonly Mock<DbSchema> schema;
-        public DynamicClassBuilderTests()
+        Mock<DbSchema> schema;
+
+        [TestInitialize]
+        public void Init()
         {
             var variableName = $"tbl_{guid1}";
             var table = new Mock<Table>();
@@ -56,7 +58,7 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
             schema.Setup(c => c.GetHashCode()).Returns(987654);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void AllTypesFound()
         {
             //Create so already found
@@ -67,12 +69,12 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
             var classBuilder = new DynamicClassBuilder(schema.Object);
             classBuilder.CreateModelTypes("reqTbl");
 
-            Assert.Single(classBuilder.ExistingAssemblies);
-            Assert.Equal($"tbl_{guid1}", classBuilder.ExistingAssemblies[asmName.ToUpperInvariant()].Name);
-            Assert.Single(AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.ToUpperInvariant() == asmName.ToUpperInvariant()));
+            Assert.AreEqual(1, classBuilder.ExistingAssemblies.Count());
+            Assert.AreEqual($"tbl_{guid1}", classBuilder.ExistingAssemblies[asmName.ToUpperInvariant()].Name);
+            Assert.AreEqual(1, AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.ToUpperInvariant() == asmName.ToUpperInvariant()).Count());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void RebuildAllTypesIfInTheMiddleOfCreatingType()
         {
             //Create so already found
@@ -84,12 +86,12 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
             var classBuilder = new DynamicClassBuilder(schema.Object);
             classBuilder.CreateModelTypes("reqTbl");
 
-            Assert.Single(classBuilder.ExistingAssemblies);
-            Assert.Equal($"TBL_{guid1.ToString().ToUpper()}", classBuilder.ExistingAssemblies[asmName.ToUpperInvariant()].Name);
-            Assert.Equal(2, AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.ToUpperInvariant() == asmName.ToUpperInvariant()).Count());
+            Assert.AreEqual(1, classBuilder.ExistingAssemblies.Count());
+            Assert.AreEqual($"TBL_{guid1.ToString().ToUpper()}", classBuilder.ExistingAssemblies[asmName.ToUpperInvariant()].Name);
+            Assert.AreEqual(2, AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.ToUpperInvariant() == asmName.ToUpperInvariant()).Count());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void RebuildAllTypesIfOnlySomeTimesFound()
         {
             var variableName = $"tbl12_{guid1}";
@@ -107,17 +109,17 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
             string asmName = $"dynamicassembly.tbl12_{guid1}1234566.reqTbl987654";
             CreateAsm(asmName, $"tbl12_{guid1}");
 
-            Assert.Single(AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.ToUpperInvariant() == asmName.ToUpperInvariant()));
+            Assert.AreEqual(1, AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.ToUpperInvariant() == asmName.ToUpperInvariant()).Count());
             var classBuilder = new DynamicClassBuilder(schema.Object);
             classBuilder.CreateModelTypes("reqTbl");
 
-            Assert.Equal(2, classBuilder.ExistingAssemblies.Count());
+            Assert.AreEqual(2, classBuilder.ExistingAssemblies.Count());
             //all upper means generated
-            Assert.Equal($"TBL12_{guid1.ToString().ToUpper()}", classBuilder.ExistingAssemblies[asmName.ToUpperInvariant()].Name);
-            Assert.Equal(2, AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.ToUpperInvariant() == asmName.ToUpperInvariant()).Count());
+            Assert.AreEqual($"TBL12_{guid1.ToString().ToUpper()}", classBuilder.ExistingAssemblies[asmName.ToUpperInvariant()].Name);
+            Assert.AreEqual(2, AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.ToUpperInvariant() == asmName.ToUpperInvariant()).Count());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void TableLevelProperties()
         {
             var classBuilder = new DynamicClassBuilder(schema.Object);
@@ -125,13 +127,13 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
             var type = classBuilder.ExistingAssemblies.First().Value;
 
-            Assert.False(type.GetCustomAttribute<DataContractAttribute>().IsReference);
-            Assert.Equal("tbl", type.GetCustomAttribute<TableAttribute>().Name);
-            Assert.Equal("sch1", type.GetCustomAttribute<TableAttribute>().Schema);
-            Assert.Equal("db1", type.GetCustomAttribute<DatabaseNameAttribute>().DatabaseName);
+            Assert.IsFalse(type.GetCustomAttribute<DataContractAttribute>().IsReference);
+            Assert.AreEqual("tbl", type.GetCustomAttribute<TableAttribute>().Name);
+            Assert.AreEqual("sch1", type.GetCustomAttribute<TableAttribute>().Schema);
+            Assert.AreEqual("db1", type.GetCustomAttribute<DatabaseNameAttribute>().DatabaseName);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void StringColumnsProperties()
         {
 
@@ -140,14 +142,14 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
             var property = classBuilder.ExistingAssemblies.First().Value.GetProperty("strCol");
 
-            Assert.Equal("Str Col", property.GetCustomAttribute<DisplayNameAttribute>().DisplayName);
-            Assert.Equal("strCol", property.GetCustomAttribute<ColumnAttribute>().Name);
-            Assert.Equal("varchar(5)", property.GetCustomAttribute<ColumnAttribute>().TypeName);
-             Assert.NotNull(property.GetCustomAttribute<DataMemberAttribute>());
-             Assert.True(property.GetCustomAttribute<BrowsableAttribute>().Browsable);
+            Assert.AreEqual("Str Col", property.GetCustomAttribute<DisplayNameAttribute>().DisplayName);
+            Assert.AreEqual("strCol", property.GetCustomAttribute<ColumnAttribute>().Name);
+            Assert.AreEqual("varchar(5)", property.GetCustomAttribute<ColumnAttribute>().TypeName);
+            Assert.IsNotNull(property.GetCustomAttribute<DataMemberAttribute>());
+            Assert.IsTrue(property.GetCustomAttribute<BrowsableAttribute>().Browsable);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void IntColumnsProperties()
         {
             var classBuilder = new DynamicClassBuilder(schema.Object);
@@ -155,14 +157,14 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
             var property = classBuilder.ExistingAssemblies.First().Value.GetProperty("intCol");
 
-            Assert.Equal("Int Col", property.GetCustomAttribute<DisplayNameAttribute>().DisplayName);
-            Assert.Equal("intCol", property.GetCustomAttribute<ColumnAttribute>().Name);
-            Assert.Null(property.GetCustomAttribute<ColumnAttribute>().TypeName);
-             Assert.NotNull(property.GetCustomAttribute<DataMemberAttribute>());
-             Assert.True(property.GetCustomAttribute<BrowsableAttribute>().Browsable);
+            Assert.AreEqual("Int Col", property.GetCustomAttribute<DisplayNameAttribute>().DisplayName);
+            Assert.AreEqual("intCol", property.GetCustomAttribute<ColumnAttribute>().Name);
+            Assert.AreEqual(null, property.GetCustomAttribute<ColumnAttribute>().TypeName);
+            Assert.IsNotNull(property.GetCustomAttribute<DataMemberAttribute>());
+            Assert.IsTrue(property.GetCustomAttribute<BrowsableAttribute>().Browsable);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void RequiredColumnAttrIfColumnIsNullableIsTrue()
         {
             var classBuilder = new DynamicClassBuilder(schema.Object);
@@ -170,10 +172,10 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
             var property = classBuilder.ExistingAssemblies.First().Value.GetProperty("reqCol");
 
-             Assert.NotNull(property.GetCustomAttribute<RequiredAttribute>());
+            Assert.IsNotNull(property.GetCustomAttribute<RequiredAttribute>());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PkColumnWithoutIdentity()
         {
             var classBuilder = new DynamicClassBuilder(schema.Object);
@@ -181,11 +183,11 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
             var property = classBuilder.ExistingAssemblies.First().Value.GetProperty("pkCol");
 
-             Assert.NotNull(property.GetCustomAttribute<CompoundPrimaryKeyAttribute>());
-            Assert.Equal(DatabaseGeneratedOption.None, property.GetCustomAttribute<DatabaseGeneratedAttribute>().DatabaseGeneratedOption);
+            Assert.IsNotNull(property.GetCustomAttribute<CompoundPrimaryKeyAttribute>());
+            Assert.AreEqual(DatabaseGeneratedOption.None, property.GetCustomAttribute<DatabaseGeneratedAttribute>().DatabaseGeneratedOption);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PkColumnWithIdentity()
         {
             var classBuilder = new DynamicClassBuilder(schema.Object);
@@ -193,11 +195,11 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
             var property = classBuilder.ExistingAssemblies.First().Value.GetProperty("pkColIdentity");
 
-             Assert.NotNull(property.GetCustomAttribute<CompoundPrimaryKeyAttribute>());
-            Assert.Equal(DatabaseGeneratedOption.Identity, property.GetCustomAttribute<DatabaseGeneratedAttribute>().DatabaseGeneratedOption);
+            Assert.IsNotNull(property.GetCustomAttribute<CompoundPrimaryKeyAttribute>());
+            Assert.AreEqual(DatabaseGeneratedOption.Identity, property.GetCustomAttribute<DatabaseGeneratedAttribute>().DatabaseGeneratedOption);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void FkColumnWithoutAlias()
         {
             var classBuilder = new DynamicClassBuilder(schema.Object);
@@ -205,13 +207,13 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
             var property = classBuilder.ExistingAssemblies.First().Value.GetProperty("fkCol");
 
-            Assert.Equal("tbl123fkColObject", property.GetCustomAttribute<ForeignKeyAttribute>().Name);
-            Assert.Equal("db3", property.GetCustomAttribute<ReferencedDbObjectAttribute>().DbName);
-            Assert.Equal("sch2", property.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName);
-            Assert.Equal("tbl123", property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName);
+            Assert.AreEqual("tbl123fkColObject", property.GetCustomAttribute<ForeignKeyAttribute>().Name);
+            Assert.AreEqual("db3", property.GetCustomAttribute<ReferencedDbObjectAttribute>().DbName);
+            Assert.AreEqual("sch2", property.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName);
+            Assert.AreEqual("tbl123", property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void FkColumnWithAlias()
         {
             var classBuilder = new DynamicClassBuilder(schema.Object);
@@ -219,14 +221,14 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
             var property = classBuilder.ExistingAssemblies.First().Value.GetProperty("fkColAlias");
 
-            Assert.Equal("alias1fkColAliasObject", property.GetCustomAttribute<ForeignKeyAttribute>().Name);
-            Assert.Equal("db3", property.GetCustomAttribute<ReferencedDbObjectAttribute>().DbName);
-            Assert.Equal("sch2", property.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName);
-            Assert.Equal("tbl123", property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName);
+            Assert.AreEqual("alias1fkColAliasObject", property.GetCustomAttribute<ForeignKeyAttribute>().Name);
+            Assert.AreEqual("db3", property.GetCustomAttribute<ReferencedDbObjectAttribute>().DbName);
+            Assert.AreEqual("sch2", property.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName);
+            Assert.AreEqual("tbl123", property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName);
         }
 
 
-        [FactWithName]
+        [TestMethod]
         public void FkColumnCompoundKey()
         {
             var classBuilder = new DynamicClassBuilder(schema.Object);
@@ -234,13 +236,13 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
             var property = classBuilder.ExistingAssemblies.First().Value.GetProperty("fkCol31");
 
-            Assert.Equal("tbl12fkCol31AndfkCol32Object", property.GetCustomAttribute<ForeignKeyAttribute>().Name);
-            Assert.Equal("db3", property.GetCustomAttribute<ReferencedDbObjectAttribute>().DbName);
-            Assert.Equal("sch2", property.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName);
-            Assert.Equal("tbl12", property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName);
+            Assert.AreEqual("tbl12fkCol31AndfkCol32Object", property.GetCustomAttribute<ForeignKeyAttribute>().Name);
+            Assert.AreEqual("db3", property.GetCustomAttribute<ReferencedDbObjectAttribute>().DbName);
+            Assert.AreEqual("sch2", property.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName);
+            Assert.AreEqual("tbl12", property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ComputedColumnAttribute()
         {
             var classBuilder = new DynamicClassBuilder(schema.Object);
@@ -248,10 +250,10 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
             var property = classBuilder.ExistingAssemblies.First().Value.GetProperty("compCol");
 
-            Assert.Equal(DatabaseGeneratedOption.Computed, property.GetCustomAttribute<DatabaseGeneratedAttribute>().DatabaseGeneratedOption);
+            Assert.AreEqual(DatabaseGeneratedOption.Computed, property.GetCustomAttribute<DatabaseGeneratedAttribute>().DatabaseGeneratedOption);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void Add1To1Relationship()
         {
             var variableName = $"tbl_{guid1}";
@@ -283,23 +285,23 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
             var refProperty = classBuilder.ExistingAssemblies[$"DYNAMICASSEMBLY.DB1_SCH1_TBL2_{guid2.ToString().ToUpper()}456123.REQTBL987654"].GetProperty($"tbl1_{guid1}pkCol2Object");
 
 
-            Assert.Equal($"Tbl2 {guid2}pk Col Object".ToUpper(), property.GetCustomAttribute<DisplayNameAttribute>().DisplayName.ToUpper());
-             Assert.NotNull(property.GetCustomAttribute<DataMemberAttribute>());
-             Assert.True(property.GetCustomAttribute<BrowsableAttribute>().Browsable);
-            Assert.Equal("db1", property.GetCustomAttribute<ReferencedDbObjectAttribute>().DbName);
-            Assert.Equal("sch1", property.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName);
-            Assert.Equal($"tbl2_{guid2}", property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName);
+            Assert.AreEqual($"Tbl2 {guid2}pk Col Object".ToUpper(), property.GetCustomAttribute<DisplayNameAttribute>().DisplayName.ToUpper());
+            Assert.IsNotNull(property.GetCustomAttribute<DataMemberAttribute>());
+            Assert.IsTrue(property.GetCustomAttribute<BrowsableAttribute>().Browsable);
+            Assert.AreEqual("db1", property.GetCustomAttribute<ReferencedDbObjectAttribute>().DbName);
+            Assert.AreEqual("sch1", property.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName);
+            Assert.AreEqual($"tbl2_{guid2}", property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName);
 
-            Assert.Equal($"Tbl1 {guid1}pk Col2 Object".ToUpper(), refProperty.GetCustomAttribute<DisplayNameAttribute>().DisplayName.ToUpper());
-             Assert.NotNull(refProperty.GetCustomAttribute<DataMemberAttribute>());
-             Assert.True(refProperty.GetCustomAttribute<BrowsableAttribute>().Browsable);
-            Assert.Equal("db", refProperty.GetCustomAttribute<ReferencedDbObjectAttribute>().DbName);
-            Assert.Equal("sch", refProperty.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName);
-            Assert.Equal($"tbl", refProperty.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName);
+            Assert.AreEqual($"Tbl1 {guid1}pk Col2 Object".ToUpper(), refProperty.GetCustomAttribute<DisplayNameAttribute>().DisplayName.ToUpper());
+            Assert.IsNotNull(refProperty.GetCustomAttribute<DataMemberAttribute>());
+            Assert.IsTrue(refProperty.GetCustomAttribute<BrowsableAttribute>().Browsable);
+            Assert.AreEqual("db", refProperty.GetCustomAttribute<ReferencedDbObjectAttribute>().DbName);
+            Assert.AreEqual("sch", refProperty.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName);
+            Assert.AreEqual($"tbl", refProperty.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName);
 
         }
 
-        [FactWithName]
+        [TestMethod]
         public void Add1ToManyRelationship()
         {
             var table = new Mock<Table>() { CallBase = true };
@@ -331,20 +333,20 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
             var refProperty = classBuilder.ExistingAssemblies[$"DYNAMICASSEMBLY.DB_SCH_TBL2_{guid2.ToString().ToUpper()}456123.REQTBL987654"].GetProperty($"tbl1_{guid1}pkCol2Object");
 
 
-            Assert.Equal($"tbl1_{guid1}pkCol2Object", property.GetCustomAttribute<InversePropertyAttribute>().Property);
-            Assert.Equal($"Tbl2 {guid2} List Frompk Col2".ToUpper(), property.GetCustomAttribute<DisplayNameAttribute>().DisplayName.ToUpper());
-            Assert.NotNull(property.GetCustomAttribute<DataMemberAttribute>());
-            Assert.True(property.GetCustomAttribute<BrowsableAttribute>().Browsable);
-            Assert.Equal("db", property.GetCustomAttribute<ReferencedDbObjectAttribute>().DbName);
-            Assert.Equal("sch", property.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName);
-            Assert.Equal($"tbl2_{guid2}", property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName);
+            Assert.AreEqual($"tbl1_{guid1}pkCol2Object", property.GetCustomAttribute<InversePropertyAttribute>().Property);
+            Assert.AreEqual($"Tbl2 {guid2} List Frompk Col2".ToUpper(), property.GetCustomAttribute<DisplayNameAttribute>().DisplayName.ToUpper());
+            Assert.IsNotNull(property.GetCustomAttribute<DataMemberAttribute>());
+            Assert.IsTrue(property.GetCustomAttribute<BrowsableAttribute>().Browsable);
+            Assert.AreEqual("db", property.GetCustomAttribute<ReferencedDbObjectAttribute>().DbName);
+            Assert.AreEqual("sch", property.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName);
+            Assert.AreEqual($"tbl2_{guid2}", property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName);
 
-            Assert.Equal($"Tbl1 {guid1}pk Col2 Object".ToUpper(), refProperty.GetCustomAttribute<DisplayNameAttribute>().DisplayName.ToUpper());
-            Assert.NotNull(refProperty.GetCustomAttribute<DataMemberAttribute>());
-            Assert.True(refProperty.GetCustomAttribute<BrowsableAttribute>().Browsable);
-            Assert.Equal("db", refProperty.GetCustomAttribute<ReferencedDbObjectAttribute>().DbName);
-            Assert.Equal("sch", refProperty.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName);
-            Assert.Equal($"tbl1_{guid1}", refProperty.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName);
+            Assert.AreEqual($"Tbl1 {guid1}pk Col2 Object".ToUpper(), refProperty.GetCustomAttribute<DisplayNameAttribute>().DisplayName.ToUpper());
+            Assert.IsNotNull(refProperty.GetCustomAttribute<DataMemberAttribute>());
+            Assert.IsTrue(refProperty.GetCustomAttribute<BrowsableAttribute>().Browsable);
+            Assert.AreEqual("db", refProperty.GetCustomAttribute<ReferencedDbObjectAttribute>().DbName);
+            Assert.AreEqual("sch", refProperty.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName);
+            Assert.AreEqual($"tbl1_{guid1}", refProperty.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName);
 
         }
 

@@ -1,11 +1,12 @@
 ﻿using AutoPocoIO.Exceptions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Net;
-using Xunit;
 
 namespace AutoPocoIO.test.Exceptions
 {
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class NoPrimaryKeyFoundExceptionTests
     {
         private class TestEx : NoPrimaryKeyFoundException
@@ -16,39 +17,39 @@ namespace AutoPocoIO.test.Exceptions
             }
         }
 
-        [FactWithName]
+        [TestMethod]
         public void IsBaseException()
         {
             var ex = new NoPrimaryKeyFoundException("a");
-            Assert.IsAssignableFrom<BaseCaughtException>(ex);
+            Assert.IsInstanceOfType(ex, typeof(BaseCaughtException));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ErrorMessageIsPopulated()
         {
             var ex = new NoPrimaryKeyFoundException("entity");
-            Assert.Equal("Entity 'entity' does not contain a primary key.", ex.Message);
+            Assert.AreEqual("Entity 'entity' does not contain a primary key.", ex.Message);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void HttpErrorMessageIsPopulated()
         {
             var ex = new NoPrimaryKeyFoundException("entity");
-            Assert.Equal("EntityKeyNotFound", ex.HttpErrorMessage);
+            Assert.AreEqual("EntityKeyNotFound", ex.HttpErrorMessage);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void HttpStatusCodeIsPopulated()
         {
             var ex = new NoPrimaryKeyFoundException("entity");
-            Assert.Equal(HttpStatusCode.InternalServerError, ex.ResponseCode);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, ex.ResponseCode);
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(NotImplementedException))]
         public void SerilizationConstructorNotImplmented()
         {
-             void act() => new TestEx();
-            Assert.Throws<NotImplementedException>(act);
+            _ = new TestEx();
         }
     }
 }

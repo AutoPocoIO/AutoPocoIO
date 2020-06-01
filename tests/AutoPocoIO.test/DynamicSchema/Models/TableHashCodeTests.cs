@@ -1,15 +1,15 @@
 ﻿using AutoPocoIO.DynamicSchema.Db;
 using AutoPocoIO.DynamicSchema.Models;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
 namespace AutoPocoIO.test.DynamicSchema.Models
 {
-    
-     [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class TableHashCodeTests
     {
-        [FactWithName]
+        [TestMethod]
         public void ColumnHashIsNotMemoryBased()
         {
             Column col1 = new Column()
@@ -28,10 +28,10 @@ namespace AutoPocoIO.test.DynamicSchema.Models
                 ColumnType = "type"
             };
 
-            Assert.Equal(col1.GetHashCode(), col2.GetHashCode());
+            Assert.AreEqual(col1.GetHashCode(), col2.GetHashCode());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ColumnHashIsFKDependent()
         {
             Column col1 = new Column()
@@ -52,10 +52,10 @@ namespace AutoPocoIO.test.DynamicSchema.Models
                 ReferencedTable = "tbl1",
             };
 
-            Assert.NotEqual(col1.GetHashCode(), col2.GetHashCode());
+            Assert.AreNotEqual(col1.GetHashCode(), col2.GetHashCode(), "FK not included in hash");
         }
 
-        [FactWithName]
+        [TestMethod]
         public void TableHashIsOrderIndependent()
         {
             Column col1 = new Column()
@@ -80,10 +80,10 @@ namespace AutoPocoIO.test.DynamicSchema.Models
             tbl1.Columns.AddRange(new List<Column> { col1, col2 });
             tbl2.Columns.AddRange(new List<Column> { col2, col1 });
 
-            Assert.Equal(tbl1.GetHashCode(), tbl2.GetHashCode());
+            Assert.AreEqual(tbl1.GetHashCode(), tbl2.GetHashCode());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void DbSchemaBuilderBaseHashIsOrderIndependent()
         {
             Table tbl1 = new Table();
@@ -132,7 +132,7 @@ namespace AutoPocoIO.test.DynamicSchema.Models
             schema2.Tables.Add(tbl1);
 
 
-            Assert.Equal(schema1.GetHashCode(), schema2.GetHashCode());
+            Assert.AreEqual(schema1.GetHashCode(), schema2.GetHashCode());
         }
     }
 }

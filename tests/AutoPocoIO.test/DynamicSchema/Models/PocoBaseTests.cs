@@ -1,11 +1,11 @@
 ﻿using AutoPocoIO.DynamicSchema.Models;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
 namespace AutoPocoIO.test.DynamicSchema.Models
 {
-    
-     [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class PocoBaseTests
     {
         private class PocoImplementations : PocoBase
@@ -31,7 +31,7 @@ namespace AutoPocoIO.test.DynamicSchema.Models
             public string ProperyName { get; set; }
         }
 
-        [FactWithName]
+        [TestMethod]
         public void StringValueWithProperties()
         {
             var obj = new PocoImplementations()
@@ -43,48 +43,48 @@ namespace AutoPocoIO.test.DynamicSchema.Models
                 Prop5 = 456,
             };
 
-            Assert.Equal("Prop1=abc,Prop2=123,Prop5=456", obj.ToString());
+            Assert.AreEqual("Prop1=abc,Prop2=123,Prop5=456", obj.ToString());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void StringValueWithNullProperties()
         {
-            Assert.Equal("Prop1=null,Prop2=0,Prop5=null", new PocoImplementations().ToString());
+            Assert.AreEqual("Prop1=null,Prop2=0,Prop5=null", new PocoImplementations().ToString());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void StringValueWithNoPropertiesShowsTypeName()
         {
-            Assert.Equal("AutoPocoIO.test.DynamicSchema.Models.PocoBaseTests+PocoNoProperties", new PocoNoProperties().ToString());
+            Assert.AreEqual("AutoPocoIO.test.DynamicSchema.Models.PocoBaseTests+PocoNoProperties", new PocoNoProperties().ToString());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void RaisedEventWithoutRegisteringDoesNothing()
         {
             var obj = new PocoWithEvent();
             obj.OnRaisePropertyChanged(this, "test");
 
-             Assert.Null(obj.ProperyName);
+            Assert.IsNull(obj.ProperyName);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void RaisedEventWithoutRegisteringSetsValue()
         {
             var obj = new PocoWithEvent();
             obj.PropertyChanged += (sender, prop) => obj.PocoWithEvent_PropertyChanged(sender, prop);
             obj.OnRaisePropertyChanged(this, "test");
 
-            Assert.Equal("test", obj.ProperyName);
+            Assert.AreEqual("test", obj.ProperyName);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void CustomListProperyToDynamicList()
         {
             var list = new CustomList<string>() { "a", "b" };
             var dynamicList = list.AsDynamic();
 
-            Assert.Equal("a", dynamicList.First());
-            Assert.Equal("b", dynamicList.Last());
+            Assert.AreEqual("a", dynamicList.First());
+            Assert.AreEqual("b", dynamicList.Last());
 
 
         }

@@ -1,5 +1,5 @@
 ﻿using AutoPocoIO.SwaggerAddons;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using Swashbuckle.Swagger;
 using System;
@@ -8,8 +8,8 @@ using System.Linq;
 
 namespace AutoPocoIO.AspNet.test.Swagger
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class SchemaExampleTests
     {
         readonly SchemaRegistry reg = new SchemaRegistry(new Newtonsoft.Json.JsonSerializerSettings(),
@@ -20,7 +20,7 @@ namespace AutoPocoIO.AspNet.test.Swagger
             c => c.Name,
             true, true, true);
 
-        [FactWithName]
+        [TestMethod]
         public void SkipRegisteryIfNotJToken()
         {
             var schema = new Schema();
@@ -29,12 +29,12 @@ namespace AutoPocoIO.AspNet.test.Swagger
             var addExample = new AddSchemaExamples();
             addExample.Apply(schema, reg, type);
 
-            Assert.Empty(reg.Definitions);
-            Assert.Null(schema.@ref);
-            Assert.Null(schema.type);
+            Assert.AreEqual(0, reg.Definitions.Count());
+            Assert.AreEqual(null, schema.@ref);
+            Assert.AreEqual(null, schema.type);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void AddFirstJTokenType()
         {
             var schema = new Schema();
@@ -43,16 +43,16 @@ namespace AutoPocoIO.AspNet.test.Swagger
             var addExample = new AddSchemaExamples();
             addExample.Apply(schema, reg, type);
 
-            Assert.Single(reg.Definitions);
-            Assert.Equal("string", reg.Definitions["JSON"].properties["Column1"].type);
-            Assert.Equal("integer", reg.Definitions["JSON"].properties["Column2"].type);
-            Assert.Equal(0, reg.Definitions["JSON"].properties["Column2"].@default);
+            Assert.AreEqual(1, reg.Definitions.Count());
+            Assert.AreEqual("string", reg.Definitions["JSON"].properties["Column1"].type);
+            Assert.AreEqual("integer", reg.Definitions["JSON"].properties["Column2"].type);
+            Assert.AreEqual(0, reg.Definitions["JSON"].properties["Column2"].@default);
 
-            Assert.Equal("#/definitions/JSON", schema.@ref);
-            Assert.Null(schema.type);
+            Assert.AreEqual("#/definitions/JSON", schema.@ref);
+            Assert.AreEqual(null, schema.type);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void SkipSecondJTokenTypeButSetRef()
         {
             var schema = new Schema();
@@ -62,10 +62,10 @@ namespace AutoPocoIO.AspNet.test.Swagger
             var addExample = new AddSchemaExamples();
             addExample.Apply(schema, reg, type);
 
-            Assert.Single(reg.Definitions);
+            Assert.AreEqual(1, reg.Definitions.Count());
 
-            Assert.Equal("#/definitions/JSON", schema.@ref);
-            Assert.Null(schema.type);
+            Assert.AreEqual("#/definitions/JSON", schema.@ref);
+            Assert.AreEqual(null, schema.type);
         }
     }
 }

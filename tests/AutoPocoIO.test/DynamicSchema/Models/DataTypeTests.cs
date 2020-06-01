@@ -1,29 +1,29 @@
 ﻿using AutoPocoIO.DynamicSchema.Models;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AutoPocoIO.test.DynamicSchema.Models
 {
-    
-     [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class DataTypeTests
     {
-        [FactWithName]
+        [TestMethod]
         public void StringValue()
         {
             var obj = new DataType { DbType = "dbtype", SystemType = typeof(string) };
-            Assert.Equal("(dbtype) String", obj.ToString());
+            Assert.AreEqual("(dbtype) String", obj.ToString());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void EqualsDifferentTypesReturnsFalse()
         {
             var obj = new DataType { DbType = "dbtype", SystemType = typeof(string) };
             var result = obj.Equals("dbtype");
 
-             Assert.False(result);
+            Assert.IsFalse(result);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void EqualsCastToDataType()
         {
             var obj = new DataType { DbType = "dbtype", SystemType = typeof(string) };
@@ -31,20 +31,20 @@ namespace AutoPocoIO.test.DynamicSchema.Models
 
             var result = obj.Equals(obj2);
 
-             Assert.True(result);
+            Assert.IsTrue(result);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void HashCodeIsValuebased()
         {
             var obj = new DataType { DbType = "dbtype", SystemType = typeof(string) };
             var obj2 = new DataType { DbType = "dbtype", SystemType = typeof(string) };
 
-            Assert.Equal(obj2.GetHashCode(), obj.GetHashCode());
+            Assert.AreEqual(obj2.GetHashCode(), obj.GetHashCode());
         }
 
 
-        [FactWithName]
+        [TestMethod]
         public void EqualsSymbol()
         {
             var obj = new DataType { DbType = "dbtype", SystemType = typeof(string) };
@@ -52,11 +52,11 @@ namespace AutoPocoIO.test.DynamicSchema.Models
 
             var result = obj == obj2;
 
-             Assert.True(result);
+            Assert.IsTrue(result);
         }
 
 
-        [FactWithName]
+        [TestMethod]
         public void NotEqualsSymbolComparseDbtype()
         {
             var obj = new DataType { DbType = "dbtype", SystemType = typeof(string) };
@@ -64,10 +64,10 @@ namespace AutoPocoIO.test.DynamicSchema.Models
 
             var result = obj != obj2;
 
-             Assert.True(result);
+            Assert.IsTrue(result);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void NotEqualsSymbolComparseSystemType()
         {
             var obj = new DataType { DbType = "dbtype", SystemType = typeof(string) };
@@ -75,10 +75,10 @@ namespace AutoPocoIO.test.DynamicSchema.Models
 
             var result = obj != obj2;
 
-             Assert.True(result);
+            Assert.IsTrue(result);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void EqualsComparseDbtype()
         {
             var obj = new DataType { DbType = "dbtype", SystemType = typeof(string) };
@@ -86,10 +86,10 @@ namespace AutoPocoIO.test.DynamicSchema.Models
 
             var result = obj.Equals(obj2);
 
-             Assert.False(result);
+            Assert.IsFalse(result);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void EqualsComparseSystemType()
         {
             var obj = new DataType { DbType = "dbtype", SystemType = typeof(string) };
@@ -97,10 +97,10 @@ namespace AutoPocoIO.test.DynamicSchema.Models
 
             var result = obj.Equals(obj2);
 
-             Assert.False(result);
+            Assert.IsFalse(result);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void EqualsComparseSystemTypeTrueIfBothMatch()
         {
             var obj = new DataType { DbType = "dbtype", SystemType = typeof(string) };
@@ -108,7 +108,7 @@ namespace AutoPocoIO.test.DynamicSchema.Models
 
             var result = obj.Equals(obj2);
 
-             Assert.True(result);
+            Assert.IsTrue(result);
         }
 
     }

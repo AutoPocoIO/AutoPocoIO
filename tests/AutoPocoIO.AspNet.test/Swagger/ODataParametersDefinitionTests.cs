@@ -1,7 +1,7 @@
 ﻿using AutoPocoIO.CustomAttributes;
 using AutoPocoIO.SwaggerAddons;
 using AutoPocoIO.WebApi;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Swashbuckle.Swagger;
 using System;
@@ -15,8 +15,8 @@ using System.Web.Http.Description;
 
 namespace AutoPocoIO.AspNet.test.Swagger
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class ODataParametersDefinitionTests
     {
         readonly SchemaRegistry reg = new SchemaRegistry(new Newtonsoft.Json.JsonSerializerSettings(),
@@ -52,7 +52,8 @@ namespace AutoPocoIO.AspNet.test.Swagger
             }
         }
 
-        public ODataParametersDefinitionTests()
+        [TestInitialize]
+        public void Init()
         {
             api = new ApiDescription();
             api.ResponseDescription.ResponseType = typeof(string);
@@ -70,16 +71,16 @@ namespace AutoPocoIO.AspNet.test.Swagger
         }
 
 
-        [FactWithName]
+        [TestMethod]
         public void DoNothingIfResponseTypeIsNull()
         {
             api.ResponseDescription.ResponseType = null;
             swaggerDef.Apply(op, reg, api);
 
-            Assert.Null(op.parameters);
+            Assert.IsNull(op.parameters);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UseOdataAddsFilterParameter()
         {
             api.ActionDescriptor = oDataAction;
@@ -87,13 +88,13 @@ namespace AutoPocoIO.AspNet.test.Swagger
 
             var odataOp = op.parameters.First(c => c.name == "$filter");
 
-            Assert.Equal("string", odataOp.type);
-            Assert.Equal("query", odataOp.@in);
-            Assert.Equal(false, odataOp.required);
-            Assert.Equal("Filter the results using OData syntax.", odataOp.description);
+            Assert.AreEqual("string", odataOp.type);
+            Assert.AreEqual("query", odataOp.@in);
+            Assert.AreEqual(false, odataOp.required);
+            Assert.AreEqual("Filter the results using OData syntax.", odataOp.description);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void SkipOdataParamsIfMissingAttr()
         {
             op = new Operation { parameters = new List<Parameter> { new Parameter { name = "orginial" } } };
@@ -105,10 +106,10 @@ namespace AutoPocoIO.AspNet.test.Swagger
             api.ActionDescriptor = mockAction.Object;
             swaggerDef.Apply(op, reg, api);
 
-            Assert.Single(op.parameters);
+            Assert.AreEqual(1, op.parameters.Count());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void AppendOdataOpsIfSomeAlreadyExists()
         {
             op = new Operation { parameters = new List<Parameter> { new Parameter { name = "orginial" } } };
@@ -120,10 +121,10 @@ namespace AutoPocoIO.AspNet.test.Swagger
             api.ActionDescriptor = mockAction.Object;
             swaggerDef.Apply(op, reg, api);
 
-            Assert.Equal(9, op.parameters.Count());
+            Assert.AreEqual(9, op.parameters.Count());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void SetToOdataOpsIfNoParamsAlreadyExists()
         {
             var ctrlDescriptor2 = new HttpControllerDescriptor() { ControllerType = typeof(string) };
@@ -134,10 +135,10 @@ namespace AutoPocoIO.AspNet.test.Swagger
             api.ActionDescriptor = mockAction.Object;
             swaggerDef.Apply(op, reg, api);
 
-            Assert.Equal(8, op.parameters.Count());
+            Assert.AreEqual(8, op.parameters.Count());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UseOdataAddsSelectParameter()
         {
             api.ActionDescriptor = oDataAction;
@@ -145,13 +146,13 @@ namespace AutoPocoIO.AspNet.test.Swagger
 
             var odataOp = op.parameters.First(c => c.name == "$select");
 
-            Assert.Equal("string", odataOp.type);
-            Assert.Equal("query", odataOp.@in);
-            Assert.Equal(false, odataOp.required);
-            Assert.Equal("Select columns using OData syntax.", odataOp.description);
+            Assert.AreEqual("string", odataOp.type);
+            Assert.AreEqual("query", odataOp.@in);
+            Assert.AreEqual(false, odataOp.required);
+            Assert.AreEqual("Select columns using OData syntax.", odataOp.description);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UseOdataAddsExpandParameter()
         {
             api.ActionDescriptor = oDataAction;
@@ -159,13 +160,13 @@ namespace AutoPocoIO.AspNet.test.Swagger
 
             var odataOp = op.parameters.First(c => c.name == "$expand");
 
-            Assert.Equal("string", odataOp.type);
-            Assert.Equal("query", odataOp.@in);
-            Assert.Equal(false, odataOp.required);
-            Assert.Equal("Expand nested data using OData syntax.", odataOp.description);
+            Assert.AreEqual("string", odataOp.type);
+            Assert.AreEqual("query", odataOp.@in);
+            Assert.AreEqual(false, odataOp.required);
+            Assert.AreEqual("Expand nested data using OData syntax.", odataOp.description);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UseOdataAddsOrderByParameter()
         {
             api.ActionDescriptor = oDataAction;
@@ -173,13 +174,13 @@ namespace AutoPocoIO.AspNet.test.Swagger
 
             var odataOp = op.parameters.First(c => c.name == "$orderby");
 
-            Assert.Equal("string", odataOp.type);
-            Assert.Equal("query", odataOp.@in);
-            Assert.Equal(false, odataOp.required);
-            Assert.Equal("Order the results using OData syntax.", odataOp.description);
+            Assert.AreEqual("string", odataOp.type);
+            Assert.AreEqual("query", odataOp.@in);
+            Assert.AreEqual(false, odataOp.required);
+            Assert.AreEqual("Order the results using OData syntax.", odataOp.description);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UseOdataAddsSkipParameter()
         {
             api.ActionDescriptor = oDataAction;
@@ -187,13 +188,13 @@ namespace AutoPocoIO.AspNet.test.Swagger
 
             var odataOp = op.parameters.First(c => c.name == "$skip");
 
-            Assert.Equal("integer", odataOp.type);
-            Assert.Equal("query", odataOp.@in);
-            Assert.Equal(false, odataOp.required);
-            Assert.Equal("The number of results to skip.", odataOp.description);
+            Assert.AreEqual("integer", odataOp.type);
+            Assert.AreEqual("query", odataOp.@in);
+            Assert.AreEqual(false, odataOp.required);
+            Assert.AreEqual("The number of results to skip.", odataOp.description);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UseOdataAddsTopParameter()
         {
             api.ActionDescriptor = oDataAction;
@@ -201,13 +202,13 @@ namespace AutoPocoIO.AspNet.test.Swagger
 
             var odataOp = op.parameters.First(c => c.name == "$top");
 
-            Assert.Equal("integer", odataOp.type);
-            Assert.Equal("query", odataOp.@in);
-            Assert.Equal(false, odataOp.required);
-            Assert.Equal("The number of results to return.", odataOp.description);
+            Assert.AreEqual("integer", odataOp.type);
+            Assert.AreEqual("query", odataOp.@in);
+            Assert.AreEqual(false, odataOp.required);
+            Assert.AreEqual("The number of results to return.", odataOp.description);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UseOdataAddsApplyParameter()
         {
             api.ActionDescriptor = oDataAction;
@@ -215,13 +216,13 @@ namespace AutoPocoIO.AspNet.test.Swagger
 
             var odataOp = op.parameters.First(c => c.name == "$apply");
 
-            Assert.Equal("string", odataOp.type);
-            Assert.Equal("query", odataOp.@in);
-            Assert.Equal(false, odataOp.required);
-            Assert.Equal("Return applied filter.", odataOp.description);
+            Assert.AreEqual("string", odataOp.type);
+            Assert.AreEqual("query", odataOp.@in);
+            Assert.AreEqual(false, odataOp.required);
+            Assert.AreEqual("Return applied filter.", odataOp.description);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UseOdataAddsCountParameter()
         {
             api.ActionDescriptor = oDataAction;
@@ -229,10 +230,10 @@ namespace AutoPocoIO.AspNet.test.Swagger
 
             var odataOp = op.parameters.First(c => c.name == "$count");
 
-            Assert.Equal("boolean", odataOp.type);
-            Assert.Equal("query", odataOp.@in);
-            Assert.Equal(false, odataOp.required);
-            Assert.Equal("Return the total count.", odataOp.description);
+            Assert.AreEqual("boolean", odataOp.type);
+            Assert.AreEqual("query", odataOp.@in);
+            Assert.AreEqual(false, odataOp.required);
+            Assert.AreEqual("Return the total count.", odataOp.description);
         }
     }
 }

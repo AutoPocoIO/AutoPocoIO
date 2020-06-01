@@ -6,16 +6,16 @@ using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
 using AutoPocoIO.Services;
 using Microsoft.Extensions.DependencyInjection;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace AutoPocoIO.MsSql.test.Factories
+namespace AutoPocoIO.test.Factories
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class ResourceFactoryTests
     {
         private IResourceFactory _resourceFactory;
@@ -66,12 +66,12 @@ namespace AutoPocoIO.MsSql.test.Factories
 
             _resourceFactory = new ResourceFactory(services, list);
         }
-        [FactWithName]
+        [TestMethod]
         public void GetSqlResource()
         {
             Init(1);
             var resource = _resourceFactory.GetResource("conn1", OperationType.read, "obj1");
-            Assert.IsType<MsSqlResource>(resource);
+            Assert.IsInstanceOfType(resource, typeof(MsSqlResource));
         }
     }
 }

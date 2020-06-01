@@ -1,14 +1,14 @@
 ﻿using AutoPocoIO.DynamicSchema.Db;
 using AutoPocoIO.DynamicSchema.Models;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AutoPocoIO.test.DynamicSchema.Db
 {
-    
-     [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class DbSchemaTests
     {
-        [FactWithName]
+        [TestMethod]
         public void RequestHashIsValueBased()
         {
             var table = new Table() { Name = "tbl1", Schema = "sch1" };
@@ -25,7 +25,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             schema2.Views.Add(view);
             schema2.StoredProcedures.Add(proc);
 
-            Assert.Equal(schema.GetHashCode(), schema2.GetHashCode());
+            Assert.AreEqual(schema.GetHashCode(), schema2.GetHashCode());
         }
     }
 }

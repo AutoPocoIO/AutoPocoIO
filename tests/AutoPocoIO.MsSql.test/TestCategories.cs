@@ -1,4 +1,4 @@
-﻿namespace AutoPocoIO.MsSql.test
+﻿namespace AutoPocoIO.test
 {
     public static class TestCategories
     {

@@ -2,7 +2,7 @@
 using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 
@@ -17,7 +17,8 @@ namespace AutoPocoIO.test.TestHelpers
         internal Mock<ITimeProvider> TimeProvider { get; set; }
         protected IServiceScopeFactory serviceScopeFactory;
 
-        public DbAccessUnitTestBase()
+        [TestInitialize]
+        public void InitBase()
         {
             LogDbOptions = new DbContextOptionsBuilder<LogDbContext>()
                .UseInMemoryDatabase(databaseName: "logDb" + Guid.NewGuid().ToString())

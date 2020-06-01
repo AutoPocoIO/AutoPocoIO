@@ -4,7 +4,7 @@ using AutoPocoIO.Services;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Owin.Builder;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Linq;
@@ -13,13 +13,15 @@ using System.Web.Http.Dependencies;
 
 namespace AutoPocoIO.AspNet.test.Extensions
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class AppbuilderExtensionTests
     {
         private readonly AppBuilder builder = new AppBuilder();
         private readonly HttpConfiguration config = new HttpConfiguration();
-        public AppbuilderExtensionTests()
+
+        [TestInitialize]
+        public void Init()
         {
             builder.Properties.Add("host.AppName", "app1");
 
@@ -28,14 +30,14 @@ namespace AutoPocoIO.AspNet.test.Extensions
             config.DependencyResolver = resolver.Object;
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UseDashboardSetsPathToAutoPoco()
         {
             builder.UseAutoPoco(config);
-            Assert.Equal("autopoco", AutoPocoConfiguration.DashboardPathPrefix);
+            Assert.AreEqual("autopoco", AutoPocoConfiguration.DashboardPathPrefix);
         }
 
-        [FactWithName]
+        [TestMethod]
 
         public void UseDashboardSetsPathToDashPath()
         {
@@ -45,18 +47,19 @@ namespace AutoPocoIO.AspNet.test.Extensions
             };
 
             builder.UseAutoPoco(config, options);
-            Assert.Equal("dashPath123", AutoPocoConfiguration.DashboardPathPrefix);
+            Assert.AreEqual("dashPath123", AutoPocoConfiguration.DashboardPathPrefix);
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void UseDashboardChecksForConfig()
         {
             var options = new AutoPocoOptions();
-            void act() => builder.UseAutoPoco(null, options);
-            Assert.Throws<ArgumentNullException>(act);
+            builder.UseAutoPoco(null, options);
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void DashPathMustBeMore1Char()
         {
             var options = new AutoPocoOptions
@@ -64,11 +67,11 @@ namespace AutoPocoIO.AspNet.test.Extensions
                 DashboardPath = "a"
             };
 
-            void act() => builder.UseAutoPoco(config, options);
-            Assert.Throws<ArgumentException>(act);
+            builder.UseAutoPoco(config, options);
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void DashPathMustStartWithSlash()
         {
             var options = new AutoPocoOptions
@@ -76,32 +79,31 @@ namespace AutoPocoIO.AspNet.test.Extensions
                 DashboardPath = "dash"
             };
 
-            void act() => builder.UseAutoPoco(config, options);
-            Assert.Throws<ArgumentException>(act);
+            builder.UseAutoPoco(config, options);
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void UseDashboardChecksForPath()
         {
-            void act() => builder.UseAutoPoco(config, null);
-            Assert.Throws<ArgumentNullException>(act);
+            builder.UseAutoPoco(config, null);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UseAutoPocoSetsUpOdataOnHttpConfig()
         {
             builder.UseAutoPoco(config);
 
-            Assert.IsType<ServiceProvider>(config.Properties.First(c => (string)c.Key == "Microsoft.AspNet.OData.NonODataRootContainerKey").Value);
-            Assert.IsType<Microsoft.AspNet.OData.PerRouteContainer>(config.Properties.First(c => (string)c.Key == "Microsoft.AspNet.OData.PerRouteContainerKey").Value);
+            Assert.IsInstanceOfType(config.Properties.First(c => (string)c.Key == "Microsoft.AspNet.OData.NonODataRootContainerKey").Value, typeof(ServiceProvider));
+            Assert.IsInstanceOfType(config.Properties.First(c => (string)c.Key == "Microsoft.AspNet.OData.PerRouteContainerKey").Value, typeof(Microsoft.AspNet.OData.PerRouteContainer));
 
             DefaultQuerySettings odataSettings = (DefaultQuerySettings)config.Properties.First(c => (string)c.Key == "Microsoft.AspNet.OData.DefaultQuerySettings").Value;
 
-            Assert.True(odataSettings.EnableCount);
-            Assert.True(odataSettings.EnableOrderBy);
-            Assert.True(odataSettings.EnableExpand);
-            Assert.True(odataSettings.EnableSelect);
-            Assert.Equal(1000, odataSettings.MaxTop);
+            Assert.IsTrue(odataSettings.EnableCount);
+            Assert.IsTrue(odataSettings.EnableOrderBy);
+            Assert.IsTrue(odataSettings.EnableExpand);
+            Assert.IsTrue(odataSettings.EnableSelect);
+            Assert.AreEqual(1000, odataSettings.MaxTop);
         }
     }
 }

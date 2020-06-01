@@ -3,27 +3,29 @@ using AutoPocoIO.DynamicSchema.Db;
 using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.Factories;
-using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
+using AutoPocoIO.test.TestHelpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Concurrent;
-using Xunit;
 
 namespace AutoPocoIO.test.Extensions
 {
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class DynamicSchemaExtensionTests
     {
-        private readonly Config config;
-        private readonly Mock<OperationResource> resource;
-        private readonly Mock<IDbSchemaBuilder> schemaBuilder;
-        private readonly Mock<ISchemaInitializer> schemaInitializer;
-        private readonly DbContextOptions<AppDbContext> appDbOptions;
-        
-        public DynamicSchemaExtensionTests()
+        private Config config;
+        private Mock<OperationResource> resource;
+        private Mock<IDbSchemaBuilder> schemaBuilder;
+        private Mock<ISchemaInitializer> schemaInitializer;
+        private DbContextOptions<AppDbContext> appDbOptions;
+
+        [TestInitialize]
+        public void Init()
         {
             config = new Config();
             schemaBuilder = new Mock<IDbSchemaBuilder>();
@@ -54,11 +56,10 @@ namespace AutoPocoIO.test.Extensions
             {
                 CallBase = true
             };
-
-
         }
 
-        [FactWithName]
+
+        [TestMethod]
         public void LoadAdapter()
         {
             var connector = new Models.Connector
@@ -72,14 +73,14 @@ namespace AutoPocoIO.test.Extensions
             resource.Object.ConfigureAction(connector,OperationType.read, "obj");
             resource.Object.LoadDbAdapter();
 
-            Assert.Equal("sch1", config.FilterSchema);
-            Assert.Equal("aa", config.DatabaseConnectorName);
-            Assert.Equal("obj", config.IncludedTable);
+            Assert.AreEqual("sch1", config.FilterSchema);
+            Assert.AreEqual("aa", config.DatabaseConnectorName);
+            Assert.AreEqual("obj", config.IncludedTable);
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void LoadSchema()
         {
             var connector = new Models.Connector
@@ -93,14 +94,14 @@ namespace AutoPocoIO.test.Extensions
             resource.Object.ConfigureAction(connector,OperationType.read, "obj");
             resource.Object.LoadSchema();
 
-            Assert.Equal("sch1", config.FilterSchema);
-            Assert.Equal("aa", config.DatabaseConnectorName);
-             Assert.Null(config.IncludedTable);
+            Assert.AreEqual("sch1", config.FilterSchema);
+            Assert.AreEqual("aa", config.DatabaseConnectorName);
+            Assert.IsNull(config.IncludedTable);
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void LoadProc()
         {
             var connector = new Models.Connector
@@ -114,9 +115,9 @@ namespace AutoPocoIO.test.Extensions
             resource.Object.ConfigureAction(connector,OperationType.read, "obj");
             resource.Object.LoadProc("schema1", "proc2");
 
-            Assert.Equal("schema1", config.FilterSchema);
-             Assert.Null(config.IncludedTable);
-            Assert.Equal("proc2", config.IncludedStoredProcedure);
+            Assert.AreEqual("schema1", config.FilterSchema);
+            Assert.IsNull(config.IncludedTable);
+            Assert.AreEqual("proc2", config.IncludedStoredProcedure);
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
         }

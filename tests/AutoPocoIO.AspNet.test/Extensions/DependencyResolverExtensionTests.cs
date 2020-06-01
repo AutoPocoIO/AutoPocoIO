@@ -1,18 +1,18 @@
 ﻿using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Extensions;
 using AutoPocoIO.Services;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Web.Http.Dependencies;
 
 namespace AutoPocoIO.AspNet.test.Extensions
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class DependencyResolverExtensionTests
     {
-        //[FactWithName]
+        //[TestMethod]
         //public void UseSqlServerWithEncryption()
         //{
         //    var dbSetup = new Mock<IAppDatabaseSetupService>();
@@ -28,7 +28,7 @@ namespace AutoPocoIO.AspNet.test.Extensions
         //    dbSetup.Verify();
         //}
 
-        //[FactWithName]
+        //[TestMethod]
         //public void UseSqlServerWithoutEncryption()
         //{
         //    var dbSetup = new Mock<IAppDatabaseSetupService>();
@@ -45,15 +45,15 @@ namespace AutoPocoIO.AspNet.test.Extensions
         //    dbSetup.Verify(c => c.SetupEncryption(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Never);
         //}
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GetRequiredServiceThrowsExceptionIfNotFound()
         {
             var dependencyResolver = new Mock<IDependencyResolver>();
-            void act() => dependencyResolver.Object.GetRequiredService<IAppDatabaseSetupService>();
-            Assert.Throws<ArgumentNullException>(act);
+            dependencyResolver.Object.GetRequiredService<IAppDatabaseSetupService>();
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GetRequiredServiceReturnsTypeIfFound()
         {
             var dbSetup = new Mock<IAppDatabaseSetupService>();
@@ -62,10 +62,10 @@ namespace AutoPocoIO.AspNet.test.Extensions
               .Returns(dbSetup.Object);
 
             var result = dependencyResolver.Object.GetRequiredService<IAppDatabaseSetupService>();
-            Assert.Equal(dbSetup.Object, result);
+            Assert.AreEqual(dbSetup.Object, result);
         }
 
-        //[FactWithName]
+        //[TestMethod]
         //[ExpectedException(typeof(ArgumentNullException))]
         //public void CheckDepResolverNotNullForUseSqlEncryption()
         //{
@@ -73,7 +73,7 @@ namespace AutoPocoIO.AspNet.test.Extensions
         //    dependencyResolver.UseSqlServer("slt", "key", 123);
         //}
 
-        //[FactWithName]
+        //[TestMethod]
         //[ExpectedException(typeof(ArgumentNullException))]
         //public void CheckSaltNotNullForUseSqlEncryption()
         //{
@@ -81,7 +81,7 @@ namespace AutoPocoIO.AspNet.test.Extensions
         //    dependencyResolver.Object.UseSqlServer(null, "key", 123);
         //}
 
-        //[FactWithName]
+        //[TestMethod]
         //[ExpectedException(typeof(ArgumentNullException))]
         //public void CheckSecretKeyNotNullForUseSqlEncryption()
         //{
@@ -89,7 +89,7 @@ namespace AutoPocoIO.AspNet.test.Extensions
         //    dependencyResolver.Object.UseSqlServer("slt", null, 123);
         //}
 
-        //[FactWithName]
+        //[TestMethod]
         //[ExpectedException(typeof(ArgumentNullException))]
         //public void CheckDepResolverNotNullForUseSql()
         //{
@@ -97,12 +97,12 @@ namespace AutoPocoIO.AspNet.test.Extensions
         //    dependencyResolver.UseSqlServer();
         //}
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void CheckDepResolverNotNullForGetRequiredService()
         {
             IDependencyResolver dependencyResolver = null;
-            void act() => dependencyResolver.GetRequiredService<string>();
-            Assert.Throws<ArgumentNullException>(act);
+            dependencyResolver.GetRequiredService<string>();
         }
     }
 }

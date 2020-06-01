@@ -1,22 +1,23 @@
 ﻿using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.MsSql.DynamicSchema.Db;
 using AutoPocoIO.Resources;
-using Xunit;
+using AutoPocoIO.test;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AutoPocoIO.MsSql.test.DynamicSchema.Db
 {
-
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class MsSqlConnectionBuilderTests
     {
-        [FactWithName]
+        [TestMethod]
         public void ResourceTypeSet()
         {
             var builder = new MsSqlConnectionBuilder();
-            Assert.Equal(ResourceType.Mssql, builder.ResourceType);
+            Assert.AreEqual(ResourceType.Mssql, builder.ResourceType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void CreateConnectionString()
         {
             var info = new ConnectionInformation()
@@ -30,20 +31,20 @@ namespace AutoPocoIO.MsSql.test.DynamicSchema.Db
             var builder = new MsSqlConnectionBuilder();
             var results = builder.CreateConnectionString(info);
 
-            Assert.Equal("Data Source=dt1;Initial Catalog=cat1;Persist Security Info=False;User ID=user1;Password=pass1;MultipleActiveResultSets=False;Connect Timeout=30;TrustServerCertificate=False", results);
+            Assert.AreEqual("Data Source=dt1;Initial Catalog=cat1;Persist Security Info=False;User ID=user1;Password=pass1;MultipleActiveResultSets=False;Connect Timeout=30;TrustServerCertificate=False", results);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ParseConnectionString()
         {
             var connString = "Data Source=dt1;Initial Catalog=cat1;Persist Security Info=False;User ID=user1;Password=pass1;MultipleActiveResultSets=False;Connect Timeout=30;TrustServerCertificate=False";
             var builder = new MsSqlConnectionBuilder();
             var results = builder.ParseConnectionString(connString);
 
-            Assert.Equal("cat1", results.InitialCatalog);
-            Assert.Equal("user1", results.UserId);
-            Assert.Equal("dt1", results.DataSource);
-            Assert.Equal("pass1", results.Password);
+            Assert.AreEqual("cat1", results.InitialCatalog);
+            Assert.AreEqual("user1", results.UserId);
+            Assert.AreEqual("dt1", results.DataSource);
+            Assert.AreEqual("pass1", results.Password);
 
 
         }

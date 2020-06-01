@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.OData;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AutoPocoIO.AspNetCore.test.Extensions
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class ServiceCollectionExtensionTests
     {
         private class TestStartup
@@ -32,7 +32,7 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
             }
         }
 
-        [FactWithName]
+        [TestMethod]
         public void OutputFormatsAddsOdataForSwagger()
         {
             var builder = new WebHostBuilder()
@@ -48,11 +48,11 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
 
             var formater = (ODataOutputFormatter)mvcOptions.OutputFormatters.First();
 
-            Assert.Equal(1, formater.SupportedMediaTypes.Count());
-            Assert.Equal("application/prs.odatatestxx-odata", formater.SupportedMediaTypes[0].ToString());
+            Assert.AreEqual(1, formater.SupportedMediaTypes.Count());
+            Assert.AreEqual("application/prs.odatatestxx-odata", formater.SupportedMediaTypes[0].ToString());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void InputFormatsAddsOdataForSwagger()
         {
             var builder = new WebHostBuilder()
@@ -68,11 +68,11 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
 
             var formater = (ODataInputFormatter)mvcOptions.InputFormatters.First();
 
-            Assert.Equal(1, formater.SupportedMediaTypes.Count());
-            Assert.Equal("application/prs.odatatestxx-odata", formater.SupportedMediaTypes[0].ToString());
+            Assert.AreEqual(1, formater.SupportedMediaTypes.Count());
+            Assert.AreEqual("application/prs.odatatestxx-odata", formater.SupportedMediaTypes[0].ToString());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void OutputFormatsSkipsOfOdataFormatExists()
         {
             var builder = new WebHostBuilder()
@@ -91,11 +91,11 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
 
             var formater = (ODataOutputFormatter)mvcOptions.OutputFormatters.First();
 
-            Assert.Equal(1, formater.SupportedMediaTypes.Count());
-            Assert.Equal("text/plain", formater.SupportedMediaTypes[0].ToString());
+            Assert.AreEqual(1, formater.SupportedMediaTypes.Count());
+            Assert.AreEqual("text/plain", formater.SupportedMediaTypes[0].ToString());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void InputFormatsSkipsOfOdataFormatExists()
         {
             var builder = new WebHostBuilder()
@@ -114,8 +114,8 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
 
             var formater = (ODataInputFormatter)mvcOptions.InputFormatters.First();
 
-            Assert.Equal(1, formater.SupportedMediaTypes.Count());
-            Assert.Equal("text/plain", formater.SupportedMediaTypes[0].ToString());
+            Assert.AreEqual(1, formater.SupportedMediaTypes.Count());
+            Assert.AreEqual("text/plain", formater.SupportedMediaTypes[0].ToString());
         }
     }
 }

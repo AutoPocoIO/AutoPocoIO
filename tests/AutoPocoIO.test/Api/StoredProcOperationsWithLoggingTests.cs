@@ -2,7 +2,7 @@
 using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Linq;
 using System;
@@ -11,16 +11,18 @@ using System.Linq;
 
 namespace AutoPocoIO.test.Api
 {
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class StoredProcOperationsWithLoggingTests : ApiOperationBase
     {
-        private readonly StoredProcedureOperations storedProcedureOperations;
-        public StoredProcOperationsWithLoggingTests()
+        private StoredProcedureOperations storedProcedureOperations;
+        [TestInitialize]
+        public void InitOperation()
         {
             storedProcedureOperations = new StoredProcedureOperations(serviceProvider);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ExecuteNoParams()
         {
             var obj = new IQueryableType2();
@@ -33,12 +35,12 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var results = storedProcedureOperations.ExecuteNoParameters("conn1", "proc1", loggingService);
-            Assert.Equal(1, loggingService.LogCount);
-            Assert.Equal("GET", loggingService.ApiRequests.First().RequestType);
-            Assert.Equal(obj, results);
+            Assert.AreEqual(1, loggingService.LogCount);
+            Assert.AreEqual("GET", loggingService.ApiRequests.First().RequestType);
+            Assert.AreEqual(obj, results);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ExecuteJTokenParams()
         {
             var obj = new IQueryableType2();
@@ -59,20 +61,21 @@ namespace AutoPocoIO.test.Api
               .Returns(resource.Object);
 
             var results = storedProcedureOperations.Execute("conn1", "proc1", objToken, loggingService);
-            Assert.Equal(1, loggingService.LogCount);
-            Assert.Equal("POST", loggingService.ApiRequests.First().RequestType);
-            Assert.Equal(obj, results);
-            Assert.Equal("15", usedParams["Id"].ToString());
+            Assert.AreEqual(1, loggingService.LogCount);
+            Assert.AreEqual("POST", loggingService.ApiRequests.First().RequestType);
+            Assert.AreEqual(obj, results);
+            Assert.AreEqual("15", usedParams["Id"].ToString());
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void ExecuteJTokenParamsChecksForNullParams()
         {
-            void act() => storedProcedureOperations.Execute("conn1", "proc1", null, loggingService);
-            Assert.Throws<ArgumentNullException>(act);
+            _ = storedProcedureOperations.Execute("conn1", "proc1", null, loggingService);
+            Assert.Fail();
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ExecuteParams()
         {
             var obj = new IQueryableType2();
@@ -90,13 +93,13 @@ namespace AutoPocoIO.test.Api
               .Returns(resource.Object);
 
             var results = storedProcedureOperations.Execute("conn1", "proc1", objParams, loggingService);
-            Assert.Equal(1, loggingService.LogCount);
-            Assert.Equal("POST", loggingService.ApiRequests.First().RequestType);
-            Assert.Equal(obj, results);
-            Assert.Equal("34", usedParams["Id"].ToString());
+            Assert.AreEqual(1, loggingService.LogCount);
+            Assert.AreEqual("POST", loggingService.ApiRequests.First().RequestType);
+            Assert.AreEqual(obj, results);
+            Assert.AreEqual("34", usedParams["Id"].ToString());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ProcDefinition()
         {
             var definition = new StoredProcedureDefinition { Name = "returned" };
@@ -108,12 +111,12 @@ namespace AutoPocoIO.test.Api
             .Returns(resource.Object);
 
             var result = storedProcedureOperations.Definition("conn1", "proc1", loggingService);
-            Assert.Equal(1, loggingService.LogCount);
-            Assert.Equal("GET", loggingService.ApiRequests.First().RequestType);
-            Assert.Equal(definition, result);
+            Assert.AreEqual(1, loggingService.LogCount);
+            Assert.AreEqual("GET", loggingService.ApiRequests.First().RequestType);
+            Assert.AreEqual(definition, result);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ProcParamDefinition()
         {
             var definition = new StoredProcedureParameterDefinition { Name = "returned" };
@@ -125,9 +128,9 @@ namespace AutoPocoIO.test.Api
             .Returns(resource.Object);
 
             var result = storedProcedureOperations.Definition("conn1", "proc1", "name", loggingService);
-            Assert.Equal(1, loggingService.LogCount);
-            Assert.Equal("GET", loggingService.ApiRequests.First().RequestType);
-            Assert.Equal(definition, result);
+            Assert.AreEqual(1, loggingService.LogCount);
+            Assert.AreEqual("GET", loggingService.ApiRequests.First().RequestType);
+            Assert.AreEqual(definition, result);
         }
     }
 }

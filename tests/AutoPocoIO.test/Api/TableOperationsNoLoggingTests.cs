@@ -2,7 +2,7 @@
 using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
@@ -15,18 +15,19 @@ namespace AutoPocoIO.test.Api
     public class IQueryableType2 { public int Id { get; set; } public IEnumerable<int> IntList { get; set; } }
     public class IQueryableType { public int Id { get; set; } }
 
-    
-     [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class TableOperationsNoLoggingTests : ApiOperationBase
     {
-        private readonly TableOperations tableOperations;
+        private TableOperations tableOperations;
 
-        public TableOperationsNoLoggingTests()
+        [TestInitialize]
+        public void InitOperation()
         {
             tableOperations = new TableOperations(serviceProvider);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GetAll()
         {
             var resource = new Mock<IOperationResource>();
@@ -40,14 +41,15 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var (list, connectorMax) = tableOperations.GetAll("conn1", "table1");
-            Assert.Equal(0, loggingService.LogCount);
-            Assert.Equal(typeof(IQueryableType), list.ElementType);
-            Assert.IsAssignableFrom<IQueryable<object>>(list);
-            Assert.Equal(54, connectorMax);
+            Assert.AreEqual(0, loggingService.LogCount);
+            Assert.AreEqual(typeof(IQueryableType), list.ElementType);
+            Assert.IsInstanceOfType(list, typeof(IQueryable<object>));
+            Assert.IsNotInstanceOfType(list, typeof(IQueryable<IQueryableType>));
+            Assert.AreEqual(54, connectorMax);
 
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GetAllT()
         {
             var resultsList = new List<IQueryableType>
@@ -63,14 +65,14 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var results = tableOperations.GetAll<IQueryableType>("conn1", "table1T");
-            Assert.Equal(0, loggingService.LogCount);
-            Assert.Equal(typeof(IQueryableType), results.ElementType);
-            Assert.IsAssignableFrom<IQueryable<object>>(results);
-            Assert.IsAssignableFrom<IQueryable<IQueryableType>>(results);
+            Assert.AreEqual(0, loggingService.LogCount);
+            Assert.AreEqual(typeof(IQueryableType), results.ElementType);
+            Assert.IsInstanceOfType(results, typeof(IQueryable<object>));
+            Assert.IsInstanceOfType(results, typeof(IQueryable<IQueryableType>));
 
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GetAllTVerifyExpand()
         {
             var resultsList = new List<IQueryableType2>
@@ -96,12 +98,12 @@ namespace AutoPocoIO.test.Api
             var results = tableOperations.GetAll<IQueryableType2>("conn1", "table1TList");
 
             //Verify child lists are shown
-            Assert.Equal(1, results.Count());
-            Assert.Single(results.First().IntList);
+            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(1, results.First().IntList.Count());
         }
 
 
-        [FactWithName]
+        [TestMethod]
         public void GetAllTVerifyExpandOneToOne()
         {
             var resultsList = new List<IQueryableTypeOneToOne>
@@ -127,11 +129,11 @@ namespace AutoPocoIO.test.Api
             var results = tableOperations.GetAll<IQueryableTypeOneToOne>("conn1", "table1TList");
 
             //Verify child lists are shown
-            Assert.Equal(1, results.Count());
-            Assert.Equal(1, results.First().OneToOne.Id);
+            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(1, results.First().OneToOne.Id);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GetById()
         {
             var resultsList = new IQueryableType { Id = 1 };
@@ -144,14 +146,14 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var results = tableOperations.GetById("conn1", "table1", "1");
-            Assert.Equal(0, loggingService.LogCount);
+            Assert.AreEqual(0, loggingService.LogCount);
 
-            Assert.Equal(1, ((IQueryableType)results).Id);
-            Assert.IsAssignableFrom<object>(results);
-            Assert.IsType<IQueryableType>(results);
+            Assert.AreEqual(1, ((IQueryableType)results).Id);
+            Assert.IsInstanceOfType(results, typeof(object));
+            Assert.IsInstanceOfType(results, typeof(IQueryableType));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GetByIdT()
         {
             var resultsList = new IQueryableType { Id = 1 };
@@ -165,11 +167,11 @@ namespace AutoPocoIO.test.Api
 
             var results = tableOperations.GetById<IQueryableType>("conn1", "table1", "1");
 
-            Assert.Equal(1, results.Id);
-            Assert.IsType<IQueryableType>(results);
+            Assert.AreEqual(1, results.Id);
+            Assert.IsInstanceOfType(results, typeof(IQueryableType));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void CreateNewRow()
         {
             JToken obj = new JObject
@@ -187,11 +189,11 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var result = tableOperations.CreateNewRow("conn1", "table1", obj);
-            Assert.Equal(0, loggingService.LogCount);
-            Assert.Equal(15, ((IQueryableType)result).Id);
+            Assert.AreEqual(0, loggingService.LogCount);
+            Assert.AreEqual(15, ((IQueryableType)result).Id);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void CreateNewRowT()
         {
             var objT = new IQueryableType { Id = 15 };
@@ -204,11 +206,11 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var result = tableOperations.CreateNewRow("conn1", "table1", objT);
-            Assert.Equal(0, loggingService.LogCount);
-            Assert.Equal(15, result.Id);
+            Assert.AreEqual(0, loggingService.LogCount);
+            Assert.AreEqual(15, result.Id);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UpdateRow()
         {
             JToken obj = new JObject
@@ -226,11 +228,11 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var result = tableOperations.UpdateRow("conn1", "table1", "15", obj);
-            Assert.Equal(0, loggingService.LogCount);
-            Assert.Equal(15, ((IQueryableType)result).Id);
+            Assert.AreEqual(0, loggingService.LogCount);
+            Assert.AreEqual(15, ((IQueryableType)result).Id);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UpdateRowT()
         {
             var objT = new IQueryableType { Id = 15 };
@@ -243,11 +245,11 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var result = tableOperations.UpdateRow("conn1", "table1", "15", objT);
-            Assert.Equal(0, loggingService.LogCount);
-            Assert.Equal(15, result.Id);
+            Assert.AreEqual(0, loggingService.LogCount);
+            Assert.AreEqual(15, result.Id);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void DeleteRow()
         {
             var objT = new IQueryableType { Id = 15 };
@@ -260,11 +262,11 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var result = tableOperations.DeleteRow("conn1", "table1", "15");
-            Assert.Equal(0, loggingService.LogCount);
-            Assert.Equal(15, ((IQueryableType)result).Id);
+            Assert.AreEqual(0, loggingService.LogCount);
+            Assert.AreEqual(15, ((IQueryableType)result).Id);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void TableDefinition()
         {
             TableDefinition definition = new TableDefinition
@@ -280,11 +282,11 @@ namespace AutoPocoIO.test.Api
                .Returns(resource.Object);
 
             var result = tableOperations.Definition("conn1", "table1");
-            Assert.Equal(0, loggingService.LogCount);
-            Assert.Equal(definition, result);
+            Assert.AreEqual(0, loggingService.LogCount);
+            Assert.AreEqual(definition, result);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ColumnDefinition()
         {
             ColumnDefinition definition = new ColumnDefinition
@@ -300,8 +302,8 @@ namespace AutoPocoIO.test.Api
                .Returns(resource.Object);
 
             var result = tableOperations.Definition("conn1", "table1", "col12");
-            Assert.Equal(0, loggingService.LogCount);
-            Assert.Equal(definition, result);
+            Assert.AreEqual(0, loggingService.LogCount);
+            Assert.AreEqual(definition, result);
         }
 
 

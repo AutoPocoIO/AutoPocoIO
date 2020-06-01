@@ -3,7 +3,7 @@ using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Runtime;
 using AutoPocoIO.Models;
 using Microsoft.EntityFrameworkCore;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -11,15 +11,17 @@ using System.Linq;
 
 namespace AutoPocoIO.test.DynamicSchema.Db
 {
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class DbAdapterTests
     {
-        private readonly Mock<DynamicClassBuilder> classBuilder;
-        private readonly Mock<IDbSchemaBuilder> schemaBuilder;
-        private readonly Mock<DbSchema> schema;
+        private Mock<DynamicClassBuilder> classBuilder;
+        private Mock<IDbSchemaBuilder> schemaBuilder;
+        private Mock<DbSchema> schema;
         private DbAdapter dbAdapter;
 
-        public DbAdapterTests()
+        [TestInitialize]
+        public void Init()
         {
             schemaBuilder = new Mock<IDbSchemaBuilder>();
             schema = new Mock<DbSchema>();
@@ -46,7 +48,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         }
 
 
-        [FactWithName]
+        [TestMethod]
         public void SetupDbContextSetsDbInfoTables()
         {
             SetupSchmeaBuilder();
@@ -57,13 +59,13 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
             dbAdapter.SetupDataContext("_dbo_tbl1");
 
-            Assert.Equal(typeof(Connector), dbAdapter.DbSetEntityType);
-            Assert.IsAssignableFrom<DbSet<Connector>>(dbAdapter.GetDbSet());
+            Assert.AreEqual(typeof(Connector), dbAdapter.DbSetEntityType);
+            Assert.IsInstanceOfType(dbAdapter.GetDbSet(), typeof(DbSet<Connector>));
         }
 
 
 
-        [FactWithName]
+        [TestMethod]
         public void SetupDbContextSetsDbInfoViews()
         {
             SetupSchmeaBuilder();
@@ -77,11 +79,11 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
             dbAdapter.SetupDataContext("_dbo_view1");
 
-            Assert.Equal(typeof(Connector), dbAdapter.DbSetEntityType);
-            Assert.IsAssignableFrom<DbSet<Connector>>(dbAdapter.GetDbSet());
+            Assert.AreEqual(typeof(Connector), dbAdapter.DbSetEntityType);
+            Assert.IsInstanceOfType(dbAdapter.GetDbSet(), typeof(DbSet<Connector>));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void DisposeClearsValues()
         {
             SetupSchmeaBuilder();
@@ -97,11 +99,11 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
             dbAdapter.SetupDataContext("_dbo_tbl1");
 
-             Assert.NotNull(dbAdapter.Instance);
+            Assert.IsNotNull(dbAdapter.Instance);
 
             dbAdapter.Dispose();
 
-             Assert.Null(dbAdapter.Instance);
+            Assert.IsNull(dbAdapter.Instance);
         }
 
         private void SetupForGetWithoutContext(string asmName)
@@ -128,24 +130,24 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GetWithoutContextTables()
         {
             var hashCode = new Table { Name = "tbl1" }.GetHashCode();
             string asmName = $"DYNAMICASSEMBLY._DBO_TBL1{hashCode}.OUTER1123456";
             SetupForGetWithoutContext(asmName);
             var result = dbAdapter.GetWithoutContext("_dbo_tbl1", "outer1");
-            Assert.IsAssignableFrom<DbSet<Connector>>(result);
+            Assert.IsInstanceOfType(result, typeof(DbSet<Connector>));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GetWithoutContextViews()
         {
             var hashCode = new View { Name = "view1" }.GetHashCode();
             string asmName = $"DYNAMICASSEMBLY._DBO_VIEW1{hashCode}.OUTER1123456";
             SetupForGetWithoutContext(asmName);
             var result = dbAdapter.GetWithoutContext("_dbo_view1", "outer1");
-            Assert.IsAssignableFrom<DbSet<Connector>>(result);
+            Assert.IsInstanceOfType(result, typeof(DbSet<Connector>));
         }
     }
 }

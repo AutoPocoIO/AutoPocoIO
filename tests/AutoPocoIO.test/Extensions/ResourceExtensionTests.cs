@@ -3,21 +3,22 @@ using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.Extensions;
 using AutoPocoIO.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-using Xunit;
 
 namespace AutoPocoIO.test.Extensions
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class ResourceExtensionTests
     {
         readonly DbContextOptions<AppDbContext> appDbOptionsPro = new DbContextOptionsBuilder<AppDbContext>()
               .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
               .Options;
 
-        public ResourceExtensionTests()
+        [TestInitialize]
+        public void Init()
         {
             using (var db = new AppDbContext(appDbOptionsPro))
             {
@@ -42,40 +43,40 @@ namespace AutoPocoIO.test.Extensions
             }
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UnionUsedConnectorWithJoinsPkMatch()
         {
             var config = new Config { IncludedTable = "pk" };
             config.LoadUserDefinedTables(new Connector { Id = 1, ConnectionStringDecrypted = "newConn" }, new AppDbContext(appDbOptionsPro));
 
-             Assert.Equal(new[] { "newConn", "conn1", "conn2" }, config.UsedConnectors.ToList());
+            CollectionAssert.AreEqual(new[] { "newConn", "conn1", "conn2" }, config.UsedConnectors.ToList());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UnionUsedConnectorWithJoinsFkMatch()
         {
             var config = new Config { IncludedTable = "fk" };
             config.LoadUserDefinedTables(new Connector { Id = 2, ConnectionStringDecrypted = "newConn" }, new AppDbContext(appDbOptionsPro));
 
-             Assert.Equal(new[] { "newConn", "conn1", "conn2" }, config.UsedConnectors.ToList());
+            CollectionAssert.AreEqual(new[] { "newConn", "conn1", "conn2" }, config.UsedConnectors.ToList());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UnionUsedConnectorWithDistinct()
         {
             var config = new Config { IncludedTable = "fk" };
             config.LoadUserDefinedTables(new Connector { Id = 2, ConnectionStringDecrypted = "conn1" }, new AppDbContext(appDbOptionsPro));
 
-             Assert.Equal(new[] { "conn1", "conn2" }, config.UsedConnectors.ToList());
+            CollectionAssert.AreEqual(new[] { "conn1", "conn2" }, config.UsedConnectors.ToList());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UnionUsedConnectorWithJoinsNoMatch()
         {
             var config = new Config { IncludedTable = "fk" };
             config.LoadUserDefinedTables(new Connector { Id = 3, ConnectionStringDecrypted = "newConn" }, new AppDbContext(appDbOptionsPro));
 
-             Assert.Equal(new[] { "newConn" }, config.UsedConnectors.ToList());
+            CollectionAssert.AreEqual(new[] { "newConn" }, config.UsedConnectors.ToList());
         }
     }
 }

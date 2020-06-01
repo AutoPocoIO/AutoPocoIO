@@ -1,38 +1,39 @@
 ﻿using AutoPocoIO.Exceptions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
-using Xunit;
 
 namespace AutoPocoIO.test.Exceptions
 {
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class EntityValidationExceptionTests
     {
-        [FactWithName]
+        [TestMethod]
         public void IsBaseException()
         {
             var ex = new EntityValidationException("msg");
-            Assert.IsAssignableFrom<BaseCaughtException>(ex);
+            Assert.IsInstanceOfType(ex, typeof(BaseCaughtException));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ErrorMessageIsPopulated()
         {
             var ex = new EntityValidationException("msg");
-            Assert.Equal("msg", ex.Message);
+            Assert.AreEqual("msg", ex.Message);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void HttpErrorMessageIsPopulated()
         {
             var ex = new EntityValidationException("msg");
-            Assert.Equal("InternalServerError", ex.HttpErrorMessage);
+            Assert.AreEqual("InternalServerError", ex.HttpErrorMessage);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void HttpStatusCodeIsPopulated()
         {
             var ex = new EntityValidationException("msg");
-            Assert.Equal(HttpStatusCode.InternalServerError, ex.ResponseCode);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, ex.ResponseCode);
         }
     }
 }

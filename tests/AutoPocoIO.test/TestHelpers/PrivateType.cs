@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Reflection;
 
-namespace AutoPocoIO.test
+namespace Microsoft.VisualStudio.TestTools.UnitTesting
 {
+#if NETCORE
     internal class PrivateType
     {
         readonly Type _type;
@@ -41,4 +42,5 @@ namespace AutoPocoIO.test
             return field.GetValue(_instance);
         }
     }
+#endif
 }

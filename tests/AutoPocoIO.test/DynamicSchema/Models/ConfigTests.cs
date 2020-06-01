@@ -1,22 +1,22 @@
 ﻿using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.Models;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
 namespace AutoPocoIO.test.DynamicSchema.Models
 {
-    
-     [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class ConfigTests
     {
-        [FactWithName]
+        [TestMethod]
         public void NoJoinsReturnsEmptyString()
         {
             var config = new Config();
-            Assert.Equal("''", config.JoinsAsString);
+            Assert.AreEqual("''", config.JoinsAsString);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UnionPKAndFkInformation()
         {
             var config = new Config
@@ -33,10 +33,10 @@ namespace AutoPocoIO.test.DynamicSchema.Models
                 }
             };
 
-            Assert.Equal("Object_ID('sch1.pktbl'),Object_ID('sch1.fktbl')", config.JoinsAsString);
+            Assert.AreEqual("Object_ID('sch1.pktbl'),Object_ID('sch1.fktbl')", config.JoinsAsString);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ExcludeFilterSelectedTableFromJoins()
         {
             var config = new Config()
@@ -56,10 +56,10 @@ namespace AutoPocoIO.test.DynamicSchema.Models
                 }
             };
 
-            Assert.Equal("Object_ID('sch1.fktbl')", config.JoinsAsString);
+            Assert.AreEqual("Object_ID('sch1.fktbl')", config.JoinsAsString);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ReturnEmtpyCharIfPkAndFkReferenceSelectedTable()
         {
             var config = new Config()
@@ -79,7 +79,7 @@ namespace AutoPocoIO.test.DynamicSchema.Models
                 }
             };
 
-            Assert.Equal("''", config.JoinsAsString);
+            Assert.AreEqual("''", config.JoinsAsString);
         }
     }
 }

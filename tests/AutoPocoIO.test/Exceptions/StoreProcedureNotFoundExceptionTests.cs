@@ -1,38 +1,39 @@
 ﻿using AutoPocoIO.Exceptions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
-using Xunit;
 
 namespace AutoPocoIO.test.Exceptions
 {
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class StoreProcedureNotFoundExceptionTests
     {
-        [FactWithName]
+        [TestMethod]
         public void IsBaseException()
         {
             var ex = new StoreProcedureNotFoundException("a", "b");
-            Assert.IsAssignableFrom<BaseCaughtException>(ex);
+            Assert.IsInstanceOfType(ex, typeof(BaseCaughtException));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ErrorMessageIsPopulated()
         {
             var ex = new StoreProcedureNotFoundException("sch", "sp");
-            Assert.Equal("Stored Procedure 'sch.sp' not found.", ex.Message);
+            Assert.AreEqual("Stored Procedure 'sch.sp' not found.", ex.Message);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void HttpErrorMessageIsPopulated()
         {
             var ex = new StoreProcedureNotFoundException("sch", "sp");
-            Assert.Equal("StoreProcedureNotFound", ex.HttpErrorMessage);
+            Assert.AreEqual("StoreProcedureNotFound", ex.HttpErrorMessage);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void HttpStatusCodeIsPopulated()
         {
             var ex = new StoreProcedureNotFoundException("sch", "sp");
-            Assert.Equal(HttpStatusCode.InternalServerError, ex.ResponseCode);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, ex.ResponseCode);
         }
     }
 }

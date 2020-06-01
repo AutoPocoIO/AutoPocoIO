@@ -1,52 +1,53 @@
 ﻿using AutoPocoIO.Exceptions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
-using Xunit;
 
 namespace AutoPocoIO.test.Exceptions
 {
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class ConnectorNotFoundExceptionTests
     {
-        [FactWithName]
+        [TestMethod]
         public void IsBaseException()
         {
             var ex = new ConnectorNotFoundException("conn");
-            Assert.IsAssignableFrom<BaseCaughtException>(ex);
+            Assert.IsInstanceOfType(ex, typeof(BaseCaughtException));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ErrorMessageIsPopulated()
         {
             var ex = new ConnectorNotFoundException("conn");
-            Assert.Equal("Connector 'conn' not found.", ex.Message);
+            Assert.AreEqual("Connector 'conn' not found.", ex.Message);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ErrorMessageWithIdIsPopulated()
         {
             var ex = new ConnectorNotFoundException(12);
-            Assert.Equal("Connector with Id '12' not found.", ex.Message);
+            Assert.AreEqual("Connector with Id '12' not found.", ex.Message);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void HttpErrorMessageIsPopulated()
         {
             var ex = new ConnectorNotFoundException("conn");
-            Assert.Equal("ConnectorNotFound", ex.HttpErrorMessage);
+            Assert.AreEqual("ConnectorNotFound", ex.HttpErrorMessage);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void HttpStatusCodeIsPopulated()
         {
             var ex = new ConnectorNotFoundException("conn");
-            Assert.Equal(HttpStatusCode.BadRequest, ex.ResponseCode);
+            Assert.AreEqual(HttpStatusCode.BadRequest, ex.ResponseCode);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void HttpStatusCodeWithIdIsPopulated()
         {
             var ex = new ConnectorNotFoundException(12);
-            Assert.Equal(HttpStatusCode.BadRequest, ex.ResponseCode);
+            Assert.AreEqual(HttpStatusCode.BadRequest, ex.ResponseCode);
         }
     }
 }

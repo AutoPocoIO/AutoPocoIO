@@ -2,25 +2,24 @@
 using AutoPocoIO.Extensions;
 using AutoPocoIO.Models;
 using AutoPocoIO.test.TestHelpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
-using Xunit;
-
 namespace AutoPocoIO.test.Extensions
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class JoinAndGroupJoinTests : DbAccessUnitTestBase
     {
-        [FactWithName]
+        [TestMethod]
         public void JoinNoResults()
         {
             var db = new AppDbContext(AppDbOptions);
             var results = db.Connector.Join<dynamic>(db.UserJoin, "Id", "Id", "new(outer.Name, inner.Alias)");
-            Assert.Equal(0, results.Count());
+            Assert.AreEqual(0, results.Count());
         }
 
-        [FactWithName]
+        [TestMethod]
         public void JoinWithStringValues()
         {
             var db = new AppDbContext(AppDbOptions);
@@ -38,13 +37,13 @@ namespace AutoPocoIO.test.Extensions
 
             var results = db.Connector.Join<dynamic>(db.UserJoin, "Id", "Id", "new(outer.Name, inner.Alias)");
 
-            Assert.Equal(1, results.Count());
-            Assert.Equal("Name2", results.First().Name);
-            Assert.Equal("Alias", results.First().Alias);
+            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual("Name2", results.First().Name);
+            Assert.AreEqual("Alias", results.First().Alias);
 
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GroupJoinWithStringValues()
         {
             var db = new AppDbContext(AppDbOptions);
@@ -65,11 +64,11 @@ namespace AutoPocoIO.test.Extensions
             var results = db.Connector.GroupJoin<dynamic>(db.Connector, "outer.Id", "inner.ResourceType", "new(outer.Name, group as ResouceTypes)")
                 .ToList();
 
-            Assert.Equal(2, results.Count());
-            Assert.Equal("Name1", results.First().Name);
-            Assert.Equal("Name2", results.Last().Name);
-            Assert.Empty((IEnumerable<dynamic>)results.First().ResouceTypes);
-            Assert.Equal(2, ((IEnumerable<dynamic>)results.Last().ResouceTypes).Count());
+            Assert.AreEqual(2, results.Count());
+            Assert.AreEqual("Name1", results.First().Name);
+            Assert.AreEqual("Name2", results.Last().Name);
+            Assert.AreEqual(0, ((IEnumerable<dynamic>)results.First().ResouceTypes).Count());
+            Assert.AreEqual(2, ((IEnumerable<dynamic>)results.Last().ResouceTypes).Count());
         }
     }
 }

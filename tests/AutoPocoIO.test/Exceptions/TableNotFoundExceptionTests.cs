@@ -1,39 +1,39 @@
 ﻿using AutoPocoIO.Exceptions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
-using Xunit;
 
 namespace AutoPocoIO.test.Exceptions
 {
-    
-     [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class TableNotFoundExceptionTests
     {
-        [FactWithName]
+        [TestMethod]
         public void IsBaseException()
         {
             var ex = new TableNotFoundException("db", "a", "b");
-            Assert.IsAssignableFrom<BaseCaughtException>(ex);
+            Assert.IsInstanceOfType(ex, typeof(BaseCaughtException));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ErrorMessageIsPopulated()
         {
             var ex = new TableNotFoundException("db", "sch", "tbl");
-            Assert.Equal("Table 'db.sch.tbl' not found.", ex.Message);
+            Assert.AreEqual("Table 'db.sch.tbl' not found.", ex.Message);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void HttpErrorMessageIsPopulated()
         {
             var ex = new TableNotFoundException("db", "sch", "tbl");
-            Assert.Equal("TableNotFound", ex.HttpErrorMessage);
+            Assert.AreEqual("TableNotFound", ex.HttpErrorMessage);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void HttpStatusCodeIsPopulated()
         {
             var ex = new TableNotFoundException("db", "sch", "tbl");
-            Assert.Equal(HttpStatusCode.InternalServerError, ex.ResponseCode);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, ex.ResponseCode);
         }
     }
 }

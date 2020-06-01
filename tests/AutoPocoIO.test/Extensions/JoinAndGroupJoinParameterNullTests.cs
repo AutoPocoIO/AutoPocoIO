@@ -1,146 +1,147 @@
 ﻿using AutoPocoIO.Context;
 using AutoPocoIO.Extensions;
 using AutoPocoIO.test.TestHelpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Xunit;
 
 namespace AutoPocoIO.test.Extensions
 {
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class JoinAndGroupJoinParameterNullTests : DbAccessUnitTestBase
     {
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void JoinCheckOuterNotNull()
         {
             var db = new AppDbContext(AppDbOptions);
             IQueryable<string> obj = null;
-             void act() => obj.Join(db.Connector, "a", "a", "a");
-            Assert.Throws<ArgumentNullException>(act);
+            obj.Join(db.Connector, "a", "a", "a");
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void JoinCheckInnerNotNull()
         {
             var db = new AppDbContext(AppDbOptions);
             IQueryable<string> obj = null;
-             void act() => db.Connector.Join(obj, "a", "a", "a");
-            Assert.Throws<ArgumentNullException>(act);
+            db.Connector.Join(obj, "a", "a", "a");
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void JoinCheckOuterSelectorNotNull()
         {
             var db = new AppDbContext(AppDbOptions);
-             void act() => db.Connector.Join(db.UserJoin, null, "a", "a");
-            Assert.Throws<ArgumentNullException>(act);
+            db.Connector.Join(db.UserJoin, null, "a", "a");
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void JoinCheckInnerSelectorNotNull()
         {
             var db = new AppDbContext(AppDbOptions);
-             void act() => db.Connector.Join(db.UserJoin, "a", null, "a");
-            Assert.Throws<ArgumentNullException>(act);
+            db.Connector.Join(db.UserJoin, "a", null, "a");
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void JoinCheckResultSelectorNotNull()
         {
             var db = new AppDbContext(AppDbOptions);
-             void act() => db.Connector.Join(db.UserJoin, "a", "a", null);
-            Assert.Throws<ArgumentNullException>(act);
+            db.Connector.Join(db.UserJoin, "a", "a", null);
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void JoinCheckOuterSelectorNotEmpty()
         {
             var db = new AppDbContext(AppDbOptions);
-             void act() => db.Connector.Join(db.UserJoin, "", "a", "a");
-            Assert.Throws<ArgumentException>(act);
+            db.Connector.Join(db.UserJoin, "", "a", "a");
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void JoinCheckInnerSelectorNotEmpty()
         {
             var db = new AppDbContext(AppDbOptions);
-             void act() => db.Connector.Join(db.UserJoin, "a", "", "a");
-            Assert.Throws<ArgumentException>(act);
+            db.Connector.Join(db.UserJoin, "a", "", "a");
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void JoinCheckResultSelectorNotEmpty()
         {
             var db = new AppDbContext(AppDbOptions);
-             void act() => db.Connector.Join(db.UserJoin, "a", "a", "");
-            Assert.Throws<ArgumentException>(act);
+            db.Connector.Join(db.UserJoin, "a", "a", "");
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GroupJoinCheckOuterNotNull()
         {
             var db = new AppDbContext(AppDbOptions);
             IQueryable<string> obj = null;
-             void act() => obj.GroupJoin(db.Connector, "a", "a", "a");
-            Assert.Throws<ArgumentNullException>(act);
+            obj.GroupJoin(db.Connector, "a", "a", "a");
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GroupJoinCheckInnerNotNull()
         {
             var db = new AppDbContext(AppDbOptions);
             IQueryable<string> obj = null;
-             void act() => db.Connector.GroupJoin(obj, "a", "a", "a");
-            Assert.Throws<ArgumentNullException>(act);
+            db.Connector.GroupJoin(obj, "a", "a", "a");
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GroupJoinCheckOuterSelectorNotNull()
         {
             var db = new AppDbContext(AppDbOptions);
-             void act() => db.Connector.GroupJoin(db.UserJoin, null, "a", "a");
-            Assert.Throws<ArgumentNullException>(act);
+            db.Connector.GroupJoin(db.UserJoin, null, "a", "a");
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GroupJoinCheckInnerSelectorNotNull()
         {
             var db = new AppDbContext(AppDbOptions);
-             void act() => db.Connector.GroupJoin(db.UserJoin, "a", null, "a");
-            Assert.Throws<ArgumentNullException>(act);
+            db.Connector.GroupJoin(db.UserJoin, "a", null, "a");
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GroupJoinCheckResultSelectorNotNull()
         {
             var db = new AppDbContext(AppDbOptions);
-             void act() => db.Connector.GroupJoin(db.UserJoin, "a", "a", null);
-            Assert.Throws<ArgumentNullException>(act);
+            db.Connector.GroupJoin(db.UserJoin, "a", "a", null);
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void GroupJoinCheckOuterSelectorNotEmpty()
         {
             var db = new AppDbContext(AppDbOptions);
-             void act() => db.Connector.GroupJoin(db.UserJoin, "", "a", "a");
-            Assert.Throws<ArgumentException>(act);
+            db.Connector.GroupJoin(db.UserJoin, "", "a", "a");
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void GroupJoinCheckInnerSelectorNotEmpty()
         {
             var db = new AppDbContext(AppDbOptions);
-             void act() => db.Connector.GroupJoin(db.UserJoin, "a", "", "a");
-            Assert.Throws<ArgumentException>(act);
+            db.Connector.GroupJoin(db.UserJoin, "a", "", "a");
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void GroupJoinCheckResultSelectorNotEmpty()
         {
             var db = new AppDbContext(AppDbOptions);
-             void act() => db.Connector.GroupJoin(db.UserJoin, "a", "a", "");
-            Assert.Throws<ArgumentException>(act);
+            db.Connector.GroupJoin(db.UserJoin, "a", "a", "");
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace AutoPocoIO.AspNetCore.test
+namespace Microsoft.VisualStudio.TestTools.UnitTesting
 {
     internal class PrivateType
     {

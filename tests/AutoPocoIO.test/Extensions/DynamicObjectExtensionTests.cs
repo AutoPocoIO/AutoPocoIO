@@ -1,29 +1,29 @@
 ﻿using AutoPocoIO.Extensions;
 using AutoPocoIO.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using Xunit;
 
 namespace AutoPocoIO.test.Extensions
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class DynamicObjectExtensionTests
     {
-        [FactWithName]
+        [TestMethod]
         public void ConvertAnoymousToDynamic()
         {
             var obj = new { prop1 = 1, prop2 = "test" };
             var dynamicObject = obj.ToDynamic();
 
-            Assert.Equal(1, dynamicObject.prop1);
-            Assert.Equal("test", dynamicObject.prop2);
-            Assert.IsType<ExpandoObject>(dynamicObject);
+            Assert.AreEqual(1, dynamicObject.prop1);
+            Assert.AreEqual("test", dynamicObject.prop2);
+            Assert.IsInstanceOfType(dynamicObject, typeof(ExpandoObject));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void JobjectToObject()
         {
             JObject jobject = new JObject
@@ -34,12 +34,12 @@ namespace AutoPocoIO.test.Extensions
 
             dynamic dotnetObj = jobject.JTokenToConventionalDotNetObject();
 
-            Assert.Equal(1, dotnetObj["prop1"]);
-            Assert.Equal("test", dotnetObj["prop2"]);
-            Assert.IsType<Dictionary<string, object>>(dotnetObj);
+            Assert.AreEqual(1, dotnetObj["prop1"]);
+            Assert.AreEqual("test", dotnetObj["prop2"]);
+            Assert.IsInstanceOfType(dotnetObj, typeof(Dictionary<string, object>));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void JArrayToObject()
         {
             JArray jarray = new JArray
@@ -55,12 +55,12 @@ namespace AutoPocoIO.test.Extensions
 
             dynamic dotnetObj = jobject.JTokenToConventionalDotNetObject();
 
-            Assert.Equal("test", dotnetObj["array1"][0]);
-            Assert.Equal("test2", dotnetObj["array1"][1]);
-            Assert.IsType<Dictionary<string, object>>(dotnetObj);
+            Assert.AreEqual("test", dotnetObj["array1"][0]);
+            Assert.AreEqual("test2", dotnetObj["array1"][1]);
+            Assert.IsInstanceOfType(dotnetObj, typeof(Dictionary<string, object>));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PopulateObjectPropertiesFromJson()
         {
             JObject jobject = new JObject
@@ -72,26 +72,26 @@ namespace AutoPocoIO.test.Extensions
             var obj = new Entity2 { Prop1 = 34, Prop3 = "notchanging" };
             jobject.PopulateObjectFromJToken(obj);
 
-            Assert.Equal(1, obj.Prop1);
-            Assert.Equal("notchanging", obj.Prop3);
+            Assert.AreEqual(1, obj.Prop1);
+            Assert.AreEqual("notchanging", obj.Prop3);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PopulateModelNull()
         {
             var obj = DynamicObjectExtensions.PopulateModel(null, typeof(Entity));
-             Assert.Null(obj);
+            Assert.IsNull(obj);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PopiulateModelWithNoProperties()
         {
             Connector conn = new Connector();
             var obj = DynamicObjectExtensions.PopulateModel(conn, typeof(NoProps));
-            Assert.IsType<NoProps>(obj);
+            Assert.IsInstanceOfType(obj, typeof(NoProps));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PopulateFromSameType()
         {
             Entity source = new Entity
@@ -101,47 +101,47 @@ namespace AutoPocoIO.test.Extensions
             };
 
             var result = DynamicObjectExtensions.PopulateModel(source, typeof(Entity));
-            Assert.Equal(1, result.Prop1);
-            Assert.Equal("prop22", result.Prop2);
+            Assert.AreEqual(1, result.Prop1);
+            Assert.AreEqual("prop22", result.Prop2);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PopulateLessProperties()
         {
             var source = new { prop1 = 23 };
             var result = DynamicObjectExtensions.PopulateModel(source, typeof(Entity));
 
-            Assert.Equal(23, result.Prop1);
-            Assert.Equal(null, result.Prop2);
+            Assert.AreEqual(23, result.Prop1);
+            Assert.AreEqual(null, result.Prop2);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PopulateNoMatchingProperties()
         {
             var source = new { Prop3 = 23 };
             var result = DynamicObjectExtensions.PopulateModel(source, typeof(Entity));
 
-            Assert.Equal(0, result.Prop1);
-            Assert.Equal(null, result.Prop2);
+            Assert.AreEqual(0, result.Prop1);
+            Assert.AreEqual(null, result.Prop2);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PopiulateTModelWithNoProperties()
         {
             Connector conn = new Connector();
             var obj = conn.PopulateModel<NoProps>();
-            Assert.IsType<NoProps>(obj);
+            Assert.IsInstanceOfType(obj, typeof(NoProps));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PopulateTModelWithNullValue()
         {
             Connector conn = null;
             var obj = conn.PopulateModel<NoProps>();
-             Assert.Null(obj);
+            Assert.IsNull(obj);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PopulateTFromSameType()
         {
             Entity source = new Entity
@@ -151,65 +151,66 @@ namespace AutoPocoIO.test.Extensions
             };
 
             var result = source.PopulateModel<Entity>();
-            Assert.Equal(1, result.Prop1);
-            Assert.Equal("prop22", result.Prop2);
+            Assert.AreEqual(1, result.Prop1);
+            Assert.AreEqual("prop22", result.Prop2);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PopulateTLessProperties()
         {
             var source = new { prop1 = 23 };
             var result = source.PopulateModel<Entity>();
 
-            Assert.Equal(23, result.Prop1);
-            Assert.Null(result.Prop2);
+            Assert.AreEqual(23, result.Prop1);
+            Assert.AreEqual(null, result.Prop2);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PopulateTNoMatchingProperties()
         {
             var source = new { prop3 = 23 };
             var result = source.PopulateModel<Entity>();
 
-            Assert.Equal(0, result.Prop1);
-            Assert.Null(result.Prop2);
+            Assert.AreEqual(0, result.Prop1);
+            Assert.AreEqual(null, result.Prop2);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PopulateUpdates()
         {
             var source = new { prop1 = 1, prop3 = "aa" };
             var model = new Entity { Prop1 = 11, Prop2 = "bb" };
 
             DynamicObjectExtensions.PopulateModel(source, model);
-            Assert.Equal(1, model.Prop1);
-            Assert.Equal("bb", model.Prop2);
+            Assert.AreEqual(1, model.Prop1);
+            Assert.AreEqual("bb", model.Prop2);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void AsDictionary()
         {
             var obj = new { prop1 = 1, prop2 = "abc" };
             var dictionary = obj.AsDictionary();
 
-            Assert.Equal(1, dictionary["prop1"]);
-            Assert.Equal("abc", dictionary["prop2"]);
+            Assert.AreEqual(1, dictionary["prop1"]);
+            Assert.AreEqual("abc", dictionary["prop2"]);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void AsDictionaryNoProps()
         {
             var obj = new NoProps();
             var dictionary = obj.AsDictionary();
-            Assert.Equal(0, dictionary.Count);
+            Assert.AreEqual(0, dictionary.Count);
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void AsDictionaryNull()
         {
             Entity obj = null;
-             void act() => obj.AsDictionary();
-            Assert.Throws<ArgumentNullException>(act);
+            _ = obj.AsDictionary();
+            Assert.Fail("Exception not thrown");
         }
 
         private class NoProps { }

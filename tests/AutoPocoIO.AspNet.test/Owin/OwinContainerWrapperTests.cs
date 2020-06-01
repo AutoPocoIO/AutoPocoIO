@@ -2,7 +2,7 @@
 using AutoPocoIO.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Testing;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Owin;
 using System;
@@ -12,8 +12,8 @@ using System.Web.Http.Dependencies;
 
 namespace AutoPocoIO.AspNet.test.Owin
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class OwinContainerWrapperTests
     {
         private class DiMiddleware : IOwinMiddlewareWithDI
@@ -42,7 +42,7 @@ namespace AutoPocoIO.AspNet.test.Owin
         }
 
 
-        [FactWithName]
+        [TestMethod]
         public void ResolveMiddlewareFromConfig()
         {
             var provider = new Mock<IDependencyResolver>();
@@ -60,12 +60,12 @@ namespace AutoPocoIO.AspNet.test.Owin
             }))
             {
                 var response = server.HttpClient.GetAsync("/").Result;
-                Assert.Equal(200, (int)response.StatusCode);
-                Assert.Equal("end of pipeline", response.Content.ReadAsStringAsync().Result);
+                Assert.AreEqual(200, (int)response.StatusCode);
+                Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
             }
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ResolveMiddlewareFromAutoFac()
         {
             var provider = new Mock<IServiceProvider>();
@@ -79,8 +79,8 @@ namespace AutoPocoIO.AspNet.test.Owin
             }))
             {
                 var response = server.HttpClient.GetAsync("/").Result;
-                Assert.Equal(200, (int)response.StatusCode);
-                Assert.Equal("end of pipeline", response.Content.ReadAsStringAsync().Result);
+                Assert.AreEqual(200, (int)response.StatusCode);
+                Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
             }
         }
     }

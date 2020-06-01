@@ -3,23 +3,26 @@ using AutoPocoIO.Exceptions;
 using AutoPocoIO.Models;
 using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Xunit;
 
 namespace AutoPocoIO.test.Services
 {
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class AppAdminServiceTests
     {
-        readonly DbContextOptions<AppDbContext> appDbOptions;
-        public AppAdminServiceTests()
+        DbContextOptions<AppDbContext> appDbOptions;
+
+        [TestInitialize]
+        public void Init()
         {
             appDbOptions = new DbContextOptionsBuilder<AppDbContext>()
               .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
               .Options;
         }
 
-        [FactWithName]
+        [TestMethod]
         public void FindConnector()
         {
             var db = new AppDbContext(appDbOptions);
@@ -35,12 +38,13 @@ namespace AutoPocoIO.test.Services
 
             var connector = appAdminService.GetConnection("connName1");
 
-            Assert.Equal(1, connector.Id);
-            Assert.Equal("connName1", connector.Name);
+            Assert.AreEqual(1, connector.Id);
+            Assert.AreEqual("connName1", connector.Name);
         }
 
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ConnectorNotFoundException))]
         public void ConnectorNotFound()
         {
 
@@ -52,11 +56,11 @@ namespace AutoPocoIO.test.Services
             db.SaveChanges();
 
             IAppAdminService appAdminService = new AppAdminService(db);
-             void act() => appAdminService.GetConnection("connName123");
-            Assert.Throws<ConnectorNotFoundException>(act);
+            _ = appAdminService.GetConnection("connName123");
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ConnectorNotFoundException))]
         public void ConnectorNotActive()
         {
 
@@ -69,11 +73,10 @@ namespace AutoPocoIO.test.Services
             db.SaveChanges();
 
             IAppAdminService appAdminService = new AppAdminService(db);
-             void act() => appAdminService.GetConnection("connName1");
-            Assert.Throws<ConnectorNotFoundException>(act);
+            _ = appAdminService.GetConnection("connName1");
         }
 
-        [FactWithName]
+        [TestMethod]
         public void FindConnectorById()
         {
             var db = new AppDbContext(appDbOptions);
@@ -89,12 +92,13 @@ namespace AutoPocoIO.test.Services
             IAppAdminService appAdminService = new AppAdminService(db);
             var connector = appAdminService.GetConnection(conn1.Id);
 
-            Assert.Equal(conn1.Id, connector.Id);
-            Assert.Equal("connName1", connector.Name);
+            Assert.AreEqual(conn1.Id, connector.Id);
+            Assert.AreEqual("connName1", connector.Name);
         }
 
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ConnectorNotFoundException))]
         public void ConnectorNotFoundById()
         {
             var db = new AppDbContext(appDbOptions);
@@ -107,12 +111,11 @@ namespace AutoPocoIO.test.Services
             db.SaveChanges();
 
             IAppAdminService appAdminService = new AppAdminService(db);
-             void act() => appAdminService.GetConnection(45);
-            Assert.Throws<ConnectorNotFoundException>(act);
-
+            _ = appAdminService.GetConnection(45);
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ConnectorNotFoundException))]
         public void ConnectorNotFoundByIdDisabled()
         {
             var db = new AppDbContext(appDbOptions);
@@ -125,8 +128,7 @@ namespace AutoPocoIO.test.Services
             db.SaveChanges();
 
             IAppAdminService appAdminService = new AppAdminService(db);
-             void act() => appAdminService.GetConnection(45);
-            Assert.Throws<ConnectorNotFoundException>(act);
+            _ = appAdminService.GetConnection(45);
         }
     }
 }

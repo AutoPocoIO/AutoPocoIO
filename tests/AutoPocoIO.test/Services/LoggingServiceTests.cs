@@ -1,42 +1,35 @@
 ﻿using AutoPocoIO.Constants;
 using AutoPocoIO.Context;
+using AutoPocoIO.Models;
 using AutoPocoIO.Services;
-using Microsoft.EntityFrameworkCore;
+using AutoPocoIO.test.TestHelpers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Linq;
-using Xunit;
 
 namespace AutoPocoIO.test.Services
 {
-    [Trait("Category", TestCategories.Unit)]
-    public class LoggingServiceTests
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
+    public class LoggingServiceTests : DbAccessUnitTestBase
     {
-        private readonly LoggingService loggingService;
-        private readonly DbContextOptions<LogDbContext> LogDbOptions;
-        private readonly IServiceScope scope;
+        private LoggingService loggingService;
+        private IServiceScope scope;
 
-        public  LoggingServiceTests()
+        [TestInitialize]
+        public void Init()
         {
-            LogDbOptions = new DbContextOptionsBuilder<LogDbContext>()
-               .UseInMemoryDatabase(databaseName: "logDb" + Guid.NewGuid().ToString())
-               .Options;
-
-            var timeProvider = new Mock<ITimeProvider>();
-            timeProvider.Setup(c => c.UtcNow).Returns(new DateTime(2020, 1, 1));
-            loggingService = new LoggingService(timeProvider.Object);
-
-            ServiceCollection services = new ServiceCollection();
-            services.AddSingleton(c => new LogDbContext(LogDbOptions))
-                    .AddSingleton(c => timeProvider.Object);
+            TimeProvider.Setup(c => c.UtcNow).Returns(new DateTime(2020, 1, 1));
+            loggingService = new LoggingService(TimeProvider.Object);
 
             var scopeMock = new Mock<IServiceScope>();
-            scopeMock.Setup(c => c.ServiceProvider).Returns(services.BuildServiceProvider());
+            scopeMock.Setup(c => c.ServiceProvider).Returns(serviceProvider);
             scope = scopeMock.Object;
         }
 
-        [FactWithName]
+        [TestMethod]
         public void AddTableRead()
         {
             loggingService.AddTableToLogger("conn1", "tbl1", HttpMethodType.GET);
@@ -45,22 +38,22 @@ namespace AutoPocoIO.test.Services
 
             using (var db = new LogDbContext(LogDbOptions))
             {
-                Xunit.Assert.Equal(1, db.RequestLogs.Count());
-                Assert.Equal(1, db.ResponseLogs.Count());
+                Assert.AreEqual(1, db.RequestLogs.Count());
+                Assert.AreEqual(1, db.ResponseLogs.Count());
 
                 //Check details
-                Assert.Equal("conn1", db.RequestLogs.First().Connector);
-                Assert.Equal("GET", db.RequestLogs.First().RequestType);
-                Assert.Equal(new DateTime(2020, 1, 1), db.RequestLogs.First().DateTimeUtc);
+                Assert.AreEqual("conn1", db.RequestLogs.First().Connector);
+                Assert.AreEqual("GET", db.RequestLogs.First().RequestType);
+                Assert.AreEqual(new DateTime(2020, 1, 1), db.RequestLogs.First().DateTimeUtc);
 
                 //Check linked
-                Assert.Equal(db.RequestLogs.First().RequestGuid, db.ResponseLogs.First().RequestGuid);
-                Assert.Equal(db.RequestLogs.First().RequestId, db.ResponseLogs.First().ResponseId);
+                Assert.AreEqual(db.RequestLogs.First().RequestGuid, db.ResponseLogs.First().RequestGuid);
+                Assert.AreEqual(db.RequestLogs.First().RequestId, db.ResponseLogs.First().ResponseId);
             }
         }
 
       
-        [FactWithName]
+        [TestMethod]
         public void ViewRead()
         {
             loggingService.AddViewToLogger("conn1", "vw1");
@@ -68,20 +61,20 @@ namespace AutoPocoIO.test.Services
 
             using (var db = new LogDbContext(LogDbOptions))
             {
-                Assert.Equal(1, db.RequestLogs.Count());
-                Assert.Equal(1, db.ResponseLogs.Count());
+                Assert.AreEqual(1, db.RequestLogs.Count());
+                Assert.AreEqual(1, db.ResponseLogs.Count());
 
                 //Check details
-                Assert.Equal("conn1", db.RequestLogs.First().Connector);
-                Assert.Equal("GET", db.RequestLogs.First().RequestType);
-                Assert.Equal(new DateTime(2020, 1, 1), db.RequestLogs.First().DateTimeUtc);
+                Assert.AreEqual("conn1", db.RequestLogs.First().Connector);
+                Assert.AreEqual("GET", db.RequestLogs.First().RequestType);
+                Assert.AreEqual(new DateTime(2020, 1, 1), db.RequestLogs.First().DateTimeUtc);
 
-                Assert.Equal(db.RequestLogs.First().RequestGuid, db.ResponseLogs.First().RequestGuid);
-                Assert.Equal(db.RequestLogs.First().RequestId, db.ResponseLogs.First().ResponseId);
+                Assert.AreEqual(db.RequestLogs.First().RequestGuid, db.ResponseLogs.First().RequestGuid);
+                Assert.AreEqual(db.RequestLogs.First().RequestId, db.ResponseLogs.First().ResponseId);
             }
         }
 
-        [FactWithName]
+        [TestMethod]
         public void LogExecuteProc()
         {
             loggingService.AddSprocToLogger("conn1", "proc1", HttpMethodType.POST);
@@ -89,20 +82,20 @@ namespace AutoPocoIO.test.Services
 
             using (var db = new LogDbContext(LogDbOptions))
             {
-                Assert.Equal(1, db.RequestLogs.Count());
-                Assert.Equal(1, db.ResponseLogs.Count());
+                Assert.AreEqual(1, db.RequestLogs.Count());
+                Assert.AreEqual(1, db.ResponseLogs.Count());
 
                 //Check details
-                Assert.Equal("conn1", db.RequestLogs.First().Connector);
-                Assert.Equal("POST", db.RequestLogs.First().RequestType);
-                Assert.Equal(new DateTime(2020, 1, 1), db.RequestLogs.First().DateTimeUtc);
+                Assert.AreEqual("conn1", db.RequestLogs.First().Connector);
+                Assert.AreEqual("POST", db.RequestLogs.First().RequestType);
+                Assert.AreEqual(new DateTime(2020, 1, 1), db.RequestLogs.First().DateTimeUtc);
 
-                Assert.Equal(db.RequestLogs.First().RequestGuid, db.ResponseLogs.First().RequestGuid);
-                Assert.Equal(db.RequestLogs.First().RequestId, db.ResponseLogs.First().ResponseId);
+                Assert.AreEqual(db.RequestLogs.First().RequestGuid, db.ResponseLogs.First().RequestGuid);
+                Assert.AreEqual(db.RequestLogs.First().RequestId, db.ResponseLogs.First().ResponseId);
             }
         }
 
-        [FactWithName]
+        [TestMethod]
         public void SchemaDefinition()
         {
             loggingService.AddSchemaToLogger("conn1");
@@ -110,20 +103,20 @@ namespace AutoPocoIO.test.Services
 
             using (var db = new LogDbContext(LogDbOptions))
             {
-                Assert.Equal(1, db.RequestLogs.Count());
-                Assert.Equal(1, db.ResponseLogs.Count());
+                Assert.AreEqual(1, db.RequestLogs.Count());
+                Assert.AreEqual(1, db.ResponseLogs.Count());
 
                 //Check details
-                Assert.Equal("conn1", db.RequestLogs.First().Connector);
-                Assert.Equal("GET", db.RequestLogs.First().RequestType);
-                Assert.Equal(new DateTime(2020, 1, 1), db.RequestLogs.First().DateTimeUtc);
+                Assert.AreEqual("conn1", db.RequestLogs.First().Connector);
+                Assert.AreEqual("GET", db.RequestLogs.First().RequestType);
+                Assert.AreEqual(new DateTime(2020, 1, 1), db.RequestLogs.First().DateTimeUtc);
 
-                Assert.Equal(db.RequestLogs.First().RequestGuid, db.ResponseLogs.First().RequestGuid);
-                Assert.Equal(db.RequestLogs.First().RequestId, db.ResponseLogs.First().ResponseId);
+                Assert.AreEqual(db.RequestLogs.First().RequestGuid, db.ResponseLogs.First().RequestGuid);
+                Assert.AreEqual(db.RequestLogs.First().RequestId, db.ResponseLogs.First().ResponseId);
             }
         }
 
-        [FactWithName]
+        [TestMethod]
         public void LogMultipleApiOperationsPerRequest()
         {
             loggingService.AddViewToLogger("conn1", "vw1");
@@ -133,15 +126,15 @@ namespace AutoPocoIO.test.Services
 
             using (var db = new LogDbContext(LogDbOptions))
             {
-                Assert.Equal(2, db.RequestLogs.Count());
-                Assert.Equal(2, db.ResponseLogs.Count());
+                Assert.AreEqual(2, db.RequestLogs.Count());
+                Assert.AreEqual(2, db.ResponseLogs.Count());
 
                 //Check details
-                Assert.Equal("conn1", db.RequestLogs.First().Connector);
-                Assert.Equal("GET", db.RequestLogs.First().RequestType);
+                Assert.AreEqual("conn1", db.RequestLogs.First().Connector);
+                Assert.AreEqual("GET", db.RequestLogs.First().RequestType);
 
-                Assert.Equal(db.RequestLogs.First().RequestGuid, db.ResponseLogs.First().RequestGuid);
-                Assert.Equal(db.RequestLogs.First().RequestId, db.ResponseLogs.First().ResponseId);
+                Assert.AreEqual(db.RequestLogs.First().RequestGuid, db.ResponseLogs.First().RequestGuid);
+                Assert.AreEqual(db.RequestLogs.First().RequestId, db.ResponseLogs.First().ResponseId);
             }
         }
     }

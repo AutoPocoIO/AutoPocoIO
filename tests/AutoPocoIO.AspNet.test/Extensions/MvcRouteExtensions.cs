@@ -1,37 +1,37 @@
 ﻿using AutoPocoIO.Extensions;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Web;
 
 namespace AutoPocoIO.AspNet.test.Extensions
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class MvcRouteExtensions
     {
-        [FactWithName]
+        [TestMethod]
         public void NullRequestReturnsNewDictionary()
         {
             HttpRequest req = null;
             var results = req.GetQueryStrings();
-            Assert.Equal(new Dictionary<string, string>(), results);
+            CollectionAssert.AreEqual(new Dictionary<string, string>(), results);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void MvcRequestReturnsQueryStringIgnoreCase()
         {
             HttpRequest req = new HttpRequest("", "http://test.com", "abc=123");
             var results = req.GetQueryStrings();
-            Assert.Equal("123", results["abc"]);
-            Assert.Equal("123", results["ABC"]);
+            Assert.AreEqual("123", results["abc"]);
+            Assert.AreEqual("123", results["ABC"]);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void MvcRequestReturnsNoQueryString()
         {
             HttpRequest req = new HttpRequest("", "http://test.com", null);
             var results = req.GetQueryStrings();
-            Assert.Equal(new Dictionary<string, string>(), results);
+            CollectionAssert.AreEqual(new Dictionary<string, string>(), results);
         }
     }
 }

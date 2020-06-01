@@ -1,62 +1,57 @@
 ﻿using AutoPocoIO.DynamicSchema.Util;
 using AutoPocoIO.Extensions;
-using System;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AutoPocoIO.test.DynamicSchema.Db
 {
-    
-     [Trait("Category", TestCategories.Unit)]
-    public class EncryptDecryptTests : IDisposable
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
+    public class EncryptDecryptTests
     {
         private const string IvSalt = "49OQNVKPAWTMC747";
         private const string SecretKey = "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1";
 
-        public EncryptDecryptTests()
+        [TestInitialize]
+        [TestCleanup]
+        public void Init()
         {
             AutoPocoConfiguration.SaltVector = "";
             AutoPocoConfiguration.SecretKey = "";
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ReturnPlainTextIfNotConfigured()
         {
             var result = EncryptDecrypt.EncryptString("clearText");
-            Assert.Equal("clearText", result);
+            Assert.AreEqual("clearText", result);
         }
 
 
-        [FactWithName]
+        [TestMethod]
         public void ReturnEncryptedTextIfConfigured()
         {
             AutoPocoConfiguration.SaltVector = IvSalt;
             AutoPocoConfiguration.SecretKey = SecretKey;
 
             var result = EncryptDecrypt.EncryptString("clearText");
-            Assert.Equal("uK7lPbUa8xH+IPA5PLe4CQ==", result);
+            Assert.AreEqual("uK7lPbUa8xH+IPA5PLe4CQ==", result);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ReturnEncryptedTextIfNotConfigured()
         {
             var result = EncryptDecrypt.DecryptString("stayEncrypted");
-            Assert.Equal("stayEncrypted", result);
+            Assert.AreEqual("stayEncrypted", result);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ReturnDecryptedTextIfConfigured()
         {
             AutoPocoConfiguration.SaltVector = IvSalt;
             AutoPocoConfiguration.SecretKey = SecretKey;
 
             var result = EncryptDecrypt.DecryptString("uK7lPbUa8xH+IPA5PLe4CQ==");
-            Assert.Equal("clearText", result);
-        }
-
-        public void Dispose()
-        {
-            AutoPocoConfiguration.SaltVector = "";
-            AutoPocoConfiguration.SecretKey = "";
+            Assert.AreEqual("clearText", result);
         }
     }
 }

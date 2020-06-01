@@ -4,7 +4,7 @@ using AutoPocoIO.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Owin;
 using Microsoft.Owin.Testing;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Owin;
 using System;
@@ -17,8 +17,8 @@ using System.Web.Http.Dependencies;
 
 namespace AutoPocoIO.AspNet.test.Owin
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class LogRequestAndResponseMiddlewareTests
     {
         public class AddLoggingDataTestMiddleware : OwinMiddleware
@@ -61,7 +61,8 @@ namespace AutoPocoIO.AspNet.test.Owin
 
         HttpConfiguration config = new HttpConfiguration();
 
-        public LogRequestAndResponseMiddlewareTests()
+        [TestInitialize]
+        public void Init()
         {
             Mock<ITimeProvider> timeProvider = new Mock<ITimeProvider>();
             timeProvider.Setup(c => c.UtcNow).Returns(new DateTime(2020, 1, 1));
@@ -82,7 +83,7 @@ namespace AutoPocoIO.AspNet.test.Owin
             };
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PipelineContinuesAfterNoLogging()
         {
             using (var server = TestServer.Create(app =>
@@ -93,14 +94,14 @@ namespace AutoPocoIO.AspNet.test.Owin
             {
                 HttpResponseMessage response = server.HttpClient.GetAsync("/").Result;
 
-                Assert.Equal(200, (int)response.StatusCode);
-                Assert.Equal("end of pipeline", response.Content.ReadAsStringAsync().Result);
+                Assert.AreEqual(200, (int)response.StatusCode);
+                Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
 
                 logger.Verify(c => c.LogAll(scope.Object), Times.Never);
             }
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PipelineContinuesAfterNoLoggingIfLoggerNull()
         {
             var depResolver = new Mock<IDependencyResolver>();
@@ -120,14 +121,14 @@ namespace AutoPocoIO.AspNet.test.Owin
             {
                 HttpResponseMessage response = server.HttpClient.GetAsync("/").Result;
 
-                Assert.Equal(200, (int)response.StatusCode);
-                Assert.Equal("end of pipeline", response.Content.ReadAsStringAsync().Result);
+                Assert.AreEqual(200, (int)response.StatusCode);
+                Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
 
                 logger.Verify(c => c.LogAll(scope.Object), Times.Never);
             }
         }
 
-        [FactWithName]
+        [TestMethod]
         public void PipelineContinuesAfterLogging()
         {
             using (var server = TestServer.Create(app =>
@@ -141,15 +142,15 @@ namespace AutoPocoIO.AspNet.test.Owin
 
                 HttpResponseMessage response = server.HttpClient.GetAsync("/").Result;
 
-                Assert.Equal(200, (int)response.StatusCode);
-                Assert.Equal("end of pipeline", response.Content.ReadAsStringAsync().Result);
+                Assert.AreEqual(200, (int)response.StatusCode);
+                Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
 
                 logger.Verify(c => c.LogAll(scope.Object), Times.Once);
             }
         }
 
  
-        [FactWithName]
+        [TestMethod]
         public void SetExceptionInLogger()
         {
             ContextLogParameters logParameters = null;
@@ -173,11 +174,11 @@ namespace AutoPocoIO.AspNet.test.Owin
                 logger.Setup(c => c.LogCount).Returns(1);
                 HttpResponseMessage response = server.HttpClient.GetAsync("/").Result;
 
-                Assert.Equal("Message: outer\nInner Exception: inner\nStackTrace: stack123", logParameters.Exception);
+                Assert.AreEqual("Message: outer\nInner Exception: inner\nStackTrace: stack123", logParameters.Exception);
             }
         }
 
-        [FactWithName]
+        [TestMethod]
         public void SetExceptionWithOuterOnlyInLogger()
         {
             ContextLogParameters logParameters = null;
@@ -200,11 +201,11 @@ namespace AutoPocoIO.AspNet.test.Owin
                 logger.Setup(c => c.LogCount).Returns(1);
                 HttpResponseMessage response = server.HttpClient.GetAsync("/").Result;
 
-                Assert.Equal("Message: outer\nInner Exception: \nStackTrace: stack123", logParameters.Exception);
+                Assert.AreEqual("Message: outer\nInner Exception: \nStackTrace: stack123", logParameters.Exception);
             }
         }
 
-        [FactWithName]
+        [TestMethod]
         public void DisposeOfLogger()
         {
             LogRequestAndResponseMiddleware middleware = new LogRequestAndResponseMiddleware(Mock.Of< IServiceScopeFactory>(), Mock.Of<ILoggingService>());
@@ -216,10 +217,10 @@ namespace AutoPocoIO.AspNet.test.Owin
             middleware.Dispose();
 
             
-            Assert.True((bool)obj.GetField("isDisposed"));
+            Assert.IsTrue((bool)obj.GetField("isDisposed"));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void DisposeOfLoggerMultiThread()
         {
             LogRequestAndResponseMiddleware middleware = new LogRequestAndResponseMiddleware(Mock.Of<IServiceScopeFactory>(), Mock.Of<ILoggingService>());

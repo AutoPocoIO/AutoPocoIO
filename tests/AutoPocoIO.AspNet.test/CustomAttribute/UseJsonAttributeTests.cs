@@ -1,7 +1,7 @@
 ﻿using AutoPocoIO.CustomAttributes;
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.Services;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Net;
@@ -17,8 +17,8 @@ using System.Web.Http.Routing;
 
 namespace AutoPocoIO.AspNet.test.CustomAttribute
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class UseJsonAttributeTests
     {
         class ViewModel1
@@ -29,7 +29,8 @@ namespace AutoPocoIO.AspNet.test.CustomAttribute
         LoggingService logger;
         HttpActionExecutedContext context;
 
-        public UseJsonAttributeTests()
+        [TestInitialize]
+        public void Init()
         {
             logger = new LoggingService(Mock.Of<ITimeProvider>());
 
@@ -60,7 +61,7 @@ namespace AutoPocoIO.AspNet.test.CustomAttribute
             };
         }
 
-        [FactWithName]
+        [TestMethod]
         public void SetJsonResponse()
         {
             var attr = new UseJsonAttribute();
@@ -76,12 +77,12 @@ namespace AutoPocoIO.AspNet.test.CustomAttribute
 
             attr.OnActionExecuted(context);
 
-            Assert.Equal(HttpStatusCode.OK, context.Response.StatusCode);
-            Assert.Equal(@"{""Prop1"":""abc""}", context.Response.Content.ReadAsStringAsync().Result);
-            Assert.IsType<JsonMediaTypeFormatter>((context.Response.Content as ObjectContent).Formatter);
+            Assert.AreEqual(HttpStatusCode.OK, context.Response.StatusCode);
+            Assert.AreEqual(@"{""Prop1"":""abc""}", context.Response.Content.ReadAsStringAsync().Result);
+            Assert.IsInstanceOfType((context.Response.Content as ObjectContent).Formatter, typeof(JsonMediaTypeFormatter));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void SetJsonResponseIsOverriddenWithException()
         {
             var attr = new UseJsonAttribute();
@@ -97,21 +98,21 @@ namespace AutoPocoIO.AspNet.test.CustomAttribute
 
             attr.OnActionExecuted(context);
 
-            Assert.Equal(HttpStatusCode.OK, context.Response.StatusCode);
-            Assert.Equal(@"{""Prop1"":""abc""}", context.Response.Content.ReadAsStringAsync().Result);
-            Assert.IsType< JsonMediaTypeFormatter>((context.Response.Content as ObjectContent).Formatter);
+            Assert.AreEqual(HttpStatusCode.OK, context.Response.StatusCode);
+            Assert.AreEqual(@"{""Prop1"":""abc""}", context.Response.Content.ReadAsStringAsync().Result);
+            Assert.IsInstanceOfType((context.Response.Content as ObjectContent).Formatter, typeof(JsonMediaTypeFormatter));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void SkipFormtingIfNoResponse()
         {
             var attr = new UseJsonAttribute();
             attr.OnActionExecuted(context);
-            Assert.Null(context.Response);
+            Assert.IsNull(context.Response);
         }
 
 
-        [FactWithName]
+        [TestMethod]
         public void SkipExceptionIfNoLogger()
         {
             var attr = new UseJsonAttribute();
@@ -141,10 +142,10 @@ namespace AutoPocoIO.AspNet.test.CustomAttribute
             context.ActionContext = actionContext;
 
             attr.OnActionExecuted(context);
-            Assert.Null(context.Response);
+            Assert.IsNull(context.Response);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void WriteBaseCaughtExceptionToResponse()
         {
             var attr = new UseJsonAttribute();
@@ -156,13 +157,13 @@ namespace AutoPocoIO.AspNet.test.CustomAttribute
 
             attr.OnActionExecuted(context);
 #if DEBUG
-            Assert.Equal("Exception: exMessage\nInner Exception: \nStack Trace: track123", context.Response.Content.ReadAsStringAsync().Result);
+            Assert.AreEqual("Exception: exMessage\nInner Exception: \nStack Trace: track123", context.Response.Content.ReadAsStringAsync().Result);
 #else
-            Assert.Equal("Exception: exMessage", context.Response.Content.ReadAsStringAsync().Result);
+            Assert.AreEqual("Exception: exMessage", context.Response.Content.ReadAsStringAsync().Result);
 #endif
         }
 
-        [FactWithName]
+        [TestMethod]
         public void BaseCaughtSetsLoggerErrorCodeAndMessage()
         {
             var attr = new UseJsonAttribute();
@@ -174,11 +175,11 @@ namespace AutoPocoIO.AspNet.test.CustomAttribute
             context.Exception = exception.Object;
 
             attr.OnActionExecuted(context);
-            Assert.Equal("Exception: exMessage\nInner Exception: \nStack Trace: track123", logger.Exception);
-            Assert.Equal("407 : test", logger.StatusCode);
+            Assert.AreEqual("Exception: exMessage\nInner Exception: \nStack Trace: track123", logger.Exception);
+            Assert.AreEqual("407 : test", logger.StatusCode);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void LogException_InnerException_AndStackTrace()
         {
             var attr = new UseJsonAttribute();
@@ -190,7 +191,7 @@ namespace AutoPocoIO.AspNet.test.CustomAttribute
             context.Exception = exception.Object;
 
             attr.OnActionExecuted(context);
-            Assert.Equal("Exception: outerMessage\nInner Exception: innerMessage\nStack Trace: track123", logger.Exception);
+            Assert.AreEqual("Exception: outerMessage\nInner Exception: innerMessage\nStack Trace: track123", logger.Exception);
         }
     }
 }

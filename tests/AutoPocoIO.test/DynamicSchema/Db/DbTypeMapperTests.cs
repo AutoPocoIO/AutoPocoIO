@@ -1,361 +1,362 @@
 ﻿using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Util;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 namespace AutoPocoIO.test.DynamicSchema.Db
 {
-    
-     [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class DbTypeMapperTests
     {
-        private readonly IDbTypeMapper mapper;
+        private IDbTypeMapper mapper;
 
-        public DbTypeMapperTests()
+        [TestInitialize]
+        public void Init()
         {
             mapper = new DbTypeMapper();
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UniqueIdentifierToGuid()
         {
             var column = new Column { ColumnType = "uniqueIdentifier" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("uniqueIdentifier", result.DbType);
-            Assert.Equal(typeof(Guid?), result.SystemType);
+            Assert.AreEqual("uniqueIdentifier", result.DbType);
+            Assert.AreEqual(typeof(Guid?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void XMLToString()
         {
             var column = new Column { ColumnType = "xml" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("xml", result.DbType);
-            Assert.Equal(typeof(string), result.SystemType);
+            Assert.AreEqual("xml", result.DbType);
+            Assert.AreEqual(typeof(string), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void NvarcharToString()
         {
             var column = new Column { ColumnType = "nvarchar" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("nvarchar", result.DbType);
-            Assert.Equal(typeof(string), result.SystemType);
+            Assert.AreEqual("nvarchar", result.DbType);
+            Assert.AreEqual(typeof(string), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void CharToString()
         {
             var column = new Column { ColumnType = "char" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("char", result.DbType);
-            Assert.Equal(typeof(string), result.SystemType);
+            Assert.AreEqual("char", result.DbType);
+            Assert.AreEqual(typeof(string), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void NCharToString()
         {
             var column = new Column { ColumnType = "nchar" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("nchar", result.DbType);
-            Assert.Equal(typeof(string), result.SystemType);
+            Assert.AreEqual("nchar", result.DbType);
+            Assert.AreEqual(typeof(string), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void TextToString()
         {
             var column = new Column { ColumnType = "text" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("text", result.DbType);
-            Assert.Equal(typeof(string), result.SystemType);
+            Assert.AreEqual("text", result.DbType);
+            Assert.AreEqual(typeof(string), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void VarCharToString()
         {
             var column = new Column { ColumnType = "VarChar" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("VarChar", result.DbType);
-            Assert.Equal(typeof(string), result.SystemType);
+            Assert.AreEqual("VarChar", result.DbType);
+            Assert.AreEqual(typeof(string), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void VarChar2ToString()
         {
             var column = new Column { ColumnType = "VarChar2" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("VarChar2", result.DbType);
-            Assert.Equal(typeof(string), result.SystemType);
+            Assert.AreEqual("VarChar2", result.DbType);
+            Assert.AreEqual(typeof(string), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void SysNameToString()
         {
             var column = new Column { ColumnType = "sysName" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("sysName", result.DbType);
-            Assert.Equal(typeof(string), result.SystemType);
+            Assert.AreEqual("sysName", result.DbType);
+            Assert.AreEqual(typeof(string), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void MoneyToDecimal()
         {
             var column = new Column { ColumnType = "Money" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("Money", result.DbType);
-            Assert.Equal(typeof(decimal?), result.SystemType);
+            Assert.AreEqual("Money", result.DbType);
+            Assert.AreEqual(typeof(decimal?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void SmallMoneyDecimal()
         {
             var column = new Column { ColumnType = "SmallMoney" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("SmallMoney", result.DbType);
-            Assert.Equal(typeof(decimal?), result.SystemType);
+            Assert.AreEqual("SmallMoney", result.DbType);
+            Assert.AreEqual(typeof(decimal?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void NumericToString()
         {
             var column = new Column { ColumnType = "Numeric" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("Numeric", result.DbType);
-            Assert.Equal(typeof(decimal?), result.SystemType);
+            Assert.AreEqual("Numeric", result.DbType);
+            Assert.AreEqual(typeof(decimal?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void DecimalToDecimal()
         {
             var column = new Column { ColumnType = "Decimal" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("Decimal", result.DbType);
-            Assert.Equal(typeof(decimal?), result.SystemType);
+            Assert.AreEqual("Decimal", result.DbType);
+            Assert.AreEqual(typeof(decimal?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void NumberToDecimal()
         {
             var column = new Column { ColumnType = "Number" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("Number", result.DbType);
-            Assert.Equal(typeof(decimal?), result.SystemType);
+            Assert.AreEqual("Number", result.DbType);
+            Assert.AreEqual(typeof(decimal?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void TinyIntToByte()
         {
             var column = new Column { ColumnType = "TinyInt" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("TinyInt", result.DbType);
-            Assert.Equal(typeof(byte?), result.SystemType);
+            Assert.AreEqual("TinyInt", result.DbType);
+            Assert.AreEqual(typeof(byte?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void SmallIntToShort()
         {
             var column = new Column { ColumnType = "SmallInt" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("SmallInt", result.DbType);
-            Assert.Equal(typeof(short?), result.SystemType);
+            Assert.AreEqual("SmallInt", result.DbType);
+            Assert.AreEqual(typeof(short?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void IntToInt()
         {
             var column = new Column { ColumnType = "Int" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("Int", result.DbType);
-            Assert.Equal(typeof(int?), result.SystemType);
+            Assert.AreEqual("Int", result.DbType);
+            Assert.AreEqual(typeof(int?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void BigIntToLong()
         {
             var column = new Column { ColumnType = "BigInt" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("BigInt", result.DbType);
-            Assert.Equal(typeof(long?), result.SystemType);
+            Assert.AreEqual("BigInt", result.DbType);
+            Assert.AreEqual(typeof(long?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void FloatToDouble()
         {
             var column = new Column { ColumnType = "float" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("float", result.DbType);
-            Assert.Equal(typeof(double?), result.SystemType);
+            Assert.AreEqual("float", result.DbType);
+            Assert.AreEqual(typeof(double?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void RealToFloat()
         {
             var column = new Column { ColumnType = "Real" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("Real", result.DbType);
-            Assert.Equal(typeof(float?), result.SystemType);
+            Assert.AreEqual("Real", result.DbType);
+            Assert.AreEqual(typeof(float?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void DateToDateTime()
         {
             var column = new Column { ColumnType = "Date" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("Date", result.DbType);
-            Assert.Equal(typeof(DateTime?), result.SystemType);
+            Assert.AreEqual("Date", result.DbType);
+            Assert.AreEqual(typeof(DateTime?), result.SystemType);
         }
 
 
-        [FactWithName]
+        [TestMethod]
         public void SmallDateTimeToDateTime()
         {
             var column = new Column { ColumnType = "SmallDateTime" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("SmallDateTime", result.DbType);
-            Assert.Equal(typeof(DateTime?), result.SystemType);
+            Assert.AreEqual("SmallDateTime", result.DbType);
+            Assert.AreEqual(typeof(DateTime?), result.SystemType);
         }
 
 
-        [FactWithName]
+        [TestMethod]
         public void DateTimeToDateTime()
         {
             var column = new Column { ColumnType = "DateTime" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("DateTime", result.DbType);
-            Assert.Equal(typeof(DateTime?), result.SystemType);
+            Assert.AreEqual("DateTime", result.DbType);
+            Assert.AreEqual(typeof(DateTime?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void DateTime2ToDateTime()
         {
             var column = new Column { ColumnType = "DateTime2" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("DateTime2", result.DbType);
-            Assert.Equal(typeof(DateTime?), result.SystemType);
+            Assert.AreEqual("DateTime2", result.DbType);
+            Assert.AreEqual(typeof(DateTime?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void DateTimeOffsetToDateTimeOffset()
         {
             var column = new Column { ColumnType = "DateTimeOffset" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("DateTimeOffset", result.DbType);
-            Assert.Equal(typeof(DateTimeOffset?), result.SystemType);
+            Assert.AreEqual("DateTimeOffset", result.DbType);
+            Assert.AreEqual(typeof(DateTimeOffset?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void TimeStampToByteArray()
         {
             var column = new Column { ColumnType = "TimeStamp" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("TimeStamp", result.DbType);
-            Assert.Equal(typeof(byte[]), result.SystemType);
+            Assert.AreEqual("TimeStamp", result.DbType);
+            Assert.AreEqual(typeof(byte[]), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ImageToByteArray()
         {
             var column = new Column { ColumnType = "Image" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("Image", result.DbType);
-            Assert.Equal(typeof(byte[]), result.SystemType);
+            Assert.AreEqual("Image", result.DbType);
+            Assert.AreEqual(typeof(byte[]), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void VarBinaryToByteArray()
         {
             var column = new Column { ColumnType = "VarBinary" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("VarBinary", result.DbType);
-            Assert.Equal(typeof(byte[]), result.SystemType);
+            Assert.AreEqual("VarBinary", result.DbType);
+            Assert.AreEqual(typeof(byte[]), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void BinaryToByteArray()
         {
             var column = new Column { ColumnType = "Binary" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("Binary", result.DbType);
-            Assert.Equal(typeof(byte[]), result.SystemType);
+            Assert.AreEqual("Binary", result.DbType);
+            Assert.AreEqual(typeof(byte[]), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void TimeToTimeSpan()
         {
             var column = new Column { ColumnType = "Time" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("Time", result.DbType);
-            Assert.Equal(typeof(TimeSpan?), result.SystemType);
+            Assert.AreEqual("Time", result.DbType);
+            Assert.AreEqual(typeof(TimeSpan?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void BitToTimeSpan()
         {
             var column = new Column { ColumnType = "Bit" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("Bit", result.DbType);
-            Assert.Equal(typeof(bool?), result.SystemType);
+            Assert.AreEqual("Bit", result.DbType);
+            Assert.AreEqual(typeof(bool?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void OtherSetsToObject()
         {
             var column = new Column { ColumnType = "notFound" };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("notFound", result.DbType);
-            Assert.Equal(typeof(object), result.SystemType);
+            Assert.AreEqual("notFound", result.DbType);
+            Assert.AreEqual(typeof(object), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void NullableInDbTypeName()
         {
             var column = new Column { ColumnType = "Bit", ColumnIsNullable = true };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("Bit(nullable)", result.DbType);
-            Assert.Equal(typeof(bool?), result.SystemType);
+            Assert.AreEqual("Bit(nullable)", result.DbType);
+            Assert.AreEqual(typeof(bool?), result.SystemType);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void SystemTypeNoNullWhenPKIdentity()
         {
             var column = new Column { ColumnType = "Bit", PKIsIdentity = true };
             var result = mapper.DBTypeToDataType(column);
 
-            Assert.Equal("Bit", result.DbType);
-            Assert.Equal(typeof(bool), result.SystemType);
+            Assert.AreEqual("Bit", result.DbType);
+            Assert.AreEqual(typeof(bool), result.SystemType);
         }
     }
 }

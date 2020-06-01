@@ -1,7 +1,7 @@
 ﻿using AutoPocoIO.Api;
 using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Resources;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +9,19 @@ using System.Linq;
 
 namespace AutoPocoIO.test.Api
 {
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class ViewOperationsWithLogging : ApiOperationBase
     {
-        private readonly ViewOperations viewOperations;
+        private ViewOperations viewOperations;
 
-        public ViewOperationsWithLogging()
+        [TestInitialize]
+        public void InitOperation()
         {
             viewOperations = new ViewOperations(serviceProvider);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GetAll()
         {
             var resource = new Mock<IOperationResource>();
@@ -33,15 +35,16 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var (list, recordLimit) = viewOperations.GetAllAndRecordLimit("conn1", "view1", loggingService);
-            Assert.Equal(1, loggingService.LogCount);
-            Assert.Equal("GET", loggingService.ApiRequests.First().RequestType);
-            Assert.Equal(typeof(IQueryableType), list.ElementType);
-            Assert.IsAssignableFrom<IQueryable<object>>(list);
-            Assert.Equal(54, recordLimit);
+            Assert.AreEqual(1, loggingService.LogCount);
+            Assert.AreEqual("GET", loggingService.ApiRequests.First().RequestType);
+            Assert.AreEqual(typeof(IQueryableType), list.ElementType);
+            Assert.IsInstanceOfType(list, typeof(IQueryable<object>));
+            Assert.IsNotInstanceOfType(list, typeof(IQueryable<IQueryableType>));
+            Assert.AreEqual(54, recordLimit);
 
         }
 
-        [FactWithName]
+        [TestMethod]
         public void GetAllT()
         {
             var resultsList = new List<IQueryableType>
@@ -57,11 +60,11 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var results = viewOperations.GetAll<IQueryableType>("conn1", "view1T", loggingService);
-            Assert.Equal(1, loggingService.LogCount);
-            Assert.Equal("GET", loggingService.ApiRequests.First().RequestType);
-            Assert.Equal(typeof(IQueryableType), results.ElementType);
-            Assert.IsAssignableFrom<IQueryable<object>>(results);
-            Assert.IsAssignableFrom<IQueryable<IQueryableType>>(results);
+            Assert.AreEqual(1, loggingService.LogCount);
+            Assert.AreEqual("GET", loggingService.ApiRequests.First().RequestType);
+            Assert.AreEqual(typeof(IQueryableType), results.ElementType);
+            Assert.IsInstanceOfType(results, typeof(IQueryable<object>));
+            Assert.IsInstanceOfType(results, typeof(IQueryable<IQueryableType>));
 
         }
     }

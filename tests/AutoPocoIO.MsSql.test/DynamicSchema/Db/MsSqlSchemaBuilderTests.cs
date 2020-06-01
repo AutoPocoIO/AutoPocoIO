@@ -4,7 +4,7 @@ using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Util;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Data;
@@ -13,10 +13,10 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 
-namespace AutoPocoIO.MsSql.test.DynamicSchema.Db
+namespace AutoPocoIO.test.DynamicSchema.Db
 {
-    
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class MsSqlSchemaBuilderTests
     {
         Config config;
@@ -24,7 +24,8 @@ namespace AutoPocoIO.MsSql.test.DynamicSchema.Db
         Mock<IDbSchema> schema;
         IDbTypeMapper typeMapper;
 
-        public MsSqlSchemaBuilderTests()
+        [TestInitialize]
+        public void Init()
         {
             typeMapper = Mock.Of<IDbTypeMapper>();
 
@@ -33,41 +34,41 @@ namespace AutoPocoIO.MsSql.test.DynamicSchema.Db
             schema = new Mock<IDbSchema>();
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ResourceTypeIsMsSql()
         {
             var builder = new MsSqlDbSchemaBuilder(query.Object, config, schema.Object, typeMapper);
-            Assert.Equal(ResourceType.Mssql, builder.ResourceType);
+            Assert.AreEqual(ResourceType.Mssql, builder.ResourceType);
         }
 
-        [FactWithName]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void QueryIsNotNull()
         {
-            void act() => new MsSqlDbSchemaBuilder(null, config, schema.Object, typeMapper);
-            Assert.Throws<ArgumentNullException>(act);
+           new MsSqlDbSchemaBuilder(null, config, schema.Object, typeMapper);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ConnectionFromConfig()
         {
             var builder = new MsSqlDbSchemaBuilder(query.Object, config, schema.Object, typeMapper);
             var conn = builder.CreateConnection();
 
-            Assert.Equal("Data Source=test", conn.ConnectionString);
-            Assert.IsType<SqlConnection>(conn);
+            Assert.AreEqual("Data Source=test", conn.ConnectionString);
+            Assert.IsInstanceOfType(conn, typeof(SqlConnection));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ConnectionFromString()
         {
             var builder = new MsSqlDbSchemaBuilder(query.Object, config, schema.Object, typeMapper);
             var conn = builder.CreateConnection("Data Source=test123");
 
-            Assert.Equal("Data Source=test123", conn.ConnectionString);
-            Assert.IsType<SqlConnection>(conn);
+            Assert.AreEqual("Data Source=test123", conn.ConnectionString);
+            Assert.IsInstanceOfType(conn, typeof(SqlConnection));
         }
 
-        [FactWithName]
+        [TestMethod]
         public void SetupContextOptions()
         {
             var builder = new MsSqlDbSchemaBuilder(query.Object, config, schema.Object, typeMapper);
@@ -76,11 +77,11 @@ namespace AutoPocoIO.MsSql.test.DynamicSchema.Db
             var coreOptions = options.FindExtension<CoreOptionsExtension>();
             var dbOptions = options.FindExtension<SqlServerOptionsExtension>();
 
-            Assert.Equal(13, coreOptions.ReplacedServices.Count());
-            Assert.Equal("Data Source=test", dbOptions.ConnectionString);
+            Assert.AreEqual(13, coreOptions.ReplacedServices.Count());
+            Assert.AreEqual("Data Source=test", dbOptions.ConnectionString);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void CreateCommandForColumns()
         {
             var connection = new SqlConnection();
@@ -89,12 +90,12 @@ namespace AutoPocoIO.MsSql.test.DynamicSchema.Db
             var builder = new MsSqlDbSchemaBuilder(query.Object, config, schema.Object, typeMapper);
             var command = VerifyProtectedCommands(builder, connection, "BuildColumnsCommand");
 
-            Assert.Equal(CommandType.Text, command.CommandType);
-            Assert.Equal(connection, command.Connection);
-            Assert.Equal("columnCommand", command.CommandText);
+            Assert.AreEqual(CommandType.Text, command.CommandType);
+            Assert.AreEqual(connection, command.Connection);
+            Assert.AreEqual("columnCommand", command.CommandText);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void CreateCommandForStoredProc()
         {
             var connection = new SqlConnection();
@@ -103,13 +104,13 @@ namespace AutoPocoIO.MsSql.test.DynamicSchema.Db
             var builder = new MsSqlDbSchemaBuilder(query.Object, config, schema.Object, typeMapper);
             var command = VerifyProtectedCommands(builder, connection, "BuildStoredProcedureCommand");
 
-            Assert.Equal(CommandType.Text, command.CommandType);
-            Assert.Equal(connection, command.Connection);
-            Assert.Equal("spCommand", command.CommandText);
+            Assert.AreEqual(CommandType.Text, command.CommandType);
+            Assert.AreEqual(connection, command.Connection);
+            Assert.AreEqual("spCommand", command.CommandText);
         }
 
 
-        [FactWithName]
+        [TestMethod]
         public void CreateCommandForTablesAndView()
         {
             var connection = new SqlConnection();
@@ -118,9 +119,9 @@ namespace AutoPocoIO.MsSql.test.DynamicSchema.Db
             var builder = new MsSqlDbSchemaBuilder(query.Object, config, schema.Object, typeMapper);
             var command = VerifyProtectedCommands(builder, connection, "BuildTablesViewsCommand");
 
-            Assert.Equal(CommandType.Text, command.CommandType);
-            Assert.Equal(connection, command.Connection);
-            Assert.Equal("tableAndView", command.CommandText);
+            Assert.AreEqual(CommandType.Text, command.CommandType);
+            Assert.AreEqual(connection, command.Connection);
+            Assert.AreEqual("tableAndView", command.CommandText);
         }
 
         private DbCommand VerifyProtectedCommands(MsSqlDbSchemaBuilder builder, SqlConnection conn, string methodName)

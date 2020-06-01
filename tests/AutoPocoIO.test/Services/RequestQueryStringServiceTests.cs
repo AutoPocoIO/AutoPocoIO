@@ -1,17 +1,18 @@
 ﻿using AutoPocoIO.Services;
 using Microsoft.Extensions.Primitives;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Xunit;
 
 namespace AutoPocoIO.test.Services
 {
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class RequestQueryStringServiceTests
     {
-        [FactWithName]
+        [TestMethod]
         public void GetQueryStringsFromContext()
         {
 #if NETFULL
@@ -39,7 +40,7 @@ namespace AutoPocoIO.test.Services
 
             var results = service.GetQueryStrings();
             var expected = new Dictionary<string, string>() { { "prop1", "abc" }, { "prop2", "123" } };
-            Assert.Equal(expected, results.ToDictionary(c => c.Key, c => c.Value));
+            CollectionAssert.AreEqual(expected, results.ToDictionary(c => c.Key, c => c.Value));
         }
     }
 }

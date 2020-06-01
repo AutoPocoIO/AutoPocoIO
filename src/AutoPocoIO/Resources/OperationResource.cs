@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Security.Principal;
 
 namespace AutoPocoIO.Resources
 {
@@ -78,7 +79,7 @@ namespace AutoPocoIO.Resources
         public abstract ResourceType ResourceType { get; }
 
 
-        public virtual void ConfigureAction(Connector connector, OperationType dbAction, string dbObjectName)
+        public void ConfigureAction(Connector connector, OperationType dbAction, string dbObjectName)
         {
             Check.NotNull(connector, nameof(connector));
 

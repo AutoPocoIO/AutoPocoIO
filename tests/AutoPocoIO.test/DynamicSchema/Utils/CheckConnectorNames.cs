@@ -1,22 +1,22 @@
-﻿using Xunit;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static AutoPocoIO.AutoPocoConstants;
 
 namespace AutoPocoIO.test.DynamicSchema.Utils
 {
-    
-     [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class CheckConnectorNames
     {
-        [FactWithName]
+        [TestMethod]
         public void AppDbConnectorName()
         {
-            Assert.Equal("appDb", DefaultConnectors.AppDB);
+            Assert.AreEqual("appDb", DefaultConnectors.AppDB);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void LogDbConnectorName()
         {
-            Assert.Equal("logDb", DefaultConnectors.Logging);
+            Assert.AreEqual("logDb", DefaultConnectors.Logging);
         }
     }
 }

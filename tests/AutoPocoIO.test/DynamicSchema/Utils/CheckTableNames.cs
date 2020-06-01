@@ -1,33 +1,34 @@
 ﻿using AutoPocoIO.DynamicSchema.Util;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AutoPocoIO.test.DynamicSchema.Utils
 {
-    [Trait("Category", TestCategories.Unit)]
+    [TestClass]
+    [TestCategory(TestCategories.Unit)]
     public class CheckTableNames
     {
-        [FactWithName]
+        [TestMethod]
         public void ConnectorsTableName()
         {
-            Assert.Equal("Connector", DefaultTables.Connectors);
+            Assert.AreEqual("Connector", DefaultTables.Connectors);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void RequestLogTableName()
         {
-            Assert.Equal("Request", DefaultTables.RequestLogs);
+            Assert.AreEqual("Request", DefaultTables.RequestLogs);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void ResponseLogTableName()
         {
-            Assert.Equal("Response", DefaultTables.ResponseLogs);
+            Assert.AreEqual("Response", DefaultTables.ResponseLogs);
         }
 
-        [FactWithName]
+        [TestMethod]
         public void UserJoinTableName()
         {
-            Assert.Equal("UserJoin", DefaultTables.UserJoins);
+            Assert.AreEqual("UserJoin", DefaultTables.UserJoins);
         }
     }
 }
