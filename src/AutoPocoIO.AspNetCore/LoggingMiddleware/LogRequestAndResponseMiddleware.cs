@@ -26,13 +26,11 @@ namespace AutoPocoIO.LoggingMiddleware
             _next = next;
         }
 
-        public virtual async Task InvokeAsync(HttpContext context, IServiceScopeFactory providerScope, ILoggingService loggingService)
+        public virtual async Task InvokeAsync(HttpContext context, ILoggingService loggingService)
         {
             Check.NotNull(context, nameof(context));
-            Check.NotNull(providerScope, nameof(providerScope));
             Check.NotNull(loggingService, nameof(loggingService));
 
-            _serviceScopeFactory = providerScope;
             _loggingService = loggingService;
 
             string statusCode = null;
@@ -91,20 +89,8 @@ namespace AutoPocoIO.LoggingMiddleware
                 };
 
                 _loggingService.AddContextInfomation(logParameters);
-
-                //create thread scope
-                var scope = _serviceScopeFactory.CreateScope();
-                _ = Task.Run(() =>
-                {
-                    try
-                    {
-                        _loggingService.LogAll(scope);
-                    }
-                    finally
-                    {
-                        scope.Dispose();
-                    }
-                });
+                //Discard task to log off thread
+                _ = _loggingService.LogAll();
             }
 
 

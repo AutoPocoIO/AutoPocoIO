@@ -4,34 +4,39 @@ image: Visual Studio 2019
 shallow_clone: true
 
 environment:
-   VERSION: 1.0.0     
+   VERSION: 1.0.0
+   OPENCOVER_PREFIX: 'C:\Users\appveyor\.nuget\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe -register -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test'
+   OPENCOVER_SUFFIX: ' --no-build" -output:".\coverage.xml" -returntargetcode:1000 -mergeoutput -oldStyle -filter:"+[AutoPocoIO*]* -[*.test*]*"; $env:TEST_PASS = $?; if($env:Test_PASS -eq "False") {$host.SetShouldExit(1)}'
+   TEST_PASS: 'False'
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true
-install:
-  # Install repo specific stuff here
-before_build:
-  # Display .NET Core version
-  - cmd: dotnet --version
-    # Display minimal restore text
-  - cmd: dotnet restore ./sln/AutoPocoIO.sln --verbosity m
 build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish
-  - cmd: dotnet build ./sln/AutoPocoIO.sln
+  - cmd: dotnet build ./sln/AutoPocoIO.sln --verbosity m
   - cmd: dotnet pack src/AutoPocoIO/AutoPocoIO.csproj -p:PackageVersion="%VERSION%-beta.%APPVEYOR_BUILD_NUMBER%"
   - cmd: dotnet pack src/AutoPocoIO.MsSql/AutoPocoIO.MsSql.csproj -p:PackageVersion="%VERSION%-beta.%APPVEYOR_BUILD_NUMBER%"
 test_script:
-  # run the unit tests (requires changing into the test directory)
-  - cmd: cd tests
-  - cmd: dotnet test ./AutoPocoIO.test/AutoPocoIO.test.csproj  --framework net461 --logger trx
-  - cmd: dotnet test ./AutoPocoIO.AspNet.test/AutoPocoIO.AspNet.test.csproj  --framework net461 --logger trx
-  - cmd: dotnet test ./AutoPocoIO.MsSql.test/AutoPocoIO.MsSql.test.csproj  --framework net461 --logger trx
-  - cmd: dotnet test ./AutoPocoIO.test/AutoPocoIO.test.csproj  --framework netcoreapp2.2 --logger trx
-  - cmd: dotnet test ./AutoPocoIO.AspNetCore.test/AutoPocoIO.AspNetCore.test.csproj  --framework netcoreapp2.2 --logger trx
-  - cmd: dotnet test ./AutoPocoIO.MsSql.test/AutoPocoIO.MsSql.test.csproj  --framework netcoreapp2.2 --logger trx
-
+ # run the unit tests
+  - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.test\AutoPocoIO.test.csproj --framework net461 $env:OPENCOVER_SUFFIX"
+  - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.csproj --framework net461 $env:OPENCOVER_SUFFIX"
+  - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.MsSql.test\AutoPocoIO.MsSql.test.csproj --framework net461 $env:OPENCOVER_SUFFIX"
+  - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.test\AutoPocoIO.test.csproj --framework netcoreapp2.2 $env:OPENCOVER_SUFFIX"
+  - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.test.csproj --framework netcoreapp2.2 $env:OPENCOVER_SUFFIX"
+  - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.MsSql.test\AutoPocoIO.MsSql.test.csproj --framework netcoreapp2.2 $env:OPENCOVER_SUFFIX"
+for:
+-
+  branches:
+     except:
+     - master
+  after_test:
+     - ps: |
+         $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
+         Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
+         bash codecov.sh -f "coverage.xml"
 artifacts:
   - path: '**\*.nupkg' # find all NuGet packages recursively
+  - path: '**\coverage.xml'
 deploy:
   - provider : NuGet
     server: https://nuget.pkg.github.com/AutoPocoIO/index.json

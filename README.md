@@ -1,19 +1,27 @@
 # AutoPocoIO
 
-[![Official Site](https://img.shields.io/badge/site-autopoco.io-blue.svg)](http://autopoco.io) [![License LGPLv3](https://img.shields.io/badge/license-LGPLv3-green.svg)](http://www.gnu.org/licenses/lgpl-3.0.html)
-## Build Status
-`master` | `dev`
---- | --- 
-[![Build status](https://ci.appveyor.com/api/projects/status/4qe1ffp77uaecy29/branch/master?retina=true)](https://ci.appveyor.com/project/autopocoio/autopocoio/branch/master)  | [![Build status](https://ci.appveyor.com/api/projects/status/4qe1ffp77uaecy29/branch/dev?retina=true)](https://ci.appveyor.com/project/autopocoio/autopocoio/branch/dev)
+[![Official Site](https://img.shields.io/badge/site-autopoco.io-blue.svg)](http://autopoco.io) [![License LGPLv3](https://img.shields.io/badge/license-LGPLv3-green.svg)](http://www.gnu.org/licenses/lgpl-3.0.html) [![Build status](https://ci.appveyor.com/api/projects/status/4qe1ffp77uaecy29/branch/master?svg=true&passingText=Master%20Passed&pendingText=Master%20Building&failingText=Master%20Failed)](https://ci.appveyor.com/project/autopocoio/autopocoio/branch/master) [![Build status](https://ci.appveyor.com/api/projects/status/4qe1ffp77uaecy29/branch/dev?svg=true&passingText=Dev%20Passed&pendingText=Dev%20Building&failingText=Dev%20Failed)](https://ci.appveyor.com/project/autopocoio/autopocoio/branch/dev) [![codecov](https://codecov.io/gh/AutoPocoIO/AutoPocoIO/branch/dev/graph/badge.svg)](https://codecov.io/gh/AutoPocoIO/AutoPocoIO)
+
+
 
 ## Overview
 Auto generate Entity Framework POCO classes at runtime to build dynamic type ASP.NET applications. Classes are generated from your database's current schema. Supports CRUD and execute operations on SQL, mysql, & Oracle tables, views, and stored procedures. Requests are logged automatically, so there is no need to write custom logging. Grant or restrict column-level access using the Role Based authorization service.
 
 Or use AutoPoco to expose your database via a REST Web API. Use OData to query and filter your requests. Interact with the Web API via Swagger.
 
-Inject Operation type into controler
+* [AspNet Framwork](#aspnet)
+* [AspNet Core](#aspnet-core)
+
+### Installation
+Install the provider package corresponding to your target database(s). 
+```
+dotnet add package AutoPocoIO.MsSql
+```
+
+### Usage
+Inject Operation type into controller
 ```csharp
- public SampleController(ITableOperations tableOps, ILoggingService loggingService)
+public SampleController(ITableOperations tableOps, ILoggingService loggingService)
 {
     _loggingService = loggingService;
     _tableOps = tableOps;
@@ -37,12 +45,8 @@ tableOp.CreateNewRow("AdventureWorksDB", "Customer", object, loggingService);
 tableOp.UpdateRow("AdventureWorksDB", "Customer", 42, object, loggingService);
 ```
 
-## Installation - ASP.NET
-AutoPocoIO is available as a NuGet package. You can install it using the NuGet Package Console window:
-
-```
-PM> Install-Package AutoPocoIO
-```
+## Setup
+### ASP.NET
 After installation in ASP.NET, update your existing [OWIN Startup](http://www.asp.net/aspnet/overview/owin-and-katana/owin-startup-class-detection) file with the following lines of code to set.
 
 ```csharp
@@ -70,13 +74,8 @@ public void Configuration(IAppBuilder app)
     app.UseWebApi(config); 
 }
 ```
-## Installation - ASP.NET Core
-AutoPocoIO is available as a NuGet package. You can install it using the NuGet Package Console window:
-
-```
-PM> Install-Package AutoPocoIO
-```
- In the `ConfigureServices` method of `Startup.cs`, register the AutoPoco, set up application database, and register resource providers.
+### ASP.NET Core
+In the `ConfigureServices` method of `Startup.cs`, register the AutoPoco, set up application database, and register resource providers.
 
 ```csharp
 using AutoPocoIO.Extensions
@@ -93,9 +92,3 @@ In the `Configure` method, insert middleware for logging, dashboard, and swagger
 ```csharp
 app.UseAutoPoco();
 ```
-
-# Components #
-## Providers ##
-|Package|Description|
-|---------|-----------|
-|AutoPocoIO.MsSql|Includes extensions to setup MS SqlServer as the appliction database as well as connecting to other MS SqlServer databases|
