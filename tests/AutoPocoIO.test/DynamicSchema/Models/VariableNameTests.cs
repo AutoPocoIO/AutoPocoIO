@@ -1,19 +1,19 @@
 ﻿using AutoPocoIO.DynamicSchema.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace AutoPocoIO.test.DynamicSchema.Models
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+     [Trait("Category", TestCategories.Unit)]
     public class VariableNameTests
     {
-        [TestMethod]
+        [FactWithName]
         public void TableStringIsVariableName()
         {
             var tbl = new Table { Database = "db1", Schema = "sch1", Name = "tbl1" };
 
-            Assert.AreEqual("db1_sch1_tbl1", tbl.ToString());
-            Assert.AreEqual(tbl.VariableName, tbl.ToString());
+            Assert.Equal("db1_sch1_tbl1", tbl.ToString());
+            Assert.Equal(tbl.VariableName, tbl.ToString());
         }
     }
 }

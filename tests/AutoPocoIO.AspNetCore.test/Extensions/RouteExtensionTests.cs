@@ -1,20 +1,19 @@
 ﻿using AutoPocoIO.Extensions;
 using AutoPocoIO.LoggingMiddleware;
 using Microsoft.AspNetCore.Http;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 
 namespace AutoPocoIO.AspNetCore.test.Extensions
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+    [Trait("Category", TestCategories.Unit)]
     public class RouteExtensionTests
     {
         Mock<HttpResponse> response;
         ContextLogParameters logParameters;
 
-        [TestInitialize]
-        public void Init()
+        public RouteExtensionTests()
         {
             response = new Mock<HttpResponse>();
             
@@ -26,18 +25,18 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
             };
 
         }
-        [TestMethod]
+        [FactWithName]
         public void GetStatusCode200()
         {
             response.Setup(c => c.StatusCode).Returns(200);
-            Assert.AreEqual("200 : OK", logParameters.DescriptionFromStatusCode(""));
+            Assert.Equal("200 : OK", logParameters.DescriptionFromStatusCode(""));
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetStatusCodeCustomCode()
         {
             response.Setup(c => c.StatusCode).Returns(401);
-            Assert.AreEqual("401 : OtherPhrase", logParameters.DescriptionFromStatusCode("OtherPhrase"));
+            Assert.Equal("401 : OtherPhrase", logParameters.DescriptionFromStatusCode("OtherPhrase"));
         }
     }
 }

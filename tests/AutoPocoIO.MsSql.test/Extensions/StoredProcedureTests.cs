@@ -1,17 +1,17 @@
 ﻿using AutoPocoIO.DynamicSchema.Db;
 using AutoPocoIO.MsSql.DynamicSchema.Runtime;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 
-namespace AutoPocoIO.test.Extensions
+namespace AutoPocoIO.MsSql.test.Extensions
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+    [Trait("Category", TestCategories.Unit)]
     public class StoredProcedureTests
     {
         private readonly DbContextOptions dbOptions = new DbContextOptionsBuilder()
@@ -50,7 +50,7 @@ namespace AutoPocoIO.test.Extensions
         }
 
 
-        [TestMethod]
+        [FactWithName]
         public void GetListOpenConnection()
         {
             Init(ConnectionState.Closed);
@@ -59,7 +59,7 @@ namespace AutoPocoIO.test.Extensions
             Connection.Verify(c => c.Open(), Times.Once);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetListSkipOpenConnectionIfOpen()
         {
             Init(ConnectionState.Open);
@@ -68,7 +68,7 @@ namespace AutoPocoIO.test.Extensions
         }
 
 
-        [TestMethod]
+        [FactWithName]
         public void GetListFromSql()
         {
 
@@ -94,18 +94,18 @@ namespace AutoPocoIO.test.Extensions
 
 
             var results = Context.DynamicListFromSql("sql", null);
-            Assert.AreEqual(1, results.Count);
+            Assert.Equal(1, results.Count);
 
             var resultSet = (List<IDictionary<string, object>>)results["ResultSet"];
-            Assert.AreEqual(2, resultSet.Count);
-            Assert.AreEqual(1, resultSet[0]["Name1"]);
-            Assert.AreEqual("Test1", resultSet[0]["Name2"]);
-            Assert.AreEqual(11, resultSet[1]["Name1"]);
-            Assert.AreEqual("SecondVal", resultSet[1]["Name2"]);
+            Assert.Equal(2, resultSet.Count);
+            Assert.Equal(1, resultSet[0]["Name1"]);
+            Assert.Equal("Test1", resultSet[0]["Name2"]);
+            Assert.Equal(11, resultSet[1]["Name1"]);
+            Assert.Equal("SecondVal", resultSet[1]["Name2"]);
 
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetMultipleResultListFromSql()
         {
 
@@ -132,19 +132,19 @@ namespace AutoPocoIO.test.Extensions
                        .Returns(false);
 
             var results = Context.DynamicListFromSql("sql", null);
-            Assert.AreEqual(2, results.Count);
+            Assert.Equal(2, results.Count);
 
             var resultSet = (List<IDictionary<string, object>>)results["ResultSet"];
-            Assert.AreEqual(2, resultSet.Count);
-            Assert.AreEqual(1, resultSet[0]["Name1"]);
-            Assert.AreEqual(11, resultSet[1]["Name1"]);
+            Assert.Equal(2, resultSet.Count);
+            Assert.Equal(1, resultSet[0]["Name1"]);
+            Assert.Equal(11, resultSet[1]["Name1"]);
 
             var resultSet2 = (List<IDictionary<string, object>>)results["ResultSet1"];
-            Assert.AreEqual(1, resultSet2.Count);
-            Assert.AreEqual("second set", resultSet2[0]["Name1"]);
+            Assert.Equal(1, resultSet2.Count);
+            Assert.Equal("second set", resultSet2[0]["Name1"]);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ListFromSqlNoColumnNames()
         {
             Init(ConnectionState.Open);
@@ -161,15 +161,15 @@ namespace AutoPocoIO.test.Extensions
 
 
             var results = Context.DynamicListFromSql("sql", null);
-            Assert.AreEqual(1, results.Count);
+            Assert.Equal(1, results.Count);
 
             var resultSet = (List<IDictionary<string, object>>)results["ResultSet"];
-            Assert.AreEqual(1, resultSet.Count);
-            Assert.AreEqual(1, resultSet[0]["Column0"]);
-            Assert.AreEqual("Test1", resultSet[0]["Column1"]);
+            Assert.Equal(1, resultSet.Count);
+            Assert.Equal(1, resultSet[0]["Column0"]);
+            Assert.Equal("Test1", resultSet[0]["Column1"]);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ListFromSqlWithOutputParams()
         {
             Init(ConnectionState.Open);
@@ -180,11 +180,11 @@ namespace AutoPocoIO.test.Extensions
             outputParam.SetupGet(c => c.Value).Returns(123);
 
             var results = Context.DynamicListFromSql("sql", outputParam.Object);
-            Assert.AreEqual(2, results.Count);
+            Assert.Equal(2, results.Count);
 
             var resultSet = (List<IDictionary<string, object>>)results["ResultSet"];
-            Assert.AreEqual(0, resultSet.Count);
-            Assert.AreEqual(123, results["param1"]);
+            Assert.Equal(0, resultSet.Count);
+            Assert.Equal(123, results["param1"]);
         }
     }
 }

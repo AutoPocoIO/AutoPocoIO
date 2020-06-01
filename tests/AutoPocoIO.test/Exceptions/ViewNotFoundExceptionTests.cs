@@ -1,39 +1,38 @@
 ﻿using AutoPocoIO.Exceptions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
+using Xunit;
 
 namespace AutoPocoIO.test.Exceptions
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     public class ViewNotFoundExceptionTests
     {
-        [TestMethod]
+        [FactWithName]
         public void IsBaseException()
         {
             var ex = new ViewNotFoundException("a", "b");
-            Assert.IsInstanceOfType(ex, typeof(BaseCaughtException));
+            Assert.IsAssignableFrom<BaseCaughtException>(ex);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ErrorMessageIsPopulated()
         {
             var ex = new ViewNotFoundException("sch", "vw");
-            Assert.AreEqual("View 'sch.vw' not found.", ex.Message);
+            Assert.Equal("View 'sch.vw' not found.", ex.Message);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void HttpErrorMessageIsPopulated()
         {
             var ex = new ViewNotFoundException("sch", "vw");
-            Assert.AreEqual("ViewNotFound", ex.HttpErrorMessage);
+            Assert.Equal("ViewNotFound", ex.HttpErrorMessage);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void HttpStatusCodeIsPopulated()
         {
             var ex = new ViewNotFoundException("sch", "vw");
-            Assert.AreEqual(HttpStatusCode.InternalServerError, ex.ResponseCode);
+            Assert.Equal(HttpStatusCode.InternalServerError, ex.ResponseCode);
         }
     }
 }

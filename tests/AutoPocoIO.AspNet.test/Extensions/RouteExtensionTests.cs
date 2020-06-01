@@ -1,20 +1,19 @@
 ﻿using AutoPocoIO.Extensions;
 using AutoPocoIO.LoggingMiddleware;
 using Microsoft.Owin;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 
 namespace AutoPocoIO.AspNet.test.Extensions
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+    [Trait("Category", TestCategories.Unit)]
     public class RouteExtensionTests
     {
         Mock<IOwinResponse> response;
         ContextLogParameters logParameters;
 
-        [TestInitialize]
-        public void Init()
+        public RouteExtensionTests()
         {
             response = new Mock<IOwinResponse>();
             var context = new Mock<IOwinContext>();
@@ -24,20 +23,20 @@ namespace AutoPocoIO.AspNet.test.Extensions
                 Context = context.Object
             };
         }
-        [TestMethod]
+        [FactWithName]
         public void GetStatusCode200()
         {
             response.Setup(c => c.StatusCode).Returns(200);
             response.Setup(c => c.ReasonPhrase).Returns("OK");
-            Assert.AreEqual("200 : OK", logParameters.DescriptionFromStatusCode(""));
+            Assert.Equal("200 : OK", logParameters.DescriptionFromStatusCode(""));
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetStatusCodeCustomCode()
         {
             response.Setup(c => c.StatusCode).Returns(401);
             response.Setup(c => c.ReasonPhrase).Returns("Unauthorized");
-            Assert.AreEqual("401 : OtherPhrase", logParameters.DescriptionFromStatusCode("OtherPhrase"));
+            Assert.Equal("401 : OtherPhrase", logParameters.DescriptionFromStatusCode("OtherPhrase"));
         }
     }
 }

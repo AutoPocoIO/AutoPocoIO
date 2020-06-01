@@ -6,10 +6,8 @@ using AutoPocoIO.DynamicSchema.Util;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
-using AutoPocoIO.test;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Concurrent;
@@ -17,18 +15,18 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using Xunit;
 
 namespace AutoPocoIO.MsSql.test.Resources
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+
+    [Trait("Category", TestCategories.Unit)]
     public class MsSqlResourceTests
     {
         Mock<IDbCommand> command;
         List<DbParameter> usedParams;
 
-        [TestInitialize]
-        public void Init()
+        public MsSqlResourceTests()
         {
 
             var conn = new Mock<IDbConnection>();
@@ -93,7 +91,7 @@ namespace AutoPocoIO.MsSql.test.Resources
 
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ExecuteProcedureWithNoParams()
         {
             var reader = new Mock<IDataReader>();
@@ -112,11 +110,11 @@ namespace AutoPocoIO.MsSql.test.Resources
 
             var results = resource.ExecuteProc(new Dictionary<string, object>());
 
-            Assert.AreEqual("sch1.Name1 ", commandText);
-            Assert.AreEqual(0, usedParams.Count());
+            Assert.Equal("sch1.Name1 ", commandText);
+            Assert.Equal(0, usedParams.Count());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ExecuteProcedureWithInputParams()
         {
             var reader = new Mock<IDataReader>();
@@ -135,14 +133,14 @@ namespace AutoPocoIO.MsSql.test.Resources
 
             var results = (IDictionary<string, object>)resource.ExecuteProc(new Dictionary<string, object>());
 
-            Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("sch1.Name2 param1", commandText);
-            Assert.AreEqual(1, usedParams.Count());
-            Assert.AreEqual(ParameterDirection.Input, usedParams.First().Direction);
-            Assert.AreEqual("param1", usedParams.First().ParameterName);
+            Assert.Equal(1, results.Count);
+            Assert.Equal("sch1.Name2 param1", commandText);
+            Assert.Equal(1, usedParams.Count());
+            Assert.Equal(ParameterDirection.Input, usedParams.First().Direction);
+            Assert.Equal("param1", usedParams.First().ParameterName);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ExecuteProcedureWithOutputParams()
         {
             var reader = new Mock<IDataReader>();
@@ -162,16 +160,16 @@ namespace AutoPocoIO.MsSql.test.Resources
 
             var results = (IDictionary<string, object>)resource.ExecuteProc(new Dictionary<string, object>());
 
-            Assert.AreEqual(2, results.Count);
-            Assert.AreEqual(DBNull.Value, results["param1"]);
+            Assert.Equal(2, results.Count);
+            Assert.Equal(DBNull.Value, results["param1"]);
 
-            Assert.AreEqual("sch1.Name3 param1 out", commandText);
-            Assert.AreEqual(1, usedParams.Count());
-            Assert.AreEqual(ParameterDirection.Output, usedParams.First().Direction);
-            Assert.AreEqual("param1", usedParams.First().ParameterName);
+            Assert.Equal("sch1.Name3 param1 out", commandText);
+            Assert.Equal(1, usedParams.Count());
+            Assert.Equal(ParameterDirection.Output, usedParams.First().Direction);
+            Assert.Equal("param1", usedParams.First().ParameterName);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ExecuteProcedureWithOutputParamsPassValue()
         {
             var reader = new Mock<IDataReader>();
@@ -191,17 +189,17 @@ namespace AutoPocoIO.MsSql.test.Resources
 
             var results = (IDictionary<string, object>)resource.ExecuteProc(new Dictionary<string, object>() { { "param1", 123 } });
 
-            Assert.AreEqual(2, results.Count);
-            Assert.AreEqual(123, results["param1"]);
+            Assert.Equal(2, results.Count);
+            Assert.Equal(123, results["param1"]);
 
-            Assert.AreEqual("sch1.Name3 param1 out", commandText);
-            Assert.AreEqual(1, usedParams.Count());
-            Assert.AreEqual(ParameterDirection.Output, usedParams.First().Direction);
-            Assert.AreEqual("param1", usedParams.First().ParameterName);
+            Assert.Equal("sch1.Name3 param1 out", commandText);
+            Assert.Equal(1, usedParams.Count());
+            Assert.Equal(ParameterDirection.Output, usedParams.First().Direction);
+            Assert.Equal("param1", usedParams.First().ParameterName);
         }
 
 
-        [TestMethod]
+        [FactWithName]
         public void ServicesRegistered()
         {
             var rootProvider = new ServiceCollection();
@@ -214,10 +212,10 @@ namespace AutoPocoIO.MsSql.test.Resources
 
             var provider = collection.BuildServiceProvider();
 
-            Assert.IsNotNull(provider.GetService<IDbSchemaBuilder>());
-            Assert.IsNotNull(provider.GetService<MsSqlSchmeaQueries>());
-            Assert.IsNotNull(provider.GetService<IDbTypeMapper>());
-            Assert.IsNotNull(provider.GetService<IConnectionStringBuilder>());
+            Assert.NotNull(provider.GetService<IDbSchemaBuilder>());
+            Assert.NotNull(provider.GetService<MsSqlSchmeaQueries>());
+            Assert.NotNull(provider.GetService<IDbTypeMapper>());
+            Assert.NotNull(provider.GetService<IConnectionStringBuilder>());
         }
     }
 }

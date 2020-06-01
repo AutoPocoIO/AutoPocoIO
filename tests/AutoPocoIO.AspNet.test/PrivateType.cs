@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace AutoPocoIO.AspNetCore.test
+namespace AutoPocoIO.AspNet.test
 {
     internal class PrivateType
     {

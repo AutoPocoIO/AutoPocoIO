@@ -1,15 +1,15 @@
 ﻿using AutoPocoIO.Api;
 using AutoPocoIO.WebApi;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Newtonsoft.Json.Linq;
 
 namespace AutoPocoIO.test.WebApi
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+     [Trait("Category", TestCategories.Unit)]
     public class StoredProcedureControllerTests : WebApiTestBase<IStoredProcedureOperations>
     {
-        [TestMethod]
+        [FactWithName]
         public void GetCallsNoParams()
         {
             var obj = new { a = 1 };
@@ -20,10 +20,10 @@ namespace AutoPocoIO.test.WebApi
             var controller = new StoredProcedureController(Ops.Object, LoggingService);
 
             var results = controller.Get("conn", "proc");
-            Assert.AreEqual(1, results.a);
+            Assert.Equal(1, results.a);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void PostCallsParams()
         {
             var obj = new { a = 1 };
@@ -38,7 +38,7 @@ namespace AutoPocoIO.test.WebApi
             var controller = new StoredProcedureController(Ops.Object, LoggingService);
 
             var results = controller.Post("conn", "proc", jobject);
-            Assert.AreEqual(1, results.a);
+            Assert.Equal(1, results.a);
         }
     }
 }

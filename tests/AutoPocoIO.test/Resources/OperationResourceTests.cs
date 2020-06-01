@@ -10,25 +10,25 @@ using AutoPocoIO.Resources;
 using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Xunit;
 
 namespace AutoPocoIO.test.Resources
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+    [Trait("Category", TestCategories.Unit)]
     public partial class OperationResourceTests
     {
-        private DbContextOptions<AppDbContext> appDbOptions;
-        private ServiceCollection defaultServices;
-        private Config config;
-        private Mock<ISchemaInitializer> schemaInitializer;
-        private Connector defaultConnector;
+        private readonly DbContextOptions<AppDbContext> appDbOptions;
+        private readonly ServiceCollection defaultServices;
+        private readonly Config config;
+        private readonly Mock<ISchemaInitializer> schemaInitializer;
+        private readonly Connector defaultConnector;
 
         private void ResetServiceProviderCache(IServiceCollection services = null)
         {
@@ -48,8 +48,7 @@ namespace AutoPocoIO.test.Resources
             dictionary.Clear();
         }
 
-        [TestInitialize]
-        public void Init()
+        public OperationResourceTests()
         {
             config = new Config();
             schemaInitializer = new Mock<ISchemaInitializer>();
@@ -86,22 +85,22 @@ namespace AutoPocoIO.test.Resources
 
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ConfirmInternalServicesAreRegistered()
         {
             ClearServiceProviderCache();
             var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
 
-            Assert.IsNotNull(resource.ExposeProvider.GetService<AppDbContext>());
-            Assert.IsNotNull(resource.ExposeProvider.GetService<DynamicClassBuilder>());
-            Assert.IsNotNull(resource.ExposeProvider.GetService<IDbAdapter>());
-            Assert.IsNotNull(resource.ExposeProvider.GetService<Config>());
-            Assert.IsNotNull(resource.ExposeProvider.GetService<IDbSchema>());
-            Assert.IsNotNull(resource.ExposeProvider.GetService<IDbTypeMapper>());
-            Assert.IsNotNull(resource.ExposeProvider.GetService<IConnectionStringFactory>());
+             Assert.NotNull(resource.ExposeProvider.GetService<AppDbContext>());
+             Assert.NotNull(resource.ExposeProvider.GetService<DynamicClassBuilder>());
+             Assert.NotNull(resource.ExposeProvider.GetService<IDbAdapter>());
+             Assert.NotNull(resource.ExposeProvider.GetService<Config>());
+             Assert.NotNull(resource.ExposeProvider.GetService<IDbSchema>());
+             Assert.NotNull(resource.ExposeProvider.GetService<IDbTypeMapper>());
+             Assert.NotNull(resource.ExposeProvider.GetService<IConnectionStringFactory>());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ConfgiureActionAssignsValues()
         {
             var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
@@ -114,14 +113,14 @@ namespace AutoPocoIO.test.Resources
 
             resource.ConfigureAction(connector, OperationType.read, "obj1");
 
-            Assert.AreEqual(connector, resource.Connector);
-            Assert.AreEqual("user1", connector.UserId);
-            Assert.AreEqual("obj1", resource.DbObjectName);
+            Assert.Equal(connector, resource.Connector);
+            Assert.Equal("user1", connector.UserId);
+            Assert.Equal("obj1", resource.DbObjectName);
 
             schemaInitializer.Verify(c => c.ConfigureAction(connector, OperationType.read), Times.Once);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetAllSchemasFromDb()
         {
             using (var db = new AppDbContext(appDbOptions))
@@ -149,11 +148,11 @@ namespace AutoPocoIO.test.Resources
             resource.SetConnector(defaultConnector);
             var schemas = resource.ListSchemas();
 
-            Assert.AreEqual(2, schemas.Count());
-            Assert.AreEqual("asch1", schemas.First().Name);
+            Assert.Equal(2, schemas.Count());
+            Assert.Equal("asch1", schemas.First().Name);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetResourceRecordsWithOutExpandUserJoins()
         {
             var list = new List<object> { new { a = "a" }, new { a = "b" } }.AsQueryable();
@@ -171,10 +170,10 @@ namespace AutoPocoIO.test.Resources
             var results = resource.GetResourceRecords(new Dictionary<string, string>());
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-            Assert.AreEqual(list, results);
+            Assert.Equal(list, results);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetResourceRecordsWithExpandUserJoinsPK()
         {
             using (var db = new AppDbContext(appDbOptions))
@@ -227,12 +226,12 @@ namespace AutoPocoIO.test.Resources
             IQueryable<dynamic> results = resource.GetResourceRecords(new Dictionary<string, string>() { { "$expand", "UJ_pkJoinListFromId1" } });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-            Assert.AreEqual("a", results.First().Name);
-            Assert.AreEqual(1, ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId1).Count());
-            Assert.AreEqual("a1", ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId1).First().Name3);
+            Assert.Equal("a", results.First().Name);
+            Assert.Single(((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId1));
+            Assert.Equal("a1", ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId1).First().Name3);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetResourceRecordsWithExpandUserJoinsPKCompoundKey()
         {
             using (var db = new AppDbContext(appDbOptions))
@@ -285,12 +284,12 @@ namespace AutoPocoIO.test.Resources
             IQueryable<dynamic> results = resource.GetResourceRecords(new Dictionary<string, string>() { { "$expand", "UJ_pkJoinListFromId1AndName3" } });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-            Assert.AreEqual("a", results.First().Name);
-            Assert.AreEqual(1, ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId1AndName3).Count());
-            Assert.AreEqual("a", ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId1AndName3).First().Name3);
+            Assert.Equal("a", results.First().Name);
+            Assert.Single(((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId1AndName3));
+            Assert.Equal("a", ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId1AndName3).First().Name3);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetResourceRecordsWithExpandUserJoinsNonValueTypePK()
         {
             using (var db = new AppDbContext(appDbOptions))
@@ -343,12 +342,12 @@ namespace AutoPocoIO.test.Resources
             IQueryable<dynamic> results = resource.GetResourceRecords(new Dictionary<string, string>() { { "$expand", "UJ_pkJoinListFromName3" } });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-            Assert.AreEqual(7, results.First().Id);
-            Assert.AreEqual(1, ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromName3).Count());
-            Assert.AreEqual(1, ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromName3).First().Id1);
+            Assert.Equal(7, results.First().Id);
+            Assert.Single(((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromName3));
+            Assert.Equal(1, ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromName3).First().Id1);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetResourceRecordsWithExpandUserJoinsPKShowNullPropertyIfNotInExpand()
         {
             using (var db = new AppDbContext(appDbOptions))
@@ -401,12 +400,12 @@ namespace AutoPocoIO.test.Resources
             IQueryable<dynamic> results = resource.GetResourceRecords(new Dictionary<string, string>());
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-            Assert.AreEqual("a", results.First().Name);
-            Assert.IsNull(results.First().UJ_pkJoinListFromId1);
-            Assert.IsNotNull(results.First().GetType().GetProperty("UJ_pkJoinListFromId1"));
+            Assert.Equal("a", results.First().Name);
+             Assert.Null(results.First().UJ_pkJoinListFromId1);
+             Assert.NotNull(results.First().GetType().GetProperty("UJ_pkJoinListFromId1"));
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetResourceRecordsWithExpandUserJoinsFK()
         {
             using (var db = new AppDbContext(appDbOptions))
@@ -459,12 +458,12 @@ namespace AutoPocoIO.test.Resources
             IQueryable<dynamic> results = resource.GetResourceRecords(new Dictionary<string, string>() { { "$expand", "UJ_fkJoinListFromId1" } });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-            Assert.AreEqual("a", results.First().Name);
-            Assert.AreEqual(1, ((IEnumerable<dynamic>)results.First().UJ_fkJoinListFromId1).Count());
-            Assert.AreEqual("a1", ((IEnumerable<dynamic>)results.First().UJ_fkJoinListFromId1).First().Name3);
+            Assert.Equal("a", results.First().Name);
+            Assert.Single(((IEnumerable<dynamic>)results.First().UJ_fkJoinListFromId1));
+            Assert.Equal("a1", ((IEnumerable<dynamic>)results.First().UJ_fkJoinListFromId1).First().Name3);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetResourceRecordsWithExpandUserJoinsFKShowNullPropertyIfNotInExpand()
         {
             using (var db = new AppDbContext(appDbOptions))
@@ -517,12 +516,12 @@ namespace AutoPocoIO.test.Resources
             IQueryable<dynamic> results = resource.GetResourceRecords(new Dictionary<string, string>());
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-            Assert.AreEqual("a", results.First().Name);
-            Assert.IsNull(results.First().UJ_fkJoinListFromId1);
-            Assert.IsNotNull(results.First().GetType().GetProperty("UJ_fkJoinListFromId1"));
+            Assert.Equal("a", results.First().Name);
+             Assert.Null(results.First().UJ_fkJoinListFromId1);
+             Assert.NotNull(results.First().GetType().GetProperty("UJ_fkJoinListFromId1"));
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetResourceById()
         {
             var expected = new object();
@@ -540,10 +539,10 @@ namespace AutoPocoIO.test.Resources
             var result = resource.GetResourceRecordById("id1");
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-            Assert.AreEqual(expected, result);
+            Assert.Equal(expected, result);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UpdateTViewModelRecord()
         {
             var model = new ViewModel1 { Id = 1, Name = "newName" };
@@ -568,12 +567,12 @@ namespace AutoPocoIO.test.Resources
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mock.Verify(c => c.Save(), Times.Once);
-            Assert.AreEqual("newName", result.Name);
-            Assert.AreEqual("newName", usedConnector.Name);
-            Assert.IsInstanceOfType(result, typeof(ViewModel1));
+            Assert.Equal("newName", result.Name);
+            Assert.Equal("newName", usedConnector.Name);
+            Assert.IsType<ViewModel1>(result);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UpdateTViewModelRecordReturnsNullIfNotFound()
         {
             var model = new ViewModel1 { Id = 1, Name = "newName" };
@@ -592,10 +591,10 @@ namespace AutoPocoIO.test.Resources
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mock.Verify(c => c.Save(), Times.Never);
-            Assert.IsNull(result);
+            Assert.Null(result);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UpdateJTokenRecord()
         {
             var model = JToken.FromObject(new ViewModel1 { Id = 1, Name = "newName" });
@@ -619,11 +618,11 @@ namespace AutoPocoIO.test.Resources
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mock.Verify(c => c.Save(), Times.Once);
-            Assert.AreEqual("newName", result.Name);
-            Assert.AreEqual("newName", usedConnector.Name);
+            Assert.Equal("newName", result.Name);
+            Assert.Equal("newName", usedConnector.Name);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UpdateJTokenRecordReturnsNullIfNotFound()
         {
             var model = JToken.FromObject(new ViewModel1 { Id = 1, Name = "newName" });
@@ -642,10 +641,10 @@ namespace AutoPocoIO.test.Resources
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mock.Verify(c => c.Save(), Times.Never);
-            Assert.IsNull(result);
+             Assert.Null(result);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void InsertTViewModelRecord()
         {
             var model = new ViewModel1 { Id = 1, Name = "newName" };
@@ -670,13 +669,13 @@ namespace AutoPocoIO.test.Resources
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mock.Verify(c => c.Save(), Times.Once);
-            Assert.AreEqual("newName", result.Name);
-            Assert.AreEqual("newName", usedConnector.Name);
-            Assert.IsInstanceOfType(result, typeof(ViewModel1));
+            Assert.Equal("newName", result.Name);
+            Assert.Equal("newName", usedConnector.Name);
+            Assert.IsType<ViewModel1>(result);
         }
 
 
-        [TestMethod]
+        [FactWithName]
         public void InsertJTokenRecord()
         {
             var model = JToken.FromObject(new ViewModel1 { Id = 1, Name = "newName" });
@@ -701,11 +700,11 @@ namespace AutoPocoIO.test.Resources
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mock.Verify(c => c.Save(), Times.Once);
-            Assert.AreEqual("newName", result.Name);
-            Assert.AreEqual("newName", usedConnector.Name);
+            Assert.Equal("newName", result.Name);
+            Assert.Equal("newName", usedConnector.Name);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void DeleteRecordReturnsSuccessIfIdFound()
         {
             var connector = new Connector { Id = 1, Name = "oldName" };
@@ -730,11 +729,11 @@ namespace AutoPocoIO.test.Resources
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mock.Verify(c => c.Save(), Times.Once);
-            Assert.AreEqual(usedConnector, result["data"]);
-            Assert.AreEqual("Record was successfully deleted.", result["results"]);
+            Assert.Equal(usedConnector, result["data"]);
+            Assert.Equal("Record was successfully deleted.", result["results"]);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void DeleteRecordReturnsNullIfNotFound()
         {
             var mock = new Mock<IDbAdapter>();
@@ -751,11 +750,11 @@ namespace AutoPocoIO.test.Resources
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mock.Verify(c => c.Save(), Times.Never);
-            Assert.IsNull(result["data"]);
-            Assert.AreEqual("No records were deleted.", result["results"]);
+             Assert.Null(result["data"]);
+            Assert.Equal("No records were deleted.", result["results"]);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetAllViewRecordsTrimsColumns()
         {
             var list = new List<ViewModel1> { new ViewModel1 { Id = 1, Name = "a2", Name2 = "b" }, new ViewModel1 { Id = 2, Name = "a2", Name2 = "b2" } }.AsQueryable();
@@ -793,12 +792,12 @@ namespace AutoPocoIO.test.Resources
             var results = resource.GetViewRecords();
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-            Assert.IsNotNull(results.ElementType.GetProperty("Id"));
-            Assert.IsNotNull(results.ElementType.GetProperty("Name"));
-            Assert.IsNull(results.ElementType.GetProperty("Name2"));
+             Assert.NotNull(results.ElementType.GetProperty("Id"));
+             Assert.NotNull(results.ElementType.GetProperty("Name"));
+             Assert.Null(results.ElementType.GetProperty("Name2"));
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetColumnDefinition()
         {
             defaultServices.AddSingleton(c =>
@@ -834,22 +833,22 @@ namespace AutoPocoIO.test.Resources
             var result = resource.GetColumnDefinition("COL1");
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-            Assert.AreEqual("col1", result.Name);
-            Assert.AreEqual("type1", result.Type);
-            Assert.AreEqual(23, result.Length);
-            Assert.AreEqual(true, result.IsComputed);
-            Assert.AreEqual(false, result.IsNullable);
-            Assert.AreEqual(true, result.IsPrimaryKey);
-            Assert.AreEqual(false, result.IsForigenKey);
-            Assert.AreEqual("refdb", result.ReferencedDatabase);
-            Assert.AreEqual("reftbl", result.ReferencedTable);
-            Assert.AreEqual("refcol", result.ReferencedColumn);
-            Assert.AreEqual("refsch", result.ReferencedSchema);
-            Assert.AreEqual(true, result.IsPrimaryKeyIdentity);
+            Assert.Equal("col1", result.Name);
+            Assert.Equal("type1", result.Type);
+            Assert.Equal(23, result.Length);
+            Assert.True(result.IsComputed);
+            Assert.False(result.IsNullable);
+            Assert.True(result.IsPrimaryKey);
+            Assert.False(result.IsForigenKey);
+            Assert.Equal("refdb", result.ReferencedDatabase);
+            Assert.Equal("reftbl", result.ReferencedTable);
+            Assert.Equal("refcol", result.ReferencedColumn);
+            Assert.Equal("refsch", result.ReferencedSchema);
+            Assert.True(result.IsPrimaryKeyIdentity);
         }
 
 
-        [TestMethod]
+        [FactWithName]
         public void GetColumnDefinitionColumnNotFound()
         {
             defaultServices.AddSingleton(c =>
@@ -885,10 +884,10 @@ namespace AutoPocoIO.test.Resources
             var result = resource.GetColumnDefinition("COLMissing");
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-            Assert.IsNull(result);
+             Assert.Null(result);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetSchmeaDefinition()
         {
             defaultServices.AddSingleton(c =>
@@ -921,16 +920,16 @@ namespace AutoPocoIO.test.Resources
             var result = resource.GetSchemaDefinition();
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-            Assert.AreEqual("tbl1", result.Tables.Single());
-            Assert.AreEqual("vw1", result.Views.Single());
-            Assert.AreEqual("sproc1", result.StoredProcedures.Single());
-            Assert.AreEqual(1, result.ConnectorId);
-            Assert.AreEqual("testConn", result.ConnectorName);
-            Assert.AreEqual("sch", result.Name);
-            Assert.AreEqual("db1", result.DbName);
+            Assert.Equal("tbl1", result.Tables.Single());
+            Assert.Equal("vw1", result.Views.Single());
+            Assert.Equal("sproc1", result.StoredProcedures.Single());
+            Assert.Equal(1, result.ConnectorId);
+            Assert.Equal("testConn", result.ConnectorName);
+            Assert.Equal("sch", result.Name);
+            Assert.Equal("db1", result.DbName);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetSingleStoredProcedureDefinition()
         {
             var proc = new StoredProcedure
@@ -962,13 +961,13 @@ namespace AutoPocoIO.test.Resources
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
 
-            Assert.AreEqual("sproc1", result.Name);
-            Assert.AreEqual("param1", result.Parameters.First().Name);
-            Assert.AreEqual("type1", result.Parameters.First().Type);
-            Assert.IsTrue(result.Parameters.First().IsNullable);
-            Assert.IsFalse(result.Parameters.First().IsOutput);
+            Assert.Equal("sproc1", result.Name);
+            Assert.Equal("param1", result.Parameters.First().Name);
+            Assert.Equal("type1", result.Parameters.First().Type);
+             Assert.True(result.Parameters.First().IsNullable);
+             Assert.False(result.Parameters.First().IsOutput);
         }
-        [TestMethod]
+        [FactWithName]
         public void GetSingleStoredProcedurParametereDefinition()
         {
             var proc = new StoredProcedure
@@ -1000,13 +999,13 @@ namespace AutoPocoIO.test.Resources
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
 
-            Assert.AreEqual("param1", result.Name);
-            Assert.AreEqual("type1", result.Type);
-            Assert.IsTrue(result.IsNullable);
-            Assert.IsFalse(result.IsOutput);
+            Assert.Equal("param1", result.Name);
+            Assert.Equal("type1", result.Type);
+             Assert.True(result.IsNullable);
+             Assert.False(result.IsOutput);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetTableDefinition()
         {
             var table = new Table { Name = "tbl1", Schema = "sch" };
@@ -1045,28 +1044,28 @@ namespace AutoPocoIO.test.Resources
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
 
             //table values
-            Assert.AreEqual("tbl1", result.Name);
-            Assert.AreEqual(1, result.ConnectorId);
-            Assert.AreEqual("testConn", result.ConnectorName);
-            Assert.AreEqual("sch", result.SchemaName);
-            Assert.AreEqual("db1", result.DbName);
+            Assert.Equal("tbl1", result.Name);
+            Assert.Equal(1, result.ConnectorId);
+            Assert.Equal("testConn", result.ConnectorName);
+            Assert.Equal("sch", result.SchemaName);
+            Assert.Equal("db1", result.DbName);
 
             //col values
-            Assert.AreEqual("col1", column1.Name);
-            Assert.AreEqual("type1", column1.Type);
-            Assert.AreEqual(23, column1.Length);
-            Assert.AreEqual(true, column1.IsComputed);
-            Assert.AreEqual(false, column1.IsNullable);
-            Assert.AreEqual(true, column1.IsPrimaryKey);
-            Assert.AreEqual(false, column1.IsForigenKey);
-            Assert.AreEqual("refdb", column1.ReferencedDatabase);
-            Assert.AreEqual("reftbl", column1.ReferencedTable);
-            Assert.AreEqual("refcol", column1.ReferencedColumn);
-            Assert.AreEqual("refsch", column1.ReferencedSchema);
-            Assert.AreEqual(true, column1.IsPrimaryKeyIdentity);
+            Assert.Equal("col1", column1.Name);
+            Assert.Equal("type1", column1.Type);
+            Assert.Equal(23, column1.Length);
+            Assert.True(column1.IsComputed);
+            Assert.False(column1.IsNullable);
+            Assert.True(column1.IsPrimaryKey);
+            Assert.False(column1.IsForigenKey);
+            Assert.Equal("refdb", column1.ReferencedDatabase);
+            Assert.Equal("reftbl", column1.ReferencedTable);
+            Assert.Equal("refcol", column1.ReferencedColumn);
+            Assert.Equal("refsch", column1.ReferencedSchema);
+            Assert.True(column1.IsPrimaryKeyIdentity);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ReplaceInternalServices()
         {
             ClearServiceProviderCache();

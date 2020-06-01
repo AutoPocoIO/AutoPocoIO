@@ -3,26 +3,23 @@ using AutoPocoIO.Exceptions;
 using AutoPocoIO.Models;
 using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Xunit;
 
 namespace AutoPocoIO.test.Services
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     public class AppAdminServiceTests
     {
-        DbContextOptions<AppDbContext> appDbOptions;
-
-        [TestInitialize]
-        public void Init()
+        readonly DbContextOptions<AppDbContext> appDbOptions;
+        public AppAdminServiceTests()
         {
             appDbOptions = new DbContextOptionsBuilder<AppDbContext>()
               .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
               .Options;
         }
 
-        [TestMethod]
+        [FactWithName]
         public void FindConnector()
         {
             var db = new AppDbContext(appDbOptions);
@@ -38,13 +35,12 @@ namespace AutoPocoIO.test.Services
 
             var connector = appAdminService.GetConnection("connName1");
 
-            Assert.AreEqual(1, connector.Id);
-            Assert.AreEqual("connName1", connector.Name);
+            Assert.Equal(1, connector.Id);
+            Assert.Equal("connName1", connector.Name);
         }
 
 
-        [TestMethod]
-        [ExpectedException(typeof(ConnectorNotFoundException))]
+        [FactWithName]
         public void ConnectorNotFound()
         {
 
@@ -56,11 +52,11 @@ namespace AutoPocoIO.test.Services
             db.SaveChanges();
 
             IAppAdminService appAdminService = new AppAdminService(db);
-            _ = appAdminService.GetConnection("connName123");
+             void act() => appAdminService.GetConnection("connName123");
+            Assert.Throws<ConnectorNotFoundException>(act);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ConnectorNotFoundException))]
+        [FactWithName]
         public void ConnectorNotActive()
         {
 
@@ -73,10 +69,11 @@ namespace AutoPocoIO.test.Services
             db.SaveChanges();
 
             IAppAdminService appAdminService = new AppAdminService(db);
-            _ = appAdminService.GetConnection("connName1");
+             void act() => appAdminService.GetConnection("connName1");
+            Assert.Throws<ConnectorNotFoundException>(act);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void FindConnectorById()
         {
             var db = new AppDbContext(appDbOptions);
@@ -92,13 +89,12 @@ namespace AutoPocoIO.test.Services
             IAppAdminService appAdminService = new AppAdminService(db);
             var connector = appAdminService.GetConnection(conn1.Id);
 
-            Assert.AreEqual(conn1.Id, connector.Id);
-            Assert.AreEqual("connName1", connector.Name);
+            Assert.Equal(conn1.Id, connector.Id);
+            Assert.Equal("connName1", connector.Name);
         }
 
 
-        [TestMethod]
-        [ExpectedException(typeof(ConnectorNotFoundException))]
+        [FactWithName]
         public void ConnectorNotFoundById()
         {
             var db = new AppDbContext(appDbOptions);
@@ -111,11 +107,12 @@ namespace AutoPocoIO.test.Services
             db.SaveChanges();
 
             IAppAdminService appAdminService = new AppAdminService(db);
-            _ = appAdminService.GetConnection(45);
+             void act() => appAdminService.GetConnection(45);
+            Assert.Throws<ConnectorNotFoundException>(act);
+
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ConnectorNotFoundException))]
+        [FactWithName]
         public void ConnectorNotFoundByIdDisabled()
         {
             var db = new AppDbContext(appDbOptions);
@@ -128,7 +125,8 @@ namespace AutoPocoIO.test.Services
             db.SaveChanges();
 
             IAppAdminService appAdminService = new AppAdminService(db);
-            _ = appAdminService.GetConnection(45);
+             void act() => appAdminService.GetConnection(45);
+            Assert.Throws<ConnectorNotFoundException>(act);
         }
     }
 }

@@ -2,7 +2,7 @@
 using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 using Newtonsoft.Json.Linq;
 using System;
@@ -11,19 +11,16 @@ using System.Linq;
 
 namespace AutoPocoIO.test.Api
 {
-
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     public class TableOperationsWithLoggingTests : ApiOperationBase
     {
-        private TableOperations tableOperations;
-        [TestInitialize]
-        public void InitOperation()
+        private readonly TableOperations tableOperations;
+        public TableOperationsWithLoggingTests()
         {
             tableOperations = new TableOperations(serviceProvider);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetAll()
         {
             var resource = new Mock<IOperationResource>();
@@ -37,16 +34,15 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var (list, connectorMax) = tableOperations.GetAll("conn1", "table1", loggingService);
-            Assert.AreEqual(1, loggingService.LogCount);
-            Assert.AreEqual("GET", loggingService.ApiRequests.First().RequestType);
+            Assert.Equal(1, loggingService.LogCount);
+            Assert.Equal("GET", loggingService.ApiRequests.First().RequestType);
 
-            Assert.AreEqual(typeof(IQueryableType), list.ElementType);
-            Assert.IsInstanceOfType(list, typeof(IQueryable<object>));
-            Assert.IsNotInstanceOfType(list, typeof(IQueryable<IQueryableType>));
-            Assert.AreEqual(54, connectorMax);
+            Assert.Equal(typeof(IQueryableType), list.ElementType);
+            Assert.IsAssignableFrom<IQueryable<object>>(list);
+            Assert.Equal(54, connectorMax);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetAllT()
         {
             var resultsList = new List<IQueryableType>
@@ -62,15 +58,15 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var results = tableOperations.GetAll<IQueryableType>("conn1", "table1T", loggingService);
-            Assert.AreEqual(1, loggingService.LogCount);
-            Assert.AreEqual("GET", loggingService.ApiRequests.First().RequestType);
+            Assert.Equal(1, loggingService.LogCount);
+            Assert.Equal("GET", loggingService.ApiRequests.First().RequestType);
 
-            Assert.AreEqual(typeof(IQueryableType), results.ElementType);
-            Assert.IsInstanceOfType(results, typeof(IQueryable<object>));
-            Assert.IsInstanceOfType(results, typeof(IQueryable<IQueryableType>));
+            Assert.Equal(typeof(IQueryableType), results.ElementType);
+            Assert.IsAssignableFrom<IQueryable<object>>(results);
+            Assert.IsAssignableFrom<IQueryable<IQueryableType>>(results);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetById()
         {
             var resultsList = new IQueryableType { Id = 1 };
@@ -83,15 +79,15 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var results = tableOperations.GetById("conn1", "table1", "1", loggingService);
-            Assert.AreEqual(1, loggingService.LogCount);
-            Assert.AreEqual("GET", loggingService.ApiRequests.First().RequestType);
+            Assert.Equal(1, loggingService.LogCount);
+            Assert.Equal("GET", loggingService.ApiRequests.First().RequestType);
 
-            Assert.AreEqual(1, ((IQueryableType)results).Id);
-            Assert.IsInstanceOfType(results, typeof(object));
-            Assert.IsInstanceOfType(results, typeof(IQueryableType));
+            Assert.Equal(1, ((IQueryableType)results).Id);
+            Assert.IsAssignableFrom<object>(results);
+            Assert.IsType<IQueryableType>(results);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void CreateNewRow()
         {
             JToken obj = new JObject
@@ -109,31 +105,33 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var result = tableOperations.CreateNewRow("conn1", "table1", obj, loggingService);
-            Assert.AreEqual(1, loggingService.LogCount);
-            Assert.AreEqual("POST", loggingService.ApiRequests.First().RequestType);
-            Assert.AreEqual(15, ((IQueryableType)result).Id);
+            Assert.Equal(1, loggingService.LogCount);
+            Assert.Equal("POST", loggingService.ApiRequests.First().RequestType);
+            Assert.Equal(15, ((IQueryableType)result).Id);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [FactWithName]
         public void CreateNewRowThrowIfNull()
         {
             JToken obj = null;
+            Exception thrownException = null;
             try
             {
                 _ = tableOperations.CreateNewRow("conn1", "table1", obj, loggingService);
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(1, loggingService.LogCount);
-                Assert.AreEqual("POST", loggingService.ApiRequests.First().RequestType);
-                throw ex;
+                thrownException = ex;
+                Assert.Equal(1, loggingService.LogCount);
+                Assert.Equal("POST", loggingService.ApiRequests.First().RequestType);
+                void act() => throw ex;
+                Assert.Throws<ArgumentNullException>(act);
             }
 
-            Assert.Fail();
+            Assert.NotNull(thrownException);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void CreateNewRowT()
         {
             var objT = new IQueryableType { Id = 15 };
@@ -146,12 +144,12 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var result = tableOperations.CreateNewRow("conn1", "table1", objT, loggingService);
-            Assert.AreEqual(1, loggingService.LogCount);
-            Assert.AreEqual("POST", loggingService.ApiRequests.First().RequestType);
-            Assert.AreEqual(15, result.Id);
+            Assert.Equal(1, loggingService.LogCount);
+            Assert.Equal("POST", loggingService.ApiRequests.First().RequestType);
+            Assert.Equal(15, result.Id);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UpdateRow()
         {
             JToken obj = new JObject
@@ -169,12 +167,12 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var result = tableOperations.UpdateRow("conn1", "table1", "15", obj, loggingService);
-            Assert.AreEqual(1, loggingService.LogCount);
-            Assert.AreEqual("PUT", loggingService.ApiRequests.First().RequestType);
-            Assert.AreEqual(15, ((IQueryableType)result).Id);
+            Assert.Equal(1, loggingService.LogCount);
+            Assert.Equal("PUT", loggingService.ApiRequests.First().RequestType);
+            Assert.Equal(15, ((IQueryableType)result).Id);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UpdateRowT()
         {
             var objT = new IQueryableType { Id = 15 };
@@ -187,12 +185,12 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var result = tableOperations.UpdateRow("conn1", "table1", "15", objT, loggingService);
-            Assert.AreEqual(1, loggingService.LogCount);
-            Assert.AreEqual("PUT", loggingService.ApiRequests.First().RequestType);
-            Assert.AreEqual(15, result.Id);
+            Assert.Equal(1, loggingService.LogCount);
+            Assert.Equal("PUT", loggingService.ApiRequests.First().RequestType);
+            Assert.Equal(15, result.Id);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void DeleteRow()
         {
             var objT = new IQueryableType { Id = 15 };
@@ -205,12 +203,12 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var result = tableOperations.DeleteRow("conn1", "table1", "15", loggingService);
-            Assert.AreEqual(1, loggingService.LogCount);
-            Assert.AreEqual("DELETE", loggingService.ApiRequests.First().RequestType);
-            Assert.AreEqual(15, ((IQueryableType)result).Id);
+            Assert.Equal(1, loggingService.LogCount);
+            Assert.Equal("DELETE", loggingService.ApiRequests.First().RequestType);
+            Assert.Equal(15, ((IQueryableType)result).Id);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void TableDefinition()
         {
             TableDefinition definition = new TableDefinition
@@ -226,13 +224,13 @@ namespace AutoPocoIO.test.Api
              .Returns(resource.Object);
 
             var result = tableOperations.Definition("conn1", "table1", loggingService);
-            Assert.AreEqual(1, loggingService.LogCount);
-            Assert.AreEqual("GET", loggingService.ApiRequests.First().RequestType);
-            Assert.AreEqual("returnedName", definition.Name);
+            Assert.Equal(1, loggingService.LogCount);
+            Assert.Equal("GET", loggingService.ApiRequests.First().RequestType);
+            Assert.Equal("returnedName", definition.Name);
         }
 
 
-        [TestMethod]
+        [FactWithName]
         public void ColumnDefinition()
         {
             ColumnDefinition definition = new ColumnDefinition
@@ -248,9 +246,9 @@ namespace AutoPocoIO.test.Api
                .Returns(resource.Object);
 
             var result = tableOperations.Definition("conn1", "table1", "col12", loggingService);
-            Assert.AreEqual(1, loggingService.LogCount);
-            Assert.AreEqual("GET", loggingService.ApiRequests.First().RequestType);
-            Assert.AreEqual("returnedName", definition.Name);
+            Assert.Equal(1, loggingService.LogCount);
+            Assert.Equal("GET", loggingService.ApiRequests.First().RequestType);
+            Assert.Equal("returnedName", definition.Name);
         }
     }
 }

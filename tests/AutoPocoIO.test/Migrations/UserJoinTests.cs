@@ -1,14 +1,13 @@
 ﻿using AutoPocoIO.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace AutoPocoIO.test.Migrations
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     public class UserJoinTests
     {
         //Exists so migration creation makes FKs
-        [TestMethod]
+        [FactWithName]
         public void BasicUserJoinHasNavProperties()
         {
             var conn1 = new Connector();
@@ -20,8 +19,8 @@ namespace AutoPocoIO.test.Migrations
                 FKConnector = conn2
             };
 
-            Assert.AreEqual(conn1, userJoin.PKConnector);
-            Assert.AreEqual(conn2, userJoin.FKConnector);
+            Assert.Equal(conn1, userJoin.PKConnector);
+            Assert.Equal(conn2, userJoin.FKConnector);
         }
     }
 }

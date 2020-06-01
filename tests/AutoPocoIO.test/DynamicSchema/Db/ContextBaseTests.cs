@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 using Moq.Protected;
 using System;
@@ -16,14 +16,12 @@ using System.Linq;
 
 namespace AutoPocoIO.test.DynamicSchema.Db
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
     public class ContextBaseTests
     {
-        private DbContextOptions options;
-        [TestInitialize]
-        public void Init()
+        private readonly DbContextOptions options;
+        public ContextBaseTests()
         {
             options = new DbContextOptionsBuilder<DbContextBase>()
               .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
@@ -109,7 +107,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         }
         #endregion
 
-        [TestMethod]
+        [FactWithName]
         public void CheckSetExists()
         {
 
@@ -118,11 +116,11 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
             context.TestModelCreation(new ModelBuilder(new ConventionSet()));
 
-            Assert.AreEqual(1, context.Model.GetEntityTypes().Count());
-            Assert.AreEqual(typeof(Class1), context.Model.GetEntityTypes().First().ClrType);
+            Assert.Single(context.Model.GetEntityTypes());
+            Assert.Equal(typeof(Class1), context.Model.GetEntityTypes().First().ClrType);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void AddPksFromTableList()
         {
             var asms = new Dictionary<string, Type> { { "conn", typeof(_dbo_ClassNoKeyAttr) } };
@@ -133,14 +131,14 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             var context = new TestableDbContextBase1(options, asms, tableList);
             context.TestModelCreation(new ModelBuilder(new ConventionSet()));
 
-            Assert.AreEqual(1, context.Model.GetEntityTypes().Count());
-            Assert.AreEqual(typeof(_dbo_ClassNoKeyAttr), context.Model.GetEntityTypes().First().ClrType);
+            Assert.Single(context.Model.GetEntityTypes());
+            Assert.Equal(typeof(_dbo_ClassNoKeyAttr), context.Model.GetEntityTypes().First().ClrType);
 
             string keyName = context.Model.GetEntityTypes().First().FindPrimaryKey().Properties.Select(x => x.Name).Single();
-            Assert.AreEqual("Prop1", keyName);
+            Assert.Equal("Prop1", keyName);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void AddPksMultipleFromTableList()
         {
             var asms = new Dictionary<string, Type> { { "conn", typeof(_dbo_ClassNoKeyAttr2Props) } };
@@ -153,16 +151,16 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             var context = new TestableDbContextBase2(options, asms, tableList);
             context.TestModelCreation(new ModelBuilder(new ConventionSet()));
 
-            Assert.AreEqual(1, context.Model.GetEntityTypes().Count());
-            Assert.AreEqual(typeof(_dbo_ClassNoKeyAttr2Props), context.Model.GetEntityTypes().First().ClrType);
+            Assert.Single(context.Model.GetEntityTypes());
+            Assert.Equal(typeof(_dbo_ClassNoKeyAttr2Props), context.Model.GetEntityTypes().First().ClrType);
 
             var keyName = context.Model.GetEntityTypes().First().FindPrimaryKey().Properties.Select(x => x.Name);
-            Assert.AreEqual(2, keyName.Count());
-            Assert.AreEqual("Prop1", keyName.First());
-            Assert.AreEqual("Prop2", keyName.Last());
+            Assert.Equal(2, keyName.Count());
+            Assert.Equal("Prop1", keyName.First());
+            Assert.Equal("Prop2", keyName.Last());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void CrateCommandFromDatabaseFacade()
         {
             var dbCommand = new Mock<DbCommand>();
@@ -191,7 +189,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
             var result = context.Object.CreateDbCommand();
 
-            Assert.AreEqual(dbCommand.Object, result);
+            Assert.Equal(dbCommand.Object, result);
         }
     }
 }

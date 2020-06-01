@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Microsoft.VisualStudio.TestTools.UnitTesting
+namespace AutoPocoIO.MsSql.test
 {
-#if NETCORE
     internal class PrivateObject
     {
         readonly Type _type;
@@ -20,5 +19,4 @@ namespace Microsoft.VisualStudio.TestTools.UnitTesting
             return field.GetValue(_instance);
         }
     }
-#endif
 }

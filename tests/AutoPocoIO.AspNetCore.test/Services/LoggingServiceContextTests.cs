@@ -1,34 +1,34 @@
 ﻿using AutoPocoIO.LoggingMiddleware;
 using AutoPocoIO.Services;
 using Microsoft.AspNetCore.Http;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 using System;
 using System.Net;
 
 namespace AutoPocoIO.AspNetCore.test
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+    [Trait("Category", TestCategories.Unit)]
     public class LoggingServiceContextTests
     {
         ITimeProvider timeProvider;
-        [TestInitialize]
-        public void Init()
+        public LoggingServiceContextTests()
         {
             var mock = new Mock<ITimeProvider>();
             mock.Setup(c => c.UtcNow).Returns(new DateTime(2011, 1, 1));
             timeProvider = mock.Object;
         }
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+
+        [FactWithName]
         public void CheckForLogParameters()
         {
             LoggingService service = new LoggingService(timeProvider);
-            service.AddContextInfomation(null);
+            void act() => service.AddContextInfomation(null);
+            Assert.Throws<ArgumentNullException>(act);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void SetContextInformation()
         {
             var connection = new Mock<ConnectionInfo>();
@@ -51,10 +51,10 @@ namespace AutoPocoIO.AspNetCore.test
             service.AddContextInfomation(logParameters);
 
 
-            Assert.AreEqual(new DateTime(2011, 1, 1), service.ResponseTime);
-            Assert.AreEqual("200 : OK", service.StatusCode);
-            Assert.AreEqual("127.0.0.2", service.Ip);
-            Assert.AreEqual("ex123", service.Exception);
+            Assert.Equal(new DateTime(2011, 1, 1), service.ResponseTime);
+            Assert.Equal("200 : OK", service.StatusCode);
+            Assert.Equal("127.0.0.2", service.Ip);
+            Assert.Equal("ex123", service.Exception);
         }
     }
 }

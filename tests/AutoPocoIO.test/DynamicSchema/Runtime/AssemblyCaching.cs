@@ -1,7 +1,7 @@
 ﻿using AutoPocoIO.DynamicSchema.Db;
 using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Runtime;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -11,25 +11,23 @@ using System.Reflection.Emit;
 
 namespace AutoPocoIO.test.DynamicSchema.Runtime
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     [Serializable]
     public class AssemblyCaching
     {
-        private string tableSuffix;
+        private readonly string tableSuffix;
         private int GetPrivateTypeBuilderCount(DynamicClassBuilder classBuilder)
         {
             FieldInfo strProperty = classBuilder.GetType().GetField("_typeBuilders", BindingFlags.NonPublic | BindingFlags.Instance);
             return ((Dictionary<string, TypeBuilder>)strProperty.GetValue(classBuilder)).Count();
         }
 
-        [TestInitialize]
-        public void Init()
+        public AssemblyCaching()
         {
             tableSuffix = "_" + Guid.NewGuid().ToString();
         }
 
-        [TestMethod]
+        [FactWithName]
         public void AddForigenKeyUpdatesForcesRegen()
         {
             Table tbl1 = new Table
@@ -114,12 +112,12 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
             classBuilder.CreateModelTypes("tbl1" + tableSuffix);
 
             //Created types and total types are the same
-            Assert.AreEqual(2, GetPrivateTypeBuilderCount(classBuilder));
-            Assert.AreEqual(2, classBuilder.ExistingAssemblies.Count);
+            Assert.Equal(2, GetPrivateTypeBuilderCount(classBuilder));
+            Assert.Equal(2, classBuilder.ExistingAssemblies.Count);
 
             //Properties are just the columns
-            Assert.AreEqual(2, classBuilder.ExistingAssemblies.Values.First().GetProperties().Length);
-            Assert.AreEqual(2, classBuilder.ExistingAssemblies.Values.Last().GetProperties().Length);
+            Assert.Equal(2, classBuilder.ExistingAssemblies.Values.First().GetProperties().Length);
+            Assert.Equal(2, classBuilder.ExistingAssemblies.Values.Last().GetProperties().Length);
 
             //Keep same columns but link to table 1
             tbl2.Columns.Clear();
@@ -166,17 +164,17 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
             classBuilder2.CreateModelTypes("tbl1" + tableSuffix);
 
             //Created types and total types are the same
-            Assert.AreEqual(2, GetPrivateTypeBuilderCount(classBuilder2), "Not generating asms.");
-            Assert.AreEqual(2, classBuilder2.ExistingAssemblies.Count);
+            Assert.Equal(2, GetPrivateTypeBuilderCount(classBuilder2));
+            Assert.Equal(2, classBuilder2.ExistingAssemblies.Count);
 
             //Properties are include the columns and navproperties
-            Assert.AreEqual(3, classBuilder2.ExistingAssemblies.Values.First().GetProperties().Length);
-            Assert.AreEqual(3, classBuilder2.ExistingAssemblies.Values.Last().GetProperties().Length);
+            Assert.Equal(3, classBuilder2.ExistingAssemblies.Values.First().GetProperties().Length);
+            Assert.Equal(3, classBuilder2.ExistingAssemblies.Values.Last().GetProperties().Length);
 
         }
 
 
-        [TestMethod]
+        [FactWithName]
         public void UpdateFkTableForceRegenAll()
         {
 
@@ -267,12 +265,12 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
             classBuilder.CreateModelTypes("tbl1" + tableSuffix);
 
             //Created types and total types are the same
-            Assert.AreEqual(2, GetPrivateTypeBuilderCount(classBuilder));
-            Assert.AreEqual(2, classBuilder.ExistingAssemblies.Count);
+            Assert.Equal(2, GetPrivateTypeBuilderCount(classBuilder));
+            Assert.Equal(2, classBuilder.ExistingAssemblies.Count);
 
             //Properties are just the columns
-            Assert.AreEqual(3, classBuilder.ExistingAssemblies.Values.First().GetProperties().Length);
-            Assert.AreEqual(3, classBuilder.ExistingAssemblies.Values.Last().GetProperties().Length);
+            Assert.Equal(3, classBuilder.ExistingAssemblies.Values.First().GetProperties().Length);
+            Assert.Equal(3, classBuilder.ExistingAssemblies.Values.Last().GetProperties().Length);
 
 
             //Add column to tbl2
@@ -331,12 +329,12 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
             classBuilder2.CreateModelTypes("tbl1" + tableSuffix);
 
             //Created types and total types are the same
-            Assert.AreEqual(2, GetPrivateTypeBuilderCount(classBuilder2), "Not generating asms.");
-            Assert.AreEqual(2, classBuilder2.ExistingAssemblies.Count);
+            Assert.Equal(2, GetPrivateTypeBuilderCount(classBuilder2));
+            Assert.Equal(2, classBuilder2.ExistingAssemblies.Count);
 
             //Properties are include the columns and navproperties
-            Assert.AreEqual(3, classBuilder2.ExistingAssemblies.Values.First().GetProperties().Length);
-            Assert.AreEqual(4, classBuilder2.ExistingAssemblies.Values.Last().GetProperties().Length);
+            Assert.Equal(3, classBuilder2.ExistingAssemblies.Values.First().GetProperties().Length);
+            Assert.Equal(4, classBuilder2.ExistingAssemblies.Values.Last().GetProperties().Length);
         }
     }
 }

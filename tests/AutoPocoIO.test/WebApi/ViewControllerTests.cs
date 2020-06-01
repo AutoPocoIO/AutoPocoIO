@@ -1,21 +1,20 @@
 ﻿using AutoPocoIO.Api;
 using AutoPocoIO.Services;
 using AutoPocoIO.WebApi;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AutoPocoIO.test.WebApi
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+     [Trait("Category", TestCategories.Unit)]
     public class ViewControllerTests : WebApiTestBase<IViewOperations>
     {
-        private IRequestQueryStringService _queryStringService;
+        private readonly IRequestQueryStringService _queryStringService;
 
-        [TestInitialize]
-        public void Init()
+        public ViewControllerTests()
         {
             var queryStringService = new Mock<IRequestQueryStringService>();
             queryStringService.Setup(c => c.GetQueryStrings())
@@ -23,7 +22,7 @@ namespace AutoPocoIO.test.WebApi
             _queryStringService = queryStringService.Object;
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetAllCallsGetAllOp()
         {
             var list = new List<object> { new { a = 1 } }.AsQueryable();
@@ -34,10 +33,10 @@ namespace AutoPocoIO.test.WebApi
             var controller = new ViewsController(Ops.Object, LoggingService, _queryStringService);
 
             var results = controller.Get("conn", "tbl");
-            CollectionAssert.AreEqual(list.ToList(), results.ToList());
+             Assert.Equal(list.ToList(), results.ToList());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetAllCallsGetAllOpUsesApplyQuery()
         {
             var list = new List<object> { new { a = 1 } }.AsQueryable();
@@ -48,7 +47,7 @@ namespace AutoPocoIO.test.WebApi
             var controller = new ViewsController(Ops.Object, LoggingService, _queryStringService);
 
             var results = controller.Get("conn", "tbl");
-            CollectionAssert.AreEqual(new List<object>(), results.ToList());
+             Assert.Equal(new List<object>(), results.ToList());
         }
     }
 }

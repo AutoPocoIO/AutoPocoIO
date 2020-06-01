@@ -4,17 +4,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Linq;
+using Xunit;
 
 namespace AutoPocoIO.test.Extensions
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     public class ModelBuilderExtensionTests
     {
-        [TestMethod]
+        [FactWithName]
         public void CreateModelAppliesConnectorAndUserJoinConfigs()
         {
             var conventionSet = new ConventionSet();
@@ -23,13 +22,13 @@ namespace AutoPocoIO.test.Extensions
             builder.CreateModel();
 
             var entity = builder.Model.FindEntityType("AutoPocoIO.Models.Connector");
-            Assert.IsTrue(entity.GetIndexes().First(c => c.Relational().Name == "IDX_ConnectorName").IsUnique);
+             Assert.True(entity.GetIndexes().First(c => c.Relational().Name == "IDX_ConnectorName").IsUnique);
 
             entity = builder.Model.FindEntityType("AutoPocoIO.Models.UserJoin");
-            Assert.IsTrue(entity.GetIndexes().First(c => c.Relational().Name == "IX_UserJoin_Alias").IsUnique);
+             Assert.True(entity.GetIndexes().First(c => c.Relational().Name == "IX_UserJoin_Alias").IsUnique);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void SeedConnectorData()
         {
             Connector[] data = null;
@@ -44,24 +43,24 @@ namespace AutoPocoIO.test.Extensions
 
             builder.Object.Seed();
 
-            Assert.AreEqual(2, data.Length);
+            Assert.Equal(2, data.Length);
 
-            Assert.AreEqual(1, data[0].Id);
-            Assert.AreEqual("appDb", data[0].Name);
-            Assert.AreEqual(1, data[0].ResourceType);
-            Assert.AreEqual("", data[0].ConnectionString);
-            Assert.AreEqual("AutoPoco", data[0].Schema);
-            Assert.AreEqual(500, data[0].RecordLimit);
+            Assert.Equal(1, data[0].Id);
+            Assert.Equal("appDb", data[0].Name);
+            Assert.Equal(1, data[0].ResourceType);
+            Assert.Equal("", data[0].ConnectionString);
+            Assert.Equal("AutoPoco", data[0].Schema);
+            Assert.Equal(500, data[0].RecordLimit);
 
-            Assert.AreEqual(2, data[1].Id);
-            Assert.AreEqual("logDb", data[1].Name);
-            Assert.AreEqual(1, data[1].ResourceType);
-            Assert.AreEqual("", data[1].ConnectionString);
-            Assert.AreEqual("AutoPocoLog", data[1].Schema);
-            Assert.AreEqual(500, data[1].RecordLimit);
+            Assert.Equal(2, data[1].Id);
+            Assert.Equal("logDb", data[1].Name);
+            Assert.Equal(1, data[1].ResourceType);
+            Assert.Equal("", data[1].ConnectionString);
+            Assert.Equal("AutoPocoLog", data[1].Schema);
+            Assert.Equal(500, data[1].RecordLimit);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void SeedUserJoinData()
         {
             UserJoin[] data = null;
@@ -80,16 +79,16 @@ namespace AutoPocoIO.test.Extensions
 
             builder.Object.Seed();
 
-            Assert.AreEqual(1, data.Length);
+            Assert.Single(data);
 
-            Assert.AreEqual(1, data[0].Id);
-            Assert.AreEqual("Response", data[0].Alias);
-            Assert.AreEqual(2, data[0].PKConnectorId);
-            Assert.AreEqual(2, data[0].FKConnectorId);
-            Assert.AreEqual("Request", data[0].PKTableName);
-            Assert.AreEqual("RequestId,RequestGuid", data[0].PKColumn);
-            Assert.AreEqual("Response", data[0].FKTableName);
-            Assert.AreEqual("ResponseId,RequestGuid", data[0].FKColumn);
+            Assert.Equal(1, data[0].Id);
+            Assert.Equal("Response", data[0].Alias);
+            Assert.Equal(2, data[0].PKConnectorId);
+            Assert.Equal(2, data[0].FKConnectorId);
+            Assert.Equal("Request", data[0].PKTableName);
+            Assert.Equal("RequestId,RequestGuid", data[0].PKColumn);
+            Assert.Equal("Response", data[0].FKTableName);
+            Assert.Equal("ResponseId,RequestGuid", data[0].FKColumn);
         }
 
         private Mock<EntityTypeBuilder<T>> MockEntityTypeBuilder<T>() where T : class

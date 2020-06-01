@@ -1,14 +1,14 @@
 ﻿using AutoPocoIO.Extensions;
 using Microsoft.Extensions.Primitives;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using Xunit;
 
 namespace AutoPocoIO.test.Extensions
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+
+    [Trait("Category", TestCategories.Unit)]
     public class RouteExtensionTests
     {
 #if NETFULL
@@ -17,8 +17,7 @@ namespace AutoPocoIO.test.Extensions
         Microsoft.AspNetCore.Http.HttpRequest request;
 #endif
 
-        [TestInitialize]
-        public void Init()
+        public RouteExtensionTests()
         {
 #if NETFULL
             request = new System.Net.Http.HttpRequestMessage
@@ -36,23 +35,23 @@ namespace AutoPocoIO.test.Extensions
 #endif
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetQueryStringAsDictionary()
         {
             var results = request.GetQueryStrings();
             var expected = new Dictionary<string, string>() { { "prop1", "abc" }, { "prop2", "123" } };
 
-            CollectionAssert.AreEqual(expected, results);
+            Assert.Equal(expected, results);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void NullRequestQueryStringAsDictionary()
         {
             request = null;
             var results = request.GetQueryStrings();
             var expected = new Dictionary<string, string>();
 
-            CollectionAssert.AreEqual(expected, results);
+            Assert.Equal(expected, results);
         }
 
        

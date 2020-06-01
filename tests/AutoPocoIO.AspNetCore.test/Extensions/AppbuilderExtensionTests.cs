@@ -11,14 +11,14 @@ using Microsoft.AspNetCore.Builder.Internal;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 using System;
 
 namespace AutoPocoIO.AspNetCore.test.Extensions
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+    [Trait("Category", TestCategories.Unit)]
     public class AppbuilderExtensionTests
     {
         private IApplicationBuilder builder;
@@ -38,8 +38,7 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
             }
         }
 
-        [TestInitialize]
-        public void Init()
+        public AppbuilderExtensionTests()
         {
             appDbOptions = new DbContextOptionsBuilder<AppDbContext>()
              .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
@@ -60,14 +59,14 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
             builder = new ApplicationBuilder(serviceCollection.BuildServiceProvider());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UseDashboardSetsPathToAutoPoco()
         {
             builder.UseAutoPoco();
-            Assert.AreEqual("autopoco", AutoPocoConfiguration.DashboardPathPrefix);
+            Assert.Equal("autopoco", AutoPocoConfiguration.DashboardPathPrefix);
         }
 
-        [TestMethod]
+        [FactWithName]
 
         public void UseDashboardSetsPathToDashPath()
         {
@@ -76,59 +75,59 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
                 DashboardPath = "/dashPath123"
             };
             builder.UseAutoPoco(options);
-            Assert.AreEqual("dashPath123", AutoPocoConfiguration.DashboardPathPrefix);
+            Assert.Equal("dashPath123", AutoPocoConfiguration.DashboardPathPrefix);
         }
 
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [FactWithName]
         public void DashPathMustBeMore1Char()
         {
             var options = new AutoPocoOptions
             {
                 DashboardPath = "a"
             };
-            builder.UseAutoPoco(options);
+            void act() => builder.UseAutoPoco(options);
+            Assert.Throws<ArgumentException>(act);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [FactWithName]
         public void DashPathMustStartWithSlash()
         {
             var options = new AutoPocoOptions
             {
                 DashboardPath = "dash"
             };
-            builder.UseAutoPoco(options);
+            void act() => builder.UseAutoPoco(options);
+            Assert.Throws<ArgumentException>(act);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [FactWithName]
         public void UseDashboardChecksForPath()
         {
-            builder.UseAutoPoco(null);
+            void act() => builder.UseAutoPoco(null);
+            Assert.Throws<ArgumentNullException>(act);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UseAutoPocoSetsUpOdata()
         {
             builder.UseAutoPoco();
 
-            Assert.IsNotNull(builder.ApplicationServices.GetService<ODataOptions>());
-            Assert.IsNotNull(builder.ApplicationServices.GetService<IPerRouteContainer>());
+            Assert.NotNull(builder.ApplicationServices.GetService<ODataOptions>());
+            Assert.NotNull(builder.ApplicationServices.GetService<IPerRouteContainer>());
 
             DefaultQuerySettings odataSettings = builder.ApplicationServices.GetService<DefaultQuerySettings>();
 
-            Assert.IsTrue(odataSettings.EnableCount);
-            Assert.IsTrue(odataSettings.EnableOrderBy);
-            Assert.IsTrue(odataSettings.EnableExpand);
-            Assert.IsTrue(odataSettings.EnableSelect);
-            Assert.AreEqual(1000, odataSettings.MaxTop);
+            Assert.True(odataSettings.EnableCount);
+            Assert.True(odataSettings.EnableOrderBy);
+            Assert.True(odataSettings.EnableExpand);
+            Assert.True(odataSettings.EnableSelect);
+            Assert.Equal(1000, odataSettings.MaxTop);
         }
 
 
 
-        //[TestMethod]
+        //[FactWithName]
         //public void UseSqlServerWithEncryption()
         //{
         //    var dbSetup = new Mock<IAppDatabaseSetupService>();
@@ -146,7 +145,7 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
         //    dbSetup.Verify();
         //}
 
-        //[TestMethod]
+        //[FactWithName]
         //public void UseSqlServerWithoutEncryption()
         //{
         //    var dbSetup = new Mock<IAppDatabaseSetupService>();
@@ -164,7 +163,7 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
         //    dbSetup.Verify(c => c.SetupEncryption(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Never);
         //}
 
-        //[TestMethod]
+        //[FactWithName]
         //[ExpectedException(typeof(ArgumentNullException))]
         //public void CheckDepResolverNotNullForUseSqlEncryption()
         //{
@@ -172,7 +171,7 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
         //    dependencyResolver.UseSqlServer("slt", "key", 123);
         //}
 
-        //[TestMethod]
+        //[FactWithName]
         //[ExpectedException(typeof(ArgumentNullException))]
         //public void CheckSaltNotNullForUseSqlEncryption()
         //{
@@ -182,7 +181,7 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
         //    builder.UseSqlServer(null, "key", 123);
         //}
 
-        //[TestMethod]
+        //[FactWithName]
         //[ExpectedException(typeof(ArgumentNullException))]
         //public void CheckSecretKeyNotNullForUseSqlEncryption()
         //{
@@ -192,7 +191,7 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
         //    builder.UseSqlServer("slt", null, 123);
         //}
 
-        //[TestMethod]
+        //[FactWithName]
         //[ExpectedException(typeof(ArgumentNullException))]
         //public void CheckDepResolverNotNullForUseSql()
         //{

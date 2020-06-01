@@ -2,7 +2,7 @@
 using AutoPocoIO.Extensions;
 using AutoPocoIO.SwaggerAddons;
 using Microsoft.Owin.Testing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Newtonsoft.Json.Linq;
 using Owin;
 using Swashbuckle.Application;
@@ -15,8 +15,8 @@ using System.Web.Http.Routing;
 
 namespace AutoPocoIO.AspNet.test.Swagger
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+    [Trait("Category", TestCategories.Unit)]
     public class SwaggerConfigTests
     {
         [RoutePrefix("SwaggerConfg")]
@@ -31,9 +31,7 @@ namespace AutoPocoIO.AspNet.test.Swagger
         protected HttpConfiguration Config { get; set; }
         protected SwaggerDocsHandler Handler { get; set; }
 
-
-        [TestInitialize]
-        public void Init()
+        public SwaggerConfigTests()
         {
             Config = new HttpConfiguration();
             AutoPocoConfiguration.DashboardPathPrefix = null;
@@ -70,7 +68,7 @@ namespace AutoPocoIO.AspNet.test.Swagger
 
 
 
-        [TestMethod]
+        [FactWithName]
         public void RedirctToSwaggerPathStartsWithDashPath()
         {
             using (var server = TestServer.Create(app =>
@@ -82,12 +80,12 @@ namespace AutoPocoIO.AspNet.test.Swagger
                 var req = server.CreateRequest("autoPocoPath/swagger");
                 var resp = req.GetAsync().Result;
 
-                Assert.AreEqual(301, (int)resp.StatusCode);
-                Assert.AreEqual("/autoPocoPath/swagger/ui/index", resp.Headers.Location.AbsolutePath);
+                Assert.Equal(301, (int)resp.StatusCode);
+                Assert.Equal("/autoPocoPath/swagger/ui/index", resp.Headers.Location.AbsolutePath);
             }
         }
 
-        [TestMethod]
+        [FactWithName]
         public void VerifyDocumentTitleAutoPoco()
         {
             using (var server = TestServer.Create(app =>
@@ -97,11 +95,11 @@ namespace AutoPocoIO.AspNet.test.Swagger
             }))
             {
                 string result = server.HttpClient.GetStringAsync("autoPocoPath/swagger/ui/index").Result;
-                Assert.IsTrue(result.Contains("<title>AutoPoco</title>"));
+                Assert.True(result.Contains("<title>AutoPoco</title>"));
             }
         }
 
-        [TestMethod]
+        [FactWithName]
         public void IncludeApiKeyInUi()
         {
             using (var server = TestServer.Create(app =>
@@ -112,12 +110,12 @@ namespace AutoPocoIO.AspNet.test.Swagger
             {
                 string result = server.HttpClient.GetStringAsync("autoPocoPath/swagger/ui/index").Result;
 
-                Assert.IsTrue(result.Contains("apiKeyName: 'Authorization'"));
-                Assert.IsTrue(result.Contains("apiKeyIn: 'header'"));
+                Assert.True(result.Contains("apiKeyName: 'Authorization'"));
+                Assert.True(result.Contains("apiKeyIn: 'header'"));
             }
         }
 
-        [TestMethod]
+        [FactWithName]
         public void SingApiVersionSetToV1AndAutoPoco()
         {
             using (var server = TestServer.Create(app =>
@@ -135,11 +133,11 @@ namespace AutoPocoIO.AspNet.test.Swagger
                     title = "AutoPoco",
                 });
 
-                Assert.AreEqual(jObject.ToString(), resultObj["info"].ToString());
+                Assert.Equal(jObject.ToString(), resultObj["info"].ToString());
             }
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GroupByConvertsTagsToCamelCase()
         {
             using (var server = TestServer.Create(app =>
@@ -152,38 +150,39 @@ namespace AutoPocoIO.AspNet.test.Swagger
                 string result = server.HttpClient.GetStringAsync("autoPocoPath/swagger/docs/v1").Result;
                 var resultObj = JObject.Parse(result);
 
-                Assert.AreEqual("Table Definition", resultObj["paths"]["/api/{connectorName}/_definition/_table/{tableName}"]["get"]["tags"][0].ToString());
+                Assert.Equal("Table Definition", resultObj["paths"]["/api/{connectorName}/_definition/_table/{tableName}"]["get"]["tags"][0].ToString());
             }
         }
 
-        [TestMethod]
+        [FactWithName]
         public void AddInOdataParameters()
         {
+            var config = new HttpConfiguration();
+            AutoPocoConfiguration.DashboardPathPrefix = null;
             using (var server = TestServer.Create(app =>
             {
-                Config.MapHttpAttributeRoutes();
-                SwaggerConfig.Register(Config, "autoPocoPath");
-                app.UseWebApi(Config);
+                config.MapHttpAttributeRoutes();
+                SwaggerConfig.Register(config, "autoPocoPath");
+                app.UseWebApi(config);
             }))
             {
                 string result = server.HttpClient.GetStringAsync("autoPocoPath/swagger/docs/v1").Result;
                 var resultObj = JObject.Parse(result);
 
-
                 var parameterNames = resultObj["paths"]["/api/{connectorName}/_table/{tableName}"]["get"]["parameters"].Select(c => c["name"]);
 
-                Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$filter"));
-                Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$select"));
-                Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$expand"));
-                Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$orderby"));
-                Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$skip"));
-                Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$top"));
-                Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$apply"));
-                Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$count"));
+                Assert.Contains(parameterNames, c => c.Value<string>() == "$filter");
+                Assert.Contains(parameterNames, c => c.Value<string>() == "$select");
+                Assert.Contains(parameterNames, c => c.Value<string>() == "$expand");
+                Assert.Contains(parameterNames, c => c.Value<string>() == "$orderby");
+                Assert.Contains(parameterNames, c => c.Value<string>() == "$skip");
+                Assert.Contains(parameterNames, c => c.Value<string>() == "$top");
+                Assert.Contains(parameterNames, c => c.Value<string>() == "$apply");
+                Assert.Contains(parameterNames, c => c.Value<string>() == "$count");
             }
         }
 
-        [TestMethod]
+        [FactWithName]
         public void PullCommentsFromAutoPocoXmlUsingTableAsExample()
         {
             using (var server = TestServer.Create(app =>
@@ -196,7 +195,7 @@ namespace AutoPocoIO.AspNet.test.Swagger
                 string result = server.HttpClient.GetStringAsync("autoPocoPath/swagger/docs/v1").Result;
                 var resultObj = JObject.Parse(result);
 
-                Assert.AreEqual("Retrieve data from a given table", resultObj["paths"]["/api/{connectorName}/_table/{tableName}"]["get"]["summary"].Value<string>());
+                Assert.Equal("Retrieve data from a given table", resultObj["paths"]["/api/{connectorName}/_table/{tableName}"]["get"]["summary"].Value<string>());
             }
         }
     }

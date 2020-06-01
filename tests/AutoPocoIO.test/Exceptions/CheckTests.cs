@@ -1,66 +1,65 @@
 ﻿using AutoPocoIO.Exceptions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Xunit;
 
 namespace AutoPocoIO.test.Exceptions
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     public class CheckTests
     {
-        [TestMethod]
+        [FactWithName]
         public void NotNullNoException()
         {
             var a = "asdfasdf";
             Check.NotNull(a, "a");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [FactWithName]
         public void NotNullNullThrowsException()
         {
             string a = null;
-            Check.NotNull(a, "a");
+             void act() => Check.NotNull(a, "a");
+            Assert.Throws<ArgumentNullException>(act);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void NotEmptyNoExceptionIfValue()
         {
             var a = "asdfasdf";
             var result = Check.NotEmpty(a, "a");
-            Assert.AreEqual(a, result);
+            Assert.Equal(a, result);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [FactWithName]
         public void NotEmptyNoExceptionIfNull()
         {
             string a = null;
-            Check.NotEmpty(a, "a");
+             void act() => Check.NotEmpty(a, "a");
+            Assert.Throws<ArgumentNullException>(act);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [FactWithName]
         public void NotEmptyNoExceptionIfEmptyOrWhiteSpace()
         {
             string a = "     ";
-            Check.NotEmpty(a, "a");
+             void act() => Check.NotEmpty(a, "a");
+            Assert.Throws<ArgumentException>(act);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [FactWithName]
         public void NotEmptyThrowsExceptionIfParamNull()
         {
             string a = null;
-            Check.NotEmpty(a, null);
+             void act() => Check.NotEmpty(a, null);
+            Assert.Throws<ArgumentNullException>(act);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [FactWithName]
         public void NotEmptyThrowsExceptionIfParamEmpty()
         {
             string a = null;
-            Check.NotEmpty(a, "");
+             void act() => Check.NotEmpty(a, "");
+            Assert.Throws<ArgumentException>(act);
         }
     }
 }

@@ -1,30 +1,30 @@
 ﻿using AutoPocoIO.CustomAttributes;
 using AutoPocoIO.Extensions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 
 namespace AutoPocoIO.test.CustomAttributes
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
-    public class DynamicRoutePrefixAttributeTest
+    
+     [Trait("Category", TestCategories.Unit)]
+    public class DynamicRoutePrefixAttributeTest : IDisposable
     {
-        [TestMethod]
+        [FactWithName]
         public void DynamicRouteWithPrefix()
         {
             AutoPocoConfiguration.DashboardPathPrefix = "testPrefix";
             var attr = new DynamicRoutePrefixAttribute("test");
-            Assert.AreEqual("testPrefix/test", attr.Prefix);
+            Assert.Equal("testPrefix/test", attr.Prefix);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void DynamicRouteWithoutPrefix()
         {
             var attr = new DynamicRoutePrefixAttribute("test");
-            Assert.AreEqual("test", attr.Prefix);
+            Assert.Equal("test", attr.Prefix);
         }
 
-        [TestCleanup]
-        public void Cleanup()
+        public void Dispose()
         {
             AutoPocoConfiguration.DashboardPathPrefix = null;
         }

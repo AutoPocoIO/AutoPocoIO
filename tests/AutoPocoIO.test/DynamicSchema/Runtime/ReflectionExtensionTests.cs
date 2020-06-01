@@ -1,13 +1,13 @@
 ﻿using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Runtime;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AutoPocoIO.test.DynamicSchema.Runtime
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+     [Trait("Category", TestCategories.Unit)]
     public class ReflectionExtensionTests
     {
         private class UserJoinColumnTestClass
@@ -32,32 +32,32 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
 
 
-        [TestMethod]
+        [FactWithName]
         public void PropertyNameFound()
         {
             Table tbl = new Table();
             tbl.Columns.Add(new Column { ColumnName = "Test" });
 
             IEnumerable<string> properties = ReflectionExtensions.UserJoinedColumnSelect(tbl, typeof(UserJoinColumnTestClass), new Dictionary<string, string>());
-            Assert.AreEqual(2, properties.Count());
-            Assert.AreEqual("Test", properties.First());
-            Assert.AreEqual("Int32?(null) as TestExclude", properties.Last());
+            Assert.Equal(2, properties.Count());
+            Assert.Equal("Test", properties.First());
+            Assert.Equal("Int32?(null) as TestExclude", properties.Last());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void PropertyNameFoundWithExpand()
         {
             Table tbl = new Table();
             tbl.Columns.Add(new Column { ColumnName = "Test" });
 
             IEnumerable<string> properties = ReflectionExtensions.UserJoinedColumnSelect(tbl, typeof(UserJoinColumnTestClass), new Dictionary<string, string>() { { "$expand", "TestExclude" } });
-            Assert.AreEqual(2, properties.Count());
-            Assert.AreEqual("Test", properties.First());
-            Assert.AreEqual("TestExclude", properties.Last());
+            Assert.Equal(2, properties.Count());
+            Assert.Equal("Test", properties.First());
+            Assert.Equal("TestExclude", properties.Last());
         }
 
 
-        [TestMethod]
+        [FactWithName]
         public void PropertyNameFoundWithPrefix()
         {
             Table tbl = new Table();
@@ -65,20 +65,20 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
             IEnumerable<string> properties = ReflectionExtensions.UserJoinedColumnSelect(tbl, typeof(UserJoinColumnTestClass), new Dictionary<string, string>(), "testPre.");
 
-            Assert.AreEqual(2, properties.Count());
-            Assert.AreEqual("testPre.Test", properties.First());
-            Assert.AreEqual("Int32?(null) as TestExclude", properties.Last());
+            Assert.Equal(2, properties.Count());
+            Assert.Equal("testPre.Test", properties.First());
+            Assert.Equal("Int32?(null) as TestExclude", properties.Last());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ProperNameExcludeObjects()
         {
             Table tbl = new Table();
             tbl.Columns.Add(new Column { ColumnName = "Test" });
 
             IEnumerable<string> properties = ReflectionExtensions.UserJoinedColumnSelect(tbl, typeof(UserJoinColumnWithObjectTypeTestClass), new Dictionary<string, string>());
-            Assert.AreEqual(1, properties.Count());
-            Assert.AreEqual("Test", properties.First());
+            Assert.Single(properties);
+            Assert.Equal("Test", properties.First());
         }
     }
 }

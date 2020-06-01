@@ -4,16 +4,15 @@ using AutoPocoIO.Extensions;
 using AutoPocoIO.Factories;
 using AutoPocoIO.LoggingMiddleware;
 using AutoPocoIO.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
+using Xunit;
 
 namespace AutoPocoIO.test.Extensions
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     public class ServiceCollectionExtensionTests
     {
         private void AddDatabaseDependency(ServiceCollection services)
@@ -25,7 +24,7 @@ namespace AutoPocoIO.test.Extensions
         }
 
 
-        [TestMethod]
+        [FactWithName]
         public void AddAutoPocoServices()
         {
             var services = new ServiceCollection();
@@ -34,14 +33,14 @@ namespace AutoPocoIO.test.Extensions
             var provider = services.BuildServiceProvider();
 
 #if NETFULL
-            Assert.AreEqual(23, services.Count());
+            Assert.Equal(23, services.Count());
 #else
-            Assert.AreEqual(121, services.Count());
+            Assert.Equal(121, services.Count());
 #endif
         }
 
 
-        [TestMethod]
+        [FactWithName]
         public void AddAutoPocoServicesDatabase()
         {
             var services = new ServiceCollection();
@@ -51,28 +50,28 @@ namespace AutoPocoIO.test.Extensions
 
             //Get AutoPoco services
             //Ops
-            Assert.IsNotNull(provider.GetService<ITableOperations>());
-            Assert.IsNotNull(provider.GetService<IViewOperations>());
-            Assert.IsNotNull(provider.GetService<IStoredProcedureOperations>());
-            Assert.IsNotNull(provider.GetService<ISchemaOperations>());
+             Assert.NotNull(provider.GetService<ITableOperations>());
+             Assert.NotNull(provider.GetService<IViewOperations>());
+             Assert.NotNull(provider.GetService<IStoredProcedureOperations>());
+             Assert.NotNull(provider.GetService<ISchemaOperations>());
 
             //Resources
-            Assert.IsNotNull(provider.GetService<IResourceFactory>());
-            Assert.IsNotNull(provider.GetService<IAppAdminService>());
-            Assert.IsNotNull(provider.GetService<IRequestQueryStringService>());
+             Assert.NotNull(provider.GetService<IResourceFactory>());
+             Assert.NotNull(provider.GetService<IAppAdminService>());
+             Assert.NotNull(provider.GetService<IRequestQueryStringService>());
 
             //Logging
-            Assert.IsNotNull(provider.GetService<ITimeProvider>());
-            Assert.IsNotNull(provider.GetService<ILoggingService>());
+             Assert.NotNull(provider.GetService<ITimeProvider>());
+             Assert.NotNull(provider.GetService<ILoggingService>());
 
 
             //Db Access
-            Assert.IsNotNull(provider.GetService<IConnectionStringFactory>());
-            Assert.IsNotNull(provider.GetService<IAppDatabaseSetupService>());
+             Assert.NotNull(provider.GetService<IConnectionStringFactory>());
+             Assert.NotNull(provider.GetService<IAppDatabaseSetupService>());
 
         }
 
-        [TestMethod]
+        [FactWithName]
         public void RegisterLoggingMiddleWareServices()
         {
             var services = new ServiceCollection();
@@ -81,28 +80,35 @@ namespace AutoPocoIO.test.Extensions
 #if NETCORE
             //Not required in core
             var controllers = services.Where(c => c.ImplementationType == typeof(LogRequestAndResponseMiddleware));
-            Assert.AreEqual(0, controllers.Count());
+            Assert.Empty(controllers);
 #else
             //Must register controllers in framework (cannot get service becuase of owinmiddleware dep)
             var controllers = services.Where(c => c.ImplementationType == typeof(LogRequestAndResponseMiddleware));
-            Assert.AreEqual(1, controllers.Count());
+            Assert.Single(controllers);
 #endif
         }
 
 #if NETFULL
-        [TestMethod]
+        [FactWithName]
         public void RegisterDashbaordServices()
         {
             var services = new ServiceCollection();
-          //  services.AddAutDashboard();
+            services.AddSingleton(new DbContextOptionsBuilder<LogDbContext>()
+               .UseInMemoryDatabase(databaseName: "logDb" + Guid.NewGuid().ToString())
+               .Options);
+            services.AddSingleton(new DbContextOptionsBuilder<AppDbContext>()
+              .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
+              .Options);
+
+            services.AddAutoPoco();
 
             var provider = services.BuildServiceProvider();
-            //Assert.IsNotNull(provider.GetService<IConnectionStringFactory>());
+             Assert.NotNull(provider.GetService<Owin.DashboardMiddleware>());
         }
 #endif
 
 
-        [TestMethod]
+        [FactWithName]
         public void AddDatabaseConfigurationToCollection()
         {
 
@@ -111,29 +117,29 @@ namespace AutoPocoIO.test.Extensions
             services.AddScoped<AppDbContext>();
             services.ConfigureApplicationDatabase(c => c.UseInMemoryDatabase(databaseName: "db123"));
 
-            Assert.AreEqual(4, services.Count());
+            Assert.Equal(4, services.Count());
 
             //Assert singleton lifetime
-            Assert.AreEqual(ServiceLifetime.Singleton, services.First(c => c.ServiceType == typeof(DbContextOptions<LogDbContext>)).Lifetime);
-            Assert.AreEqual(ServiceLifetime.Singleton, services.First(c => c.ServiceType == typeof(DbContextOptions<AppDbContext>)).Lifetime);
+            Assert.Equal(ServiceLifetime.Singleton, services.First(c => c.ServiceType == typeof(DbContextOptions<LogDbContext>)).Lifetime);
+            Assert.Equal(ServiceLifetime.Singleton, services.First(c => c.ServiceType == typeof(DbContextOptions<AppDbContext>)).Lifetime);
 
             var provider = services.BuildServiceProvider();
 
             //Dbs
-            Assert.IsNotNull(provider.GetService<LogDbContext>());
-            Assert.IsNotNull(provider.GetService<AppDbContext>());
+             Assert.NotNull(provider.GetService<LogDbContext>());
+             Assert.NotNull(provider.GetService<AppDbContext>());
 
             //ContextOptions
-            Assert.IsNotNull(provider.GetService<DbContextOptions<LogDbContext>>());
-            Assert.IsNotNull(provider.GetService<DbContextOptions<AppDbContext>>());
+             Assert.NotNull(provider.GetService<DbContextOptions<LogDbContext>>());
+             Assert.NotNull(provider.GetService<DbContextOptions<AppDbContext>>());
 
             DbContextOptions option = provider.GetService<DbContextOptions<LogDbContext>>();
-            Assert.IsInstanceOfType(option.Extensions.ElementAt(0), typeof(Microsoft.EntityFrameworkCore.Infrastructure.CoreOptionsExtension));
-            Assert.IsInstanceOfType(option.Extensions.ElementAt(1), typeof(Microsoft.EntityFrameworkCore.InMemory.Infrastructure.Internal.InMemoryOptionsExtension));
+            Assert.IsType<Microsoft.EntityFrameworkCore.Infrastructure.CoreOptionsExtension>(option.Extensions.ElementAt(0));
+            Assert.IsType<Microsoft.EntityFrameworkCore.InMemory.Infrastructure.Internal.InMemoryOptionsExtension>(option.Extensions.ElementAt(1));
 
             option = provider.GetService<DbContextOptions<AppDbContext>>();
-            Assert.IsInstanceOfType(option.Extensions.ElementAt(0), typeof(Microsoft.EntityFrameworkCore.Infrastructure.CoreOptionsExtension));
-            Assert.IsInstanceOfType(option.Extensions.ElementAt(1), typeof(Microsoft.EntityFrameworkCore.InMemory.Infrastructure.Internal.InMemoryOptionsExtension));
+            Assert.IsType<Microsoft.EntityFrameworkCore.Infrastructure.CoreOptionsExtension>(option.Extensions.ElementAt(0));
+            Assert.IsType<Microsoft.EntityFrameworkCore.InMemory.Infrastructure.Internal.InMemoryOptionsExtension>(option.Extensions.ElementAt(1));
         }
     }
 }

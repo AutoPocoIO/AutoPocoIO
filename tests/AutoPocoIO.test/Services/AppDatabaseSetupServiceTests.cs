@@ -10,27 +10,25 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using Xunit;
 
 namespace AutoPocoIO.test.Services
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     public class AppDatabaseSetupServiceTests
     {
         readonly string connString = $"appDbPro{Guid.NewGuid()}";
-        AppDatabaseSetupService setupService;
-        Mock<IMigrationsAssembly> mig;
-        Mock<IHistoryRepository> applied;
-        Mock<AppDbContext> appDb;
-        List<string> migrationCalled;
+        readonly AppDatabaseSetupService setupService;
+        readonly Mock<IMigrationsAssembly> mig;
+        readonly Mock<IHistoryRepository> applied;
+        readonly Mock<AppDbContext> appDb;
+        readonly List<string> migrationCalled;
 
-        [TestInitialize]
-        public void Initialize()
+        public AppDatabaseSetupServiceTests()
         {
             migrationCalled = new List<string>();
 
@@ -88,45 +86,45 @@ namespace AutoPocoIO.test.Services
                                                          factory.Object);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [FactWithName]
         public void ThrowExceptionIfSaltNull()
         {
-            setupService.SetupEncryption(null, "asdf", 1);
+             void act() => setupService.SetupEncryption(null, "asdf", 1);
+            Assert.Throws<ArgumentNullException>(act);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [FactWithName]
         public void ThrowExceptionIfSecretKeyNull()
         {
-            setupService.SetupEncryption("adsf", null, 1);
+             void act() => setupService.SetupEncryption("adsf", null, 1);
+            Assert.Throws<ArgumentNullException>(act);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [FactWithName]
         public void ThrowExceptionIfSaltLengthNot16()
         {
-            setupService.SetupEncryption("not16Chars", "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1", 1);
+             void act() => setupService.SetupEncryption("not16Chars", "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1", 1);
+            Assert.Throws<ArgumentOutOfRangeException>(act);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [FactWithName]
         public void ThrowExceptionIfSecretKeyLengthNot128()
         {
-            setupService.SetupEncryption("49OQNVKPAWTMC747", "not128Chars", 1);
+             void act() => setupService.SetupEncryption("49OQNVKPAWTMC747", "not128Chars", 1);
+            Assert.Throws<ArgumentOutOfRangeException>(act);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void SetupEncryptionSetsConfigKeys()
         {
             setupService.SetupEncryption("49OQNVKPAWTMC747", "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1", 1);
 
-            Assert.AreEqual("49OQNVKPAWTMC747", AutoPocoConfiguration.SaltVector);
-            Assert.AreEqual("401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1", AutoPocoConfiguration.SecretKey);
-            Assert.AreEqual(1, AutoPocoConfiguration.CacheTimeoutMinutes);
+            Assert.Equal("49OQNVKPAWTMC747", AutoPocoConfiguration.SaltVector);
+            Assert.Equal("401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1", AutoPocoConfiguration.SecretKey);
+            Assert.Equal(1, AutoPocoConfiguration.CacheTimeoutMinutes);
         }
 
-        //[TestMethod]
+        //[FactWithName]
         //public void SetConnectionStringDuringBasicMigration()
         //{
         //    mig.Setup(c => c.Migrations).Returns(new Dictionary<string, TypeInfo>());
@@ -134,12 +132,12 @@ namespace AutoPocoIO.test.Services
 
         //    setupService.Migrate(ResourceType.Mssql);
 
-        //    Assert.AreEqual("cat1", appDb.Object.Connector.First(c => c.Name == "appDb").InitialCatalog);
-        //    Assert.AreEqual("cat1", appDb.Object.Connector.First(c => c.Name == "logDb").InitialCatalog);
+        //    Assert.Equal("cat1", appDb.Object.Connector.First(c => c.Name == "appDb").InitialCatalog);
+        //    Assert.Equal("cat1", appDb.Object.Connector.First(c => c.Name == "logDb").InitialCatalog);
         //}
 
 
-        //[TestMethod]
+        //[FactWithName]
         //public void InitalDb()
         //{
         //    mig.Setup(c => c.Migrations).Returns(new Dictionary<string, TypeInfo>
@@ -152,7 +150,7 @@ namespace AutoPocoIO.test.Services
         //        .Returns(new List<HistoryRow>());
 
         //    setupService.Migrate(ResourceType.Mssql);
-        //    Assert.AreEqual(2, migrationCalled.Count());
+        //    Assert.Equal(2, migrationCalled.Count());
         //}
     }
 }

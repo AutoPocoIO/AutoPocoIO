@@ -1,18 +1,17 @@
 ﻿using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Xunit;
 
 namespace AutoPocoIO.test.DynamicSchema.Util
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     public class UtilsTests
     {
-        [TestMethod]
+        [FactWithName]
         public void DynamicAssemblyNameFormat()
         {
             Config config = new Config()
@@ -25,117 +24,117 @@ namespace AutoPocoIO.test.DynamicSchema.Util
             tableMoq.SetupGet(c => c.VariableName).Returns("db_sch_tbl");
 
             string actualValue = AutoPocoIO.DynamicSchema.Util.Utils.AssemblyName(tableMoq.Object, "parent", 78945);
-            Assert.AreEqual("DYNAMICASSEMBLY.DB_SCH_TBL1234.PARENT78945", actualValue);
+            Assert.Equal("DYNAMICASSEMBLY.DB_SCH_TBL1234.PARENT78945", actualValue);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [FactWithName]
         public void FindLoadedAsmWithNoTypes()
         {
             var asmMoq = new Mock<Asm>();
             asmMoq.Setup(c => c.GetTypes()).Throws(new ReflectionTypeLoadException(new Type[] { typeof(object) }, null));
-            AutoPocoIO.DynamicSchema.Util.Utils.FindLoadedAssembly(new List<Assembly> { asmMoq.Object }, true);
+            void act() => AutoPocoIO.DynamicSchema.Util.Utils.FindLoadedAssembly(new List<Assembly> { asmMoq.Object }, true);
+            Assert.Throws<InvalidOperationException>(act);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [FactWithName]
         public void FindLoadAsmGetTypeReturnsNull()
         {
             var asmMoq = new Mock<Asm>();
             asmMoq.Setup(c => c.GetTypes()).Returns((Type[])null);
-            AutoPocoIO.DynamicSchema.Util.Utils.FindLoadedAssembly(new List<Assembly> { asmMoq.Object }, true);
+             void act() => AutoPocoIO.DynamicSchema.Util.Utils.FindLoadedAssembly(new List<Assembly> { asmMoq.Object }, true);
+            Assert.Throws<InvalidOperationException>(act);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [FactWithName]
         public void FindLoadAsmGetTypesReturnsNoRecords()
         {
             var asmMoq = new Mock<Asm>();
             asmMoq.Setup(c => c.GetTypes()).Returns(Array.Empty<Type>);
-            AutoPocoIO.DynamicSchema.Util.Utils.FindLoadedAssembly(new List<Assembly> { asmMoq.Object }, true);
+            void act() => AutoPocoIO.DynamicSchema.Util.Utils.FindLoadedAssembly(new List<Assembly> { asmMoq.Object }, true);
+            Assert.Throws<InvalidOperationException>(act);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void FindLoadAsmGetTypesReturnsType()
         {
             var asmMoq = new Mock<Asm>();
             asmMoq.Setup(c => c.GetTypes()).Returns(new Type[] { typeof(object) });
             var type = AutoPocoIO.DynamicSchema.Util.Utils.FindLoadedAssembly(new List<Assembly> { asmMoq.Object }, true);
 
-            Assert.AreEqual(typeof(object), type);
+            Assert.Equal(typeof(object), type);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void FancyLabelStartWithCapLetter()
         {
             string actual = AutoPocoIO.DynamicSchema.Util.Utils.GetFancyLabel("thisisalllowercase");
-            Assert.AreEqual("Thisisalllowercase", actual);
+            Assert.Equal("Thisisalllowercase", actual);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void FancyLabelTitleCaseWhenIncludingSpaces()
         {
             string actual = AutoPocoIO.DynamicSchema.Util.Utils.GetFancyLabel("this is all lowercase");
-            Assert.AreEqual("This Is All Lowercase", actual);
+            Assert.Equal("This Is All Lowercase", actual);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void FancyLabelTitleCaseWhenIncludingUnderScore()
         {
             string actual = AutoPocoIO.DynamicSchema.Util.Utils.GetFancyLabel("this_is_all_lowercase");
-            Assert.AreEqual("This Is All Lowercase", actual);
+            Assert.Equal("This Is All Lowercase", actual);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void FancyLabelTrimTrailingUnderscore()
         {
             string actual = AutoPocoIO.DynamicSchema.Util.Utils.GetFancyLabel("lowercase_");
-            Assert.AreEqual("Lowercase", actual);
+            Assert.Equal("Lowercase", actual);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void FancyLabelTrailingCapsTogether()
         {
             string actual = AutoPocoIO.DynamicSchema.Util.Utils.GetFancyLabel("lowercaSE");
-            Assert.AreEqual("Lowerca SE", actual);
+            Assert.Equal("Lowerca SE", actual);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void FancyLabelTrailingSingleCap()
         {
             string actual = AutoPocoIO.DynamicSchema.Util.Utils.GetFancyLabel("lowercasE");
-            Assert.AreEqual("Lowercas E", actual);
+            Assert.Equal("Lowercas E", actual);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void FancyLabelKeepConsecutiveCapsTogeteher()
         {
             string actual = AutoPocoIO.DynamicSchema.Util.Utils.GetFancyLabel("loWERcase");
-            Assert.AreEqual("Lo WE Rcase", actual);
+            Assert.Equal("Lo WE Rcase", actual);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ColumnToPropertyName()
         {
             var col = new Column { ColumnName = "colName" };
             var result = col.ColumnToPropertyName();
-            Assert.AreEqual("colName", result);
+            Assert.Equal("colName", result);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ColumnToPropertyNameReplaceDotWithUnderScore()
         {
             var col = new Column { ColumnName = "col.Name" };
             var result = col.ColumnToPropertyName();
-            Assert.AreEqual("col_Name", result);
+            Assert.Equal("col_Name", result);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ColumnToPropertyAddCIfStartsWithANumber()
         {
             var col = new Column { ColumnName = "1colName" };
             var result = col.ColumnToPropertyName();
-            Assert.AreEqual("C1colName", result);
+            Assert.Equal("C1colName", result);
         }
 
         public class Asm : Assembly

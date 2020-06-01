@@ -1,15 +1,15 @@
 ﻿using AutoPocoIO.Api;
 using AutoPocoIO.Models;
 using AutoPocoIO.WebApi;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace AutoPocoIO.test.WebApi
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+     [Trait("Category", TestCategories.Unit)]
     public class TableDefinitionControllerTests : WebApiTestBase<ITableOperations>
     {
-        [TestMethod]
+        [FactWithName]
         public void GetDefinition()
         {
             var obj = new TableDefinition { Name = "tbl" };
@@ -20,10 +20,10 @@ namespace AutoPocoIO.test.WebApi
             var controller = new TableDefinitionController(Ops.Object, LoggingService);
 
             var results = controller.Get("conn", "tbl");
-            Assert.AreEqual("tbl", obj.Name);
+            Assert.Equal("tbl", obj.Name);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetColumnDefinition()
         {
             var obj = new ColumnDefinition { Name = "col1" };
@@ -34,7 +34,7 @@ namespace AutoPocoIO.test.WebApi
             var controller = new TableDefinitionController(Ops.Object, LoggingService);
 
             var results = controller.Get("conn", "tbl", "col1");
-            Assert.AreEqual("col1", obj.Name);
+            Assert.Equal("col1", obj.Name);
         }
     }
 }

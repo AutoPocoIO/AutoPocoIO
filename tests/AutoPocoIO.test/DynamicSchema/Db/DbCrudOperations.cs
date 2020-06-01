@@ -3,7 +3,7 @@ using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Runtime;
 using AutoPocoIO.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -11,15 +11,13 @@ using System.Linq;
 
 namespace AutoPocoIO.test.DynamicSchema.Db
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+    [Trait("Category", TestCategories.Unit)]
     public class DbCrudOperations
     {
-        private DbContextOptions<DbContextBase> options;
-        private Mock<DbAdapter> db;
-
-        [TestInitialize]
-        public void Init()
+        private readonly DbContextOptions<DbContextBase> options;
+        private readonly Mock<DbAdapter> db;
+        public DbCrudOperations()
         {
             options = new DbContextOptionsBuilder<DbContextBase>()
               .UseInMemoryDatabase(databaseName: "DbCrudOperations_" + Guid.NewGuid().ToString())
@@ -32,12 +30,12 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             db = new Mock<DbAdapter>(schemaBuilder, dbClassBuilder, schema);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void InsertRecordAddsToDb()
         {
             using (var dbContextBase = new DbContextBase(options, new Dictionary<string, Type>() { { "tbl", typeof(Connector) } }, new List<Table>()))
             {
-                Assert.AreEqual(0, dbContextBase.Set<Connector>().Count(), "Inital blank state");
+                Assert.Equal(0, dbContextBase.Set<Connector>().Count());
 
                 db.SetupGet(c => c.Instance).Returns(dbContextBase);
                 db.SetupGet(c => c.DbSetEntityType).Returns(typeof(Connector));
@@ -48,11 +46,11 @@ namespace AutoPocoIO.test.DynamicSchema.Db
                 });
 
                 db.Object.Save();
-                Assert.AreEqual(1, dbContextBase.Set<Connector>().Count(), "Insert failed");
+                Assert.Equal(1, dbContextBase.Set<Connector>().Count());
             }
         }
 
-        [TestMethod]
+        [FactWithName]
         public void NewReturnsInstance()
         {
             db.Setup(c => c.SetupDataContext("Table"));
@@ -60,11 +58,11 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
             var connector = db.Object.NewInstance("Table");
 
-            Assert.IsInstanceOfType(connector, typeof(Connector));
+            Assert.IsType<Connector>(connector);
             db.Verify(c => c.SetupDataContext("Table"), Times.Once);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetReturnsDbSet()
         {
             using (var dbContextBase = new DbContextBase(options, new Dictionary<string, Type>() { { "tbl", typeof(Connector) } }, new List<Table>()))
@@ -75,12 +73,12 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
                 var connectorSet = db.Object.GetAll("Table");
 
-                Assert.IsInstanceOfType(connectorSet, typeof(DbSet<Connector>));
+                Assert.IsAssignableFrom<DbSet<Connector>>(connectorSet);
                 db.Verify(c => c.SetupDataContext("Table"), Times.Once);
             }
         }
 
-        [TestMethod]
+        [FactWithName]
         public void FindRecord()
         {
             using (var dbContextBase = new DbContextBase(options, new Dictionary<string, Type>() { { "tbl", typeof(Connector) } }, new List<Table>()))
@@ -96,16 +94,16 @@ namespace AutoPocoIO.test.DynamicSchema.Db
                     Port = 123
                 });
                 dbContextBase.SaveChanges();
-                Assert.AreEqual(1, dbContextBase.Set<Connector>().Count(), "Inital state invalid");
+                Assert.Equal(1, dbContextBase.Set<Connector>().Count());
 
                 var connector = db.Object.Find("Table", "1");
-                Assert.AreEqual("init", ((Connector)connector).Name);
-                Assert.AreEqual(123, ((Connector)connector).Port);
+                Assert.Equal("init", ((Connector)connector).Name);
+                Assert.Equal(123, ((Connector)connector).Port);
                 db.Verify(c => c.SetupDataContext("Table"), Times.Once);
             }
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UpdateRecordUpdatesToDb()
         {
             using (var dbContextBase = new DbContextBase(options, new Dictionary<string, Type>() { { "tbl", typeof(Connector) } }, new List<Table>()))
@@ -115,7 +113,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
                     Name = "init"
                 });
                 dbContextBase.SaveChanges();
-                Assert.AreEqual(1, dbContextBase.Set<Connector>().Count(), "Inital state invalid");
+                Assert.Equal(1, dbContextBase.Set<Connector>().Count());
 
                 db.SetupGet(c => c.Instance).Returns(dbContextBase);
                 db.SetupGet(c => c.DbSetEntityType).Returns(typeof(Connector));
@@ -125,11 +123,11 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
                 db.Object.Update(connector);
                 db.Object.Save();
-                Assert.AreEqual("updated", dbContextBase.Set<Connector>().First().Name);
+                Assert.Equal("updated", dbContextBase.Set<Connector>().First().Name);
             }
         }
 
-        [TestMethod]
+        [FactWithName]
         public void RemoveRecordUpdatesToDb()
         {
             using (var dbContextBase = new DbContextBase(options, new Dictionary<string, Type>() { { "tbl", typeof(Connector) } }, new List<Table>()))
@@ -139,7 +137,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
                     Name = "init"
                 });
                 dbContextBase.SaveChanges();
-                Assert.AreEqual(1, dbContextBase.Set<Connector>().Count(), "Inital state invalid");
+                Assert.Equal(1, dbContextBase.Set<Connector>().Count());
 
                 db.SetupGet(c => c.Instance).Returns(dbContextBase);
                 db.SetupGet(c => c.DbSetEntityType).Returns(typeof(Connector));
@@ -148,7 +146,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
                 db.Object.Delete(connector);
                 db.Object.Save();
 
-                Assert.AreEqual(0, dbContextBase.Set<Connector>().Count());
+                Assert.Equal(0, dbContextBase.Set<Connector>().Count());
             }
         }
     }

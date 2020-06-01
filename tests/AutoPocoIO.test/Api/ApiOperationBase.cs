@@ -4,7 +4,7 @@ using AutoPocoIO.Models;
 using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -30,8 +30,7 @@ namespace AutoPocoIO.test.Api
             public new List<LogRequestAndResponseCommand> ApiRequests => base.ApiRequests;
         }
 
-        [TestInitialize]
-        public void Init()
+        public ApiOperationBase()
         {
             var appDbOptions = new DbContextOptionsBuilder<AppDbContext>()
              .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())

@@ -1,15 +1,15 @@
 ﻿using AutoPocoIO.Api;
 using AutoPocoIO.Models;
 using AutoPocoIO.WebApi;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace AutoPocoIO.test.WebApi
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+     [Trait("Category", TestCategories.Unit)]
     public class StoredProcedureParameterDefinitionTests : WebApiTestBase<IStoredProcedureOperations>
     {
-        [TestMethod]
+        [FactWithName]
         public void GetDefinition()
         {
             var obj = new StoredProcedureDefinition { Name = "proc" };
@@ -20,10 +20,10 @@ namespace AutoPocoIO.test.WebApi
             var controller = new StoredProcedureDefinitionController(Ops.Object, LoggingService);
 
             var results = controller.Get("conn", "proc");
-            Assert.AreEqual("proc", obj.Name);
+            Assert.Equal("proc", obj.Name);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetParameterDefinition()
         {
             var obj = new StoredProcedureParameterDefinition { Name = "param1" };
@@ -34,7 +34,7 @@ namespace AutoPocoIO.test.WebApi
             var controller = new StoredProcedureDefinitionController(Ops.Object, LoggingService);
 
             var results = controller.Get("conn", "proc", "param1");
-            Assert.AreEqual("param1", obj.Name);
+            Assert.Equal("param1", obj.Name);
         }
     }
 }

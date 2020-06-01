@@ -1,18 +1,17 @@
 ﻿using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.Extensions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Data.Common;
+using Xunit;
 
 namespace AutoPocoIO.test.Extensions
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     public class SchemaBuilderExtensionsTests
     {
-        [TestMethod]
+        [FactWithName]
         public void OpenDbConnection()
         {
             var dbconnectionMock = new Mock<DbConnection>();
@@ -23,8 +22,7 @@ namespace AutoPocoIO.test.Extensions
             dbconnectionMock.Verify(c => c.Open(), Times.Once);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(OpenConnectorException))]
+        [FactWithName]
         public void OpenDbconnectionFail()
         {
             var mockException = new Mock<DbException>();
@@ -33,28 +31,29 @@ namespace AutoPocoIO.test.Extensions
                             .Throws(mockException.Object);
 
 
-            dbconnectionMock.Object.SafeDbConnectionOpen("test");
+             void act() => dbconnectionMock.Object.SafeDbConnectionOpen("test");
+            Assert.Throws<OpenConnectorException>(act);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void TableIsU()
         {
             var tableType = "U".SetObjectType();
-            Assert.AreEqual(DBOjectType.Table, tableType);
+            Assert.Equal(DBOjectType.Table, tableType);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ViewIsV()
         {
             var viewType = "V".SetObjectType();
-            Assert.AreEqual(DBOjectType.View, viewType);
+            Assert.Equal(DBOjectType.View, viewType);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [FactWithName]
         public void ObjectTypeNotFound()
         {
-            "notFound".SetObjectType();
+             void act() => "notFound".SetObjectType();
+            Assert.Throws<ArgumentOutOfRangeException>(act);
         }
     }
 }

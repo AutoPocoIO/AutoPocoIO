@@ -3,17 +3,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query.Sql;
 using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 
-namespace AutoPocoIO.test.DynamicSchema.Runtime
+namespace AutoPocoIO.MsSql.test.DynamicSchema.Runtime
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+    [Trait("Category", TestCategories.Unit)]
     public class EfServiceReplacementTests
     {
 
-        [TestMethod]
+        [FactWithName]
         public void VerifyEfSqlCachingREmoved()
         {
             var optionBuilder = new Mock<DbContextOptionsBuilder>();
@@ -25,7 +25,7 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
             optionBuilder.Verify(c => c.ReplaceService<IRelationalTypeMappingSource, AutoPocoIO.DynamicSchema.Services.NoCache.SqlServerTypeMappingSource>(), Times.Once);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void VerifyEfCrossDb()
         {
             var optionBuilder = new Mock<DbContextOptionsBuilder>();

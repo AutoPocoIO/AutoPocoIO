@@ -1,28 +1,27 @@
 ﻿using AutoPocoIO.CustomAttributes;
 using AutoPocoIO.SwaggerAddons;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Xunit;
 
 namespace AutoPocoIO.AspNetCore.test.Swagger
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+
+    [Trait("Category", TestCategories.Unit)]
     public class ODataParametersDefinitionTests
     {
         readonly ODataParametersSwaggerDefinition swaggerDef = new ODataParametersSwaggerDefinition();
         Operation op = new Operation { Parameters = null };
-        ApiDescription api;
-        MethodInfo oDataAction;
+        readonly ApiDescription api;
+        readonly MethodInfo oDataAction;
         OperationFilterContext context;
 
-        [TestInitialize]
-        public void Init()
+        public ODataParametersDefinitionTests()
         {
             api = new ApiDescription();
 
@@ -35,16 +34,16 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), Mock.Of<MethodInfo>());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void SkipOdataParamsIfMissingAttr()
         {
             op = new Operation { Parameters = new List<IParameter> { new NonBodyParameter { Name = "orginial" } } };
             swaggerDef.Apply(op, context);
 
-            Assert.AreEqual(1, op.Parameters.Count());
+            Assert.Single(op.Parameters);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void AppendOdataOpsIfSomeAlreadyExists()
         {
             op = new Operation { Parameters = new List<IParameter> { new NonBodyParameter { Name = "orginial" } } };
@@ -52,19 +51,19 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             swaggerDef.Apply(op, context);
 
 
-            Assert.AreEqual(9, op.Parameters.Count());
+            Assert.Equal(9, op.Parameters.Count());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void SetToOdataOpsIfNoParamsAlreadyExists()
         {
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            Assert.AreEqual(8, op.Parameters.Count());
+            Assert.Equal(8, op.Parameters.Count());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UseOdataAddsSelectParameter()
         {
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
@@ -72,13 +71,13 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
 
             var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$select");
 
-            Assert.AreEqual("string", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
-            Assert.AreEqual(false, odataOp.Required);
-            Assert.AreEqual("Select columns using OData syntax.", odataOp.Description);
+            Assert.Equal("string", odataOp.Type);
+            Assert.Equal("query", odataOp.In);
+            Assert.False(odataOp.Required);
+            Assert.Equal("Select columns using OData syntax.", odataOp.Description);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UseOdataAddsExpandParameter()
         {
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
@@ -86,13 +85,13 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
 
             var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$expand");
 
-            Assert.AreEqual("string", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
-            Assert.AreEqual(false, odataOp.Required);
-            Assert.AreEqual("Expand nested data using OData syntax.", odataOp.Description);
+            Assert.Equal("string", odataOp.Type);
+            Assert.Equal("query", odataOp.In);
+            Assert.False(odataOp.Required);
+            Assert.Equal("Expand nested data using OData syntax.", odataOp.Description);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UseOdataAddsOrderByParameter()
         {
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
@@ -100,13 +99,13 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
 
             var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$orderby");
 
-            Assert.AreEqual("string", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
-            Assert.AreEqual(false, odataOp.Required);
-            Assert.AreEqual("Order the results using OData syntax.", odataOp.Description);
+            Assert.Equal("string", odataOp.Type);
+            Assert.Equal("query", odataOp.In);
+            Assert.False(odataOp.Required);
+            Assert.Equal("Order the results using OData syntax.", odataOp.Description);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UseOdataAddsSkipParameter()
         {
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
@@ -114,13 +113,13 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
 
             var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$skip");
 
-            Assert.AreEqual("integer", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
-            Assert.AreEqual(false, odataOp.Required);
-            Assert.AreEqual("The number of results to skip.", odataOp.Description);
+            Assert.Equal("integer", odataOp.Type);
+            Assert.Equal("query", odataOp.In);
+            Assert.False(odataOp.Required);
+            Assert.Equal("The number of results to skip.", odataOp.Description);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UseOdataAddsTopParameter()
         {
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
@@ -128,13 +127,13 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
 
             var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$top");
 
-            Assert.AreEqual("integer", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
-            Assert.AreEqual(false, odataOp.Required);
-            Assert.AreEqual("The number of results to return.", odataOp.Description);
+            Assert.Equal("integer", odataOp.Type);
+            Assert.Equal("query", odataOp.In);
+            Assert.False(odataOp.Required);
+            Assert.Equal("The number of results to return.", odataOp.Description);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UseOdataAddsApplyParameter()
         {
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
@@ -142,13 +141,13 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
 
             var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$apply");
 
-            Assert.AreEqual("string", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
-            Assert.AreEqual(false, odataOp.Required);
-            Assert.AreEqual("Return applied filter.", odataOp.Description);
+            Assert.Equal("string", odataOp.Type);
+            Assert.Equal("query", odataOp.In);
+            Assert.False(odataOp.Required);
+            Assert.Equal("Return applied filter.", odataOp.Description);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void UseOdataAddsCountParameter()
         {
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
@@ -156,10 +155,10 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
 
             var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$count");
 
-            Assert.AreEqual("boolean", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
-            Assert.AreEqual(false, odataOp.Required);
-            Assert.AreEqual("Return the total count.", odataOp.Description);
+            Assert.Equal("boolean", odataOp.Type);
+            Assert.Equal("query", odataOp.In);
+            Assert.False(odataOp.Required);
+            Assert.Equal("Return the total count.", odataOp.Description);
         }
     }
 }

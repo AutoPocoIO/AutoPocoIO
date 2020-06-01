@@ -1,21 +1,19 @@
 ﻿using AutoPocoIO.DynamicSchema.Db;
 using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Linq;
 
 namespace AutoPocoIO.test.DynamicSchema.Db
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     public partial class SchmeaBuilderBaseStoredProcedure
     {
-        private Config config;
-        private SchemaBuilder1 builder;
-        private DbSchema schema;
+        private readonly Config config;
+        private readonly SchemaBuilder1 builder;
+        private readonly DbSchema schema;
 
-        [TestInitialize]
-        public void Init()
+        public SchmeaBuilderBaseStoredProcedure()
         {
             config = new Config();
             schema = new DbSchema();
@@ -26,7 +24,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             };
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ListProcs()
         {
             var row = builder.DtProcs.NewRow();
@@ -37,14 +35,14 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
             builder.GetStoredProcedures();
 
-            Assert.AreEqual(1, schema.StoredProcedures.Count());
+            Assert.Single(schema.StoredProcedures);
             var proc = schema.StoredProcedures.First();
-            Assert.AreEqual("sch1", proc.Schema);
-            Assert.AreEqual("proc1", proc.Name);
-            Assert.AreEqual("db1", proc.Database);
+            Assert.Equal("sch1", proc.Schema);
+            Assert.Equal("proc1", proc.Name);
+            Assert.Equal("db1", proc.Database);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ListProcs2()
         {
             var row = builder.DtProcs.NewRow();
@@ -61,10 +59,10 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
             builder.GetStoredProcedures();
 
-            Assert.AreEqual(2, schema.StoredProcedures.Count());
+            Assert.Equal(2, schema.StoredProcedures.Count());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ListProcParams()
         {
             var row = builder.DtProcs.NewRow();
@@ -89,14 +87,14 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
             builder.GetStoredProcedures();
 
-            Assert.AreEqual(1, schema.StoredProcedures.Count());
+            Assert.Single(schema.StoredProcedures);
             var params1 = schema.StoredProcedures.First().Parameters;
-            Assert.AreEqual(2, schema.StoredProcedures.First().Parameters.Count());
-            Assert.AreEqual("param1", params1.First().Name);
-            Assert.AreEqual("param2", params1.Last().Name);
-            Assert.AreEqual("varchar", params1.First().Type);
-            Assert.AreEqual(true, params1.First().IsOutput);
-            Assert.AreEqual(false, params1.First().IsNullable);
+            Assert.Equal(2, schema.StoredProcedures.First().Parameters.Count());
+            Assert.Equal("param1", params1.First().Name);
+            Assert.Equal("param2", params1.Last().Name);
+            Assert.Equal("varchar", params1.First().Type);
+            Assert.True(params1.First().IsOutput);
+            Assert.False(params1.First().IsNullable);
 
         }
     }

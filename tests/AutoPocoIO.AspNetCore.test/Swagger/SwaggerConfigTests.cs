@@ -6,21 +6,21 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
 using System.Net.Http;
+using Xunit;
 
 namespace AutoPocoIO.AspNetCore.test.Swagger
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+    [Trait("Category", TestCategories.Unit)]
     public class SwaggerConfigTests
     {
         private static readonly string dashPath = "autoPocoPath";
-        HttpClient client;
+        readonly HttpClient client;
 
         private class TestStartup
         {
@@ -41,8 +41,7 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             }
         }
 
-        [TestInitialize]
-        public void Init()
+        public SwaggerConfigTests()
         {
             var builder = new WebHostBuilder()
                 .UseStartup<TestStartup>();
@@ -53,23 +52,23 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             AutoPocoConfiguration.DashboardPathPrefix = null;
         }
 
-        [TestMethod]
+        [FactWithName]
         public void RedirctToSwaggerPathStartsWithDashPath()
         {
             var resp = client.GetAsync("autoPocoPath/swagger").Result;
-            Assert.AreEqual(301, (int)resp.StatusCode);
-            Assert.AreEqual("swagger/index.html", resp.Headers.Location.ToString());
+            Assert.Equal(301, (int)resp.StatusCode);
+            Assert.Equal("swagger/index.html", resp.Headers.Location.ToString());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void VerifyDocumentTitleAutoPoco()
         {
             var result = client.GetStringAsync("autoPocoPath/swagger/index.html").Result;
-            Assert.IsTrue(result.Contains("<title>AutoPoco</title>"));
+            Assert.Contains("<title>AutoPoco</title>", result);
         }
 
 
-        [TestMethod]
+        [FactWithName]
         public void SingApiVersionSetToV1AndAutoPoco()
         {
             string result = client.GetStringAsync("autoPocoPath/swagger/v1/swagger.json").Result;
@@ -81,19 +80,19 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
                 title = "AutoPoco",
             });
 
-            Assert.AreEqual(jObject.ToString(), resultObj["info"].ToString());
+            Assert.Equal(jObject.ToString(), resultObj["info"].ToString());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GroupByConvertsTagsToCamelCase()
         {
             string result = client.GetStringAsync("autoPocoPath/swagger/v1/swagger.json").Result;
             var resultObj = JObject.Parse(result);
 
-            Assert.AreEqual("Table Definition", resultObj["paths"]["/api/{connectorName}/_definition/_table/{tableName}"]["get"]["tags"][0].ToString());
+            Assert.Equal("Table Definition", resultObj["paths"]["/api/{connectorName}/_definition/_table/{tableName}"]["get"]["tags"][0].ToString());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void AddInOdataParameters()
         {
             string result = client.GetStringAsync("autoPocoPath/swagger/v1/swagger.json").Result;
@@ -101,26 +100,26 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
 
             var parameterNames = resultObj["paths"]["/api/{connectorName}/_table/{tableName}"]["get"]["parameters"].Select(c => c["name"]);
 
-            Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$filter"));
-            Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$select"));
-            Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$expand"));
-            Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$orderby"));
-            Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$skip"));
-            Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$top"));
-            Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$apply"));
-            Assert.IsTrue(parameterNames.Any(c => c.Value<string>() == "$count"));
+            Assert.Contains(parameterNames, c => c.Value<string>() == "$filter");
+            Assert.Contains(parameterNames, c => c.Value<string>() == "$select");
+            Assert.Contains(parameterNames, c => c.Value<string>() == "$expand");
+            Assert.Contains(parameterNames, c => c.Value<string>() == "$orderby");
+            Assert.Contains(parameterNames, c => c.Value<string>() == "$skip");
+            Assert.Contains(parameterNames, c => c.Value<string>() == "$top");
+            Assert.Contains(parameterNames, c => c.Value<string>() == "$apply");
+            Assert.Contains(parameterNames, c => c.Value<string>() == "$count");
         }
 
-        [TestMethod]
+        [FactWithName]
         public void PullCommentsFromcXmlUsingTableAsExample()
         {
             string result = client.GetStringAsync("autoPocoPath/swagger/v1/swagger.json").Result;
             var resultObj = JObject.Parse(result);
 
-            Assert.AreEqual("Retrieve data from a given table", resultObj["paths"]["/api/{connectorName}/_table/{tableName}"]["get"]["summary"].Value<string>());
+            Assert.Equal("Retrieve data from a given table", resultObj["paths"]["/api/{connectorName}/_table/{tableName}"]["get"]["summary"].Value<string>());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void TagControllerToCamelCase()
         {
             var options = new SwaggerGenOptions();
@@ -131,10 +130,10 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             api.ActionDescriptor = descriptor;
             var tags = options.SwaggerGeneratorOptions.TagsSelector(api);
 
-            CollectionAssert.AreEqual(new[] { "Make This Camel Case Controller" }, tags.ToList());
+            Assert.Equal(new[] { "Make This Camel Case Controller" }, tags.ToList());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void SkipTagIfNotController()
         {
             var options = new SwaggerGenOptions();
@@ -145,7 +144,7 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             api.ActionDescriptor = descriptor;
             var tags = options.SwaggerGeneratorOptions.TagsSelector(api);
 
-            CollectionAssert.AreEqual(new string[0], tags.ToList());
+            Assert.Equal(new string[0], tags.ToList());
         }
     }
 }

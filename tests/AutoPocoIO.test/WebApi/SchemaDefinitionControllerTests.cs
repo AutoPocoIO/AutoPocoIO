@@ -2,20 +2,20 @@
 using AutoPocoIO.Models;
 using AutoPocoIO.Services;
 using AutoPocoIO.WebApi;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 
 namespace AutoPocoIO.test.WebApi
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+     [Trait("Category", TestCategories.Unit)]
     public class SchemaControllerTests
     {
         private readonly ILoggingService _loggingService = new Mock<ILoggingService>().Object;
         private readonly Mock<ISchemaOperations> _ops = new Mock<ISchemaOperations>();
 
 
-        [TestMethod]
+        [FactWithName]
         public void GetDefinition()
         {
             var obj = new SchemaDefinition { Name = "sch1" };
@@ -26,7 +26,7 @@ namespace AutoPocoIO.test.WebApi
             var controller = new SchemaController(_ops.Object, _loggingService);
 
             var results = controller.Get("conn");
-            Assert.AreEqual("sch1", obj.Name);
+            Assert.Equal("sch1", obj.Name);
         }
     }
 }

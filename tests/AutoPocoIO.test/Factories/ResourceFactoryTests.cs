@@ -4,22 +4,20 @@ using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
 using AutoPocoIO.Services;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using Xunit;
 
 namespace AutoPocoIO.test.Factories
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     public class ResourceFactoryTests
     {
-        private IResourceFactory _resourceFactory;
+        private readonly IResourceFactory _resourceFactory;
         private readonly Mock<IAppAdminService> appAdminService = new Mock<IAppAdminService>();
 
-        [TestInitialize]
-        public void Init()
+        public ResourceFactoryTests()
         {
             var resource = new Mock<IOperationResource>();
             resource.Setup(c => c.ResourceType)
@@ -34,7 +32,7 @@ namespace AutoPocoIO.test.Factories
             _resourceFactory = new ResourceFactory(services, list);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetResouceByConnectorId()
         {
 
@@ -42,10 +40,10 @@ namespace AutoPocoIO.test.Factories
                 .Returns(new Connector() { ResourceType = 1 });
 
             var resource = _resourceFactory.GetResource(1, "obj1");
-            Assert.IsInstanceOfType(resource, typeof(IOperationResource));
+            Assert.IsAssignableFrom<IOperationResource>(resource);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetResouceWithOp()
         {
             appAdminService.Setup(c => c.GetConnection("conn1"))
@@ -53,27 +51,28 @@ namespace AutoPocoIO.test.Factories
 
 
             var resource = _resourceFactory.GetResource("conn1", OperationType.write, "obj1");
-            Assert.IsInstanceOfType(resource, typeof(IOperationResource));
+            Assert.IsAssignableFrom<IOperationResource>(resource);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [FactWithName]
         public void GetNotRegisteredResource()
         {
             appAdminService.Setup(c => c.GetConnection("conn1"))
                 .Returns(new Connector() { ResourceType = 2 });
 
-            _resourceFactory.GetResource("conn1", OperationType.read, "obj1");
+
+             void act() => _resourceFactory.GetResource("conn1", OperationType.read, "obj1");
+            Assert.Throws<ArgumentException>(act);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [FactWithName]
         public void GetUnimplmentedResource()
         {
             appAdminService.Setup(c => c.GetConnection("conn1"))
                 .Returns(new Connector() { ResourceType = 45 });
 
-            _resourceFactory.GetResource("conn1", OperationType.read, "obj1");
+             void act() => _resourceFactory.GetResource("conn1", OperationType.read, "obj1");
+            Assert.Throws<ArgumentOutOfRangeException>(act);
         }
     }
 }

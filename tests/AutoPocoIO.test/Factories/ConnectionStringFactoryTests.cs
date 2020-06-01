@@ -1,21 +1,18 @@
 ﻿using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Resources;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using Xunit;
 
 namespace AutoPocoIO.test.Factories
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     public class ConnectionStringFactoryTests
     {
-        private IConnectionStringFactory _resourceFactory;
-
-        [TestInitialize]
-        public void Init()
+        private readonly IConnectionStringFactory _resourceFactory;
+        public ConnectionStringFactoryTests()
         {
             var builder = new Mock<IConnectionStringBuilder>();
             builder.Setup(c => c.ResourceType)
@@ -32,33 +29,33 @@ namespace AutoPocoIO.test.Factories
             _resourceFactory = new ConnectionStringFactory(list);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetConnectionInfo()
         {
             var connInfo = _resourceFactory.GetConnectionInformation(1, "parseABC");
-            Assert.AreEqual("cat1", connInfo.InitialCatalog);
+            Assert.Equal("cat1", connInfo.InitialCatalog);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void SetConnectionInfo()
         {
             var connInfo = new ConnectionInformation { InitialCatalog = "abc" };
             var connString = _resourceFactory.CreateConnectionString(1, connInfo);
-            Assert.AreEqual("conn:abc", connString);
+            Assert.Equal("conn:abc", connString);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [FactWithName]
         public void GetNotRegisteredResource()
         {
-            _resourceFactory.GetConnectionInformation(2, "parseABC");
+             void act() => _resourceFactory.GetConnectionInformation(2, "parseABC");
+            Assert.Throws<ArgumentException>(act);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [FactWithName]
         public void GetUnimplmentedResource()
         {
-            _resourceFactory.GetConnectionInformation(2124, "parseABC");
+             void act() => _resourceFactory.GetConnectionInformation(2124, "parseABC");
+            Assert.Throws<ArgumentOutOfRangeException>(act);
         }
     }
 }

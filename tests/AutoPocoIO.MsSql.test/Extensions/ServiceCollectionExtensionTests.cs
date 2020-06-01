@@ -2,21 +2,20 @@
 using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Extensions;
 using AutoPocoIO.Resources;
-using AutoPocoIO.test;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using Xunit;
 
 namespace AutoPocoIO.MsSql.test.Extensions
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+
+    [Trait("Category", TestCategories.Unit)]
     public class ServiceCollectionExtensionTests
     {
-        [TestMethod]
+        [FactWithName]
         public void AddSqlServerResourceType()
         {
             var resourceServices = new ServiceCollection();
@@ -29,14 +28,14 @@ namespace AutoPocoIO.MsSql.test.Extensions
             var services = new ServiceCollection();
             services.WithSqlServerResources();
 
-            Assert.AreEqual(2, services.Count());
+            Assert.Equal(2, services.Count());
 
             var provider = services.BuildServiceProvider();
-            Assert.IsNotNull(provider.GetService<IOperationResource>());
-            Assert.IsNotNull(provider.GetService<IConnectionStringBuilder>());
+            Assert.NotNull(provider.GetService<IOperationResource>());
+            Assert.NotNull(provider.GetService<IConnectionStringBuilder>());
         }
 
-        [TestMethod]
+        [FactWithName]
         public void AddSqlServerDatabases()
         {
             var services = new ServiceCollection();
@@ -44,25 +43,25 @@ namespace AutoPocoIO.MsSql.test.Extensions
             services.AddScoped<AppDbContext>();
             services.ConfigureSqlServerApplicationDatabase("conn1");
 
-            Assert.AreEqual(4, services.Count());
+            Assert.Equal(4, services.Count());
 
             var provider = services.BuildServiceProvider();
 
             //Dbs
-            Assert.IsNotNull(provider.GetService<LogDbContext>());
-            Assert.IsNotNull(provider.GetService<AppDbContext>());
+            Assert.NotNull(provider.GetService<LogDbContext>());
+            Assert.NotNull(provider.GetService<AppDbContext>());
 
             //ContextOptions
-            Assert.IsNotNull(provider.GetService<DbContextOptions<LogDbContext>>());
-            Assert.IsNotNull(provider.GetService<DbContextOptions<AppDbContext>>());
+            Assert.NotNull(provider.GetService<DbContextOptions<LogDbContext>>());
+            Assert.NotNull(provider.GetService<DbContextOptions<AppDbContext>>());
 
             DbContextOptions option = provider.GetService<DbContextOptions<LogDbContext>>();
-            Assert.IsInstanceOfType(option.Extensions.ElementAt(0), typeof(Microsoft.EntityFrameworkCore.Infrastructure.CoreOptionsExtension));
-            Assert.IsInstanceOfType(option.Extensions.ElementAt(1), typeof(Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal.SqlServerOptionsExtension));
+            Assert.IsType<Microsoft.EntityFrameworkCore.Infrastructure.CoreOptionsExtension>(option.Extensions.ElementAt(0));
+            Assert.IsType<Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal.SqlServerOptionsExtension>(option.Extensions.ElementAt(1));
 
             option = provider.GetService<DbContextOptions<AppDbContext>>();
-            Assert.IsInstanceOfType(option.Extensions.ElementAt(0), typeof(Microsoft.EntityFrameworkCore.Infrastructure.CoreOptionsExtension));
-            Assert.IsInstanceOfType(option.Extensions.ElementAt(1), typeof(Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal.SqlServerOptionsExtension));
+            Assert.IsType<Microsoft.EntityFrameworkCore.Infrastructure.CoreOptionsExtension>(option.Extensions.ElementAt(0));
+            Assert.IsType<Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal.SqlServerOptionsExtension>(option.Extensions.ElementAt(1));
         }
     }
 }

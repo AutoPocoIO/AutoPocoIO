@@ -1,7 +1,7 @@
 ﻿using AutoPocoIO.DynamicSchema.Db;
 using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -10,16 +10,15 @@ using System.Linq;
 
 namespace AutoPocoIO.test.DynamicSchema.Db
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+     [Trait("Category", TestCategories.Unit)]
     public partial class SchemaBuilderBaseTests
     {
-        private Config config;
-        private SchemaBuilder1 builder;
-        private DbSchema schema;
+        private readonly Config config;
+        private readonly SchemaBuilder1 builder;
+        private readonly DbSchema schema;
 
-        [TestInitialize]
-        public void Init()
+        public SchemaBuilderBaseTests()
         {
             config = new Config()
             {
@@ -32,7 +31,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             builder.Dts[0] = SchmeaBuilderDataTableBuilder.CreateColumnTable();
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetTableSingleColumns()
         {
             config.IncludedTable = "tbl123";
@@ -53,30 +52,30 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             builder.GetTableViews();
 
             //Verify object counts/not null
-            Assert.AreEqual(1, schema.Tables.Count());
-            Assert.AreEqual(1, schema.Columns.Count());
-            Assert.AreEqual(0, schema.Views.Count());
-            Assert.AreEqual(0, schema.StoredProcedures.Count());
+            Assert.Single(schema.Tables);
+            Assert.Single(schema.Columns);
+            Assert.Empty(schema.Views);
+            Assert.Empty(schema.StoredProcedures);
 
             //Verify table properties
             var tbl = schema.Tables.First();
-            Assert.AreEqual("tbl1", tbl.Name);
-            Assert.AreEqual("sch1", tbl.Schema);
-            Assert.AreEqual("db1", tbl.Database);
-            Assert.AreEqual("pk123", tbl.PrimaryKeys);
+            Assert.Equal("tbl1", tbl.Name);
+            Assert.Equal("sch1", tbl.Schema);
+            Assert.Equal("db1", tbl.Database);
+            Assert.Equal("pk123", tbl.PrimaryKeys);
 
             //Column props
             var col = schema.Columns.First();
-            Assert.AreSame(col, schema.Columns.First());
-            Assert.AreEqual("sch1", col.TableSchema);
-            Assert.AreEqual("tbl1", col.TableName);
-            Assert.AreEqual("pre123_col1", col.ColumnName);
-            Assert.AreEqual("varchar", col.ColumnType);
-            Assert.AreEqual(1, col.ColumnLength);
-            Assert.AreEqual(false, col.ColumnIsNullable);
+            Assert.Equal(col, schema.Columns.First());
+            Assert.Equal("sch1", col.TableSchema);
+            Assert.Equal("tbl1", col.TableName);
+            Assert.Equal("pre123_col1", col.ColumnName);
+            Assert.Equal("varchar", col.ColumnType);
+            Assert.Equal(1, col.ColumnLength);
+            Assert.False(col.ColumnIsNullable);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetTableSingleColumnsForSchema()
         {
             var row = builder.Dt.CreateRowWithColReqValues();
@@ -87,11 +86,11 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             builder.GetColumns();
 
            //Verify object counts/not null
-           Assert.AreEqual(1, schema.Tables.Count());
+           Assert.Single(schema.Tables);
         }
 
 
-        [TestMethod]
+        [FactWithName]
         public void AddView2Columns()
         {
             config.IncludedTable = "tbl123";
@@ -117,35 +116,34 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             builder.GetTableViews();
 
             //Verify object counts/not null
-            Assert.AreEqual(0, schema.Tables.Count());
-            Assert.AreEqual(2, schema.Columns.Count());
-            Assert.AreEqual(1, schema.Views.Count());
-            Assert.AreEqual(0, schema.StoredProcedures.Count());
+            Assert.Empty(schema.Tables);
+            Assert.Equal(2, schema.Columns.Count());
+            Assert.Single(schema.Views);
+            Assert.Empty(schema.StoredProcedures);
 
             //Verify table properties
             var tbl = schema.Views.First();
-            Assert.AreEqual("vw1", tbl.Name);
-            Assert.AreEqual("sch1", tbl.Schema);
-            Assert.AreEqual("db1", tbl.Database);
+            Assert.Equal("vw1", tbl.Name);
+            Assert.Equal("sch1", tbl.Schema);
+            Assert.Equal("db1", tbl.Database);
 
             //Column props
             var col = schema.Columns.First();
-            Assert.AreSame(col, schema.Columns.First());
-            Assert.AreEqual("sch1", col.TableSchema);
-            Assert.AreEqual("vw1", col.TableName);
-            Assert.AreEqual("col1", col.ColumnName);
-            Assert.AreEqual("vw1", col.View.Name);
+            Assert.Equal(col, schema.Columns.First());
+            Assert.Equal("sch1", col.TableSchema);
+            Assert.Equal("vw1", col.TableName);
+            Assert.Equal("col1", col.ColumnName);
+            Assert.Equal("vw1", col.View.Name);
 
             col = schema.Columns.Last();
-            Assert.AreSame(col, schema.Columns.Last());
-            Assert.AreEqual("sch1", col.TableSchema);
-            Assert.AreEqual("vw1", col.TableName);
-            Assert.AreEqual("col2", col.ColumnName);
-            Assert.AreEqual("vw1", col.View.Name);
+            Assert.Equal(col, schema.Columns.Last());
+            Assert.Equal("sch1", col.TableSchema);
+            Assert.Equal("vw1", col.TableName);
+            Assert.Equal("col2", col.ColumnName);
+            Assert.Equal("vw1", col.View.Name);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [FactWithName]
         public void DbObjectNotFound()
         {
            
@@ -156,10 +154,11 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             row["ObjectType"] = "Other";
             builder.Dt.Rows.Add(row);
 
-            builder.GetColumns();
+            void act() => builder.GetColumns();
+            Assert.Throws<ArgumentOutOfRangeException>(act);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void VerifyFKColumnPropertiesInTable()
         {
             config.IncludedTable = "tbl123";
@@ -186,14 +185,14 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             builder.GetColumns();
 
             var col = schema.Columns.First();
-            Assert.AreEqual("fkName", col.FKName);
-            Assert.AreEqual("db1", col.ReferencedDatabase);
-            Assert.AreEqual("sch2", col.ReferencedSchema);
-            Assert.AreEqual("tbl2", col.ReferencedTable);
-            Assert.AreEqual("colfk2", col.ReferencedColumn);
+            Assert.Equal("fkName", col.FKName);
+            Assert.Equal("db1", col.ReferencedDatabase);
+            Assert.Equal("sch2", col.ReferencedSchema);
+            Assert.Equal("tbl2", col.ReferencedTable);
+            Assert.Equal("colfk2", col.ReferencedColumn);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void VerifyFKColumnPropertiesIgnoredInView()
         {
            config.IncludedTable = "tbl123";
@@ -220,14 +219,14 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             builder.GetColumns();
 
             var col = schema.Columns.First();
-            Assert.IsNull(col.FKName);
-            Assert.IsNull(col.ReferencedDatabase);
-            Assert.IsNull(col.ReferencedSchema);
-            Assert.IsNull(col.ReferencedTable);
-            Assert.IsNull(col.ReferencedColumn);
+             Assert.Null(col.FKName);
+             Assert.Null(col.ReferencedDatabase);
+             Assert.Null(col.ReferencedSchema);
+             Assert.Null(col.ReferencedTable);
+             Assert.Null(col.ReferencedColumn);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void MergeMultipleConnectors()
         {
             
@@ -250,19 +249,19 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             builder.Dts = new[] { dt1, dt2 };
             builder.GetColumns();
 
-            Assert.AreEqual(2, schema.Views.Count());
+            Assert.Equal(2, schema.Views.Count());
 
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [FactWithName]
         public void ExecuteSchemaCommandThrowsExceptionIfCommandNull()
         {
             var builder = new SchmeaBuilder2(new Config(), null, null);
-            builder.ExecuteSchemaCommand(null);
+            void act() => builder.ExecuteSchemaCommand(null);
+            Assert.Throws<ArgumentNullException>(act);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ExcueteSchemaCommandReturnsSchemaDataTable()
         {
             int readerRow = 0;
@@ -293,8 +292,8 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             var results = builder.ExecuteSchemaCommandBase(command.Object);
 
 
-            Assert.AreEqual(1, results.Rows[0]["Name1"]);
-            Assert.AreEqual(11, results.Rows[1]["Name1"]);
+            Assert.Equal(1, results.Rows[0]["Name1"]);
+            Assert.Equal(11, results.Rows[1]["Name1"]);
             conn.Verify();
 
         }

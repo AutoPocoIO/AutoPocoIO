@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 using System;
 using System.IO;
@@ -17,8 +17,8 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.AspNetCore.test.Middleware
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+    [Trait("Category", TestCategories.Unit)]
     public class LogRequestAndResponseMiddlewareTests
     {
         public class AddLoggingDataTestMiddleware
@@ -86,10 +86,9 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
         private static Mock<ILoggingService> logger;
         private static Mock<IServiceScope> scope;
         private static Action<IApplicationBuilder> registerMiddleware;
-        IWebHostBuilder builder;
+        readonly IWebHostBuilder builder;
 
-        [TestInitialize]
-        public void Init()
+        public LogRequestAndResponseMiddlewareTests()
         {
             logger = new Mock<ILoggingService>();
             scope = new Mock<IServiceScope>();
@@ -99,7 +98,7 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
 
         }
 
-        [TestMethod]
+        [FactWithName]
         public void PipelineContinuesAfterNoLogging()
         {
             registerMiddleware = app =>
@@ -112,13 +111,13 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
             HttpClient client = testServer.CreateClient();
             HttpResponseMessage response = client.GetAsync("/").Result;
 
-            Assert.AreEqual(200, (int)response.StatusCode);
-            Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
+            Assert.Equal(200, (int)response.StatusCode);
+            Assert.Equal("end of pipeline", response.Content.ReadAsStringAsync().Result);
 
             logger.Verify(c => c.LogAll(scope.Object), Times.Never);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void PipelineContinuesAfterLogging()
         {
             registerMiddleware = app =>
@@ -134,8 +133,8 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
             HttpClient client = testServer.CreateClient();
             HttpResponseMessage response = client.GetAsync("/").Result;
 
-            Assert.AreEqual(200, (int)response.StatusCode);
-            Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
+            Assert.Equal(200, (int)response.StatusCode);
+            Assert.Equal("end of pipeline", response.Content.ReadAsStringAsync().Result);
 
             logger.Verify(c => c.LogAll(It.IsAny<IServiceScope>()), Times.Once);
 
@@ -143,7 +142,7 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
 
       
 
-        [TestMethod]
+        [FactWithName]
         public void SetExceptionInLogger()
         {
             ContextLogParameters logParameters = null;
@@ -171,11 +170,11 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
             HttpClient client = testServer.CreateClient();
             HttpResponseMessage response = client.GetAsync("/").Result;
 
-            Assert.AreEqual("Message: outer\nInner Exception: inner\nStackTrace: stack123", logParameters.Exception);
+            Assert.Equal("Message: outer\nInner Exception: inner\nStackTrace: stack123", logParameters.Exception);
 
         }
 
-        [TestMethod]
+        [FactWithName]
         public void SetExceptionWithOuterOnlyInLogger()
         {
             ContextLogParameters logParameters = null;
@@ -202,11 +201,11 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
             HttpResponseMessage response = client.GetAsync("/").Result;
 
 
-            Assert.AreEqual("Message: outer\nInner Exception: \nStackTrace: stack123", logParameters.Exception);
+            Assert.Equal("Message: outer\nInner Exception: \nStackTrace: stack123", logParameters.Exception);
 
         }
 
-        [TestMethod]
+        [FactWithName]
         public void SetBaseCaughtExceptionShowsInResponse()
         {
             ContextLogParameters logParameters = null;
@@ -237,12 +236,12 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
             HttpClient client = testServer.CreateClient();
             HttpResponseMessage response = client.GetAsync("/").Result;
 
-            Assert.AreEqual("exMessage", logParameters.Exception);
-            Assert.AreEqual("test", logParameters.StatusCode);
+            Assert.Equal("exMessage", logParameters.Exception);
+            Assert.Equal("test", logParameters.StatusCode);
         }
 
 
-        [TestMethod]
+        [FactWithName]
         public void DisposeOfLogger()
         {
             LogRequestAndResponseMiddleware middleware = new LogRequestAndResponseMiddleware(c => Task.CompletedTask);
@@ -254,10 +253,10 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
             middleware.Dispose();
 
 
-            Assert.IsTrue((bool)obj.GetField("isDisposed"));
+            Assert.True((bool)obj.GetField("isDisposed"));
         }
 
-        [TestMethod]
+        [FactWithName]
         public void DisposeOfLoggerMultiThread()
         {
             LogRequestAndResponseMiddleware middleware = new LogRequestAndResponseMiddleware(c => Task.CompletedTask);

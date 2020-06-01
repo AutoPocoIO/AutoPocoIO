@@ -1,40 +1,39 @@
 ﻿using AutoPocoIO.Exceptions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
+using Xunit;
 
 namespace AutoPocoIO.test.Exceptions
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    [Trait("Category", TestCategories.Unit)]
     public class OpenConnectorExceptionTests
     {
-        [TestMethod]
+        [FactWithName]
         public void IsBaseException()
         {
             var ex = new OpenConnectorException("conn");
-            Assert.IsInstanceOfType(ex, typeof(BaseCaughtException));
+            Assert.IsAssignableFrom<BaseCaughtException>(ex);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void ErrorMessageIsPopulated()
         {
             var ex = new OpenConnectorException("conn");
-            Assert.AreEqual("An error occurred opening the connector 'conn'.", ex.Message);
+            Assert.Equal("An error occurred opening the connector 'conn'.", ex.Message);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void HttpErrorMessageIsPopulated()
         {
             var ex = new OpenConnectorException("conn");
-            Assert.AreEqual("ConnectionError", ex.HttpErrorMessage);
+            Assert.Equal("ConnectionError", ex.HttpErrorMessage);
         }
 
 
-        [TestMethod]
+        [FactWithName]
         public void HttpStatusCodeIsPopulated()
         {
             var ex = new OpenConnectorException("conn");
-            Assert.AreEqual(HttpStatusCode.InternalServerError, ex.ResponseCode);
+            Assert.Equal(HttpStatusCode.InternalServerError, ex.ResponseCode);
         }
     }
 }

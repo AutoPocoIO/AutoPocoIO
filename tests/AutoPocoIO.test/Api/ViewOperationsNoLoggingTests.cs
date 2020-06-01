@@ -1,7 +1,7 @@
 ﻿using AutoPocoIO.Api;
 using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Resources;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +9,18 @@ using System.Linq;
 
 namespace AutoPocoIO.test.Api
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+     [Trait("Category", TestCategories.Unit)]
     public class ViewOperationsNoLoggingTests : ApiOperationBase
     {
-        private ViewOperations viewOperations;
+        private readonly ViewOperations viewOperations;
 
-        [TestInitialize]
-        public void InitOperation()
+        public ViewOperationsNoLoggingTests()
         {
             viewOperations = new ViewOperations(serviceProvider);
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetAll()
         {
             var resource = new Mock<IOperationResource>();
@@ -35,15 +34,14 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var (list, recordLimit) = viewOperations.GetAllAndRecordLimit("conn1", "view1");
-            Assert.AreEqual(0, loggingService.LogCount);
-            Assert.AreEqual(typeof(IQueryableType), list.ElementType);
-            Assert.IsInstanceOfType(list, typeof(IQueryable<object>));
-            Assert.IsNotInstanceOfType(list, typeof(IQueryable<IQueryableType>));
-            Assert.AreEqual(54, recordLimit);
+            Assert.Equal(0, loggingService.LogCount);
+            Assert.Equal(typeof(IQueryableType), list.ElementType);
+            Assert.IsAssignableFrom<IQueryable<object>>(list);
+            Assert.Equal(54, recordLimit);
 
         }
 
-        [TestMethod]
+        [FactWithName]
         public void GetAllT()
         {
             var resultsList = new List<IQueryableType>
@@ -59,10 +57,10 @@ namespace AutoPocoIO.test.Api
                 .Returns(resource.Object);
 
             var results = viewOperations.GetAll<IQueryableType>("conn1", "view1T");
-            Assert.AreEqual(0, loggingService.LogCount);
-            Assert.AreEqual(typeof(IQueryableType), results.ElementType);
-            Assert.IsInstanceOfType(results, typeof(IQueryable<object>));
-            Assert.IsInstanceOfType(results, typeof(IQueryable<IQueryableType>));
+            Assert.Equal(0, loggingService.LogCount);
+            Assert.Equal(typeof(IQueryableType), results.ElementType);
+            Assert.IsAssignableFrom<IQueryable<object>>(results);
+            Assert.IsAssignableFrom<IQueryable<IQueryableType>>(results);
 
         }
     }

@@ -1,17 +1,17 @@
 ﻿using AutoPocoIO.CustomAttributes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace AutoPocoIO.test.CustomAttributes
 {
-    [TestClass]
-    [TestCategory(TestCategories.Unit)]
+    
+     [Trait("Category", TestCategories.Unit)]
     public class DatabaseNameAttributeTests
     {
-        [TestMethod]
+        [FactWithName]
         public void ConstructorSetsDatabaseName()
         {
             var attr = new DatabaseNameAttribute("test123");
-            Assert.AreEqual("test123", attr.DatabaseName);
+            Assert.Equal("test123", attr.DatabaseName);
         }
     }
 }
