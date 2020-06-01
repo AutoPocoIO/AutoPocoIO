@@ -7,6 +7,7 @@ using AutoPocoIO.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AutoPocoIO.Services
 {
@@ -16,14 +17,15 @@ namespace AutoPocoIO.Services
     public class LoggingService : ILoggingService
     {
         private readonly ITimeProvider _timeProvider;
-
+        private readonly IServiceScopeFactory _serviceScopeFactory;
         /// <summary>
         ///  Set up new logging for a request
         /// This constructor is not meant to be called in code.  Used for DI. 
         /// </summary>
-        public LoggingService(ITimeProvider timeProvider)
+        public LoggingService(ITimeProvider timeProvider, IServiceScopeFactory scopeFactory)
         {
             _timeProvider = timeProvider;
+            _serviceScopeFactory = scopeFactory;
             ApiRequests = new List<LogRequestAndResponseCommand>();
         }
 
@@ -130,9 +132,20 @@ namespace AutoPocoIO.Services
         /// <summary>
         /// Log all pendeing API request
         /// </summary>
-        public void LogAll(IServiceScope scope)
+        public Task LogAll()
         {
-            this.ApiRequests.ForEach(c => LogHttpRequestAndResponse(scope, c));
+            var scope = _serviceScopeFactory.CreateScope();
+            return Task.Run(() =>
+            {
+                try
+                {
+                    this.ApiRequests.ForEach(c => LogHttpRequestAndResponse(scope, c));
+                }
+                finally
+                {
+                    scope.Dispose();
+                }
+            });
         }
 
 

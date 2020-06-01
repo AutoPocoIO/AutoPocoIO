@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.LoggingMiddleware;
 using AutoPocoIO.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Owin;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -23,7 +24,7 @@ namespace AutoPocoIO.AspNet.test
         [ExpectedException(typeof(ArgumentNullException))]
         public void CheckForLogParameters()
         {
-            LoggingService service = new LoggingService(timeProvider);
+            LoggingService service = new LoggingService(timeProvider, Mock.Of<IServiceScopeFactory>());
             service.AddContextInfomation(null);
         }
 
@@ -47,7 +48,7 @@ namespace AutoPocoIO.AspNet.test
                 Exception = "ex123"
             };
 
-            LoggingService service = new LoggingService(timeProvider);
+            LoggingService service = new LoggingService(timeProvider, Mock.Of<IServiceScopeFactory>());
             service.AddContextInfomation(logParameters);
 
 

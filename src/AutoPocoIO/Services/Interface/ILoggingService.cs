@@ -1,7 +1,7 @@
 ﻿using AutoPocoIO.Constants;
 using AutoPocoIO.LoggingMiddleware;
-using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace AutoPocoIO.Services
 {
@@ -19,7 +19,7 @@ namespace AutoPocoIO.Services
         void AddSprocToLogger(string connectorName, string sprocName, HttpMethodType httpMethod);
         void AddTableToLogger(string connectorName, string tableName, HttpMethodType httpMethod);
         void AddViewToLogger(string connectorName, string viewName);
-        void LogAll(IServiceScope scope);
+        Task LogAll();
         void AddContextInfomation(ContextLogParameters logParameters);
     }
 }

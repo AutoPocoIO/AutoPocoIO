@@ -75,7 +75,7 @@ namespace AutoPocoIO.AspNet.test.Owin
 
             var depResolver = new Mock<IDependencyResolver>();
             depResolver.Setup(c => c.GetService(typeof(LogRequestAndResponseMiddleware)))
-                .Returns(new LogRequestAndResponseMiddleware(scopeProvider.Object, logger.Object));
+                .Returns(new LogRequestAndResponseMiddleware(logger.Object));
 
             config = new HttpConfiguration
             {
@@ -97,7 +97,7 @@ namespace AutoPocoIO.AspNet.test.Owin
                 Assert.AreEqual(200, (int)response.StatusCode);
                 Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
 
-                logger.Verify(c => c.LogAll(scope.Object), Times.Never);
+                logger.Verify(c => c.LogAll(), Times.Never);
             }
         }
 
@@ -106,7 +106,7 @@ namespace AutoPocoIO.AspNet.test.Owin
         {
             var depResolver = new Mock<IDependencyResolver>();
             depResolver.Setup(c => c.GetService(typeof(LogRequestAndResponseMiddleware)))
-                .Returns(new LogRequestAndResponseMiddleware(null, null));
+                .Returns(new LogRequestAndResponseMiddleware(null));
 
             config = new HttpConfiguration
             {
@@ -124,7 +124,7 @@ namespace AutoPocoIO.AspNet.test.Owin
                 Assert.AreEqual(200, (int)response.StatusCode);
                 Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
 
-                logger.Verify(c => c.LogAll(scope.Object), Times.Never);
+                logger.Verify(c => c.LogAll(), Times.Never);
             }
         }
 
@@ -138,17 +138,13 @@ namespace AutoPocoIO.AspNet.test.Owin
                 app.Use<EndOfPipeLineTestMiddleware>();
             }))
             {
-                IServiceScope usedScope = null;
                 logger.Setup(c => c.LogCount).Returns(1);
-                logger.Setup(c => c.LogAll(It.IsAny<IServiceScope>()))
-                    .Callback<IServiceScope>(c => usedScope = c);
-                
-
                 HttpResponseMessage response = server.HttpClient.GetAsync("/").Result;
 
                 Assert.AreEqual(200, (int)response.StatusCode);
                 Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
-                Assert.AreEqual(usedScope, scope.Object);
+
+                logger.Verify(c => c.LogAll(), Times.Once);
                 
             }
         }
@@ -212,7 +208,7 @@ namespace AutoPocoIO.AspNet.test.Owin
         [TestMethod]
         public void DisposeOfLogger()
         {
-            LogRequestAndResponseMiddleware middleware = new LogRequestAndResponseMiddleware(Mock.Of< IServiceScopeFactory>(), Mock.Of<ILoggingService>());
+            LogRequestAndResponseMiddleware middleware = new LogRequestAndResponseMiddleware(Mock.Of<ILoggingService>());
             PrivateObject obj = new PrivateObject(middleware);
 
             obj.SetField("RequestBuffer", new MemoryStream());
@@ -227,7 +223,7 @@ namespace AutoPocoIO.AspNet.test.Owin
         [TestMethod]
         public void DisposeOfLoggerMultiThread()
         {
-            LogRequestAndResponseMiddleware middleware = new LogRequestAndResponseMiddleware(Mock.Of<IServiceScopeFactory>(), Mock.Of<ILoggingService>());
+            LogRequestAndResponseMiddleware middleware = new LogRequestAndResponseMiddleware(Mock.Of<ILoggingService>());
             PrivateObject obj = new PrivateObject(middleware);
             obj.SetField("isDisposed", true);
 

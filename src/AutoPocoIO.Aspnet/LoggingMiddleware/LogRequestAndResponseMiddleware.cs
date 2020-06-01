@@ -1,7 +1,6 @@
 ﻿using AutoPocoIO.Exceptions;
 using AutoPocoIO.Owin;
 using AutoPocoIO.Services;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Owin;
 using System;
 using System.IO;
@@ -13,7 +12,6 @@ namespace AutoPocoIO.LoggingMiddleware
 
     internal class LogRequestAndResponseMiddleware : IOwinMiddlewareWithDI, IDisposable
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly ILoggingService _loggingService;
         
         private bool isDisposed;
@@ -21,11 +19,8 @@ namespace AutoPocoIO.LoggingMiddleware
         private MemoryStream ResponseBuffer;
 
 
-        public LogRequestAndResponseMiddleware(
-            IServiceScopeFactory providerScope,
-            ILoggingService loggingService)
+        public LogRequestAndResponseMiddleware(ILoggingService loggingService)
         {
-            _serviceScopeFactory = providerScope;
             _loggingService = loggingService;
         }
 
@@ -80,20 +75,8 @@ namespace AutoPocoIO.LoggingMiddleware
                 };
 
                 _loggingService.AddContextInfomation(logParameters);
-
-                //create thread scope
-                var scope = _serviceScopeFactory.CreateScope();
-                _ = Task.Run(() =>
-                {
-                    try
-                    {
-                        _loggingService.LogAll(scope);
-                    }
-                    finally
-                    {
-                        scope.Dispose();
-                    }
-                });
+                //Discard task to log off thread
+                _ = _loggingService.LogAll();
             }
 
             ResponseBuffer.Seek(0, SeekOrigin.Begin);

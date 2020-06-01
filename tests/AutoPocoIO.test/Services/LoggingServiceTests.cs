@@ -21,19 +21,24 @@ namespace AutoPocoIO.test.Services
         [TestInitialize]
         public void Init()
         {
-            TimeProvider.Setup(c => c.UtcNow).Returns(new DateTime(2020, 1, 1));
-            loggingService = new LoggingService(TimeProvider.Object);
-
             var scopeMock = new Mock<IServiceScope>();
             scopeMock.Setup(c => c.ServiceProvider).Returns(serviceProvider);
             scope = scopeMock.Object;
+
+            var scopeFactory = new Mock<IServiceScopeFactory>();
+            scopeFactory.Setup(c => c.CreateScope()).Returns(scope);
+
+            TimeProvider.Setup(c => c.UtcNow).Returns(new DateTime(2020, 1, 1));
+            loggingService = new LoggingService(TimeProvider.Object, scopeFactory.Object);
+
+    
         }
 
         [TestMethod]
         public void AddTableRead()
         {
             loggingService.AddTableToLogger("conn1", "tbl1", HttpMethodType.GET);
-            loggingService.LogAll(scope);
+            loggingService.LogAll().Wait();
 
 
             using (var db = new LogDbContext(LogDbOptions))
@@ -57,7 +62,7 @@ namespace AutoPocoIO.test.Services
         public void ViewRead()
         {
             loggingService.AddViewToLogger("conn1", "vw1");
-            loggingService.LogAll(scope);
+            loggingService.LogAll().Wait();
 
             using (var db = new LogDbContext(LogDbOptions))
             {
@@ -78,7 +83,7 @@ namespace AutoPocoIO.test.Services
         public void LogExecuteProc()
         {
             loggingService.AddSprocToLogger("conn1", "proc1", HttpMethodType.POST);
-            loggingService.LogAll(scope);
+            loggingService.LogAll().Wait();
 
             using (var db = new LogDbContext(LogDbOptions))
             {
@@ -99,7 +104,7 @@ namespace AutoPocoIO.test.Services
         public void SchemaDefinition()
         {
             loggingService.AddSchemaToLogger("conn1");
-            loggingService.LogAll(scope);
+            loggingService.LogAll().Wait();
 
             using (var db = new LogDbContext(LogDbOptions))
             {
@@ -121,7 +126,7 @@ namespace AutoPocoIO.test.Services
         {
             loggingService.AddViewToLogger("conn1", "vw1");
             loggingService.AddTableToLogger("conn1", "tbl1", HttpMethodType.DELETE);
-            loggingService.LogAll(scope);
+            loggingService.LogAll().Wait();
 
 
             using (var db = new LogDbContext(LogDbOptions))

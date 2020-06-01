@@ -1,6 +1,7 @@
 ﻿using AutoPocoIO.CustomAttributes;
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -32,7 +33,7 @@ namespace AutoPocoIO.AspNet.test.CustomAttribute
         [TestInitialize]
         public void Init()
         {
-            logger = new LoggingService(Mock.Of<ITimeProvider>());
+            logger = new LoggingService(Mock.Of<ITimeProvider>(), Mock.Of<IServiceScopeFactory>());
 
             var scope = new Mock<IDependencyScope>();
             scope.Setup(c => c.GetService(typeof(ILoggingService)))

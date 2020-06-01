@@ -115,7 +115,7 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
             Assert.AreEqual(200, (int)response.StatusCode);
             Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
 
-            logger.Verify(c => c.LogAll(scope.Object), Times.Never);
+            logger.Verify(c => c.LogAll(), Times.Never);
         }
 
         [TestMethod]
@@ -136,9 +136,6 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
 
             Assert.AreEqual(200, (int)response.StatusCode);
             Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
-
-            logger.Verify(c => c.LogAll(It.IsAny<IServiceScope>()), Times.Once);
-
         }
 
       
