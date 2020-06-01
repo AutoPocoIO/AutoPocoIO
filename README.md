@@ -1,6 +1,6 @@
 # AutoPocoIO
 
-[![Official Site](https://img.shields.io/badge/site-autopoco.io-blue.svg)](http://autopoco.io) [![License LGPLv3](https://img.shields.io/badge/license-LGPLv3-green.svg)](http://www.gnu.org/licenses/lgpl-3.0.html) [![Build status](https://ci.appveyor.com/api/projects/status/4qe1ffp77uaecy29/branch/master?svg=true&passingText=Master%20Passed&pendingText=Master%Building&failingText=Master%20Failed)](https://ci.appveyor.com/project/autopocoio/autopocoio/branch/master) [![Build status](https://ci.appveyor.com/api/projects/status/4qe1ffp77uaecy29/branch/dev?svg=true&passingText=Dev%20Passed&pendingText=Dev%Building&failingText=Dev%20Failed)](https://ci.appveyor.com/project/autopocoio/autopocoio/branch/dev) [![codecov](https://codecov.io/gh/AutoPocoIO/AutoPocoIO/branch/dev/graph/badge.svg)](https://codecov.io/gh/AutoPocoIO/AutoPocoIO)
+[![Official Site](https://img.shields.io/badge/site-autopoco.io-blue.svg)](http://autopoco.io) [![License LGPLv3](https://img.shields.io/badge/license-LGPLv3-green.svg)](http://www.gnu.org/licenses/lgpl-3.0.html) [![Build status](https://ci.appveyor.com/api/projects/status/4qe1ffp77uaecy29/branch/master?svg=true&passingText=Master%20Passed&pendingText=Master%20Building&failingText=Master%20Failed)](https://ci.appveyor.com/project/autopocoio/autopocoio/branch/master) [![Build status](https://ci.appveyor.com/api/projects/status/4qe1ffp77uaecy29/branch/dev?svg=true&passingText=Dev%20Passed&pendingText=Dev%20Building&failingText=Dev%20Failed)](https://ci.appveyor.com/project/autopocoio/autopocoio/branch/dev) [![codecov](https://codecov.io/gh/AutoPocoIO/AutoPocoIO/branch/dev/graph/badge.svg)](https://codecov.io/gh/AutoPocoIO/AutoPocoIO)
 
 
 
@@ -19,9 +19,9 @@ dotnet add package AutoPocoIO.MsSql
 ```
 
 ### Usage
-Inject Operation type into controler
+Inject Operation type into controller
 ```csharp
- public SampleController(ITableOperations tableOps, ILoggingService loggingService)
+public SampleController(ITableOperations tableOps, ILoggingService loggingService)
 {
     _loggingService = loggingService;
     _tableOps = tableOps;
