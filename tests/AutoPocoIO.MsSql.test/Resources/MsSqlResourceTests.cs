@@ -48,11 +48,8 @@ namespace AutoPocoIO.MsSql.test.Resources
                  .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
                  .Options;
 
-            var instance = new Mock<IDbContextBase>();
-            instance.Setup(c => c.CreateDbCommand()).Returns(command.Object);
-
             var dbAdapter = new Mock<IDbAdapter>();
-            dbAdapter.Setup(c => c.Instance).Returns(instance.Object);
+            dbAdapter.Setup(c => c.CreateDbCommand()).Returns(command.Object);
 
             var config = new Config();
             var schema = new Mock<IDbSchema>();

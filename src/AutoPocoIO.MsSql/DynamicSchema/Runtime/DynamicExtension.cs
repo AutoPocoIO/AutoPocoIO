@@ -27,7 +27,7 @@ namespace AutoPocoIO.MsSql.DynamicSchema.Runtime
 
         }
 
-        public static IDictionary<string, object> DynamicListFromSql(this IDbContextBase db, string Sql, params DbParameter[] Params)
+        public static IDictionary<string, object> DynamicListFromSql(this IDbAdapter db, string Sql, params DbParameter[] Params)
         {
             using (var cmd = db.CreateDbCommand())
             {

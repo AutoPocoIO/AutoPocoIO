@@ -6,6 +6,7 @@ using AutoPocoIO.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -53,6 +54,8 @@ namespace AutoPocoIO.DynamicSchema.Db
             var assemblyName = Utils.AssemblyName(table, tableName, _dbSchema.GetHashCode());
             DbSetEntityType = _dynamicClassBuilder.ExistingAssemblies.Where(x => x.Key.StartsWith(assemblyName, StringComparison.InvariantCultureIgnoreCase)).Single().Value;
         }
+
+        public virtual IDbCommand CreateDbCommand() => _dbSchemaBuilder.CreateConnection().CreateCommand();
 
         public object GetAll(string tableName)
         {

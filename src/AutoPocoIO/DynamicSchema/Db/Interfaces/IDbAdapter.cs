@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 
 namespace AutoPocoIO.DynamicSchema.Db
@@ -17,6 +18,7 @@ namespace AutoPocoIO.DynamicSchema.Db
 
         object NewInstance(string tableName);
         int Save();
+        IDbCommand CreateDbCommand();
         void SetupDataContext(string tableName);
         object GetWithoutContext(string tableName, string outerTableName);
 

@@ -21,7 +21,7 @@ namespace AutoPocoIO.test.Extensions
         private Mock<IDbCommand> Command;
         private Mock<IDbConnection> Connection;
         private Mock<IDataReader> DataReader;
-        private DbContextBase Context;
+        private IDbAdapter DbAdapter;
 
         public void Init(ConnectionState connectionState)
         {
@@ -42,11 +42,11 @@ namespace AutoPocoIO.test.Extensions
             Command.Setup(c => c.ExecuteReader())
                 .Returns(DataReader.Object);
 
-            var dbMock = new Mock<DbContextBase>(dbOptions, null, null);
+            var dbMock = new Mock<IDbAdapter>();
             dbMock.Setup(c => c.CreateDbCommand())
                 .Returns(Command.Object);
 
-            Context = dbMock.Object;
+            DbAdapter = dbMock.Object;
         }
 
 
@@ -55,7 +55,7 @@ namespace AutoPocoIO.test.Extensions
         {
             Init(ConnectionState.Closed);
 
-            Context.DynamicListFromSql("sql", null);
+            DbAdapter.DynamicListFromSql("sql", null);
             Connection.Verify(c => c.Open(), Times.Once);
         }
 
@@ -63,7 +63,7 @@ namespace AutoPocoIO.test.Extensions
         public void GetListSkipOpenConnectionIfOpen()
         {
             Init(ConnectionState.Open);
-            Context.DynamicListFromSql("sql", null);
+            DbAdapter.DynamicListFromSql("sql", null);
             Connection.Verify(c => c.Open(), Times.Never);
         }
 
@@ -93,7 +93,7 @@ namespace AutoPocoIO.test.Extensions
                         .Returns(false); // Done reading
 
 
-            var results = Context.DynamicListFromSql("sql", null);
+            var results = DbAdapter.DynamicListFromSql("sql", null);
             Assert.AreEqual(1, results.Count);
 
             var resultSet = (List<IDictionary<string, object>>)results["ResultSet"];
@@ -131,7 +131,7 @@ namespace AutoPocoIO.test.Extensions
                        .Returns(true) // Read the second set
                        .Returns(false);
 
-            var results = Context.DynamicListFromSql("sql", null);
+            var results = DbAdapter.DynamicListFromSql("sql", null);
             Assert.AreEqual(2, results.Count);
 
             var resultSet = (List<IDictionary<string, object>>)results["ResultSet"];
@@ -160,7 +160,7 @@ namespace AutoPocoIO.test.Extensions
                         .Returns(false); // Done reading
 
 
-            var results = Context.DynamicListFromSql("sql", null);
+            var results = DbAdapter.DynamicListFromSql("sql", null);
             Assert.AreEqual(1, results.Count);
 
             var resultSet = (List<IDictionary<string, object>>)results["ResultSet"];
@@ -179,7 +179,7 @@ namespace AutoPocoIO.test.Extensions
             outputParam.SetupGet(c => c.Direction).Returns(ParameterDirection.Output);
             outputParam.SetupGet(c => c.Value).Returns(123);
 
-            var results = Context.DynamicListFromSql("sql", outputParam.Object);
+            var results = DbAdapter.DynamicListFromSql("sql", outputParam.Object);
             Assert.AreEqual(2, results.Count);
 
             var resultSet = (List<IDictionary<string, object>>)results["ResultSet"];
