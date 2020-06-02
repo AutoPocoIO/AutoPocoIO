@@ -350,6 +350,14 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
         }
 
+        [TestMethod]
+        public void MultipleCallsResetsExistingAsms()
+        {
+            var classBuilder = new DynamicClassBuilder(schema.Object);
+            classBuilder.CreateModelTypes("reqTbl");
+            classBuilder.CreateModelTypes("reqTbl");
+        }
+
 
 
         private void CreateAsm(string assemblyName, string tableName, bool createType = true)

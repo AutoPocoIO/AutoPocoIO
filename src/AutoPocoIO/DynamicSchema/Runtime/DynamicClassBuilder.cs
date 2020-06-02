@@ -45,6 +45,7 @@ namespace AutoPocoIO.DynamicSchema.Runtime
         {
             _types.Clear();
             _typeBuilders.Clear();
+            ExistingAssemblies.Clear();
 
             int requestHash = _schema.GetHashCode();
 
@@ -55,7 +56,7 @@ namespace AutoPocoIO.DynamicSchema.Runtime
 
             if (!allTypesExist)
             {
-                ExistingAssemblies = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
+                ExistingAssemblies.Clear();
 
                 //Create Normal Poco Type to be used as a reference
                 CreateTypes(_schema.Tables, tableName, requestHash);
