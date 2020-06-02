@@ -12,6 +12,7 @@ namespace AutoPocoIO.DynamicSchema.Db
         void Add(object value);
         void Delete(dynamic value);
         object Find(string tableName, string keys);
+        IQueryable<object> FilterByKey(string tableName, string keys);
         object GetAll(string tableName);
 
         object NewInstance(string tableName);

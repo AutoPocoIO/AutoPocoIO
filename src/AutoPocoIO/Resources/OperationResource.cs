@@ -16,6 +16,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.AutoPoco;
 using System.Linq.Dynamic.Core;
 using System.Security.Principal;
 
@@ -220,6 +221,18 @@ namespace AutoPocoIO.Resources
             var record = Db.Find(DbSchema.GetTableName(DatabaseName, SchemaName, DbObjectName), keys);
 
             return record;
+        }
+
+        public virtual TViewModel GetResourceRecordById<TViewModel>(string keys, IDictionary<string, string> queryString)
+        {
+            Check.NotNull(keys, nameof(keys));
+            Check.NotNull(queryString, nameof(queryString));
+
+            this.LoadDbAdapter();
+            var list = Db.FilterByKey(DbSchema.GetTableName(DatabaseName, SchemaName, DbObjectName), keys);
+            list = ExpandUserJoins(list, queryString);
+            var listOfT = list.ProjectTo<TViewModel>();
+            return listOfT.Single();
         }
 
         /// <summary>

@@ -553,6 +553,8 @@ namespace System.Linq.AutoPoco
             symbols.Add(name, value);
         }
 
+        
+
         public Expression Parse(Type resultType)
         {
             int exprPos = token.pos;
@@ -946,11 +948,16 @@ namespace System.Linq.AutoPoco
 
                 NextToken();
 
-                while (token.id == TokenId.Dot)
+
+                while (token.id == TokenId.Dot || token.id == TokenId.Plus)
                 {
+                    if (token.id == TokenId.Dot)
+                        full_type_name.Append(".");
+                    else
+                        full_type_name.Append("+");
+
                     NextToken();
                     ValidateToken(TokenId.Identifier, Res.IdentifierExpected);
-                    full_type_name.Append(".");
                     full_type_name.Append(GetIdentifier());
                     NextToken();
                 }
@@ -971,6 +978,10 @@ namespace System.Linq.AutoPoco
                     class_type = _returnType.GetProperties()
                                            .FirstOrDefault(c => c.PropertyType.IsGenericType && c.PropertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>) && c.PropertyType.GenericTypeArguments[0].FullName == full_type_name.ToString())
                                            ?.PropertyType.GenericTypeArguments[0];
+
+                //Check assembly of return type if multiple levels down
+                if (class_type == null)
+                    class_type = _returnType.Assembly.GetType(full_type_name.ToString(), false);
 
                 //if still null
                 if (class_type == null)

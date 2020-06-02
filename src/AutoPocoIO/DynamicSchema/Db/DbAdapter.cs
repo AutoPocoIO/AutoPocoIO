@@ -89,6 +89,16 @@ namespace AutoPocoIO.DynamicSchema.Db
             return singleRecord;
         }
 
+        public IQueryable<object> FilterByKey(string tableName, string keys)
+        {
+            SetupDataContext(tableName);
+
+            var getByIdMethod = typeof(DbAdapter).GetMethod("FilterById", BindingFlags.Instance | BindingFlags.Public);
+            var filteredList = getByIdMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).InvokeWithException(this, new object[] { keys });
+
+            return (IQueryable<object>)filteredList;
+        }
+
         public object NewInstance(string tableName)
         {
             SetupDataContext(tableName);

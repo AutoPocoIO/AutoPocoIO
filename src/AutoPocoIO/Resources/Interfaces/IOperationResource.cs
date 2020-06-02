@@ -17,6 +17,7 @@ namespace AutoPocoIO.Resources
         object ExecuteProc(IDictionary<string, object> parameterDictionary);
 
         object GetResourceRecordById(string keys);
+        TViewModel GetResourceRecordById<TViewModel>(string keys, IDictionary<string, string> queryString);
         IQueryable<object> GetResourceRecords(IDictionary<string, string> queryString);
         IQueryable<object> GetViewRecords();
 

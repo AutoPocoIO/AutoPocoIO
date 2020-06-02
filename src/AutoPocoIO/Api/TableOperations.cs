@@ -109,8 +109,20 @@ namespace AutoPocoIO.Api
         /// <returns></returns>
         public TViewModel GetById<TViewModel>(string connectorName, string tableName, string id, ILoggingService loggingService = null) where TViewModel : class
         {
-            var obj = GetById(connectorName, tableName, id, loggingService);
-            return DynamicObjectExtensions.PopulateModel<TViewModel>(obj);
+            loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET);
+
+            //Manually $expand to prevent nulls on non pk joins
+            var joinProperties = typeof(TViewModel).GetProperties()
+                                       .Where(c => (c.PropertyType.IsClass && c.PropertyType != typeof(string)) ||
+                                                            (c.PropertyType.IsGenericType && c.PropertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
+                                       .Select(c => c.Name);
+
+            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.read, tableName);
+
+            if (joinProperties.Any())
+                return resource.GetResourceRecordById<TViewModel>(id, new Dictionary<string, string>() { { "$expand", string.Join(",", joinProperties) } });
+            else
+                return resource.GetResourceRecordById<TViewModel>(id, new Dictionary<string, string>());
         }
 
         /// <summary>
