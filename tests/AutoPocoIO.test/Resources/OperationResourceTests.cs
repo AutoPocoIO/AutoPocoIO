@@ -544,6 +544,96 @@ namespace AutoPocoIO.test.Resources
         }
 
         [TestMethod]
+        public void GetResourceByIdExpandUserJoin()
+        {
+            using (var db = new AppDbContext(appDbOptions))
+            {
+                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = 1 });
+                db.UserJoin.Add(new UserJoin
+                {
+                    Alias = "pkJoin",
+                    PKConnectorId = 1,
+                    PKTableName = "tbl1",
+                    PKColumn = "Id2",
+                    FKConnectorId = 1,
+                    FKTableName = "tbl2",
+                    FKColumn = "other",
+                });
+
+                db.SaveChanges();
+            }
+
+            var list = new[] { new { Id2 = 1, Name5 = "name1", ViewModel1 = new { Id = 3 }, UJ_pkJoinListFromName3 = new { other = 1 } } }
+            .ToList()
+            .AsQueryable();
+            var ujlist = new[] { new { other = 1 } }
+            .ToList()
+            .AsQueryable();
+
+
+            var pkTable = new Table { Database = "db1", Schema = "sch", Name = "tbl1" };
+            pkTable.Columns.Add(new Column { PKName = "pk", ColumnName = "Id2" });
+            pkTable.Columns.Add(new Column { ColumnName = "Name5" });
+
+
+            defaultServices.AddSingleton(c =>
+            {
+                var mock = new Mock<IDbAdapter>();
+                mock.Setup(d => d.FilterByKey("db1_sch_tbl1", "1")).Returns(list);
+                mock.Setup(d => d.GetWithoutContext("db1_sch_tbl2", "db1_sch_tbl1")).Returns(ujlist);
+                return mock.Object;
+            });
+            defaultServices.AddSingleton(c =>
+            {
+                var mock = new Mock<IDbSchema>();
+                mock.Setup(d => d.Tables).Returns(new List<Table>
+                {
+                    pkTable,
+                    new Table{Database = "db1", Schema = "sch", Name = "tbl2"}
+                });
+                return mock.Object;
+            });
+
+            ResetServiceProviderCache();
+
+            var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
+            resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
+           
+
+            var results = resource.GetResourceRecordById<ViewModel4>("1", new Dictionary<string, string>() { {"$expand", "UJ_pkJoinListFromother" } });
+
+            schemaInitializer.Verify(c => c.Initilize(), Times.Once);
+            Assert.IsInstanceOfType(results, typeof(ViewModel4));
+            Assert.IsNull(results.GetType().GetProperty("OtherObject"));
+            Assert.AreEqual(1, results.UJ_pkJoinListFromother.First().Other);
+        }
+
+        [TestMethod]
+        public void GetResourceByIdWithNavProperties()
+        {
+            var list = new[] { new { Id2 = 1, Name5 = "name1", ViewModel1 = new { Id = 3 }, OtherObject = new { other = 1 } } }
+                        .ToList()
+                        .AsQueryable();
+            defaultServices.AddSingleton(c =>
+            {
+                var mock = new Mock<IDbAdapter>();
+                mock.Setup(d => d.FilterByKey("db1_sch_tbl1", "1")).Returns(list);
+                return mock.Object;
+            });
+
+            ResetServiceProviderCache();
+
+            var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
+            resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
+            var results = resource.GetResourceRecordById<ViewModel3>("1", new Dictionary<string, string>());
+
+            schemaInitializer.Verify(c => c.Initilize(), Times.Once);
+            Assert.IsInstanceOfType(results, typeof(ViewModel3));
+            Assert.IsNull(results.GetType().GetProperty("OtherObject"));
+            Assert.AreEqual(3, results.ViewModel1.Id);
+        }
+
+        [TestMethod]
         public void UpdateTViewModelRecord()
         {
             var model = new ViewModel1 { Id = 1, Name = "newName" };

@@ -159,7 +159,7 @@ namespace AutoPocoIO.test.Api
             var resultsList = new IQueryableType { Id = 1 };
 
             var resource = new Mock<IOperationResource>();
-            resource.Setup(c => c.GetResourceRecordById("1"))
+            resource.Setup(c => c.GetResourceRecordById<IQueryableType>("1", new Dictionary<string, string>()))
                 .Returns(resultsList);
 
             resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "table1"))
@@ -169,6 +169,61 @@ namespace AutoPocoIO.test.Api
 
             Assert.AreEqual(1, results.Id);
             Assert.IsInstanceOfType(results, typeof(IQueryableType));
+        }
+
+        [TestMethod]
+        public void GetByIdTVerifyExpand()
+        {
+            var result =
+                new IQueryableType2
+                {
+                    Id = 1,
+                    IntList = new List<int>
+                    {
+                       2
+                    }
+                };
+
+            var resource = new Mock<IOperationResource>();
+            resource.Setup(c => c.LoadDbAdapter()).Verifiable();
+            resource.Setup(c => c.GetResourceRecordById<IQueryableType2>("1", new Dictionary<string, string>() { { "$expand", "IntList" } }))
+                .Returns(result);
+
+            resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "table1TList"))
+                .Returns(resource.Object);
+
+            var results = tableOperations.GetById<IQueryableType2>("conn1", "table1TList", "1");
+
+            //Verify child lists are shown
+            Assert.AreEqual(1, results.IntList.Count());
+        }
+
+
+        [TestMethod]
+        public void GetByIdTVerifyExpandOneToOne()
+        {
+            var result = new IQueryableTypeOneToOne
+            {
+                Id = 3,
+                OneToOne = new IQueryableType
+                {
+                    Id = 1,
+                }
+            };
+
+
+            var resource = new Mock<IOperationResource>();
+            resource.Setup(c => c.LoadDbAdapter()).Verifiable();
+            resource.Setup(c => c.GetResourceRecordById<IQueryableTypeOneToOne>("3", new Dictionary<string, string>() { { "$expand", "OneToOne" } }))
+                .Returns(result);
+
+            resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "table1TList"))
+                .Returns(resource.Object);
+
+            var results = tableOperations.GetById<IQueryableTypeOneToOne>("conn1", "table1TList", "3");
+
+            //Verify child object are shown
+            Assert.AreEqual(1, results.OneToOne.Id);
         }
 
         [TestMethod]

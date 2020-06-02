@@ -44,11 +44,21 @@
                     </td>
                     <td>
                         <a href="Edit/@item.Order_Id">Edit</a> |
-                        <a href="Details/@item.Order_Id">Details</a> |
+                        <a  asp-page="/Order/Index" asp-route-orderId="@item.Order_Id">Details</a> |
                         <a href="Delete/@item.Order_Id">Delete</a> |
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+    <div>
+        <ul class="pagination">
+            @for (var i = Model.CurrentPage; i <= Math.Min(Model.TotalPages, Model.CurrentPage + 10); i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a asp-page="Index" asp-route-currentpage="@i"class="page-link">@i</a>
+                </li>
+            }
+        </ul>
+    </div>
 </div>

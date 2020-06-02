@@ -6,6 +6,7 @@ using AutoPocoIO.Resources;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System;
+using System.Collections.Generic;
 
 namespace AutoPocoIO.test.Resources
 {
@@ -24,6 +25,25 @@ namespace AutoPocoIO.test.Resources
             public int Id1 { get; set; }
             public string Name3 { get; set; }
             public string Name4 { get; set; }
+        }
+
+        private class ViewModel3
+        {
+            public int Id2 { get; set; }
+            public string Name5 { get; set; }
+            public ViewModel1 ViewModel1 { get; set; }
+        }
+
+        private class ViewModel4
+        {
+            public int Id2 { get; set; }
+            public string Name5 { get; set; }
+            public IEnumerable<ViewModel5> UJ_pkJoinListFromother { get; set; }
+        }
+
+        private class ViewModel5
+        {
+            public int Other { get; set; }
         }
 
         private class TestResourceServices : OperationResource

@@ -1,9 +1,42 @@
 ﻿@page
 @model AspNetCoreSample.Pages.Order.IndexModel
 @{
-    ViewData["Title"] = "Index";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h2>Order Details</h2>
 
+<div>
+    <div class="form-group">
+        <label>Order Number</label>
+        <span class="form-control">@Html.DisplayFor(c => c.item.Order_Id)</span>
+    </div>
+    <div class="form-group">
+        <label>Store</label>
+        <span class="form-control">@Html.DisplayFor(c => c.item.storesStore_IdObject.store_name)</span>
+    </div>
+
+    <div>
+        <h4>Products Ordered</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var product in Model.item.order_itemsListFromorder_id)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(c => product.productsProduct_IdObject.Product_Name)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
