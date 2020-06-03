@@ -91,18 +91,15 @@ WriteLiteral(@""">AutoPoco Dashboard</a>
 WriteLiteral("\">Connectors <span class=\"badge badge-pill badge-info\">");
 
 
-                                                                                                                             Write(ConnectorCount());
+                                                                                                                            Write(ConnectorCount());
 
-WriteLiteral(@"</span></a>
-                </li>
-                <li class=""nav-item"">
-                    <a class=""nav-link"" href=""#"">Users</a>
-                </li>
-                <li class=""nav-item"">
-                    <a class=""nav-link"" href=""#"">Roles</a>
-                </li>
-                <li class=""nav-item"">
-                    <a class=""nav-link"" href=""#"">Permissions</a>
+WriteLiteral("</span></a>\r\n                </li>\r\n                <li class=\"nav-item\">\r\n      " +
+"              <a class=\"nav-link\" href=\"");
+
+
+                                         Write(TransformUrl("/DataDictionary"));
+
+WriteLiteral(@""">Data Dictionary</a>
                 </li>
                 <li class=""nav-item"">
                     <a class=""nav-link"" href=""#"">Request History</a>
@@ -113,9 +110,8 @@ WriteLiteral(@"</span></a>
 
                                          Write(TransformUrl("/swagger"));
 
-WriteLiteral("\">Developer Console</a>\r\n                </li>\r\n            </ul>\r\n            <s" +
-"pan class=\"navbar-text\">\r\n                Brandon Atkison\r\n            </span>\r\n" +
-"        </div>\r\n    </nav>\r\n\r\n    <div>\r\n        ");
+WriteLiteral("\">Developer Console</a>\r\n                </li>\r\n            </ul>\r\n        </div>" +
+"\r\n    </nav>\r\n\r\n    <div>\r\n        ");
 
 
    Write(RenderBody());

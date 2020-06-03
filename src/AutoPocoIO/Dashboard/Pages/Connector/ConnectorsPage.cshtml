@@ -1,14 +1,14 @@
 ﻿@* Generator: Template TypeVisibility: internal GeneratePrettyNames: True DisableLinePragmas: true  Namespace: AutoPocoIO.Dashboard.Pages *@
 
 @using AutoPocoIO.Middleware
-@using AutoPocoIO.Models
+@using AutoPocoIO.Dashboard.ViewModels;
 @inherits RazorPage
 
 <div class="container pt-4 mt-5">
     <h1>
         <div class="btn-group btn-group-toggle mt-2" style="float: right !important" data-toggle="buttons">
             <label class="btn btn-info active" onclick="window.location='@TransformUrl("/Connectors/Connector/New")'">
-                <input type="radio" name="options" id="option1" autocomplete="off" checked > + Create Connector
+                <input type="radio" name="options" id="option1" autocomplete="off" checked> + Create Connector
             </label>
         </div>
         Connectors
@@ -26,17 +26,16 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var row in (IEnumerable<Connector>)ViewBag["Connectors"])
+            @foreach (var row in (IEnumerable<ConnectorViewModel>)ViewBag["Connectors"])
             {
-                
-            <tr>
-                <th scope="row"><a href="@TransformUrl("/Connectors/Connector/" + row.Id)">@row.Name</a></th>
-                <td>@row.DataSource</td>
-                <td>@row.InitialCatalog</td>
-                <td>@row.Schema</td>
-                <td>@row.UserId</td>
-                <td><span style="font-weight:bold; color:@(row.IsActive ? "green" : "red")">@(row.IsActive ? "Active" : "Disabled")</span></td>
-            </tr>
+                <tr>
+                    <th scope="row"><a href="@TransformUrl("/Connectors/Connector/" + row.Id)">@row.Name</a></th>
+                    <td>@row.DataSource</td>
+                    <td>@row.InitialCatalog</td>
+                    <td>@row.Schema</td>
+                    <td>@row.UserId</td>
+                    <td><span style="font-weight:bold; color:@(row.IsActive ? "green" : "red")">@(row.IsActive ? "Active" : "Disabled")</span></td>
+                </tr>
             }
         </tbody>
     </table>

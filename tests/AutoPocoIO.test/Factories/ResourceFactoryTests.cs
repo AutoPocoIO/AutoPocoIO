@@ -27,11 +27,7 @@ namespace AutoPocoIO.test.Factories
 
             var list = new List<IOperationResource> { resource.Object };
 
-            var services = new ServiceCollection()
-                .AddSingleton(appAdminService.Object)
-                .BuildServiceProvider();
-
-            _resourceFactory = new ResourceFactory(services, list);
+            _resourceFactory = new ResourceFactory(appAdminService.Object, list);
         }
 
         [TestMethod]

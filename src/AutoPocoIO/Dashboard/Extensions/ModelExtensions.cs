@@ -29,5 +29,10 @@ namespace AutoPocoIO.Dashboard.Extensions
         {
             return int.Parse(match.Groups[key].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
         }
+
+        public static string GetString(this Match match, string key)
+        {
+            return match.Groups[key].Value;
+        }
     }
 }

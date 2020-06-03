@@ -4,7 +4,6 @@ using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Util;
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.Extensions;
-using Microsoft.AspNet.OData.Builder.Conventions.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

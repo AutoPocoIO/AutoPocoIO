@@ -3,7 +3,6 @@ using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
 using AutoPocoIO.Services;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,10 +15,10 @@ namespace AutoPocoIO.Factories
         private readonly IAppAdminService _appAdminService;
         private readonly IEnumerable<IOperationResource> _resources;
 
-        public ResourceFactory(IServiceProvider provider, IEnumerable<IOperationResource> resources)
+        public ResourceFactory(IAppAdminService appAdminService, IEnumerable<IOperationResource> resources)
         {
             _resources = resources;
-            _appAdminService = provider.GetRequiredService<IAppAdminService>();
+            _appAdminService = appAdminService;
         }
 
 
@@ -33,6 +32,12 @@ namespace AutoPocoIO.Factories
         {
             var connector = _appAdminService.GetConnection(connectorId);
             return GetResourceType(connector, OperationType.read, dbObjectName);
+        }
+
+        public IOperationResource GetResource(int connectorId, OperationType dbAction, string dbObjectName)
+        {
+            var connector = _appAdminService.GetConnection(connectorId);
+            return GetResourceType(connector, dbAction, dbObjectName);
         }
 
         private IOperationResource GetResourceType(Connector connector, OperationType dbAction, string dbObjectName)

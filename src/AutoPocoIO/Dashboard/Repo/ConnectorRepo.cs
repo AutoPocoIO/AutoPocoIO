@@ -20,7 +20,21 @@ namespace AutoPocoIO.Dashboard.Repo
             _factory = factory;
         }
 
-        public virtual IEnumerable<Connector> ListConnectors() => _db.Connector;
+        public virtual IEnumerable<ConnectorViewModel> ListConnectors()
+        {
+            return _db.Connector
+                .Select(c => new ConnectorViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    ResourceType = c.ResourceType,
+                    DataSource = c.DataSource,
+                    InitialCatalog = c.InitialCatalog,
+                    Schema = c.Schema,
+                    UserId = c.UserId,
+                    IsActive = c.IsActive
+                }).OrderBy(c => c.Name);
+        }
 
         public virtual int ConnectorCount() => _db.Connector.Count();
 

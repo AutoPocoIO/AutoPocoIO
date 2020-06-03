@@ -7,7 +7,7 @@ namespace AutoPocoIO.Dashboard.Repo
     internal interface IConnectorRepo
     {
         int ConnectorCount();
-        IEnumerable<Connector> ListConnectors();
+        IEnumerable<ConnectorViewModel> ListConnectors();
         void Save(ConnectorViewModel model);
         ConnectorViewModel GetById(int id);
         void Insert(ConnectorViewModel model);

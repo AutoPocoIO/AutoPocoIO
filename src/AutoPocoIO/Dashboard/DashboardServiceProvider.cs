@@ -5,7 +5,6 @@ using AutoPocoIO.Dashboard.Repos;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Resources;
 using AutoPocoIO.Services;
-using Microsoft.AspNet.OData.Formatter.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -34,9 +33,15 @@ namespace AutoPocoIO.Dashboard
 
                 var builders = rootProvider.GetService<IEnumerable<IConnectionStringBuilder>>();
                 foreach (var builder in builders)
-                    services.TryAddTransient(c => builder);
+                    services.TryAddTransient(typeof(IConnectionStringBuilder), builder.GetType());
+
+                var resources = rootProvider.GetService<IEnumerable<IOperationResource>>();
+                foreach (var resource in resources)
+                    services.TryAddTransient(typeof(IOperationResource), resource.GetType());
 
                 services.AddScoped<IConnectionStringFactory, ConnectionStringFactory>();
+                services.AddScoped<IResourceFactory, ResourceFactory>();
+                services.AddTransient<IAppAdminService, AppAdminService>();
 
                 services.AddScoped<AppDbContext>();
                 services.AddScoped<LogDbContext>();
@@ -51,6 +56,13 @@ namespace AutoPocoIO.Dashboard
                 services.AddTransient<IConnectorRepo, ConnectorRepo>();
                 services.AddTransient<ConnectorsPage>();
                 services.AddTransient<ConnectorForm>();
+
+                //DataDictionary
+                services.AddTransient<IDataDictionaryRepo, DataDictionaryRepo>();
+                services.AddTransient<DataDictionaryPage>();
+                services.AddTransient<SchemaPage>();
+                services.AddTransient<ObjectDetailsPage>();
+
 
                 services.AddScoped<IDashboardRepo, DashboardRepo>();
                 services.AddScoped<DashboardPage>();

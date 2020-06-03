@@ -39,5 +39,13 @@ namespace AutoPocoIO.DynamicSchema.Db
 
             return hash.ToHashCode();
         }
+
+        public void Reset()
+        {
+            Tables.Clear();
+            Columns.Clear();
+            Views.Clear();
+            StoredProcedures.Clear();
+        }
     }
 }

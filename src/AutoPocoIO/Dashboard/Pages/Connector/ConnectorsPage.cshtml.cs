@@ -15,8 +15,8 @@ namespace AutoPocoIO.Dashboard.Pages
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using AutoPocoIO.Dashboard.ViewModels;
     using AutoPocoIO.Middleware;
-    using AutoPocoIO.Models;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     internal partial class ConnectorsPage : RazorPage
@@ -40,7 +40,7 @@ WriteLiteral("\r\n<div class=\"container pt-4 mt-5\">\r\n    <h1>\r\n        <di
                                                                     Write(TransformUrl("/Connectors/Connector/New"));
 
 WriteLiteral(@"'"">
-                <input type=""radio"" name=""options"" id=""option1"" autocomplete=""off"" checked > + Create Connector
+                <input type=""radio"" name=""options"" id=""option1"" autocomplete=""off"" checked> + Create Connector
             </label>
         </div>
         Connectors
@@ -61,51 +61,50 @@ WriteLiteral(@"'"">
 ");
 
 
-             foreach (var row in (IEnumerable<Connector>)ViewBag["Connectors"])
+             foreach (var row in (IEnumerable<ConnectorViewModel>)ViewBag["Connectors"])
             {
-                
 
-WriteLiteral("            <tr>\r\n                <th scope=\"row\"><a href=\"");
-
-
-                                    Write(TransformUrl("/Connectors/Connector/" + row.Id));
-
-WriteLiteral("\">");
+WriteLiteral("                <tr>\r\n                    <th scope=\"row\"><a href=\"");
 
 
-                                                                                      Write(row.Name);
-
-WriteLiteral("</a></th>\r\n                <td>");
-
-
-               Write(row.DataSource);
-
-WriteLiteral("</td>\r\n                <td>");
-
-
-               Write(row.InitialCatalog);
-
-WriteLiteral("</td>\r\n                <td>");
-
-
-               Write(row.Schema);
-
-WriteLiteral("</td>\r\n                <td>");
-
-
-               Write(row.UserId);
-
-WriteLiteral("</td>\r\n                <td><span style=\"font-weight:bold; color:");
-
-
-                                                     Write(row.IsActive ? "green" : "red");
+                                        Write(TransformUrl("/Connectors/Connector/" + row.Id));
 
 WriteLiteral("\">");
 
 
-                                                                                        Write(row.IsActive ? "Active" : "Disabled");
+                                                                                          Write(row.Name);
 
-WriteLiteral("</span></td>\r\n            </tr>\r\n");
+WriteLiteral("</a></th>\r\n                    <td>");
+
+
+                   Write(row.DataSource);
+
+WriteLiteral("</td>\r\n                    <td>");
+
+
+                   Write(row.InitialCatalog);
+
+WriteLiteral("</td>\r\n                    <td>");
+
+
+                   Write(row.Schema);
+
+WriteLiteral("</td>\r\n                    <td>");
+
+
+                   Write(row.UserId);
+
+WriteLiteral("</td>\r\n                    <td><span style=\"font-weight:bold; color:");
+
+
+                                                         Write(row.IsActive ? "green" : "red");
+
+WriteLiteral("\">");
+
+
+                                                                                            Write(row.IsActive ? "Active" : "Disabled");
+
+WriteLiteral("</span></td>\r\n                </tr>\r\n");
 
 
             }

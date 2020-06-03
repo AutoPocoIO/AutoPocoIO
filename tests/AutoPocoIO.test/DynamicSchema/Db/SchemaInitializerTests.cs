@@ -20,7 +20,7 @@ namespace AutoPocoIO.Auth.test.DynamicSchema
             var schemaBuilder = new Mock<IDbSchemaBuilder>();
 
             var schmea = new SchemaInitializer(config,
-             schemaBuilder.Object);
+             schemaBuilder.Object, Mock.Of<IDbSchema>());
 
             schmea.ConfigureAction(new Connector { ConnectionStringDecrypted = "conn1" }, OperationType.read);
             Assert.AreEqual("conn1", config.ConnectionString);
@@ -37,7 +37,8 @@ namespace AutoPocoIO.Auth.test.DynamicSchema
             var schemaBuilder = new Mock<IDbSchemaBuilder>();
 
             var schmea = new SchemaInitializer(config,
-             schemaBuilder.Object);
+             schemaBuilder.Object, Mock.Of<IDbSchema>()
+            );
 
             schmea.Initilize();
 
@@ -52,7 +53,7 @@ namespace AutoPocoIO.Auth.test.DynamicSchema
             var schemaBuilder = new Mock<IDbSchemaBuilder>();
 
             var schmea = new SchemaInitializer(config,
-             schemaBuilder.Object);
+             schemaBuilder.Object, Mock.Of<IDbSchema>());
             
             schmea.Initilize();
 

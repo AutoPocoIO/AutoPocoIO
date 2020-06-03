@@ -42,10 +42,6 @@ namespace AutoPocoIO.test.Factories
 
               });
 
-            var services = new ServiceCollection()
-                .AddSingleton(appAdminService.Object)
-                .BuildServiceProvider();
-
             var connStringFactory = new Mock<IConnectionStringFactory>();
             connStringFactory.Setup(c => c.GetConnectionInformation(resouceType, "connStr1"))
                 .Returns(new ConnectionInformation());
@@ -53,7 +49,7 @@ namespace AutoPocoIO.test.Factories
             var resourceServices = new ServiceCollection()
                 .AddSingleton(new Config())
                 .AddTransient(c => connStringFactory.Object)
-                .AddSingleton<ISchemaInitializer>(new SchemaInitializer(new Config(), Mock.Of<IDbSchemaBuilder>()))
+                .AddSingleton<ISchemaInitializer>(new SchemaInitializer(new Config(), Mock.Of<IDbSchemaBuilder>(), Mock.Of<IDbSchema>()))
                 .BuildServiceProvider();
 
 
@@ -64,7 +60,7 @@ namespace AutoPocoIO.test.Factories
 
             var list = new List<IOperationResource> { new MsSqlResource(resourceServices) };
 
-            _resourceFactory = new ResourceFactory(services, list);
+            _resourceFactory = new ResourceFactory(appAdminService.Object, list);
         }
         [TestMethod]
         public void GetSqlResource()

@@ -79,7 +79,7 @@ namespace AutoPocoIO.MsSql.test.Resources
             services.AddSingleton(schema.Object);
             services.AddSingleton(dbAdapter.Object);
             services.AddSingleton(config);
-            services.AddSingleton<ISchemaInitializer>(new SchemaInitializer(config, Mock.Of<IDbSchemaBuilder>()));
+            services.AddSingleton<ISchemaInitializer>(new SchemaInitializer(config, Mock.Of<IDbSchemaBuilder>(), schema.Object));
 
             var provider = services.BuildServiceProvider();
 
