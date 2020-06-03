@@ -13,7 +13,7 @@
     </div>
     <div class="form-group">
         <label>Store</label>
-        <span class="form-control">@Html.DisplayFor(c => c.item.storesStore_IdObject.store_name)</span>
+        <span class="form-control">@Html.DisplayFor(c => c.item.StoresObjectFromStore_Id.store_name)</span>
     </div>
 
     <div>
@@ -27,11 +27,11 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach(var product in Model.item.order_itemsListFromorder_id)
+                @foreach(var product in Model.item.Order_itemsListFromOrder_id)
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(c => product.productsProduct_IdObject.Product_Name)
+                            @Html.DisplayFor(c => product.ProductsObjectFromProduct_Id.Product_Name)
                         </td>
                     </tr>
                 }

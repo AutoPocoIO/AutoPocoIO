@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace AutoPocoIO.DynamicSchema.Runtime
 {
@@ -369,17 +370,32 @@ namespace AutoPocoIO.DynamicSchema.Runtime
 
         private static string DependentToPrimaryObjectName(Column column, Table table)
         {
-            return (column.UserDefinedFKAlias ?? column.ReferencedTable) + table.GenerateFKName(column) + ObjectPostfixName;
+            StringBuilder builder = new StringBuilder();
+            builder.AppendUppercaseFirst(column.UserDefinedFKAlias ?? column.ReferencedTable);
+            builder.Append(ObjectPostfixName);
+            builder.Append("From");
+            builder.AppendUppercaseFirst(table.GenerateFKName(column));
+            return builder.ToString();
         }
 
         private static string PrimaryToDepdenty1To1ObjectName(Column column)
         {
-            return (column.UserDefinedFKAlias ?? column.TableName) + column.ReferencedColumn + ObjectPostfixName;
+            StringBuilder builder = new StringBuilder();
+            builder.AppendUppercaseFirst(column.UserDefinedFKAlias ?? column.TableName);
+            builder.Append(ObjectPostfixName);
+            builder.Append("From");
+            builder.AppendUppercaseFirst(column.ReferencedColumn);
+            return builder.ToString();
         }
 
         private static string PrimaryToDependenty1ToManyListName(Column column, Table table)
         {
-            return (column.UserDefinedFKAlias ?? column.TableName) + CollectionPostfixName + "From" + table.GenerateFKName(column);
+            StringBuilder builder = new StringBuilder();
+            builder.AppendUppercaseFirst(column.UserDefinedFKAlias ?? column.TableName);
+            builder.Append(CollectionPostfixName);
+            builder.Append("From");
+            builder.AppendUppercaseFirst(table.GenerateFKName(column));
+            return builder.ToString();
         }
     }
 }

@@ -5,7 +5,9 @@ using AutoPocoIO.Exceptions;
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 
 namespace AutoPocoIO.Extensions
 {
@@ -43,7 +45,25 @@ namespace AutoPocoIO.Extensions
         }
         public static string GenerateFKName(this Table table, Column fkColumn)
         {
-            return string.Join("And", table.Columns.Where(c => c.FKName == fkColumn.FKName));
+            var columns = table.Columns.Where(c => !string.IsNullOrEmpty(c.FKName) &&
+                                            c.FKName.Equals(fkColumn.FKName, StringComparison.OrdinalIgnoreCase))
+                                .Select(c => c.ColumnName.UppercaseFirst());
+            return string.Join("And", columns);
+        }
+        public static void AppendUppercaseFirst(this StringBuilder builder, string value)
+        {
+            builder.Append(value.UppercaseFirst());
+        }
+
+        private static string UppercaseFirst(this string value)
+        {
+            // Check for empty string.
+            if (string.IsNullOrEmpty(value))
+            {
+                return string.Empty;
+            }
+            // Return char and concat substring.
+            return char.ToUpper(value[0], CultureInfo.InvariantCulture) + value.Substring(1);
         }
     }
 }
