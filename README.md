@@ -54,7 +54,7 @@ public void Configuration(IAppBuilder app)
 {
     ServiceCollection services = new ServiceCollection();
     services.AddAutoPoco()
-             .ConfigureSqlServerApplicationDatabase("<connection string or its name>")
+             .ConfigureSqlServerApplicationDatabase("<connection string>")
              .WithSqlServerResources();
 
      var containerBuilder = new ContainerBuilder();
@@ -83,9 +83,8 @@ using AutoPocoIO.Extensions
 
 ```csharp
 services.AddAutoPoco()
-        .ConfigureSqlServerApplicationDatabase("<connection string or its name>")
+        .ConfigureSqlServerApplicationDatabase("<connection string>")
         .WithSqlServerResources();
-services.AddMvc();
 ```
 In the `Configure` method, insert middleware for logging, dashboard, and swagger api explorer
 
