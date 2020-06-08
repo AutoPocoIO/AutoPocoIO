@@ -30,7 +30,7 @@ namespace AutoPocoIO.Resources
             base.ApplyServices(serviceCollection, rootProvider);
         }
 
-        public object ExecuteProc(IDictionary<string, object> parameterDictionary)
+        public IDictionary<string, object> ExecuteProc(IDictionary<string, object> parameterDictionary)
         {
             this.LoadProc(SchemaName, DbObjectName);
 

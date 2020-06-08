@@ -35,7 +35,7 @@ namespace AutoPocoIO.Api
         /// <param name="procedureName">Stored Procedure name in the database.</param>
         /// <param name="loggingService">Pass </param>
         /// <returns></returns>
-        public object ExecuteNoParameters(string connectorName, string procedureName, ILoggingService loggingService = null)
+        public IDictionary<string, object> ExecuteNoParameters(string connectorName, string procedureName, ILoggingService loggingService = null)
         {
             loggingService?.AddSprocToLogger(connectorName, procedureName, HttpMethodType.GET);
             IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.read, procedureName);
@@ -50,7 +50,7 @@ namespace AutoPocoIO.Api
         /// <param name="parameters"></param>
         /// <param name="loggingService"></param>
         /// <returns></returns>
-        public object Execute(string connectorName, string procedureName, JToken parameters, ILoggingService loggingService = null)
+        public IDictionary<string, object> Execute(string connectorName, string procedureName, JToken parameters, ILoggingService loggingService = null)
         {
             loggingService?.AddSprocToLogger(connectorName, procedureName, HttpMethodType.POST);
             Check.NotNull(parameters, nameof(parameters));
@@ -69,7 +69,7 @@ namespace AutoPocoIO.Api
         /// <param name="parameters"></param>
         /// <param name="loggingService"></param>
         /// <returns></returns>
-        public object Execute<T>(string connectorName, string procedureName, T parameters, ILoggingService loggingService = null)
+        public IDictionary<string, object> Execute<T>(string connectorName, string procedureName, T parameters, ILoggingService loggingService = null)
         {
             loggingService?.AddSprocToLogger(connectorName, procedureName, HttpMethodType.POST);
             IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.read, procedureName);

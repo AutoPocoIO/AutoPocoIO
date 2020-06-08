@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using AutoPocoIO.Services;
 using AutoPocoIO.Api;
+using System.Collections.Generic;
 #if NETFULL
 using System.Web.Http;
 using Swashbuckle.Swagger.Annotations;
@@ -41,7 +42,7 @@ namespace AutoPocoIO.WebApi
         [Route("")]
         [HttpGet]
         [SwaggerResponse(200, "Output of the Stored Procedure", typeof(object))]
-        public dynamic Get(string connectorName, string sprocName) =>
+        public IDictionary<string, object> Get(string connectorName, string sprocName) =>
             _storedProcedureOperations.ExecuteNoParameters(connectorName, sprocName, _loggingService);
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace AutoPocoIO.WebApi
         [Route("")]
         [HttpPost]
         [SwaggerResponse(200, "Output of the Stored Procedure", typeof(object))]
-        public dynamic Post(string connectorName, string sprocName, [FromBody] JToken value) =>
+        public IDictionary<string, object> Post(string connectorName, string sprocName, [FromBody] JToken value) =>
             _storedProcedureOperations.Execute(connectorName, sprocName, value, _loggingService);
     }
 }

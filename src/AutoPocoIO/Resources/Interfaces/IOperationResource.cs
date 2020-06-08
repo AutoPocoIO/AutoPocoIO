@@ -14,7 +14,7 @@ namespace AutoPocoIO.Resources
         TViewModel CreateNewResourceRecord<TViewModel>(TViewModel value);
         object CreateNewResourceRecord(JToken value);
         object DeleteResourceRecordById(string keys);
-        object ExecuteProc(IDictionary<string, object> parameterDictionary);
+        IDictionary<string, object> ExecuteProc(IDictionary<string, object> parameterDictionary);
 
         object GetResourceRecordById(string keys);
         TViewModel GetResourceRecordById<TViewModel>(string keys, IDictionary<string, string> queryString);

@@ -1,7 +1,9 @@
 ﻿using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Exceptions;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -36,6 +38,24 @@ namespace System.Linq.AutoPoco
                     source.Expression, Expression.Quote(lambda)));
 
 
+        }
+
+        public static IEnumerable<T> ProjectResultTo<T>(this IEnumerable<IDictionary<string, object>> source)
+        {
+            Type destType = typeof(T);
+            var properties = destType.GetProperties().Where(c => c.CanWrite);
+            List<T> mapped = new List<T>();
+
+            foreach(var sourceObject in source)
+            {
+                var destObject = Activator.CreateInstance<T>();
+                foreach(var property in properties)
+                    property.SetValue(destObject, sourceObject.FirstOrDefault(c => c.Key.Equals(property.Name, StringComparison.OrdinalIgnoreCase)).Value);
+
+                mapped.Add(destObject);
+            }
+
+            return mapped;
         }
 
         public static string AddProperties(Type souceType, Type destType, List<object> values, string navPropertyNamePlusDot = "")

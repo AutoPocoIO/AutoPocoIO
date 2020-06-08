@@ -23,7 +23,7 @@ namespace AutoPocoIO.test.Api
         [TestMethod]
         public void ExecuteNoParams()
         {
-            var obj = new IQueryableType2();
+            var obj = new Dictionary<string, object>();
 
             var resource = new Mock<IOperationResource>();
             resource.Setup(c => c.ExecuteProc(new Dictionary<string, object>()))
@@ -40,7 +40,7 @@ namespace AutoPocoIO.test.Api
         [TestMethod]
         public void ExecuteJTokenParams()
         {
-            var obj = new IQueryableType2();
+            var obj = new Dictionary<string, object>();
             JToken objToken = new JObject
             {
                 ["Id"] = 15
@@ -66,7 +66,7 @@ namespace AutoPocoIO.test.Api
         [TestMethod]
         public void ExecuteParams()
         {
-            var obj = new IQueryableType2();
+            var obj = new Dictionary<string, object>();
             var objParams = new IQueryableType() { Id = 34 };
 
             IDictionary<string, object> usedParams = null;
