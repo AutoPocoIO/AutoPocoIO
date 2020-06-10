@@ -5,6 +5,7 @@ using AutoPocoIO.Migrations;
 using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
@@ -89,6 +90,9 @@ namespace AutoPocoIO.Extensions
             builder.UseApplicationServiceProvider(applicationServiceProvider);
 
             optionsAction.Invoke(applicationServiceProvider, builder);
+
+            if(typeof(TContext) == typeof(AppMigrationContext) || typeof(TContext) == typeof(LoggingMigrationContext))
+                builder.ReplaceService<IMigrationsAssembly, DynamicSchema.Services.Migrations.MigrationsAssembly>();
 
             return builder.Options;
         }
