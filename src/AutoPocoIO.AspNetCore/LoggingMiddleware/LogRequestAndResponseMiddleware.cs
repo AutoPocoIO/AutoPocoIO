@@ -1,7 +1,6 @@
 ﻿using AutoPocoIO.Exceptions;
 using AutoPocoIO.Services;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Net.Mime;
@@ -13,9 +12,6 @@ namespace AutoPocoIO.LoggingMiddleware
     public class LogRequestAndResponseMiddleware: IDisposable
     {
         private readonly RequestDelegate _next;
-
-        private IServiceScopeFactory _serviceScopeFactory;
-        private ILoggingService _loggingService;
 
         private bool isDisposed;
         private MemoryStream RequestBuffer;
@@ -30,8 +26,6 @@ namespace AutoPocoIO.LoggingMiddleware
         {
             Check.NotNull(context, nameof(context));
             Check.NotNull(loggingService, nameof(loggingService));
-
-            _loggingService = loggingService;
 
             string statusCode = null;
             string exception = null;
@@ -77,7 +71,7 @@ namespace AutoPocoIO.LoggingMiddleware
 #endif
             }
 
-            if (_loggingService.LogCount > 0)
+            if (loggingService.LogCount > 0)
             {
                 ContextLogParameters logParameters = new ContextLogParameters
                 {
@@ -88,9 +82,9 @@ namespace AutoPocoIO.LoggingMiddleware
                     ResponseBuffer = ResponseBuffer
                 };
 
-                _loggingService.AddContextInfomation(logParameters);
+                loggingService.AddContextInfomation(logParameters);
                 //Discard task to log off thread
-                _ = _loggingService.LogAll();
+                _ = loggingService.LogAll();
             }
 
 
