@@ -17,6 +17,24 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CustomAttributes\UseJsonAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\AutoPocoDependencyResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\AutoPocoDependencyScope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ServiceScope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ServiceScopeFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\Container.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ContainerMiddleware.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\IContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\IRegistratedService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\IServiceActivator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\IServiceRegistry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\MappedConstructor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\PreApplicationStart.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\RegistratedService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\RequestScopeFromOwinHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\RequestScopeManagement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ServiceActivator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ServiceInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ServiceRegistry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ODataQueryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoggingMiddleware\ContextLogPameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Owin\DashboardMiddleware.cs" />

@@ -54,7 +54,7 @@ namespace AutoPocoIO.Owin
 
                 var findResult = _routes.Routes.FindDispatcher(dashContext, context.Request.Path.Value);
 
-                if (context.Response.StatusCode != (int)HttpStatusCode.MethodNotAllowed)
+                if (context.Response.StatusCode == (int)HttpStatusCode.MethodNotAllowed)
                     return;
 
                 if (findResult == null)

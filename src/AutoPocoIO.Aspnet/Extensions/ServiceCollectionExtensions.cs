@@ -1,7 +1,10 @@
-﻿using AutoPocoIO.LoggingMiddleware;
+﻿using AutoPoco.DependencyInjection;
+using AutoPocoIO.LoggingMiddleware;
 using AutoPocoIO.Owin;
 using AutoPocoIO.WebApi;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using System;
 
 namespace AutoPocoIO.Extensions
 {
@@ -18,7 +21,9 @@ namespace AutoPocoIO.Extensions
                 .AddDatabaseOperations()
                 .AddLogging()
                 .AddDashboard()
-                .AddAutoPocoWebApiEndPoints();
+                .AddAutoPocoWebApiEndPoints()
+                .AddDI();
+
         }
 
         /// <summary>
@@ -51,6 +56,14 @@ namespace AutoPocoIO.Extensions
             return services;
         }
 
+
+        private static IServiceCollection AddDI(this IServiceCollection services)
+        {
+            services.TryAddTransient<IServiceScope, ServiceScope>();
+            services.TryAddTransient<IServiceScopeFactory, ServiceScopeFactory>();
+            services.TryAddScoped<IServiceProvider>(c => c);
+            return services;
+        }
 
     }
 }
