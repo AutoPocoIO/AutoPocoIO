@@ -124,6 +124,15 @@ namespace AutoPocoIO.Constants {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration missing dependency resolver. Use an overload with service collection..
+        /// </summary>
+        public static string DependencyResolverMissing {
+            get {
+                return ResourceManager.GetString("DependencyResolverMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EF Core does not support HierarchyId types yet..
         /// </summary>
         public static string HierarchyIdNotSupported {

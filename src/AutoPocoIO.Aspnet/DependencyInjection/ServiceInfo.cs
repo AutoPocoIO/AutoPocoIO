@@ -7,13 +7,11 @@ namespace AutoPoco.DependencyInjection
     {
         private IRegistratedService _lastRegistered;
 
-        public ServiceInfo(Type serviceType)
+        public ServiceInfo()
         {
             Implementations = new List<IRegistratedService>();
-            ServiceType = serviceType;
         }
 
-        public Type ServiceType { get; }
         public List<IRegistratedService> Implementations { get; }
 
         public void AddImplementation(IRegistratedService registration)
@@ -22,7 +20,7 @@ namespace AutoPoco.DependencyInjection
             _lastRegistered = registration;
         }
 
-        public bool TryGetRegistration(out IRegistratedService registration)
+        public bool TryGetImplementation(out IRegistratedService registration)
         {
             registration = _lastRegistered;
 

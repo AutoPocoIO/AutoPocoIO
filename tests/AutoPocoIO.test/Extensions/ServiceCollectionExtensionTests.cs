@@ -34,7 +34,7 @@ namespace AutoPocoIO.test.Extensions
             var provider = services.BuildServiceProvider();
 
 #if NETFULL
-            Assert.AreEqual(23, services.Count());
+            Assert.AreEqual(26, services.Count());
 #else
             Assert.AreEqual(121, services.Count());
 #endif

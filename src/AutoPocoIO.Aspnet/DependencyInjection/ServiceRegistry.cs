@@ -27,7 +27,7 @@ namespace AutoPoco.DependencyInjection
         {
             if (!_serviceInfo.TryGetValue(serviceType, out ServiceInfo service))
             {
-                service = new ServiceInfo(serviceType);
+                service = new ServiceInfo();
                 _serviceInfo.TryAdd(serviceType, service);
             }
 
@@ -41,7 +41,7 @@ namespace AutoPoco.DependencyInjection
                 serviceInfo = GetServiceInfo(service.GenericTypeArguments[0]);
             else
                 serviceInfo = GetServiceInfo(service);
-            return serviceInfo.TryGetRegistration(out registration);
+            return serviceInfo.TryGetImplementation(out registration);
         }
     }
 }

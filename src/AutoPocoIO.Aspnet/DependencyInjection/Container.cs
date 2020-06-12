@@ -82,7 +82,6 @@ namespace AutoPoco.DependencyInjection
 
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            //List<object> services = new List<object>();
             var implementations = _serviceRegistry.GetServiceInfo(serviceType)?.Implementations.ToArray() ?? Array.Empty<IRegistratedService>();
 
             var parameter = Expression.Parameter(typeof(int));

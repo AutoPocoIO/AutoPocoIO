@@ -1,7 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AutoPoco.DependencyInjection
 {
@@ -16,7 +13,7 @@ namespace AutoPoco.DependencyInjection
 
         public IServiceScope CreateScope()
         {
-            return new ServiceScope(this._container.BeginScope());
+            return new ServiceScope(_container.BeginScope());
         }
     }
 }

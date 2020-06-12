@@ -138,6 +138,9 @@
   <data name="DbTypeNotRegistered" xml:space="preserve">
     <value>The request is expecting a {0} database but it is not registered in Startup.</value>
   </data>
+  <data name="DependencyResolverMissing" xml:space="preserve">
+    <value>Configuration missing dependency resolver. Use an overload with service collection.</value>
+  </data>
   <data name="HierarchyIdNotSupported" xml:space="preserve">
     <value>EF Core does not support HierarchyId types yet.</value>
   </data>

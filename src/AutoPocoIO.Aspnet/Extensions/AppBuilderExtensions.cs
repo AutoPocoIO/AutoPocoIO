@@ -28,7 +28,8 @@ namespace AutoPocoIO.Extensions
         /// <returns>The options builder so that further configuration can be chained.</returns>
         public static IAppBuilder UseAutoPoco(this IAppBuilder builder, IEnumerable<ServiceDescriptor> descriptors)
         {
-            return builder.UseAutoPoco(new HttpConfiguration(), new AutoPocoOptions(), descriptors);
+            HttpConfiguration config = builder.ConfigureIOCContainer(descriptors);
+            return builder.UseAutoPoco(config, new AutoPocoOptions());
         }
 
 
@@ -36,22 +37,27 @@ namespace AutoPocoIO.Extensions
         /// Default dashboard set up for with default settings
         /// </summary>
         /// <param name="builder">The builder being used to configure the context.</param>
-        ///  /// <param name="options">Dashboard setup options</param>
+        /// <param name="options">Dashboard setup options</param>
         /// <returns>The options builder so that further configuration can be chained.</returns>
         public static IAppBuilder UseAutoPoco(this IAppBuilder builder, AutoPocoOptions options, IEnumerable<ServiceDescriptor> descriptors)
         {
-            return builder.UseAutoPoco(new HttpConfiguration(), options, descriptors);
+            HttpConfiguration config = builder.ConfigureIOCContainer(descriptors);
+            return builder.UseAutoPoco(config, options);
         }
 
         /// <summary>
         /// Default dashboard set up for with default settings
         /// </summary>
         /// <param name="builder">The builder being used to configure the context.</param>
-        /// <param name="config">Current Httpconfiguration</param>
+        /// <param name="config">Current Httpconfiguration with IOC container</param>
         /// <returns>The options builder so that further configuration can be chained.</returns>
-        public static IAppBuilder UseAutoPoco(this IAppBuilder builder, HttpConfiguration config, IEnumerable<ServiceDescriptor> descriptors)
+        public static IAppBuilder UseAutoPoco(this IAppBuilder builder, HttpConfiguration config)
         {
-            return builder.UseAutoPoco(config, new AutoPocoOptions(), descriptors);
+            Check.NotNull(config, nameof(config));
+            if (config.DependencyResolver.GetType().FullName == "System.Web.Http.Dependencies.EmptyResolver")
+                throw new ArgumentException(ExceptionMessages.DependencyResolverMissing, nameof(config));
+
+            return builder.UseAutoPoco(config, new AutoPocoOptions());
         }
 
 
@@ -63,7 +69,7 @@ namespace AutoPocoIO.Extensions
         /// <param name="config">Current Httpconfiguration</param>
         /// <returns>The options builder so that further configuration can be chained.</returns>
 
-        public static IAppBuilder UseAutoPoco(this IAppBuilder builder, HttpConfiguration config, AutoPocoOptions options, IEnumerable<ServiceDescriptor> services)
+        public static IAppBuilder UseAutoPoco(this IAppBuilder builder, HttpConfiguration config, AutoPocoOptions options)
         {
             Check.NotNull(options, nameof(options));
             Check.NotNull(config, nameof(config));
@@ -81,18 +87,7 @@ namespace AutoPocoIO.Extensions
             config.EnableDependencyInjection();
             config.Count().Filter().OrderBy().Expand().Select().MaxTop(1000);
 
-            //DI
-            var container = new Container(services);
-            //Check if assigned (Empty Resolver is internal)
-            if (config.DependencyResolver.GetType().FullName == "System.Web.Http.Dependencies.EmptyResolver")
-            {
-                config.DependencyResolver = new AutoPocoDependencyResolver(container);
-                config.MessageHandlers.Insert(0, new RequestScopeFromOwinHandler());
-            }
-            if(DependencyResolver.Current.GetType().FullName == "System.Web.Mvc.DependencyResolver+DefaultDependencyResolver")
-                DependencyResolver.SetResolver(new AutoPocoDependencyResolver(container));
-
-            builder.Use<ContainerMiddleware>(config);
+          
             builder.UseWithDependencyInjection<LoggingMiddleware.LogRequestAndResponseMiddleware>(config);
 
             if (options.UseDashboard)
@@ -112,6 +107,24 @@ namespace AutoPocoIO.Extensions
         internal static IAppBuilder UseWithDependencyInjection<T>(this IAppBuilder app, HttpConfiguration config) where T : class, IOwinMiddlewareWithDI
         {
             return app.Use<OwinContainerWrapper<T>>(config);
+        }
+
+        private static HttpConfiguration ConfigureIOCContainer(this IAppBuilder app, IEnumerable<ServiceDescriptor> descriptors)
+        {
+            HttpConfiguration config = new HttpConfiguration();
+
+            var container = new Container(descriptors);
+
+            //WebApi Resolver
+            config.DependencyResolver = new AutoPocoDependencyResolver(container);
+            config.MessageHandlers.Insert(0, new RequestScopeFromOwinHandler());
+            
+            //MVC Resolver
+            DependencyResolver.SetResolver(new AutoPocoDependencyResolver(container));
+
+            //Link to Owin
+            app.Use<ContainerMiddleware>(config);
+            return config;
         }
     }
 }

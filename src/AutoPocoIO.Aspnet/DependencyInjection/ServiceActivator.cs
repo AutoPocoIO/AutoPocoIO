@@ -20,18 +20,13 @@ namespace AutoPoco.DependencyInjection
         {
             if (_constructors == null)
             {
-                SetPublicConsturctors();
+                _constructors = ImplementationType.GetTypeInfo()
+                                        .DeclaredConstructors
+                                        .Where(c => c.IsPublic);
             }
 
             MappedConstructor constructor = PickConstrutor(container);
             return constructor.Activate();
-        }
-
-        private void SetPublicConsturctors()
-        {
-            _constructors = ImplementationType.GetTypeInfo()
-                                        .DeclaredConstructors
-                                        .Where(c => c.IsPublic);
         }
 
         private MappedConstructor PickConstrutor(IContainer container)
