@@ -54,24 +54,10 @@ public void Configuration(IAppBuilder app)
 {
     ServiceCollection services = new ServiceCollection();
     services.AddAutoPoco()
-             .ConfigureSqlServerApplicationDatabase("<connection string>")
-             .WithSqlServerResources();
+            .ConfigureSqlServerApplicationDatabase("<connection string>")
+            .WithSqlServerResources();
 
-     var containerBuilder = new ContainerBuilder();
-     containerBuilder.Populate(services);
-     var container = containerBuilder.Build();
-
-     var config = new HttpConfiguration
-     {
-        //Set Autofac as dependency resolver
-        DependencyResolver = new AutofacWebApiDependencyResolver(container)
-     };
-    app.UseAutofacLifetimeScopeInjector(container);
-    app.UseAutofacWebApi(config);
-
-    app.UseAutoPoco(config);
-
-    app.UseWebApi(config); 
+    app.UseAutoPoco(services);
 }
 ```
 ### ASP.NET Core
