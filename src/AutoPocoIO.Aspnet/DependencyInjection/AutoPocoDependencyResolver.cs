@@ -34,7 +34,7 @@ namespace AutoPoco.DependencyInjection
         }
 
 
-        public IContainer RequestContainer
+        public virtual IContainer RequestContainer
         {
             get
             {

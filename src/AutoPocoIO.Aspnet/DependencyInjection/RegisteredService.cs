@@ -3,11 +3,11 @@ using System;
 
 namespace AutoPoco.DependencyInjection
 {
-    internal class RegistratedService : IRegistratedService
+    internal class RegisteredService : IRegistratedService
     {
         private ServiceDescriptor _descriptor;
 
-        public RegistratedService(ServiceDescriptor descriptor)
+        public RegisteredService(ServiceDescriptor descriptor)
         {
             Id = Guid.NewGuid();
             _descriptor = descriptor;

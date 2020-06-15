@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AutoPocoIO.AspNet.test.DependencyInjection
 {
-    public class Class1 : IInterface1 { }
+    public class Class1 : IInterface1 { public int prop1 { get; set; } }
 
     public class Class2 : IInterface1 { }
 
@@ -46,5 +47,14 @@ namespace AutoPocoIO.AspNet.test.DependencyInjection
     {
         public ClassWithListParameter(IEnumerable<IInterface1> c1) { this.c1 = c1; }
         public IEnumerable<IInterface1> c1 { get; }
+    }
+
+    public class Disposable1 : IDisposable
+    {
+        public bool IsDisposed { get; private set; }
+        public void Dispose()
+        {
+            IsDisposed = true;
+        }
     }
 }

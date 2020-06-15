@@ -29,7 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\IServiceRegistry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\MappedConstructor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\PreApplicationStart.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\RegistratedService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\RegisteredService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\RequestScopeFromOwinHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\RequestScopeManagement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ServiceActivator.cs" />

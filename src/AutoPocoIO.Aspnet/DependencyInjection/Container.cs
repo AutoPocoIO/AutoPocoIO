@@ -19,12 +19,12 @@ namespace AutoPoco.DependencyInjection
             _serviceRegistry = new ServiceRegistry();
             foreach (var descriptor in descriptors)
             {
-                var registration = new RegistratedService(descriptor);
+                var registration = new RegisteredService(descriptor);
                 _serviceRegistry.AddRegistration(registration);
             }
 
             ServiceDescriptor containerDescriptor = new ServiceDescriptor(typeof(IContainer), c => this, ServiceLifetime.Singleton);
-            var containerRegistration = new RegistratedService(containerDescriptor);
+            var containerRegistration = new RegisteredService(containerDescriptor);
             _serviceRegistry.AddRegistration(containerRegistration);
 
             RootContainer = this;
@@ -47,21 +47,6 @@ namespace AutoPoco.DependencyInjection
             return scope;
         }
 
-        public object CreateSharedInstance(Guid id, Func<object> creator)
-        {
-            lock (_mutex)
-            {
-                if (_sharedInstances.TryGetValue(id, out var result))
-                    return result;
-                else
-                {
-                    result = creator();
-                    _sharedInstances.TryAdd(id, result);
-                    return result;
-                }
-            }
-        }
-
         public void Dispose()
         {
             foreach (var obj in _disposables)
@@ -82,22 +67,24 @@ namespace AutoPoco.DependencyInjection
 
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            var implementations = _serviceRegistry.GetServiceInfo(serviceType)?.Implementations.ToArray() ?? Array.Empty<IRegistratedService>();
+            var implementations = _serviceRegistry.GetServiceInfo(serviceType).Implementations;
 
             var parameter = Expression.Parameter(typeof(int));
             var newArray = Expression.NewArrayBounds(serviceType, parameter);
             var serviceListFunc = Expression.Lambda<Func<int, IList>>(newArray, parameter).Compile();
 
-            IList services = serviceListFunc(implementations.Length);
+            IList services = serviceListFunc(implementations.Count);
 
-            for(int i = 0; i < implementations.Length; i++)
+            for(int i = 0; i < implementations.Count; i++)
                 services[i] = GetOrCreateInstance(serviceType, implementations[i]);
 
             return (IEnumerable<object>)services;
         }
 
-        public bool TryGetSharedInstance(Guid id, out object value) =>
-            _sharedInstances.TryGetValue(id, out value);
+        public bool TryGetRegistration(Type type, out IRegistratedService registration)
+        {
+            return _serviceRegistry.TryGetRegistration(type, out registration);
+        }
 
         private object GetOrCreateInstance(Type serviceType, IRegistratedService registration)
         {
@@ -108,7 +95,11 @@ namespace AutoPoco.DependencyInjection
             else
             {
                 if (registration.IsShared)
-                    return CreateSharedInstance(registration.Id, () => CreateInstance(registration));
+                {
+                    var instance = CreateInstance(registration);
+                    _sharedInstances.TryAdd(registration.Id, instance);
+                    return instance;
+                }
                 else
                     return CreateInstance(registration);
 
@@ -125,9 +116,7 @@ namespace AutoPoco.DependencyInjection
             return instance;
         }
 
-        public bool TryGetRegistration(Type type, out IRegistratedService registration)
-        {
-            return _serviceRegistry.TryGetRegistration(type, out registration);
-        }
+        private bool TryGetSharedInstance(Guid id, out object value) =>
+           _sharedInstances.TryGetValue(id, out value);
     }
 }
