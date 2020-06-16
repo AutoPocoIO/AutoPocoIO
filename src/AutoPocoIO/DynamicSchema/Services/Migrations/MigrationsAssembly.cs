@@ -37,18 +37,26 @@ namespace AutoPocoIO.DynamicSchema.Services.Migrations
 
                     foreach (var assembly in _autoPocoAssemblies)
                     {
-                        var items
-                            = from t in assembly.DefinedTypes
-                              where t.IsSubclassOf(typeof(Migration))
-                            && t.GetCustomAttribute<DbContextAttribute>()?.ContextType == _contextType
-                              let id = t.GetCustomAttribute<MigrationAttribute>()?.Id
-                              orderby id
-                              select (id, t);
 
-                        foreach (var (id, t) in items)
+                        IEnumerable<Type> types;
+                        try
+                        {
+                            types = assembly.DefinedTypes;
+                        }
+                        catch(ReflectionTypeLoadException e)
+                        {
+                            types = e.Types.Where(c => c != null);
+                        }
+
+                        var items = types.Where(c => c.IsSubclassOf(typeof(Migration))
+                        && c.GetCustomAttribute<DbContextAttribute>()?.ContextType == _contextType)
+                            .Select(c => new { Id = c.GetCustomAttribute<MigrationAttribute>()?.Id, Type = c })
+                            .OrderBy(c => c.Id);
+
+                        foreach (var item in items)
                         {
 
-                            result.Add(id, t);
+                            result.Add(item.Id, item.Type.GetTypeInfo());
                         }
                     }
                     

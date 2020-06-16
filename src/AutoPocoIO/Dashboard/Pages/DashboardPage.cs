@@ -1,12 +1,12 @@
 ﻿using AutoPocoIO.Dashboard.Repos;
-using System;
+using AutoPocoIO.Middleware;
 
 namespace AutoPocoIO.Dashboard.Pages
 {
     internal partial class DashboardPage
     {
         private readonly IDashboardRepo _repo;
-        public DashboardPage(IDashboardRepo repo, Layout layoutPage)
+        public DashboardPage(IDashboardRepo repo, ILayoutPage layoutPage)
         {
             _repo = repo;
             Layout = layoutPage;

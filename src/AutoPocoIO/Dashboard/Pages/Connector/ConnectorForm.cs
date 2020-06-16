@@ -3,10 +3,9 @@ using AutoPocoIO.Dashboard.Extensions;
 using AutoPocoIO.Dashboard.Repo;
 using AutoPocoIO.Dashboard.ViewModels;
 using AutoPocoIO.DynamicSchema.Util;
+using AutoPocoIO.Middleware;
 using AutoPocoIO.Middleware.Dispatchers;
-using AutoPocoIO.Models;
 using System.Collections.Generic;
-using System.Linq;
 using static AutoPocoIO.AutoPocoConstants;
 
 namespace AutoPocoIO.Dashboard.Pages
@@ -17,7 +16,7 @@ namespace AutoPocoIO.Dashboard.Pages
         private ConnectorViewModel model;
         private IDictionary<string, string> errors;
 
-        public ConnectorForm(IConnectorRepo repo, Layout layout)
+        public ConnectorForm(IConnectorRepo repo, ILayoutPage layout)
         {
             _repo = repo;
             Layout = layout;

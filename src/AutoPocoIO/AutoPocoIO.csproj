@@ -16,6 +16,7 @@
     <Company>AutoPocoIO</Company>
     <Authors>AutoPocoIO</Authors>
     <RepositoryUrl>https://github.com/AutoPocoIO/AutoPocoIO</RepositoryUrl>
+    <Version>1.0.0-beta.152</Version>
     <!--<DocumentationFile>SwaggerAddons\AutoPoco.xml</DocumentationFile>
    -->
   </PropertyGroup>

@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace AutoPocoIO.Dashboard.Extensions
 {
-    internal static class ModelExtensions
+    public static class ModelExtensions
     {
         public static TProperty FindValue<TProperty>(this IDictionary<string, string[]> form, string key)
         {

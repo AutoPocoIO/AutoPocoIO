@@ -1,6 +1,6 @@
 ﻿namespace AutoPocoIO.Exceptions
 {
-    internal class TableNotFoundException : BaseCaughtException
+    public class TableNotFoundException : BaseCaughtException
     {
         private readonly string _schemaName;
         private readonly string _tableName;

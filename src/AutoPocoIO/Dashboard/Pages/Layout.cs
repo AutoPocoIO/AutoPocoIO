@@ -1,8 +1,9 @@
 ﻿using AutoPocoIO.Dashboard.Repo;
+using AutoPocoIO.Middleware;
 
 namespace AutoPocoIO.Dashboard.Pages
 {
-    internal partial class Layout
+    internal partial class Layout : ILayoutPage
     {
         private readonly IConnectorRepo _repo;
 

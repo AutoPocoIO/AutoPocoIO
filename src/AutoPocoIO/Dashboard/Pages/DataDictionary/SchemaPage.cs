@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.Dashboard.Repo;
+using AutoPocoIO.Middleware;
 
 namespace AutoPocoIO.Dashboard.Pages
 {
@@ -6,7 +7,7 @@ namespace AutoPocoIO.Dashboard.Pages
     {
         private readonly IDataDictionaryRepo _repo;
 
-        public SchemaPage(IDataDictionaryRepo repo, Layout layout)
+        public SchemaPage(IDataDictionaryRepo repo, ILayoutPage layout)
         {
             _repo = repo;
             Layout = layout;

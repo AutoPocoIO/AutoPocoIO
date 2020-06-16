@@ -3,6 +3,7 @@ using AutoPocoIO.Dashboard.Pages;
 using AutoPocoIO.Dashboard.Repo;
 using AutoPocoIO.Dashboard.Repos;
 using AutoPocoIO.Factories;
+using AutoPocoIO.Middleware;
 using AutoPocoIO.Resources;
 using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
@@ -67,7 +68,7 @@ namespace AutoPocoIO.Dashboard
                 services.AddScoped<IDashboardRepo, DashboardRepo>();
                 services.AddScoped<DashboardPage>();
 
-                services.AddScoped<Layout>();
+                services.AddTransient<ILayoutPage, Layout>();
                 _provider = services.BuildServiceProvider();
             }
 

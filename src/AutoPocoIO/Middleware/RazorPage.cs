@@ -22,7 +22,7 @@ namespace AutoPocoIO.Middleware
             _content = new StringBuilder();
         }
 
-        public RazorPage Layout { get; protected set; }
+        public ILayoutPage Layout { get; protected set; }
 
         public IMiddlewareContext Context { get; private set; }
         public IMiddlewareRequest Request => Context.Request;
@@ -152,7 +152,7 @@ namespace AutoPocoIO.Middleware
             WriteLiteral(html?.ToString() ?? Encode(value.ToString()));
         }
 
-        protected string TransformText(string body)
+        public string TransformText(string body)
         {
             _body = body;
             Execute();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.Middleware
 {
-    internal sealed class AspNetCoreMiddlewareResponse : IMiddlewareResponse
+    public class AspNetCoreMiddlewareResponse : IMiddlewareResponse
     {
         private readonly HttpContext _context;
 

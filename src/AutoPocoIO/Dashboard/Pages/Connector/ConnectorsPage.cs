@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.Dashboard.Repo;
+using AutoPocoIO.Middleware;
 
 namespace AutoPocoIO.Dashboard.Pages
 {
@@ -6,7 +7,7 @@ namespace AutoPocoIO.Dashboard.Pages
     {
         private readonly IConnectorRepo _repo;
 
-        public ConnectorsPage(IConnectorRepo repo, Layout layout)
+        public ConnectorsPage(IConnectorRepo repo, ILayoutPage layout)
         {
             _repo = repo;
             Layout = layout;
