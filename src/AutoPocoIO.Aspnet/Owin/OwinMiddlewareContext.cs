@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace AutoPocoIO.Owin
 {
-    internal class OwinMiddlewareContext : IMiddlewareContext
+    public class OwinMiddlewareContext : IMiddlewareContext
     {
 
         public OwinMiddlewareContext(IDictionary<string, object> environment, IServiceProvider internalProvider)

@@ -1,6 +1,6 @@
 ﻿namespace AutoPocoIO.Middleware
 {
-    internal class NonEscapedString
+    public class NonEscapedString
     {
         private readonly string _value;
         public NonEscapedString(string value)

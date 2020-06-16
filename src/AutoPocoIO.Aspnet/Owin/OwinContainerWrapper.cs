@@ -8,7 +8,7 @@ using System.Web.Http;
 
 namespace AutoPocoIO.Owin
 {
-    internal class OwinContainerWrapper<T> : OwinMiddleware
+    public class OwinContainerWrapper<T> : OwinMiddleware
         where T : class, IOwinMiddlewareWithDI
     {
         private readonly HttpConfiguration _config;

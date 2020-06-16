@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace AutoPocoIO.Middleware
 {
-    internal interface IMiddlewareContext 
+    public interface IMiddlewareContext 
     {
         IMiddlewareRequest Request { get; }
         IMiddlewareResponse Response { get; }

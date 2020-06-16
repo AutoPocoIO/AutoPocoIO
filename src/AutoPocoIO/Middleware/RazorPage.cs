@@ -9,7 +9,7 @@ using System.Text;
 
 namespace AutoPocoIO.Middleware
 {
-    internal abstract class RazorPage
+    public abstract class RazorPage
     {
         private readonly StringBuilder _content;
         private string _body;
@@ -24,10 +24,9 @@ namespace AutoPocoIO.Middleware
 
         public RazorPage Layout { get; protected set; }
 
-        internal IMiddlewareContext Context { get; private set; }
-
-        internal IMiddlewareRequest Request => Context.Request;
-        internal IMiddlewareResponse Response => Context.Response;
+        public IMiddlewareContext Context { get; private set; }
+        public IMiddlewareRequest Request => Context.Request;
+        public IMiddlewareResponse Response => Context.Response;
         public ILoggingService  LoggingService { get; set; }
         public IDictionary<string, string> Sections { get; }
         public IDictionary<string, object> ViewBag { get; }
@@ -50,7 +49,7 @@ namespace AutoPocoIO.Middleware
             Context = parentPage.Context;
         }
 
-        internal void Assign(IMiddlewareContext context)
+        public void Assign(IMiddlewareContext context)
         {
             Context = context;
         }
@@ -153,7 +152,7 @@ namespace AutoPocoIO.Middleware
             WriteLiteral(html?.ToString() ?? Encode(value.ToString()));
         }
 
-        private string TransformText(string body)
+        protected string TransformText(string body)
         {
             _body = body;
             Execute();

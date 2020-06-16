@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.Owin
 {
-    internal class DashboardMiddleware : IOwinMiddlewareWithDI
+    public class DashboardMiddleware : IOwinMiddlewareWithDI
     {
         private readonly ILoggingService _loggingService;
         private readonly string _basePath;

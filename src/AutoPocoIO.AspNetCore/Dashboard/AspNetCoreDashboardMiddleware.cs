@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.Dashboard
 {
-    internal class AspNetCoreDashboardMiddleware
+    public class AspNetCoreDashboardMiddleware
     {
         private readonly RequestDelegate _next;
         private DashboardRoutes _routes;

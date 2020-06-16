@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.Owin
 {
-    internal sealed class OwinMiddlewareResponse : IMiddlewareResponse
+    public class OwinMiddlewareResponse : IMiddlewareResponse
     {
         private readonly IOwinContext _context;
 

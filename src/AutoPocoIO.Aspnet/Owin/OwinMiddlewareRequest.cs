@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.Owin
 {
-    internal sealed class OwinMiddlewareRequest : IMiddlewareRequest, IDisposable
+    public class OwinMiddlewareRequest : IMiddlewareRequest, IDisposable
     {
         private readonly IOwinContext _context;
         private readonly MemoryStream _bodyCopy;
@@ -50,29 +50,6 @@ namespace AutoPocoIO.Owin
                             .ToDictionary(c => c.Key, c => c.Value);
         }
 
-        public (T Entity, IDictionary<string, string> ErrorMessages) GetFormValues<T>() where T : class
-        {
-            var form = _context.Request.ReadFormAsync()
-                            .Result
-                            .ToDictionary(c => c.Key, c => c.Value);
-
-            Dictionary<string, string> ErrorMessages = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
-            var entity = Activator.CreateInstance<T>();
-            var properties = typeof(T).GetProperties();
-
-            //foreach (var propertyInfo in properties)
-            //{
-            //    form.TryGetValue(propertyInfo.Name, out string[] formValue);
-            //    ErrorMessages.ValidateAndSetProperty(propertyInfo, entity, formValue);
-            //}
-
-            ////Buisness logic validation
-            //if (entity is IValidatable)
-            //    ((IValidatable)entity).Validate(ErrorMessages, appDbContext);
-
-            return (entity, ErrorMessages);
-        }
 
         public void Dispose()
         {

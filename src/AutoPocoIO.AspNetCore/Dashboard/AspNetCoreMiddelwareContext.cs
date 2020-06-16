@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace AutoPocoIO.Middleware
 {
-    internal sealed class AspNetCoreMiddlewareContext : IMiddlewareContext
+    public class AspNetCoreMiddlewareContext : IMiddlewareContext
     {
 
         public AspNetCoreMiddlewareContext(HttpContext httpContext, IServiceProvider internalProvider)
@@ -16,14 +16,14 @@ namespace AutoPocoIO.Middleware
             InternalServiceProvider = internalProvider;
         }
 
-        public IMiddlewareRequest Request { get; private set; }
+        public IMiddlewareRequest Request { get; }
 
-        public IMiddlewareResponse Response { get; private set; }
+        public IMiddlewareResponse Response { get;  }
 
         public Match UriMatch { get; set; }
         public Uri RequestUri { get; set; }
         public Dictionary<string, string> QueryStrings { get; set; }
 
-        public IServiceProvider InternalServiceProvider { get; private set; }
+        public IServiceProvider InternalServiceProvider { get;  }
     }
 }
