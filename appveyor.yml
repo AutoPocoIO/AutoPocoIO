@@ -44,6 +44,6 @@ deploy:
     username:
        secure: RjsXxaVLs5C3lpq67rHM9g==
     api_key:
-       secure: MT0+TYT7sH+F3qYM33HKuYp88ev2TgNsHLKO9R4G4F9s9iG2NyyJbi4aaQtfPT6+
+       secure: LvjtSQVaspqe2HzrcP5NG7b4ObvMscVivtHlHB9TBQm8NTR2sWUY4V2cy2waIv5X
     on:
        branch: master    
