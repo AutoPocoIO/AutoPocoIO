@@ -29,7 +29,7 @@ namespace AutoPocoIO.Dashboard.Pages
             _repo.Validate(model, errors);
             if (errors.Count == 0)
             {
-                if (model.Id == 0)
+                if (model.Id != null)
                 {
                     LoggingService.AddTableToLogger(DefaultConnectors.AppDB, DefaultTables.Connectors, HttpMethodType.POST);
                     _repo.Insert(model);
