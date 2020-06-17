@@ -226,7 +226,8 @@ namespace AutoPocoIO.Dashboard.Repos
             var requests = _db.RequestLogs.GroupJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid },
                                                     c => new { RequestId = c.ResponseId, c.RequestGuid },
                                                     (req, resp) => new { RequestTime = req.DateTimeUtc, resp.FirstOrDefault().Status, ResponseTime = resp.FirstOrDefault().DateTimeUtc })
-                                        .Where(c => c.RequestTime >= searchDate && status.Invoke(c.Status));
+                                        .Where(c => c.RequestTime >= searchDate && status.Invoke(c.Status))
+                                        .Where(c => c.RequestTime != null && c.ResponseTime != null);
             if (requests.Any())
                 return (int)requests.Average(c => (c.ResponseTime - c.RequestTime).Value.TotalMilliseconds);
             else

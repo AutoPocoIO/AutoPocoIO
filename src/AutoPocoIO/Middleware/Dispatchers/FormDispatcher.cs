@@ -26,7 +26,9 @@ namespace AutoPocoIO.Middleware
             page.LoggingService = loggingService;
 
             var form = await context.Request.ReadFormAsync().ConfigureAwait(false);
+            page.Assign(context);
             page.SetForm(form);
+
             IMiddlewareDispatcher result = page.Save();
 
             await result.Dispatch(context, loggingService).ConfigureAwait(false);

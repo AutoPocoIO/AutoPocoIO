@@ -1,11 +1,9 @@
-﻿using AutoPocoIO.Middleware;
-using AutoPocoIO.Middleware.Dispatchers;
-using AutoPocoIO.Services;
+﻿using AutoPocoIO.Services;
 using System.Threading.Tasks;
 
-namespace AutoPocoIO.Dashboard
+namespace AutoPocoIO.Middleware.Dispatchers
 {
-    internal class RedirectDispatcher : IMiddlewareDispatcher
+    public class RedirectDispatcher : IMiddlewareDispatcher
     {
         private string _location;
 
