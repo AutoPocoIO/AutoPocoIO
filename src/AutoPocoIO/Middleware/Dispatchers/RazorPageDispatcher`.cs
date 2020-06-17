@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.Middleware.Dispatchers
 {
-    internal class RazorPageDispatcher<TPage> : IMiddlewareDispatcher where TPage : RazorPage
+    public class RazorPageDispatcher<TPage> : IMiddlewareDispatcher where TPage : RazorPage
     {
         private readonly Action<TPage, Match> _pageFunc;
 

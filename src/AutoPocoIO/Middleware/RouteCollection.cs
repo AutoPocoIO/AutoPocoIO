@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace AutoPocoIO.Middleware
 {
-    internal class RouteCollection
+    public class RouteCollection
     {
         private readonly List<Tuple<string, HttpMethodType, IMiddlewareDispatcher>> _dispatchers = new List<Tuple<string, HttpMethodType, IMiddlewareDispatcher>>();
 

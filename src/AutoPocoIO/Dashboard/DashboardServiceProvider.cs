@@ -1,4 +1,5 @@
-﻿using AutoPocoIO.Context;
+﻿using AutoPoco.Dashboard;
+using AutoPocoIO.Context;
 using AutoPocoIO.Dashboard.Pages;
 using AutoPocoIO.Dashboard.Repo;
 using AutoPocoIO.Dashboard.Repos;
@@ -14,7 +15,7 @@ using System.Collections.Generic;
 
 namespace AutoPocoIO.Dashboard
 {
-    internal class DashboardServiceProvider
+    public class DashboardServiceProvider
     {
         private static IServiceProvider _provider;
 
@@ -26,7 +27,7 @@ namespace AutoPocoIO.Dashboard
         {
             if (_provider == null)
             {
-                var services = new ServiceCollection();
+                IServiceCollection services = new ServiceCollection();
 
                 services.AddSingleton<DashboardRoutes>();
                 services.TryAddSingleton<ITimeProvider, DefaultTimeProvider>();
@@ -69,6 +70,12 @@ namespace AutoPocoIO.Dashboard
                 services.AddScoped<DashboardPage>();
 
                 services.AddTransient<ILayoutPage, Layout>();
+                services.AddTransient<IMiddlewareContextFactory, MiddlewareContextFactory>();
+
+                var replaceServices = rootProvider.GetService<IReplaceServices<DashboardServiceProvider>>();
+                if (replaceServices != null)
+                    services = replaceServices.ReplaceInternalServices(rootProvider, services);
+
                 _provider = services.BuildServiceProvider();
             }
 

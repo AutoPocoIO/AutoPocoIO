@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.Middleware.Dispatchers
 {
-    internal class RazorPageDispatcher : IMiddlewareDispatcher
+    public class RazorPageDispatcher : IMiddlewareDispatcher
     {
         private readonly Func<Match, RazorPage> _pageFunc;
 

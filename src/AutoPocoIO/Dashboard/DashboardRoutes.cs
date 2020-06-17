@@ -6,7 +6,7 @@ using AutoPocoIO.Middleware.Dispatchers;
 
 namespace AutoPocoIO.Dashboard
 {
-    internal class DashboardRoutes
+    public class DashboardRoutes
     {
         public RouteCollection Routes { get; }
 
