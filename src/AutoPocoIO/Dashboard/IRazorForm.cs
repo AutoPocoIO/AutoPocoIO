@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AutoPocoIO.Dashboard
 {
-    internal interface IRazorForm
+    public interface IRazorForm
     {
         void SetForm(IDictionary<string, string[]> values);
         IMiddlewareDispatcher Save();

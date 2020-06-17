@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.Middleware
 {
-    internal class FormDispatcher<TPage> : IMiddlewareDispatcher where TPage : RazorPage, IRazorForm
+    public class FormDispatcher<TPage> : IMiddlewareDispatcher where TPage : RazorPage, IRazorForm
     {
 
         public async Task Dispatch(IMiddlewareContext context, ILoggingService loggingService)

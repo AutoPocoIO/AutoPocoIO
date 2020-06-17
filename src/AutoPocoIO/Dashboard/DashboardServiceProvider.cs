@@ -1,5 +1,4 @@
-﻿using AutoPoco.Dashboard;
-using AutoPocoIO.Context;
+﻿using AutoPocoIO.Context;
 using AutoPocoIO.Dashboard.Pages;
 using AutoPocoIO.Dashboard.Repo;
 using AutoPocoIO.Dashboard.Repos;
@@ -70,7 +69,6 @@ namespace AutoPocoIO.Dashboard
                 services.AddScoped<DashboardPage>();
 
                 services.AddTransient<ILayoutPage, Layout>();
-                services.AddTransient<IMiddlewareContextFactory, MiddlewareContextFactory>();
 
                 var replaceServices = rootProvider.GetService<IReplaceServices<DashboardServiceProvider>>();
                 if (replaceServices != null)
