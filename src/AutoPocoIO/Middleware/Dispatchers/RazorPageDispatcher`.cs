@@ -15,11 +15,12 @@ namespace AutoPocoIO.Middleware.Dispatchers
             _pageFunc = pageFunc;
         }
 
-        public Task Dispatch(IMiddlewareContext context, ILoggingService logginerService)
+        public Task Dispatch(IMiddlewareContext context, ILoggingService loggingService)
         {
             context.Response.ContentType = "text/html";
 
             TPage page = context.InternalServiceProvider.GetRequiredService<TPage>();
+            page.LoggingService = loggingService;
             page.Assign(context);
             _pageFunc(page, context.UriMatch);
 

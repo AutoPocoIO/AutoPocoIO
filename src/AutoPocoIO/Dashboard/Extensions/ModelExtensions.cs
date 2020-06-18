@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
 namespace AutoPocoIO.Dashboard.Extensions
@@ -12,17 +15,58 @@ namespace AutoPocoIO.Dashboard.Extensions
             object property = default(TProperty);
             if (form.ContainsKey(key))
             {
-                TypeConverter converter = TypeDescriptor.GetConverter(typeof(TProperty));
-                if (typeof(TProperty) == typeof(string))
+                var type = typeof(TProperty);
+                if (type == typeof(string))
                     property = form[key][0];
-                else if (typeof(TProperty) == typeof(bool) && form[key][0].Equals("on", System.StringComparison.OrdinalIgnoreCase))
-                    property = true;
-                else
-                    property = (TProperty)converter.ConvertFromString(form[key][0]);
+                else if (typeof(IEnumerable).IsAssignableFrom(typeof(TProperty)))
+                {
+                    var parameter = Expression.Parameter(typeof(int));
+                    var newArray = Expression.NewArrayBounds(type.GetElementType(), parameter);
+                    var createArrayFunc = Expression.Lambda<Func<int, IList>>(newArray, parameter).Compile();
+                    IList values = createArrayFunc(form[key].Length);
 
+                    //insert func
+                    ParameterExpression arrayExpr = Expression.Parameter(typeof(IList), "array");
+                    ParameterExpression indexExpression = Expression.Parameter(typeof(int), "index");
+                    ParameterExpression valueExpr = Expression.Parameter(typeof(object), "value");
+
+                    var convertExpression = Expression.Convert(valueExpr, type.GetElementType());
+                    Expression arrayAccessExpr = Expression.Property(arrayExpr, "Item", indexExpression);
+
+                    var assignFunc = Expression.Lambda<Action<IList, int, object>>(
+                        Expression.Assign(arrayAccessExpr, convertExpression),
+                        arrayExpr,
+                        indexExpression,
+                        valueExpr).Compile();
+                    
+                    for (int i = 0; i < form[key].Length; i++)
+                    {
+                        assignFunc(values, i, FindValue(type.GetElementType(), form[key][i]));
+                    }
+                    property = (TProperty)values;
+                }
+                else
+                {
+                    property = FindValue(type, form[key][0]);
+                }
             }
 
             return (TProperty)property;
+        }
+
+        private static object FindValue(Type type, string value)
+        {
+            object property = type.IsValueType ? Activator.CreateInstance(type) : null;
+
+            TypeConverter converter = TypeDescriptor.GetConverter(type);
+            if (type == typeof(string))
+                property = value;
+            else if (type == typeof(bool) && value.Equals("on", System.StringComparison.OrdinalIgnoreCase))
+                property = true;
+            else
+                property = converter.ConvertFromString(value);
+
+            return property;
         }
 
         public static int ToInt(this Match match, string key)
