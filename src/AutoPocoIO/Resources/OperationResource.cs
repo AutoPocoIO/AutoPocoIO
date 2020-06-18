@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.AutoPoco;
 using System.Linq.Dynamic.Core;
-using System.Security.Principal;
 
 namespace AutoPocoIO.Resources
 {
@@ -32,8 +31,8 @@ namespace AutoPocoIO.Resources
         public string SchemaName => Connector.Schema;
         public virtual string DbObjectName { get; private set; }
         public virtual IDbSchema DbSchema { get; }
+        public virtual Config Config { get; }
 
-        protected Config Config { get; }
         protected ISchemaInitializer SchemaInitializer { get;}
         protected IServiceProvider InternalServiceProvider { get;}
 
