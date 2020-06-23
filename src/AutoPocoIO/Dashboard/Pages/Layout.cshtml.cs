@@ -99,13 +99,14 @@ WriteLiteral("</span></a>\r\n                </li>\r\n                <li class=
 
                                          Write(TransformUrl("/DataDictionary"));
 
-WriteLiteral(@""">Data Dictionary</a>
-                </li>
-                <li class=""nav-item"">
-                    <a class=""nav-link"" href=""#"">Request History</a>
-                </li>
-                <li class=""nav-item"">
-                    <a class=""nav-link"" href=""");
+WriteLiteral("\">Data Dictionary</a>\r\n                </li>\r\n                <li class=\"nav-item" +
+"\">\r\n                    <a class=\"nav-link\" href=\"");
+
+
+                                         Write(TransformUrl("/Requests"));
+
+WriteLiteral("\">Request History</a>\r\n                </li>\r\n                <li class=\"nav-item" +
+"\">\r\n                    <a class=\"nav-link\" href=\"");
 
 
                                          Write(TransformUrl("/swagger"));

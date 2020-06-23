@@ -37,12 +37,12 @@ namespace AutoPocoIO.Dashboard.Repos
 
         public virtual int SuccessFulRequests(int daysAgo)
         {
-            return GetCountByStatus(daysAgo, c => c == "HTTP 200 : OK");
+            return GetCountByStatus(daysAgo, c => IsSuccessFunc(c));
         }
 
         public virtual int FailedRequests(int daysAgo)
         {
-            return GetCountByStatus(daysAgo, c => c != "HTTP 200 : OK");
+            return GetCountByStatus(daysAgo, c => !IsSuccessFunc(c));
         }
 
         public virtual int UnauthorizedRequest(int daysAgo)
@@ -57,12 +57,12 @@ namespace AutoPocoIO.Dashboard.Repos
 
         public virtual int SuccessFulRequestsTime(int daysAgo)
         {
-            return GetResponseTimeByStatus(daysAgo, c => c == "HTTP 200 : OK");
+            return GetResponseTimeByStatus(daysAgo, c => IsSuccessFunc(c));
         }
 
         public virtual int FailedRequestsTime(int daysAgo)
         {
-            return GetResponseTimeByStatus(daysAgo, c => c != "HTTP 200 : OK");
+            return GetResponseTimeByStatus(daysAgo, c => !IsSuccessFunc(c));
         }
 
         public virtual int UnauthorizedRequestTime(int daysAgo)
@@ -77,7 +77,7 @@ namespace AutoPocoIO.Dashboard.Repos
 
             var requests = _db.RequestLogs.GroupJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid },
                                                    c => new { RequestId = c.ResponseId, c.RequestGuid },
-                                                   (req, resp) => new { RequestTime = req.DateTimeUtc, IsSuccess = resp.FirstOrDefault().Status == "HTTP 200 : OK" })
+                                                   (req, resp) => new { RequestTime = req.DateTimeUtc, IsSuccess = IsSuccessFunc(resp.FirstOrDefault().Status)})
                                           .Where(c => c.RequestTime >= searchDate);
 
             var groups = requests.GroupBy(c => new
@@ -148,7 +148,7 @@ namespace AutoPocoIO.Dashboard.Repos
 
             var requests = _db.RequestLogs.GroupJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid },
                                                    c => new { RequestId = c.ResponseId, c.RequestGuid },
-                                                   (req, resp) => new { RequestTime = req.DateTimeUtc, IsSuccess = resp.FirstOrDefault().Status == "HTTP 200 : OK" })
+                                                   (req, resp) => new { RequestTime = req.DateTimeUtc, IsSuccess = IsSuccessFunc(resp.FirstOrDefault().Status) })
                                           .Where(c => c.RequestTime >= searchDate);
 
             var groups = requests.GroupBy(c => new
@@ -233,5 +233,7 @@ namespace AutoPocoIO.Dashboard.Repos
             else
                 return 0;
         }
+
+        private Func<string, bool> IsSuccessFunc = c => c == "HTTP 200 : OK" || c == "HTTP 302 : Found";
     }
 }

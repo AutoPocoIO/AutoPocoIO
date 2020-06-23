@@ -27,6 +27,9 @@ namespace AutoPocoIO.Dashboard
             Routes.Add("/DataDictionary", HttpMethodType.GET, new RazorPageDispatcher<DataDictionaryPage>((p, m) => p.ListConnectors()));
             Routes.Add("/DataDictionary/Schema/(?<id>.+)", HttpMethodType.GET, new RazorPageDispatcher<SchemaPage>((p, m) => p.ListDbObjects(m.ToInt("id"))));
             Routes.Add("/DataDictionary/Table/(?<id>.+)/(?<name>.+)", HttpMethodType.GET, new RazorPageDispatcher<ObjectDetailsPage>((p, m) => p.ListTableDetails(m.ToInt("id"), m.GetString("name"))));
+
+            //Request History
+            Routes.Add("/Requests", HttpMethodType.GET, new RazorPageDispatcher<RequestHistoryPage>((p, m) => p.ListRequests()));
         }
     }
 }
