@@ -1,4 +1,4 @@
-﻿using AutoPocoIO.Dashboard.Repo;
+﻿using AutoPocoIO.Dashboard.Repos;
 using AutoPocoIO.Middleware;
 
 namespace AutoPocoIO.Dashboard.Pages

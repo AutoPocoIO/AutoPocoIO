@@ -2,7 +2,7 @@
 using AutoPocoIO.Models;
 using System.Collections.Generic;
 
-namespace AutoPocoIO.Dashboard.Repo
+namespace AutoPocoIO.Dashboard.Repos
 {
     internal interface IDataDictionaryRepo
     {

@@ -1,13 +1,12 @@
 ﻿using AutoPocoIO.CustomAttributes;
 using AutoPocoIO.Dashboard.ViewModels;
 using AutoPocoIO.DynamicSchema.Enums;
-using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Models;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace AutoPocoIO.Dashboard.Repo
+namespace AutoPocoIO.Dashboard.Repos
 {
     internal class DataDictionaryRepo : IDataDictionaryRepo
     {
@@ -45,9 +44,9 @@ namespace AutoPocoIO.Dashboard.Repo
             var data = resource.GetResourceRecords(new Dictionary<string, string>());
 
             var properties = new List<NavigationPropertyViewModel>();
-            foreach(var property in data.ElementType.GetProperties())
+            foreach (var property in data.ElementType.GetProperties())
             {
-                if(property.PropertyType.IsClass && property.PropertyType != typeof(string))
+                if (property.PropertyType.IsClass && property.PropertyType != typeof(string))
                 {
                     NavigationPropertyViewModel navigationProperty = new NavigationPropertyViewModel()
                     {
@@ -55,7 +54,7 @@ namespace AutoPocoIO.Dashboard.Repo
                         ReferencedSchema = property.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName,
                         ReferencedTable = property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName
                     };
-                    if(typeof(System.Collections.IEnumerable).IsAssignableFrom(property.PropertyType))
+                    if (typeof(System.Collections.IEnumerable).IsAssignableFrom(property.PropertyType))
                     {
                         navigationProperty.Relationship = "Many to 1";
                     }

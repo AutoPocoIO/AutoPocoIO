@@ -1,6 +1,6 @@
 ﻿using AutoPocoIO.Constants;
 using AutoPocoIO.Dashboard.Extensions;
-using AutoPocoIO.Dashboard.Repo;
+using AutoPocoIO.Dashboard.Repos;
 using AutoPocoIO.Dashboard.ViewModels;
 using AutoPocoIO.DynamicSchema.Util;
 using AutoPocoIO.Middleware;
@@ -29,18 +29,19 @@ namespace AutoPocoIO.Dashboard.Pages
             _repo.Validate(model, errors);
             if (errors.Count == 0)
             {
+                int id;
                 if (model.Id == null)
                 {
                     LoggingService.AddTableToLogger(DefaultConnectors.AppDB, DefaultTables.Connectors, HttpMethodType.POST);
-                    _repo.Insert(model);
+                    id = _repo.Insert(model);
                 }
                 else
                 {
                     LoggingService.AddTableToLogger(DefaultConnectors.AppDB, DefaultTables.Connectors, HttpMethodType.PUT);
-                    _repo.Save(model);
+                    id = _repo.Save(model);
                 }
 
-                return new RedirectDispatcher("/Connectors");
+                return new RedirectDispatcher($"/Connectors/Connector/{id}");
             }
 
             ViewBag["model"] = model;

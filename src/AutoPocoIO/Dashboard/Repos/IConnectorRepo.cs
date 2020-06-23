@@ -1,16 +1,15 @@
 ﻿using AutoPocoIO.Dashboard.ViewModels;
-using AutoPocoIO.Models;
 using System.Collections.Generic;
 
-namespace AutoPocoIO.Dashboard.Repo
+namespace AutoPocoIO.Dashboard.Repos
 {
     public interface IConnectorRepo
     {
         int ConnectorCount();
         IEnumerable<ConnectorViewModel> ListConnectors();
-        void Save(ConnectorViewModel model);
+        int Save(ConnectorViewModel model);
         ConnectorViewModel GetById(int id);
-        void Insert(ConnectorViewModel model);
+        int Insert(ConnectorViewModel model);
         void Validate(ConnectorViewModel model, IDictionary<string, string> errors);
         void Delete(int id);
     }

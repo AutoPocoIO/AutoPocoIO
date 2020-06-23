@@ -1,7 +1,7 @@
 ﻿using AutoPocoIO.Dashboard.ViewModels;
 using System.Collections.Generic;
 
-namespace AutoPocoIO.Dashboard.Repo
+namespace AutoPocoIO.Dashboard.Repos
 {
     public interface IRequestHistoryRepo
     {

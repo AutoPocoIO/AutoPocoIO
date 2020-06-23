@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AutoPocoIO.Dashboard.Repo
+namespace AutoPocoIO.Dashboard.Repos
 {
     public class RequestHistoryRepo : IRequestHistoryRepo
     {

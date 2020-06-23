@@ -1,6 +1,6 @@
 ﻿using AutoPocoIO.Dashboard;
 using AutoPocoIO.Dashboard.Pages;
-using AutoPocoIO.Dashboard.Repo;
+using AutoPocoIO.Dashboard.Repos;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

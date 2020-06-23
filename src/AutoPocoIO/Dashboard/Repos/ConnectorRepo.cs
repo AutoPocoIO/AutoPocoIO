@@ -7,7 +7,7 @@ using System.Linq;
 using AutoPocoIO.Factories;
 using System;
 
-namespace AutoPocoIO.Dashboard.Repo
+namespace AutoPocoIO.Dashboard.Repos
 {
     internal class ConnectorRepo : IConnectorRepo
     {
@@ -38,7 +38,7 @@ namespace AutoPocoIO.Dashboard.Repo
 
         public virtual int ConnectorCount() => _db.Connector.Count();
 
-        public void Save(ConnectorViewModel model)
+        public int Save(ConnectorViewModel model)
         {
             model.ResourceType = 1;
 
@@ -66,6 +66,7 @@ namespace AutoPocoIO.Dashboard.Repo
 
             _db.SaveChanges();
 
+            return connector.Id;
         }
 
         public ConnectorViewModel GetById(int id)
@@ -93,7 +94,7 @@ namespace AutoPocoIO.Dashboard.Repo
             return model;
         }
 
-        public void Insert(ConnectorViewModel model)
+        public int Insert(ConnectorViewModel model)
         {
             model.ResourceType = 1;
 
@@ -123,6 +124,8 @@ namespace AutoPocoIO.Dashboard.Repo
             _db.Connector.Add(connector);
 
             _db.SaveChanges();
+
+            return connector.Id;
         }
 
         public void Validate(ConnectorViewModel model, IDictionary<string, string> errors)
@@ -130,11 +133,11 @@ namespace AutoPocoIO.Dashboard.Repo
             errors.Clear();
             if (string.IsNullOrEmpty(model.Name))
                 errors[nameof(model.Name)] = "Connector Name is required.";
-            else if(model.Name.Length > 50)
+            else if (model.Name.Length > 50)
                 errors[nameof(model.Name)] = $"Connector Name has a max length of 50.  {model.Name.Length} was submitted.";
-            else if(_db.Connector.Any(c => c.Name.Equals(model.Name, StringComparison.OrdinalIgnoreCase) && c.Id != model.Id))
+            else if (_db.Connector.Any(c => c.Name.Equals(model.Name, StringComparison.OrdinalIgnoreCase) && c.Id != model.Id))
             {
-                errors[nameof(model.Name)] =  $"The Connector Name {model.Name} already exists.";
+                errors[nameof(model.Name)] = $"The Connector Name {model.Name} already exists.";
             }
 
             if (model.ResourceType == null)
