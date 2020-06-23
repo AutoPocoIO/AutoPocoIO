@@ -19,7 +19,7 @@ namespace AutoPocoIO.Dashboard.Pages
     using AutoPocoIO.Middleware;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    internal partial class ConnectorsPage : RazorPage
+    public partial class ConnectorsPage : RazorPage
     {
 #line hidden
 
@@ -54,7 +54,8 @@ WriteLiteral(@"'"">
                 <th scope=""col"">Database</th>
                 <th scope=""col"">Schema</th>
                 <th scope=""col"">User</th>
-                <th scope=""col"">Active</th>
+                <th scope=""col"">Status</th>
+                <th scope=""col"">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -64,47 +65,61 @@ WriteLiteral(@"'"">
              foreach (var row in (IEnumerable<ConnectorViewModel>)ViewBag["Connectors"])
             {
 
-WriteLiteral("                <tr>\r\n                    <th scope=\"row\"><a href=\"");
+WriteLiteral("            <tr>\r\n                <th scope=\"row\"><a href=\"");
 
 
-                                        Write(TransformUrl("/Connectors/Connector/" + row.Id));
-
-WriteLiteral("\">");
-
-
-                                                                                          Write(row.Name);
-
-WriteLiteral("</a></th>\r\n                    <td>");
-
-
-                   Write(row.DataSource);
-
-WriteLiteral("</td>\r\n                    <td>");
-
-
-                   Write(row.InitialCatalog);
-
-WriteLiteral("</td>\r\n                    <td>");
-
-
-                   Write(row.Schema);
-
-WriteLiteral("</td>\r\n                    <td>");
-
-
-                   Write(row.UserId);
-
-WriteLiteral("</td>\r\n                    <td><span style=\"font-weight:bold; color:");
-
-
-                                                         Write(row.IsActive ? "green" : "red");
+                                    Write(TransformUrl("/Connectors/Connector/" + row.Id));
 
 WriteLiteral("\">");
 
 
-                                                                                            Write(row.IsActive ? "Active" : "Disabled");
+                                                                                      Write(row.Name);
 
-WriteLiteral("</span></td>\r\n                </tr>\r\n");
+WriteLiteral("</a></th>\r\n                <td>");
+
+
+               Write(row.DataSource);
+
+WriteLiteral("</td>\r\n                <td>");
+
+
+               Write(row.InitialCatalog);
+
+WriteLiteral("</td>\r\n                <td>");
+
+
+               Write(row.Schema);
+
+WriteLiteral("</td>\r\n                <td>");
+
+
+               Write(row.UserId);
+
+WriteLiteral("</td>\r\n                <td><span style=\"font-weight:bold; color:");
+
+
+                                                     Write(row.IsActive ? "green" : "red");
+
+WriteLiteral("\">");
+
+
+                                                                                        Write(row.IsActive ? "Active" : "Disabled");
+
+WriteLiteral("</span></td>\r\n                <td><a href=\"#\" onclick=\"if (confirm(\'Are you sure " +
+"you want to delete?\')) $.post(\'");
+
+
+                                                                                             Write(TransformUrl("/Connectors/Delete/"));
+
+
+                                                                                                                                 Write(row.Id);
+
+WriteLiteral("\', function (data) { window.location = \'");
+
+
+                                                                                                                                                                                Write(TransformUrl("/Connectors"));
+
+WriteLiteral("\' });\">Delete</a></td>\r\n            </tr>\r\n");
 
 
             }

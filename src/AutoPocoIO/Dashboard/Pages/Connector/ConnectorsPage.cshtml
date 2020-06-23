@@ -1,4 +1,4 @@
-﻿@* Generator: Template TypeVisibility: internal GeneratePrettyNames: True DisableLinePragmas: true  Namespace: AutoPocoIO.Dashboard.Pages *@
+﻿@* Generator: Template TypeVisibility: public GeneratePrettyNames: True DisableLinePragmas: true  Namespace: AutoPocoIO.Dashboard.Pages *@
 
 @using AutoPocoIO.Middleware
 @using AutoPocoIO.Dashboard.ViewModels;
@@ -22,20 +22,22 @@
                 <th scope="col">Database</th>
                 <th scope="col">Schema</th>
                 <th scope="col">User</th>
-                <th scope="col">Active</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var row in (IEnumerable<ConnectorViewModel>)ViewBag["Connectors"])
             {
-                <tr>
-                    <th scope="row"><a href="@TransformUrl("/Connectors/Connector/" + row.Id)">@row.Name</a></th>
-                    <td>@row.DataSource</td>
-                    <td>@row.InitialCatalog</td>
-                    <td>@row.Schema</td>
-                    <td>@row.UserId</td>
-                    <td><span style="font-weight:bold; color:@(row.IsActive ? "green" : "red")">@(row.IsActive ? "Active" : "Disabled")</span></td>
-                </tr>
+            <tr>
+                <th scope="row"><a href="@TransformUrl("/Connectors/Connector/" + row.Id)">@row.Name</a></th>
+                <td>@row.DataSource</td>
+                <td>@row.InitialCatalog</td>
+                <td>@row.Schema</td>
+                <td>@row.UserId</td>
+                <td><span style="font-weight:bold; color:@(row.IsActive ? "green" : "red")">@(row.IsActive ? "Active" : "Disabled")</span></td>
+                <td><a href="#" onclick="if (confirm('Are you sure you want to delete?')) $.post('@TransformUrl("/Connectors/Delete/")@row.Id', function (data) { window.location = '@TransformUrl("/Connectors")' });">Delete</a></td>
+            </tr>
             }
         </tbody>
     </table>

@@ -1,4 +1,4 @@
-﻿@* Generator: Template TypeVisibility: internal GeneratePrettyNames: True DisableLinePragmas: true  Namespace: AutoPocoIO.Dashboard.Pages *@
+﻿@* Generator: Template TypeVisibility: public GeneratePrettyNames: True DisableLinePragmas: true  Namespace: AutoPocoIO.Dashboard.Pages *@
 
 @using AutoPocoIO.Middleware
 @using AutoPocoIO.Dashboard.ViewModels
@@ -23,7 +23,7 @@
             <div class="errorMessage"><span class="text-danger">@GetError("errors", nameof(ConnectorViewModel.DataSource))</span></div>
         </div>
         <div class="form-group">
-            <label for="databaseName">"Database Name</label>
+            <label for="databaseName">Database Name</label>
             <input type="text" class="form-control" name="databaseName"
                    value="@(GetViewBagValue<ConnectorViewModel>("model").InitialCatalog)" />
             <div class="errorMessage"><span class="text-danger">@GetError("errors", nameof(ConnectorViewModel.InitialCatalog))</span></div>

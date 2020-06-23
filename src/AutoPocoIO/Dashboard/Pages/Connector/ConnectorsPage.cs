@@ -3,7 +3,7 @@ using AutoPocoIO.Middleware;
 
 namespace AutoPocoIO.Dashboard.Pages
 {
-    internal partial class ConnectorsPage
+    public partial class ConnectorsPage
     {
         private readonly IConnectorRepo _repo;
 
@@ -17,5 +17,7 @@ namespace AutoPocoIO.Dashboard.Pages
         {
             ViewBag["Connectors"] = _repo.ListConnectors();
         }
+
+        public virtual void Delete(int id) => _repo.Delete(id);
     }
 }

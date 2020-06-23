@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AutoPocoIO.Dashboard.Repo
 {
-    internal interface IConnectorRepo
+    public interface IConnectorRepo
     {
         int ConnectorCount();
         IEnumerable<ConnectorViewModel> ListConnectors();
@@ -12,5 +12,6 @@ namespace AutoPocoIO.Dashboard.Repo
         ConnectorViewModel GetById(int id);
         void Insert(ConnectorViewModel model);
         void Validate(ConnectorViewModel model, IDictionary<string, string> errors);
+        void Delete(int id);
     }
 }

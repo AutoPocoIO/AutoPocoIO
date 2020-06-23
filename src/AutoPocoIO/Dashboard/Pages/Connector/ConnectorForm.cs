@@ -10,7 +10,7 @@ using static AutoPocoIO.AutoPocoConstants;
 
 namespace AutoPocoIO.Dashboard.Pages
 {
-    internal partial class ConnectorForm: IRazorForm
+    public partial class ConnectorForm: IRazorForm
     {
         private readonly IConnectorRepo _repo;
         private ConnectorViewModel model;

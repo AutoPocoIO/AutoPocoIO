@@ -162,5 +162,12 @@ namespace AutoPocoIO.Dashboard.Repo
                 errors[nameof(model.RecordLimit)] = "Record Limit is required.";
 
         }
+
+        public void Delete(int id)
+        {
+            var connector = _db.Connector.Find(id);
+            _db.Connector.Remove(connector);
+            _db.SaveChanges();
+        }
     }
 }

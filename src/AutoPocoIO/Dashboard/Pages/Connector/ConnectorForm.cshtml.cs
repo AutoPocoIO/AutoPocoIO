@@ -19,7 +19,7 @@ namespace AutoPocoIO.Dashboard.Pages
     using AutoPocoIO.Middleware;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    internal partial class ConnectorForm : RazorPage
+    public partial class ConnectorForm : RazorPage
     {
 #line hidden
 
@@ -69,8 +69,8 @@ WriteLiteral("\" />\r\n            <div class=\"errorMessage\"><span class=\"tex
                                                            Write(GetError("errors", nameof(ConnectorViewModel.DataSource)));
 
 WriteLiteral("</span></div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <lab" +
-"el for=\"databaseName\">\"Database Name</label>\r\n            <input type=\"text\" cla" +
-"ss=\"form-control\" name=\"databaseName\"\r\n                   value=\"");
+"el for=\"databaseName\">Database Name</label>\r\n            <input type=\"text\" clas" +
+"s=\"form-control\" name=\"databaseName\"\r\n                   value=\"");
 
 
                       Write(GetViewBagValue<ConnectorViewModel>("model").InitialCatalog);

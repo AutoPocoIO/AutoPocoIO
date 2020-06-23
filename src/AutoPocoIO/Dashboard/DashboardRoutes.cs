@@ -19,6 +19,7 @@ namespace AutoPocoIO.Dashboard
             //Connector
             Routes.Add("/Connectors", HttpMethodType.GET, new RazorPageDispatcher<ConnectorsPage>((p, m) => p.ListConnectors()));
             Routes.Add("/Connectors/Connector/New", HttpMethodType.GET, new RazorPageDispatcher<ConnectorForm>((p, m) => p.NewConnector()));
+            Routes.Add("/Connectors/Delete/(?<id>.+)", HttpMethodType.POST, new CommandDispatcher<ConnectorsPage>((p, m) => p.Delete(m.ToInt("id"))));
             Routes.Add("/Connectors/Connector/(?<id>.+)", HttpMethodType.GET, new RazorPageDispatcher<ConnectorForm>((p, m) => p.GetById(m.ToInt("id"))));
             Routes.Add("/Connectors/Connector/(?<id>.+)", HttpMethodType.POST, new FormDispatcher<ConnectorForm>());
 
