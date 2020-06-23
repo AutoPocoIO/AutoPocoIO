@@ -1,4 +1,5 @@
-﻿using AutoPocoIO.Services;
+﻿using AutoPocoIO.Exceptions;
+using AutoPocoIO.Services;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -16,6 +17,9 @@ namespace AutoPocoIO.Middleware.Dispatchers
 
         public Task Dispatch(IMiddlewareContext context, ILoggingService loggingService)
         {
+            Check.NotNull(context, nameof(context));
+            Check.NotNull(loggingService, nameof(loggingService));
+
             context.Response.ContentType = "text/html";
             var page = _pageFunc(context.UriMatch);
             page.LoggingService = loggingService;

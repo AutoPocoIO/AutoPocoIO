@@ -1,4 +1,5 @@
-﻿using AutoPocoIO.Extensions;
+﻿using AutoPocoIO.Exceptions;
+using AutoPocoIO.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Owin;
 using System;
@@ -21,6 +22,8 @@ namespace AutoPocoIO.Owin
 
         public override Task Invoke(IOwinContext context)
         {
+            Check.NotNull(context, nameof(context));
+
             T middleware = (T)null;
             //Attempt to resolve autofacscope
             var key = context.Environment.Keys.FirstOrDefault(c => c.StartsWith("autofac:OwinLifetimeScope:", StringComparison.OrdinalIgnoreCase));

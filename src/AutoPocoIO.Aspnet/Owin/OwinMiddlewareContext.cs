@@ -14,6 +14,7 @@ namespace AutoPocoIO.Owin
             Request = new OwinMiddlewareRequest(environment);
             Response = new OwinMiddlewareResponse(environment);
             InternalServiceProvider = internalProvider;
+            QueryStrings = new Dictionary<string, string>();
         }
 
         public IDictionary<string, object> Environment { get; }
@@ -24,7 +25,7 @@ namespace AutoPocoIO.Owin
 
         public Match UriMatch { get; set; }
         public Uri RequestUri { get; set; }
-        public Dictionary<string, string> QueryStrings { get; set; }
+        public IDictionary<string, string> QueryStrings { get; }
 
 
         public IServiceProvider InternalServiceProvider { get; protected set; }

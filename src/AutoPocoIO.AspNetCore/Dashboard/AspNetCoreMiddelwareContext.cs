@@ -14,6 +14,7 @@ namespace AutoPocoIO.Middleware
             Request = new AspNetCoreMiddlewareRequest(httpContext);
             Response = new AspNetCoreMiddlewareResponse(httpContext);
             InternalServiceProvider = internalProvider;
+            QueryStrings = new Dictionary<string, string>();
         }
 
         public IMiddlewareRequest Request { get; }
@@ -22,7 +23,7 @@ namespace AutoPocoIO.Middleware
 
         public Match UriMatch { get; set; }
         public Uri RequestUri { get; set; }
-        public Dictionary<string, string> QueryStrings { get; set; }
+        public IDictionary<string, string> QueryStrings { get; }
 
         public IServiceProvider InternalServiceProvider { get;  }
     }

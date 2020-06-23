@@ -12,6 +12,7 @@ namespace AutoPocoIO.Owin
     {
         private readonly IOwinContext _context;
         private readonly MemoryStream _bodyCopy;
+        private bool _isDisposed;
 
         public OwinMiddlewareRequest(IDictionary<string, object> environment)
         {
@@ -53,7 +54,22 @@ namespace AutoPocoIO.Owin
 
         public void Dispose()
         {
-            _bodyCopy.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed) return;
+
+            if (disposing)
+            {
+                _bodyCopy.Dispose();
+            }
+
+        
+
+            _isDisposed = true;
         }
     }
 }

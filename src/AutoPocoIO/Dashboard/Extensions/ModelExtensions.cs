@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoPocoIO.Exceptions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,6 +13,9 @@ namespace AutoPocoIO.Dashboard.Extensions
     {
         public static TProperty FindValue<TProperty>(this IDictionary<string, string[]> form, string key)
         {
+            Check.NotNull(form, nameof(form));
+            Check.NotNull(key, nameof(key));
+
             object property = default(TProperty);
             if (form.ContainsKey(key))
             {
@@ -71,11 +75,13 @@ namespace AutoPocoIO.Dashboard.Extensions
 
         public static int ToInt(this Match match, string key)
         {
+            Check.NotNull(match, nameof(match));
             return int.Parse(match.Groups[key].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
         }
 
         public static string GetString(this Match match, string key)
         {
+            Check.NotNull(match, nameof(match));
             return match.Groups[key].Value;
         }
     }

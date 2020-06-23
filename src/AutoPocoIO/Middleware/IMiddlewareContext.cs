@@ -12,7 +12,7 @@ namespace AutoPocoIO.Middleware
         Match UriMatch { get; set; }
         Uri RequestUri { get; set; }
 
-        Dictionary<string, string> QueryStrings { get; set; }
+        IDictionary<string, string> QueryStrings { get; }
 
       
         IServiceProvider InternalServiceProvider { get; }

@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.Dashboard;
+using AutoPocoIO.Exceptions;
 using AutoPocoIO.Extensions;
 using AutoPocoIO.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +39,8 @@ namespace AutoPocoIO.Owin
 
         public async Task Invoke(IOwinContext context)
         {
+            Check.NotNull(context, nameof(context));
+
             //Only try if at basepath
             if (context.Request.Path.StartsWithSegments(new PathString(_basePath)) &&
                     !context.Request.Path.StartsWithSegments(new PathString(_basePath + "/swagger")) &&
@@ -65,10 +68,12 @@ namespace AutoPocoIO.Owin
 
                 dashContext.UriMatch = findResult.Item2;
                 dashContext.RequestUri = context.Request.Uri;
-                dashContext.QueryStrings = Regex.Matches(context.Request.QueryString.Value, "([^?=&]+)(=([^&]*))?")
-                    .Cast<Match>()
-                    .ToDictionary(x => x.Groups[1].Value, x => x.Groups[3].Value, StringComparer.OrdinalIgnoreCase);
+                dashContext.QueryStrings.Clear();
 
+                var queryStrings = Regex.Matches(context.Request.QueryString.Value, "([^?=&]+)(=([^&]*))?")
+                    .Cast<Match>();
+                foreach (var querystring in queryStrings)
+                    dashContext.QueryStrings[querystring.Groups[1].Value] = querystring.Groups[3].Value;
 
                 await findResult.Item1.Dispatch(dashContext, _loggingService).ConfigureAwait(false);
             }

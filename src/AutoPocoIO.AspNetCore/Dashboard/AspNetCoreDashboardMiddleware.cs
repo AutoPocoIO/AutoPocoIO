@@ -1,4 +1,5 @@
-﻿using AutoPocoIO.Extensions;
+﻿using AutoPocoIO.Exceptions;
+using AutoPocoIO.Extensions;
 using AutoPocoIO.Middleware;
 using AutoPocoIO.Services;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +23,11 @@ namespace AutoPocoIO.Dashboard
 
         public async Task Invoke(HttpContext httpContext, IServiceProvider provider, ILoggingService loggingService)
         {
+            Check.NotNull(httpContext, nameof(httpContext));
+            Check.NotNull(provider, nameof(provider));
+            Check.NotNull(loggingService, nameof(loggingService));
+
+
             SetupServices(provider);
 
             var context = new AspNetCoreMiddlewareContext(httpContext, _serviceProvider);
@@ -55,7 +61,10 @@ namespace AutoPocoIO.Dashboard
                 Query = httpContext.Request.QueryString.ToString()
             };
             context.RequestUri = uriBuilder.Uri;
-            context.QueryStrings = httpContext.Request.GetQueryStrings();
+            context.QueryStrings.Clear();
+            foreach (var querystring in httpContext.Request.GetQueryStrings())
+                context.QueryStrings.Add(querystring);
+
             httpContext.Request.PathBase = basePath;
             await findResult.Item1.Dispatch(context, loggingService)
                                   .ConfigureAwait(false);

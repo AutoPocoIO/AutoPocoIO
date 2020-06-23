@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.Dashboard;
+using AutoPocoIO.Exceptions;
 using AutoPocoIO.Middleware.Dispatchers;
 using AutoPocoIO.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,9 @@ namespace AutoPocoIO.Middleware
 
         public async Task Dispatch(IMiddlewareContext context, ILoggingService loggingService)
         {
+            Check.NotNull(context, nameof(context));
+            Check.NotNull(loggingService, nameof(loggingService));
+
             var request = context.Request;
             var response = context.Response;
 

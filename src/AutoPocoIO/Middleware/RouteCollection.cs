@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.Constants;
+using AutoPocoIO.Exceptions;
 using AutoPocoIO.Middleware.Dispatchers;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,9 @@ namespace AutoPocoIO.Middleware
 
         public Tuple<IMiddlewareDispatcher, Match> FindDispatcher(IMiddlewareContext context, string path)
         {
+            Check.NotNull(context, nameof(context));
+            Check.NotNull(path, nameof(path));
+
             if (path.Length == 0)
                 path = "/";
             else if (path.Length > 1)

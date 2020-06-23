@@ -1,4 +1,5 @@
-﻿using AutoPocoIO.Services;
+﻿using AutoPocoIO.Exceptions;
+using AutoPocoIO.Services;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -46,6 +47,8 @@ namespace AutoPocoIO.Middleware
 
         public void Assign(RazorPage parentPage)
         {
+            Check.NotNull(parentPage, nameof(parentPage));
+
             Context = parentPage.Context;
         }
 
@@ -69,6 +72,9 @@ namespace AutoPocoIO.Middleware
 
         protected virtual void DefineSection(string scriptTag, Action renderAction)
         {
+            Check.NotNull(scriptTag, nameof(scriptTag));
+            Check.NotNull(renderAction, nameof(renderAction));
+
             var bufferContent = new StringBuilder();
             bufferContent.Append(_content.ToString());
 
@@ -91,15 +97,23 @@ namespace AutoPocoIO.Middleware
             _content.Append(textToAppend);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1054:Uri parameters should not be strings", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1055:Uri return values should not be strings", Justification = "<Pending>")]
         protected string TransformUrl(string url)
         {
+            Check.NotNull(url, nameof(url));
             return Context.Request.PathBase +  url;
         }
+
+
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Required by razor generator")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Build", "CA1801:Remove unused parameter", Justification = "Required by razor generator")]
         protected void WriteAttribute(string name, Tuple<string, int> prefix, Tuple<string, int> suffix, params object[] fragments)
         {
+            Check.NotNull(name, nameof(name));
+            Check.NotNull(prefix, nameof(prefix));
+            Check.NotNull(suffix, nameof(suffix));
 
             if (fragments.Length == 0)
             {
@@ -172,8 +186,10 @@ namespace AutoPocoIO.Middleware
             return string.IsNullOrEmpty(text) ? string.Empty : WebUtility.HtmlEncode(text);
         }
 
-        protected NonEscapedString TransformArray(object list)
+        protected static NonEscapedString TransformArray(object list)
         {
+            Check.NotNull(list, nameof(list));
+
             if (list is string[] stringList)
                 return TransformArray(stringList);
             else if (list is int[] intList)
