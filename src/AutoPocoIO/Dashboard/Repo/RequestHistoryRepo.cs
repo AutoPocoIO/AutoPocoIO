@@ -22,7 +22,7 @@ namespace AutoPocoIO.Dashboard.Repo
             _timeProvider = timeProvider;
         }
 
-        public IEnumerable<RequestGridViewModel> ListRequest(int recordLimit)
+        public virtual IEnumerable<RequestGridViewModel> ListRequest(int recordLimit)
         {
             var offset = TimeZoneInfo.Local.GetUtcOffset(_timeProvider.Now).TotalMinutes;
 

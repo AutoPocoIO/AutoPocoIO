@@ -67,7 +67,6 @@ namespace AutoPocoIO.Dashboard
                 //Request
                 services.AddTransient<IRequestHistoryRepo, RequestHistoryRepo>();
                 services.AddTransient<RequestHistoryPage>();
-                services.AddTransient<RequestGridBody>();
                     
 
                 services.AddScoped<IDashboardRepo, DashboardRepo>();
