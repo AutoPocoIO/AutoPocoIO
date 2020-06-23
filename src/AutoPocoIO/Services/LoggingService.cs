@@ -40,8 +40,16 @@ namespace AutoPocoIO.Services
         /// </summary>
         public virtual int LogCount { get { return ApiRequests.Count; } }
 
-       
-       
+        /// <summary>
+        ///  Represents an event called for each api request
+        /// </summary>
+        public Action<IServiceProvider, LogRequestAndResponseCommand, ILoggingService> OnLogging { get; set; }
+        /// <summary>
+        ///  Represents an event called after the http request is logged 
+        /// </summary>
+        public Action<IServiceProvider, ILoggingService> OnLogged { get; set; }
+
+
 
         /// <summary>
         /// Appended an API request to be logged
@@ -143,6 +151,7 @@ namespace AutoPocoIO.Services
                 }
                 finally
                 {
+                    OnLogged?.Invoke(scope.ServiceProvider, this);
                     scope.Dispose();
                 }
             });
@@ -155,6 +164,8 @@ namespace AutoPocoIO.Services
             Check.NotNull(command, nameof(command));
 
             var provider = scope.ServiceProvider;
+            OnLogging?.Invoke(provider, command, this);
+
             var db = provider.GetRequiredService<LogDbContext>();
             LogHttpRequest(command, db);
             LogHttpResponse(command, db);
