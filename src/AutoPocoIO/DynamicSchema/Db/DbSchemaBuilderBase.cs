@@ -158,22 +158,25 @@ namespace AutoPocoIO.DynamicSchema.Db
                 ColumnIsNullable = Convert.ToBoolean(row["ColumnIsNullable"], CultureInfo.InvariantCulture),
             };
 
+            //Add PK/FK Info to column
+            if(currentObjectType == DBOjectType.Table)
+            {
+                column.PKName = row["PKName"].ToString();
+                column.PKPosition = Convert.ToInt32(row["PKPosition"], CultureInfo.InvariantCulture);
+                column.PKIsIdentity = Convert.ToBoolean(row["PKIsIdentity"], CultureInfo.InvariantCulture);
+                column.IsComputed = Convert.ToBoolean(row["IsComputed"], CultureInfo.InvariantCulture);
+
+                if (!string.IsNullOrEmpty(row["FKName"].ToString()))
+                    AddFKColumn(row, column);
+            }
+
             column.DataType = _typeMapper.DBTypeToDataType(column);
 
             switch (currentObjectType)
             {
-                //Table only fields 
                 case DBOjectType.Table:
                     {
                         column.Table = currentTable;
-                        column.PKName = row["PKName"].ToString();
-                        column.PKPosition = Convert.ToInt32(row["PKPosition"], CultureInfo.InvariantCulture);
-                        column.PKIsIdentity = Convert.ToBoolean(row["PKIsIdentity"], CultureInfo.InvariantCulture);
-                        column.IsComputed = Convert.ToBoolean(row["IsComputed"], CultureInfo.InvariantCulture);
-
-                        if (!string.IsNullOrEmpty(row["FKName"].ToString()))
-                            AddFKColumn(row, column);
-
                         currentTable.Columns.Add(column);
                         break;
                     }
