@@ -77,6 +77,32 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         }
 
         [TestMethod]
+        public void EnsureIdentityPKTypesIsNotNull()
+        {
+            config.IncludedTable = "tbl123";
+            config.UsedConnectors = new List<string> { "conn1" };
+            config.PropertyPreFixName = "pre123_";
+
+            var row = builder.Dt.CreateRowWithColReqValues();
+            row["ObjectType"] = "U";
+            row["TableName"] = "tbl1";
+            row["TableSchema"] = "sch1";
+            row["DatabaseName"] = "db1";
+            row["PKColumnName"] = "pk123";
+            row["PKIsIdentity"] = "true";
+
+            row["ColumnName"] = "col1";
+            row["ColumnType"] = "int";
+
+            builder.Dt.Rows.Add(row);
+            builder.GetTableViews();
+
+            var col = schema.Columns.First();
+            Assert.AreEqual(typeof(int), col.DataType.SystemType);
+
+        }
+
+        [TestMethod]
         public void GetTableSingleColumnsForSchema()
         {
             var row = builder.Dt.CreateRowWithColReqValues();
