@@ -14,7 +14,7 @@ namespace AutoPocoIO.Owin
             Request = new OwinMiddlewareRequest(environment);
             Response = new OwinMiddlewareResponse(environment);
             InternalServiceProvider = internalProvider;
-            QueryStrings = new Dictionary<string, string>();
+            QueryStrings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
 
         public IDictionary<string, object> Environment { get; }
