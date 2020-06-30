@@ -9,13 +9,10 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.LoggingMiddleware
 {
-    public class LogRequestAndResponseMiddleware: IDisposable
+    public class LogRequestAndResponseMiddleware
     {
         private readonly RequestDelegate _next;
 
-        private bool isDisposed;
-        private MemoryStream RequestBuffer;
-        private MemoryStream ResponseBuffer;
 
         public LogRequestAndResponseMiddleware(RequestDelegate next)
         {
@@ -31,13 +28,13 @@ namespace AutoPocoIO.LoggingMiddleware
             string exception = null;
 
             var stream = context.Response.Body;
-            RequestBuffer = new MemoryStream();
+            MemoryStream RequestBuffer = new MemoryStream();
             context.Request.Body.CopyTo(RequestBuffer);
             RequestBuffer.Position = 0; // rewind
             context.Request.Body = RequestBuffer;
 
             // Buffer the response
-            ResponseBuffer = new MemoryStream();
+            MemoryStream ResponseBuffer = new MemoryStream();
             context.Response.Body = ResponseBuffer;
 
 
@@ -91,24 +88,5 @@ namespace AutoPocoIO.LoggingMiddleware
             ResponseBuffer.Seek(0, SeekOrigin.Begin);
             await ResponseBuffer.CopyToAsync(stream).ConfigureAwait(false);
         }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (isDisposed) return;
-            if (disposing)
-            {
-                RequestBuffer.Dispose();
-                ResponseBuffer.Dispose();
-            }
-
-            isDisposed = true;
-        }
-
     }
 }

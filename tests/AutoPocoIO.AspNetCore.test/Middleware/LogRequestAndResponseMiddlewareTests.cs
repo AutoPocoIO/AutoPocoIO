@@ -237,31 +237,5 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
             Assert.AreEqual("exMessage", logParameters.Exception);
             Assert.AreEqual("test", logParameters.StatusCode);
         }
-
-
-        [TestMethod]
-        public void DisposeOfLogger()
-        {
-            LogRequestAndResponseMiddleware middleware = new LogRequestAndResponseMiddleware(c => Task.CompletedTask);
-            PrivateObject obj = new PrivateObject(middleware);
-
-            obj.SetField("RequestBuffer", new MemoryStream());
-            obj.SetField("ResponseBuffer", new MemoryStream());
-
-            middleware.Dispose();
-
-
-            Assert.IsTrue((bool)obj.GetField("isDisposed"));
-        }
-
-        [TestMethod]
-        public void DisposeOfLoggerMultiThread()
-        {
-            LogRequestAndResponseMiddleware middleware = new LogRequestAndResponseMiddleware(c => Task.CompletedTask);
-            PrivateObject obj = new PrivateObject(middleware);
-            obj.SetField("isDisposed", true);
-
-            middleware.Dispose();
-        }
     }
 }

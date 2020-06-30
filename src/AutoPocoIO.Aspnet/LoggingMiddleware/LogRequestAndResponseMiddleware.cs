@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace AutoPocoIO.LoggingMiddleware
 {
 
-    internal class LogRequestAndResponseMiddleware : IOwinMiddlewareWithDI, IDisposable
+    public class LogRequestAndResponseMiddleware : IOwinMiddlewareWithDI, IDisposable
     {
         private readonly ILoggingService _loggingService;
         
