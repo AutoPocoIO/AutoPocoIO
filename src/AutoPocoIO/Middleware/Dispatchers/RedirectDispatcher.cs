@@ -7,10 +7,12 @@ namespace AutoPocoIO.Middleware.Dispatchers
     public class RedirectDispatcher : IMiddlewareDispatcher
     {
         private string _location;
+        private readonly bool _useBasePath;
 
-        public RedirectDispatcher(string location)
+        public RedirectDispatcher(string location, bool useBasePath = true)
         {
             _location = location;
+            _useBasePath = useBasePath;
         }
 
         public Task Dispatch(IMiddlewareContext context, ILoggingService loggingService)
@@ -18,7 +20,8 @@ namespace AutoPocoIO.Middleware.Dispatchers
             Check.NotNull(context, nameof(context));
             Check.NotNull(loggingService, nameof(loggingService));
 
-            _location = $"/{context.Request.PathBase.Trim('/')}/{_location.Trim('/')}";
+            if (_useBasePath)
+                _location = $"/{context.Request.PathBase.Trim('/')}/{_location.Trim('/')}";
 
             context.Response.Redirect(_location);
             return Task.CompletedTask;

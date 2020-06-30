@@ -45,14 +45,14 @@ namespace AutoPocoIO.Middleware
             return TransformText(null);
         }
 
-        public void Assign(RazorPage parentPage)
+        public virtual void Assign(RazorPage parentPage)
         {
             Check.NotNull(parentPage, nameof(parentPage));
 
             Context = parentPage.Context;
         }
 
-        public void Assign(IMiddlewareContext context)
+        public virtual void Assign(IMiddlewareContext context)
         {
             Context = context;
         }
