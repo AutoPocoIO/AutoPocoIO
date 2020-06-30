@@ -18,7 +18,7 @@ namespace AutoPocoIO.Dashboard.Repos
         {
             Check.NotNull(provider, nameof(provider));
 
-            _db = provider.GetRequiredService<LogDbContext>();
+            _db = provider.GetService<LogDbContext>();
             _timeProvider = timeProvider;
         }
 

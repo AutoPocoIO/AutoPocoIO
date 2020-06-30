@@ -9,16 +9,16 @@ namespace AutoPocoIO.Extensions
 {
     public static class DynamicSchemaExtensions
     {
-        public static Table GetTable(this IDbSchema dbSchemaBuilder, string databaseName, string schemaName, string tableName)
+        public static Table GetTable(this IDbSchema dbSchema, string databaseName, string schemaName, string tableName)
         {
-            Check.NotNull(dbSchemaBuilder, nameof(dbSchemaBuilder));
+            Check.NotNull(dbSchema, nameof(dbSchema));
             Check.NotNull(databaseName, nameof(databaseName));
             Check.NotNull(schemaName, nameof(schemaName));
             Check.NotNull(tableName, nameof(tableName));
 
             try
             {
-                return dbSchemaBuilder.Tables.First(c => c.Name.ToUpperInvariant() == tableName.ToUpperInvariant()
+                return dbSchema.Tables.First(c => c.Name.ToUpperInvariant() == tableName.ToUpperInvariant()
                                                         && c.Schema.ToUpperInvariant() == schemaName.ToUpperInvariant()
                                                         && c.Database.ToUpperInvariant() == databaseName.ToUpperInvariant());
             }
@@ -28,9 +28,9 @@ namespace AutoPocoIO.Extensions
             }
         }
 
-        internal static Table GetTableOrNull(this IDbSchema dbSchemaBuilder, string databaseName, string schemaName, string tableName)
+        internal static Table GetTableOrNull(this IDbSchema dbSchema, string databaseName, string schemaName, string tableName)
         {
-            return dbSchemaBuilder.Tables.FirstOrDefault(c => c.Name.ToUpperInvariant() == tableName.ToUpperInvariant()
+            return dbSchema.Tables.FirstOrDefault(c => c.Name.ToUpperInvariant() == tableName.ToUpperInvariant()
                                                             && c.Schema.ToUpperInvariant() == schemaName.ToUpperInvariant()
                                                              && c.Database.ToUpperInvariant() == databaseName.ToUpperInvariant());
         }
@@ -45,11 +45,11 @@ namespace AutoPocoIO.Extensions
             return db.GetTableOrNull(databaseName, schemaName, tableName)?.VariableName;
         }
 
-        internal static View GetView(this IDbSchema dbSchemaBuilder, string schemaName, string viewName)
+        internal static View GetView(this IDbSchema dbSchema, string schemaName, string viewName)
         {
             try
             {
-                return dbSchemaBuilder.Views.First(c => c.Name.ToUpperInvariant() == viewName.ToUpperInvariant() && c.Schema.ToUpperInvariant() == schemaName.ToUpperInvariant());
+                return dbSchema.Views.First(c => c.Name.ToUpperInvariant() == viewName.ToUpperInvariant() && c.Schema.ToUpperInvariant() == schemaName.ToUpperInvariant());
             }
             catch (InvalidOperationException)
             {
@@ -57,13 +57,13 @@ namespace AutoPocoIO.Extensions
             }
         }
 
-        public static StoredProcedure GetStoredProcedure(this IDbSchema dbSchemaBuilder, string schemaName, string sprocName)
+        public static StoredProcedure GetStoredProcedure(this IDbSchema dbSchema, string schemaName, string sprocName)
         {
-            Check.NotNull(dbSchemaBuilder, nameof(dbSchemaBuilder));
+            Check.NotNull(dbSchema, nameof(dbSchema));
 
             try
             {
-                return dbSchemaBuilder.StoredProcedures.First(c => c.Schema.ToUpperInvariant() == schemaName.ToUpperInvariant() && c.Name.ToUpperInvariant() == sprocName.ToUpperInvariant());
+                return dbSchema.StoredProcedures.First(c => c.Schema.ToUpperInvariant() == schemaName.ToUpperInvariant() && c.Name.ToUpperInvariant() == sprocName.ToUpperInvariant());
             }
             catch (InvalidOperationException)
             {

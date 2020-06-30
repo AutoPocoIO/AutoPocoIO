@@ -12,6 +12,8 @@ namespace AutoPocoIO.Dashboard.Pages
             _repo = repo;
         }
 
+        public string Title { get; set; }
+
         public virtual int ConnectorCount()
         {
             return _repo.ConnectorCount();
