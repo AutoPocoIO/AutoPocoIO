@@ -17,14 +17,14 @@ namespace AutoPocoIO.Dashboard.Repos
             _resourceFactory = resourceFactory;
         }
 
-        public SchemaViewModel ListSchemaObject(int id)
+        public SchemaViewModel ListSchemaObject(string connectorId)
         {
-            var resource = _resourceFactory.GetResource(id, string.Empty);
+            var resource = _resourceFactory.GetResource(connectorId, string.Empty);
             resource.LoadSchema();
 
             return new SchemaViewModel()
             {
-                ConnectorId = id,
+                ConnectorId = connectorId,
                 ConnectorName = resource.Connector.Name,
                 Tables = resource.DbSchema.Tables,
                 Views = resource.DbSchema.Views,
@@ -32,19 +32,19 @@ namespace AutoPocoIO.Dashboard.Repos
             };
         }
 
-        public TableDefinition ListTableDetails(int connectorId, string name)
+        public TableDefinition ListTableDetails(string connectorId, string name)
         {
-            var resource = _resourceFactory.GetResource(connectorId, OperationType.Any, name);
+            var resource = _resourceFactory.GetResourceById(connectorId, OperationType.Any, name);
             return resource.GetTableDefinition();
         }
 
-        public IEnumerable<NavigationPropertyViewModel> ListNavigationProperties(int connectorId, string name)
+        public IEnumerable<NavigationPropertyViewModel> ListNavigationProperties(string connectorId, string name)
         {
-            var resource = _resourceFactory.GetResource(connectorId, OperationType.Any, name);
+            var resource = _resourceFactory.GetResourceById(connectorId, OperationType.Any, name);
             var data = resource.GetResourceRecords(new Dictionary<string, string>());
 
             var properties = new List<NavigationPropertyViewModel>();
-            foreach (var property in data.ElementType.GetProperties())
+            foreach (var property in data.ElementType.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance))
             {
                 if (property.PropertyType.IsClass && property.PropertyType != typeof(string))
                 {

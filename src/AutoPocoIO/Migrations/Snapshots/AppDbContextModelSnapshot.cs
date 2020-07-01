@@ -13,14 +13,13 @@ namespace AutoPocoIO.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             modelBuilder.Entity("AutoPoco.Models.Connector", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .IsRequired()
+                        .HasMaxLength(450);
 
                     b.Property<string>("ConnectionString");
 
@@ -59,9 +58,9 @@ namespace AutoPocoIO.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = "4b6b6ba7-0209-4b89-91cb-0e2a67aa37c1",
                             ConnectionString = "",
-                            Name = "appDb",
+                            Name = "AppDb",
                             RecordLimit = 500,
                             ResourceType = 1,
                             Schema = "AutoPoco",
@@ -69,9 +68,9 @@ namespace AutoPocoIO.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            Id = "4d74e770-54e9-4b0f-8f13-59ccb0808654",
                             ConnectionString = "",
-                            Name = "logDb",
+                            Name = "LogDb",
                             RecordLimit = 500,
                             ResourceType = 1,
                             Schema = "AutoPocoLog",
@@ -82,8 +81,8 @@ namespace AutoPocoIO.Migrations
             modelBuilder.Entity("AutoPoco.Models.UserJoin", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .IsRequired()
+                        .HasMaxLength(450);
 
                     b.Property<string>("Alias")
                         .IsRequired()
@@ -93,7 +92,8 @@ namespace AutoPocoIO.Migrations
                         .IsRequired()
                         .HasMaxLength(500);
 
-                    b.Property<int?>("FKConnectorId");
+                    b.Property<string>("FKConnectorId")
+                         .HasMaxLength(450);
 
                     b.Property<string>("FKTableName")
                         .IsRequired()
@@ -103,7 +103,8 @@ namespace AutoPocoIO.Migrations
                         .IsRequired()
                         .HasMaxLength(500);
 
-                    b.Property<int?>("PKConnectorId");
+                    b.Property<string>("PKConnectorId")
+                            .HasMaxLength(450);
 
                     b.Property<string>("PKTableName")
                         .IsRequired()
@@ -123,13 +124,13 @@ namespace AutoPocoIO.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = "abd7f037-cc34-44fb-89f5-2e4a06772a01",
                             Alias = "Response",
                             FKColumn = "ResponseId,RequestGuid",
-                            FKConnectorId = 2,
+                            FKConnectorId = "4d74e770-54e9-4b0f-8f13-59ccb0808654",
                             FKTableName = "Response",
                             PKColumn = "RequestId,RequestGuid",
-                            PKConnectorId = 2,
+                            PKConnectorId = "4d74e770-54e9-4b0f-8f13-59ccb0808654",
                             PKTableName = "Request"
                         });
                 });

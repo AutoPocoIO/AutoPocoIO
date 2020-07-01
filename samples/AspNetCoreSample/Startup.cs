@@ -59,6 +59,7 @@ namespace AspNetCoreSample
 
             var connection = new
             {
+                Id = Guid.NewGuid().ToString(),
                 Name = "sampleSales",
                 ResourceType = 1,
                 Schema = "sales",

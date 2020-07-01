@@ -7,15 +7,14 @@ namespace AutoPocoIO.Models
     public class UserJoin 
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public string Id { get; set; }
         [MaxLength(50)]
         [Required]
         public string Alias { get; set; }
         [ForeignKey("PKConnector")]
-        public int? PKConnectorId { get; set; }
+        public string PKConnectorId { get; set; }
         [ForeignKey("FKConnector")]
-        public int? FKConnectorId { get; set; }
+        public string FKConnectorId { get; set; }
         [MaxLength(100)]
         [Required]
         public string PKTableName { get; set; }

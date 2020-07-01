@@ -6,8 +6,8 @@ namespace AutoPocoIO.Dashboard.Repos
 {
     internal interface IDataDictionaryRepo
     {
-        SchemaViewModel ListSchemaObject(int connectorId);
-        TableDefinition ListTableDetails(int connectorId, string name);
-        IEnumerable<NavigationPropertyViewModel> ListNavigationProperties(int connectorId, string name);
+        SchemaViewModel ListSchemaObject(string connectorId);
+        TableDefinition ListTableDetails(string connectorId, string name);
+        IEnumerable<NavigationPropertyViewModel> ListNavigationProperties(string connectorId, string name);
     }
 }

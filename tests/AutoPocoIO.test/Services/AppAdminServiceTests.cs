@@ -28,7 +28,7 @@ namespace AutoPocoIO.test.Services
             var db = new AppDbContext(appDbOptions);
             db.Connector.Add(new Connector
             {
-                Id = 1,
+                Id = "1",
                 Name = "connName1",
                 IsActive = true
             });
@@ -38,7 +38,7 @@ namespace AutoPocoIO.test.Services
 
             var connector = appAdminService.GetConnection("connName1");
 
-            Assert.AreEqual(1, connector.Id);
+            Assert.AreEqual("1", connector.Id);
             Assert.AreEqual("connName1", connector.Name);
         }
 
@@ -104,14 +104,14 @@ namespace AutoPocoIO.test.Services
             var db = new AppDbContext(appDbOptions);
             db.Connector.Add(new Connector
             {
-                Id = 12,
+                Id = "12",
                 Name = "connName1",
                 IsActive = true
             });
             db.SaveChanges();
 
             IAppAdminService appAdminService = new AppAdminService(db);
-            _ = appAdminService.GetConnection(45);
+            _ = appAdminService.GetConnectionById("45");
         }
 
         [TestMethod]
@@ -121,14 +121,14 @@ namespace AutoPocoIO.test.Services
             var db = new AppDbContext(appDbOptions);
             db.Connector.Add(new Connector
             {
-                Id = 45,
+                Id = "45",
                 Name = "connName1",
                 IsActive = false
             });
             db.SaveChanges();
 
             IAppAdminService appAdminService = new AppAdminService(db);
-            _ = appAdminService.GetConnection(45);
+            _ = appAdminService.GetConnectionById("45");
         }
     }
 }

@@ -53,7 +53,7 @@ namespace AutoPocoIO.test.Resources
         {
             config = new Config();
             schemaInitializer = new Mock<ISchemaInitializer>();
-            defaultConnector = new Connector { Id = 1, Name = "testConn", InitialCatalog = "db1", Schema = "sch", ResourceType = 43, ConnectionStringDecrypted = "conn" };
+            defaultConnector = new Connector { Id = "1", Name = "testConn", InitialCatalog = "db1", Schema = "sch", ResourceType = 43, ConnectionStringDecrypted = "conn" };
             appDbOptions = new DbContextOptionsBuilder<AppDbContext>()
               .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
               .Options;
@@ -130,14 +130,14 @@ namespace AutoPocoIO.test.Resources
                 {
                     InitialCatalog = "db1",
                     Schema = "sch1",
-                    Id = 1,
+                    Id = "1",
                     Name = "conn1"
                 });
                 db.Connector.Add(new Connector
                 {
                     InitialCatalog = "db1",
                     Schema = "asch1",
-                    Id = 2,
+                    Id = "2",
                     Name = "conn2"
                 });
                 db.SaveChanges();
@@ -179,14 +179,14 @@ namespace AutoPocoIO.test.Resources
         {
             using (var db = new AppDbContext(appDbOptions))
             {
-                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = 1 });
+                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
                 {
                     Alias = "pkJoin",
-                    PKConnectorId = 1,
+                    PKConnectorId = "1",
                     PKTableName = "tbl1",
                     PKColumn = "Id",
-                    FKConnectorId = 1,
+                    FKConnectorId = "1",
                     FKTableName = "tbl2",
                     FKColumn = "Id1",
                 });
@@ -237,14 +237,14 @@ namespace AutoPocoIO.test.Resources
         {
             using (var db = new AppDbContext(appDbOptions))
             {
-                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = 1 });
+                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
                 {
                     Alias = "pkJoin",
-                    PKConnectorId = 1,
+                    PKConnectorId = "1",
                     PKTableName = "tbl1",
                     PKColumn = "Id,Name",
-                    FKConnectorId = 1,
+                    FKConnectorId = "1",
                     FKTableName = "tbl2",
                     FKColumn = "Id1,Name3",
                 });
@@ -295,14 +295,14 @@ namespace AutoPocoIO.test.Resources
         {
             using (var db = new AppDbContext(appDbOptions))
             {
-                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = 1 });
+                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
                 {
                     Alias = "pkJoin",
-                    PKConnectorId = 1,
+                    PKConnectorId = "1",
                     PKTableName = "tbl1",
                     PKColumn = "Name",
-                    FKConnectorId = 1,
+                    FKConnectorId = "1",
                     FKTableName = "tbl2",
                     FKColumn = "Name3",
                 });
@@ -353,14 +353,14 @@ namespace AutoPocoIO.test.Resources
         {
             using (var db = new AppDbContext(appDbOptions))
             {
-                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = 1 });
+                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
                 {
                     Alias = "pkJoin",
-                    PKConnectorId = 1,
+                    PKConnectorId = "1",
                     PKTableName = "tbl1",
                     PKColumn = "Id",
-                    FKConnectorId = 1,
+                    FKConnectorId = "1",
                     FKTableName = "tbl2",
                     FKColumn = "Id1",
                 });
@@ -411,14 +411,14 @@ namespace AutoPocoIO.test.Resources
         {
             using (var db = new AppDbContext(appDbOptions))
             {
-                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = 1 });
+                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
                 {
                     Alias = "fkJoin",
-                    PKConnectorId = 1,
+                    PKConnectorId = "1",
                     PKTableName = "tbl2",
                     PKColumn = "Id1",
-                    FKConnectorId = 1,
+                    FKConnectorId = "1",
                     FKTableName = "tbl1",
                     FKColumn = "Id",
                 });
@@ -469,14 +469,14 @@ namespace AutoPocoIO.test.Resources
         {
             using (var db = new AppDbContext(appDbOptions))
             {
-                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = 1 });
+                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
                 {
                     Alias = "fkJoin",
-                    PKConnectorId = 1,
+                    PKConnectorId = "1",
                     PKTableName = "tbl2",
                     PKColumn = "Id1",
-                    FKConnectorId = 1,
+                    FKConnectorId = "1",
                     FKTableName = "tbl1",
                     FKColumn = "Id",
                 });
@@ -548,14 +548,14 @@ namespace AutoPocoIO.test.Resources
         {
             using (var db = new AppDbContext(appDbOptions))
             {
-                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = 1 });
+                db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
                 {
                     Alias = "pkJoin",
-                    PKConnectorId = 1,
+                    PKConnectorId = "1",
                     PKTableName = "tbl1",
                     PKColumn = "Id2",
-                    FKConnectorId = 1,
+                    FKConnectorId = "1",
                     FKTableName = "tbl2",
                     FKColumn = "other",
                 });
@@ -637,7 +637,7 @@ namespace AutoPocoIO.test.Resources
         public void UpdateTViewModelRecord()
         {
             var model = new ViewModel1 { Id = 1, Name = "newName" };
-            var connector = new Connector { Id = 1, Name = "oldName" };
+            var connector = new Connector { Id = "1", Name = "oldName" };
             Connector usedConnector = null;
             var mock = new Mock<IDbAdapter>();
 
@@ -689,7 +689,7 @@ namespace AutoPocoIO.test.Resources
         public void UpdateJTokenRecord()
         {
             var model = JToken.FromObject(new ViewModel1 { Id = 1, Name = "newName" });
-            var connector = new Connector { Id = 1, Name = "oldName" };
+            var connector = new Connector { Id = "1", Name = "oldName" };
             Connector usedConnector = null;
             var mock = new Mock<IDbAdapter>();
 
@@ -739,7 +739,7 @@ namespace AutoPocoIO.test.Resources
         public void InsertTViewModelRecord()
         {
             var model = new ViewModel1 { Id = 1, Name = "newName" };
-            var connector = new Connector { Id = 1, Name = "oldName" };
+            var connector = new Connector { Id = "1", Name = "oldName" };
             Connector usedConnector = null;
             var mock = new Mock<IDbAdapter>();
 
@@ -770,7 +770,7 @@ namespace AutoPocoIO.test.Resources
         public void InsertJTokenRecord()
         {
             var model = JToken.FromObject(new ViewModel1 { Id = 1, Name = "newName" });
-            var connector = new Connector { Id = 1, Name = "oldName" };
+            var connector = new Connector { Id = "1", Name = "oldName" };
             Connector usedConnector = null;
             var mock = new Mock<IDbAdapter>();
 
@@ -798,7 +798,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void DeleteRecordReturnsSuccessIfIdFound()
         {
-            var connector = new Connector { Id = 1, Name = "oldName" };
+            var connector = new Connector { Id = "1", Name = "oldName" };
             Connector usedConnector = null;
             var mock = new Mock<IDbAdapter>();
 

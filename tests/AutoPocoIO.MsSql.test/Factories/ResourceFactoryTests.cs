@@ -25,17 +25,17 @@ namespace AutoPocoIO.test.Factories
             appAdminService.Setup(c => c.GetConnection("conn1"))
                 .Returns(new Connector
                 {
-                    Id = 1,
+                    Id = "1",
                     Name = "conn1",
                     ResourceType = resouceType,
                     ConnectionStringDecrypted = "connStr1"
 
                 });
 
-            appAdminService.Setup(c => c.GetConnection(1))
+            appAdminService.Setup(c => c.GetConnectionById("1"))
               .Returns(new Connector
               {
-                  Id = 1,
+                  Id = "1",
                   Name = "conn1",
                   ResourceType = resouceType,
                   ConnectionStringDecrypted = "connStr1"

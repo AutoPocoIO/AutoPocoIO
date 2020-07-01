@@ -4,7 +4,7 @@ namespace AutoPocoIO.Dashboard.ViewModels
 {
     public class ConnectorViewModel
     {
-        public int? Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public int? ResourceType { get; set; }
         public string Schema { get; set; }

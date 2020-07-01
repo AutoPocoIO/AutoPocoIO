@@ -10,7 +10,7 @@ namespace AutoPocoIO.Models
         /// <summary>
         /// AutoPoco connector id
         /// </summary>
-        public int ConnectorId { get; set; }
+        public string ConnectorId { get; set; }
 
         /// <summary>
         /// AutoPoco connector name

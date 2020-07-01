@@ -13,7 +13,7 @@ namespace AutoPocoIO.Dashboard.Pages
             Layout = layout;
         }
 
-        public virtual void ListDbObjects(int connectorId)
+        public virtual void ListDbObjects(string connectorId)
         {
             ViewBag["model"] = _repo.ListSchemaObject(connectorId);
         }

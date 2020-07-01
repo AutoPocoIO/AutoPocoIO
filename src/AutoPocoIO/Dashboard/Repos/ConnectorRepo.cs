@@ -38,7 +38,7 @@ namespace AutoPocoIO.Dashboard.Repos
 
         public virtual int ConnectorCount() => _db.Connector.Count();
 
-        public int Save(ConnectorViewModel model)
+        public string Save(ConnectorViewModel model)
         {
             model.ResourceType = 1;
 
@@ -69,7 +69,7 @@ namespace AutoPocoIO.Dashboard.Repos
             return connector.Id;
         }
 
-        public ConnectorViewModel GetById(int id)
+        public ConnectorViewModel GetById(string id)
         {
             var model = _db.Connector.Select(c => new ConnectorViewModel
             {
@@ -94,7 +94,7 @@ namespace AutoPocoIO.Dashboard.Repos
             return model;
         }
 
-        public int Insert(ConnectorViewModel model)
+        public string Insert(ConnectorViewModel model)
         {
             model.ResourceType = 1;
 
@@ -166,7 +166,7 @@ namespace AutoPocoIO.Dashboard.Repos
 
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             var connector = _db.Connector.Find(id);
             _db.Connector.Remove(connector);

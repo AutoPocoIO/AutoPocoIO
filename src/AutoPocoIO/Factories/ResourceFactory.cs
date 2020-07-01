@@ -28,15 +28,15 @@ namespace AutoPocoIO.Factories
             return GetResourceType(connector, dbAction, dbObjectName);
         }
 
-        public IOperationResource GetResource(int connectorId, string dbObjectName)
+        public IOperationResource GetResource(string connectorId, string dbObjectName)
         {
-            var connector = _appAdminService.GetConnection(connectorId);
+            var connector = _appAdminService.GetConnectionById(connectorId);
             return GetResourceType(connector, OperationType.read, dbObjectName);
         }
 
-        public IOperationResource GetResource(int connectorId, OperationType dbAction, string dbObjectName)
+        public IOperationResource GetResourceById(string connectorId, OperationType dbAction, string dbObjectName)
         {
-            var connector = _appAdminService.GetConnection(connectorId);
+            var connector = _appAdminService.GetConnectionById(connectorId);
             return GetResourceType(connector, dbAction, dbObjectName);
         }
 

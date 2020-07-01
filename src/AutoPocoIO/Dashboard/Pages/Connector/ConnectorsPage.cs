@@ -18,6 +18,6 @@ namespace AutoPocoIO.Dashboard.Pages
             ViewBag["Connectors"] = _repo.ListConnectors();
         }
 
-        public virtual void Delete(int id) => _repo.Delete(id);
+        public virtual void Delete(string id) => _repo.Delete(id);
     }
 }

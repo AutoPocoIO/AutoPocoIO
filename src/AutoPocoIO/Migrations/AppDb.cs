@@ -15,8 +15,7 @@ namespace AutoPocoIO.Migrations
                 schema: "AutoPoco",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: true),
                     ResourceType = table.Column<int>(nullable: false),
                     Schema = table.Column<string>(maxLength: 50, nullable: true),
@@ -38,11 +37,10 @@ namespace AutoPocoIO.Migrations
                 schema: "AutoPoco",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(nullable: false),
                     Alias = table.Column<string>(maxLength: 50, nullable: false),
-                    PKConnectorId = table.Column<int>(nullable: true),
-                    FKConnectorId = table.Column<int>(nullable: true),
+                    PKConnectorId = table.Column<string>(nullable: true),
+                    FKConnectorId = table.Column<string>(nullable: true),
                     PKTableName = table.Column<string>(maxLength: 100, nullable: false),
                     FKTableName = table.Column<string>(maxLength: 100, nullable: false),
                     PKColumn = table.Column<string>(maxLength: 500, nullable: false),
@@ -71,19 +69,19 @@ namespace AutoPocoIO.Migrations
                 schema: "AutoPoco",
                 table: "Connector",
                 columns: new[] { "Id", "ConnectionString", "DataSource", "InitialCatalog", "Name", "RecordLimit", "ResourceType", "Schema", "UserId", "IsActive" },
-                values: new object[] { 1, "", null, null, "appDb", 500, 1, "AutoPoco", null, true });
+                values: new object[] { "4b6b6ba7-0209-4b89-91cb-0e2a67aa37c1", "", null, null, "AppDb", 500, 1, "AutoPoco", null, true });
 
             migrationBuilder.InsertData(
                 schema: "AutoPoco",
                 table: "Connector",
                 columns: new[] { "Id", "ConnectionString", "DataSource", "InitialCatalog", "Name", "RecordLimit", "ResourceType", "Schema", "UserId", "IsActive" },
-                values: new object[] { 2, "", null, null, "logDb", 500, 1, "AutoPocoLog", null, true });
+                values: new object[] { "4d74e770-54e9-4b0f-8f13-59ccb0808654", "", null, null, "LogDb", 500, 1, "AutoPocoLog", null, true });
 
             migrationBuilder.InsertData(
                 schema: "AutoPoco",
                 table: "UserJoin",
                 columns: new[] { "Id", "Alias", "FKColumn", "FKConnectorId", "FKTableName", "PKColumn", "PKConnectorId", "PKTableName" },
-                values: new object[] { 1, "Response", "ResponseId,RequestGuid", 2, "Response", "RequestId,RequestGuid", 2, "Request" });
+                values: new object[] { "abd7f037-cc34-44fb-89f5-2e4a06772a01", "Response", "ResponseId,RequestGuid", "4d74e770-54e9-4b0f-8f13-59ccb0808654", "Response", "RequestId,RequestGuid", "4d74e770-54e9-4b0f-8f13-59ccb0808654", "Request" });
 
             migrationBuilder.CreateIndex(
                 name: "IDX_ConnectorName",

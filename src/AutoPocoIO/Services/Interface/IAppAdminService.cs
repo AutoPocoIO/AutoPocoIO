@@ -4,7 +4,7 @@ namespace AutoPocoIO.Services
 {
     public interface IAppAdminService
     {
-        Connector GetConnection(int id);
+        Connector GetConnectionById(string id);
         Connector GetConnection(string connectionName);
     }
 }

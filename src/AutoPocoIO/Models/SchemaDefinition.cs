@@ -18,7 +18,7 @@ namespace AutoPocoIO.Models
         /// Database id for the connector
         /// </summary>
         [JsonProperty(Order = -2)]
-        public int ConnectorId { get; set; }
+        public string ConnectorId { get; set; }
 
         /// <summary>
         /// Alias of the connector

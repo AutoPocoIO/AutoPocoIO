@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.DynamicSchema.Util;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,9 +8,13 @@ namespace AutoPocoIO.Models
     [Table("Connector", Schema = "AutoPoco")]
     public class Connector
     {
+        public Connector()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public string Id { get; set; }
         [MaxLength(50)]
         public string Name { get; set; }
         public int ResourceType { get; set; }

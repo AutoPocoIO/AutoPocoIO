@@ -63,7 +63,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
 
 
 
-            int id = repo.Insert(model);
+            string id = repo.Insert(model);
 
             Connector actual;
             using (var db1 = new AppDbContext(appDbOptions))
@@ -87,7 +87,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             {
                 db1.Connector.Add(new Connector
                 {
-                    Id = 12,
+                    Id = "12",
                     Name = "name123"
                 });
 
@@ -99,7 +99,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
 
             ConnectorViewModel model = new ConnectorViewModel
             {
-                Id = 12,
+                Id = "12",
                 Name = "name11",
                 ResourceType = 1,
                 RecordLimit = 12,
@@ -133,7 +133,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             {
                 db1.Connector.Add(new Connector
                 {
-                    Id = 12,
+                    Id = "12",
                     Name = "name123",
                     ResourceType = 1,
                     ConnectionString = "conn1"
@@ -145,7 +145,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             var db = new AppDbContext(appDbOptions);
             var repo = new ConnectorRepo(db, factory);
 
-            var actual = repo.GetById(12);
+            var actual = repo.GetById("12");
 
             Assert.AreEqual("name123", actual.Name);
         }
@@ -157,12 +157,12 @@ namespace AutoPocoIO.test.Dashboard.Repos
             {
                 db1.Connector.AddRange(new Connector
                 {
-                    Id = 1,
+                    Id = "1",
                     Name = "name123",
                 },
                 new Connector
                 {
-                    Id = 2,
+                    Id = "2",
                     Name = "aname123",
                 });
 
@@ -185,12 +185,12 @@ namespace AutoPocoIO.test.Dashboard.Repos
             {
                 db1.Connector.AddRange(new Connector
                 {
-                    Id = 1,
+                    Id = "1",
                     Name = "name123",
                 },
                 new Connector
                 {
-                    Id = 2,
+                    Id = "2",
                     Name = "aname123",
                 });
 
@@ -200,7 +200,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             var db = new AppDbContext(appDbOptions);
             var repo = new ConnectorRepo(db, factory);
 
-            repo.Delete(2);
+            repo.Delete("2");
 
             using (var db1 = new AppDbContext(appDbOptions))
             {

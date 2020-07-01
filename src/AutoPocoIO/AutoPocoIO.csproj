@@ -23,11 +23,6 @@
   <Import Project="..\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'net461'" />
   <Import Project="..\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'netstandard2.0' " />
   <ItemGroup>
-  <Compile Remove="Dashboard\Content\**" />
-    <EmbeddedResource Remove="Dashboard\Content\**" />
-    <None Remove="Dashboard\Content\**" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="SwaggerAddons\AutoPoco.xml" />
     <None Remove="SwaggerAddons\swagger.css" />
   </ItemGroup>
@@ -46,7 +41,7 @@
     </PackageReference>
     
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.4" />
    
     
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.16" />

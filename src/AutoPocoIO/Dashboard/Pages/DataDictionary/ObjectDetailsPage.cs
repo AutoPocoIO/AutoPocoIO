@@ -13,7 +13,7 @@ namespace AutoPocoIO.Dashboard.Pages
             Layout = layout;
         }
 
-        public virtual void ListTableDetails(int connectorId, string name)
+        public virtual void ListTableDetails(string connectorId, string name)
         {
             ViewBag["model"] = _repo.ListTableDetails(connectorId, name);
             ViewBag["navs"] = _repo.ListNavigationProperties(connectorId, name);

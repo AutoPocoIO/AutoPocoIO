@@ -29,8 +29,8 @@ namespace AutoPocoIO.Dashboard.Pages
             _repo.Validate(model, errors);
             if (errors.Count == 0)
             {
-                int id;
-                if (model.Id == null)
+                string id;
+                if (string.IsNullOrEmpty(model.Id))
                 {
                     LoggingService.AddTableToLogger(DefaultConnectors.AppDB, DefaultTables.Connectors, HttpMethodType.POST);
                     id = _repo.Insert(model);
@@ -48,7 +48,7 @@ namespace AutoPocoIO.Dashboard.Pages
             return new RazorPageDispatcher(c => this);
         }
 
-        public virtual void GetById(int id)
+        public virtual void GetById(string id)
         {
             ViewBag["model"] = _repo.GetById(id);
         }
@@ -57,7 +57,7 @@ namespace AutoPocoIO.Dashboard.Pages
         {
             model = new ConnectorViewModel()
             {
-                Id = values.FindValue<int?>("id"),
+                Id = values.FindValue<string>("id"),
                 ResourceType = 1,
                 Name = values.FindValue<string>("connectorName"),
                 DataSource = values.FindValue<string>("serverName"),

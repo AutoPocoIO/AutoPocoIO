@@ -5,7 +5,7 @@ namespace AutoPocoIO.Dashboard.ViewModels
 {
     internal class SchemaViewModel
     {
-        public int ConnectorId { get; set; }
+        public string ConnectorId { get; set; }
         public string ConnectorName { get; set; }
         public List<Table> Tables { get; set; }
         public List<View> Views { get; set; }

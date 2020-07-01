@@ -12,13 +12,6 @@ namespace AutoPocoIO.EntityConfiguration
             builder.HasKey(c => new { c.RequestId, c.RequestGuid });
 
             //Indexes
-            builder.ForSqlServerHasIndex(c => c.RequestGuid)
-                .ForSqlServerInclude(c => new { c.DateTimeUtc, c.RequestType, c.RequesterIp, c.Connector });
-
-            builder.ForSqlServerHasIndex(c => c.DayOfRequest)
-               .HasName("IX_DayWithIP")
-               .ForSqlServerInclude(c => new { c.RequesterIp });
-
             builder.HasIndex(c => c.DateTimeUtc);
 
             builder.HasIndex(c => c.DayOfRequest);

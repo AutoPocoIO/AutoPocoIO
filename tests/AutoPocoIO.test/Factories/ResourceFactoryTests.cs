@@ -34,10 +34,10 @@ namespace AutoPocoIO.test.Factories
         public void GetResouceByConnectorId()
         {
 
-            appAdminService.Setup(c => c.GetConnection(1))
+            appAdminService.Setup(c => c.GetConnectionById("1"))
                 .Returns(new Connector() { ResourceType = 1 });
 
-            var resource = _resourceFactory.GetResource(1, "obj1");
+            var resource = _resourceFactory.GetResource("1", "obj1");
             Assert.IsInstanceOfType(resource, typeof(IOperationResource));
         }
 

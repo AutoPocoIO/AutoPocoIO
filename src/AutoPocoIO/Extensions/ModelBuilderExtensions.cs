@@ -18,7 +18,7 @@ namespace AutoPocoIO.Extensions
             modelBuilder.Entity<Connector>()
                 .HasData(new Connector
                 {
-                    Id = 1,
+                    Id = "4b6b6ba7-0209-4b89-91cb-0e2a67aa37c1",
                     Name = AutoPocoConstants.DefaultConnectors.AppDB,
                     ResourceType = 1,
                     ConnectionString = "",
@@ -28,7 +28,7 @@ namespace AutoPocoIO.Extensions
                 },
                 new Connector
                 {
-                    Id = 2,
+                    Id = "4d74e770-54e9-4b0f-8f13-59ccb0808654",
                     Name = AutoPocoConstants.DefaultConnectors.Logging,
                     ResourceType = 1,
                     ConnectionString = "",
@@ -39,10 +39,10 @@ namespace AutoPocoIO.Extensions
             modelBuilder.Entity<UserJoin>().HasData(
                 new UserJoin
                 {
-                    Id = 1,
+                    Id = "abd7f037-cc34-44fb-89f5-2e4a06772a01",
                     Alias = "Response",
-                    PKConnectorId = 2,
-                    FKConnectorId = 2,
+                    PKConnectorId = "4d74e770-54e9-4b0f-8f13-59ccb0808654",
+                    FKConnectorId = "4d74e770-54e9-4b0f-8f13-59ccb0808654",
                     PKTableName = "Request",
                     PKColumn = "RequestId,RequestGuid",
                     FKTableName = "Response",

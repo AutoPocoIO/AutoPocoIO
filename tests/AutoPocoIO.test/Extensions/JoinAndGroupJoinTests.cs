@@ -25,12 +25,12 @@ namespace AutoPocoIO.test.Extensions
             var db = new AppDbContext(AppDbOptions);
             db.Connector.Add(new Connector
             {
-                Id = 1,
+                Id = "1",
                 Name = "Name2"
             });
             db.UserJoin.Add(new UserJoin
             {
-                Id = 1,
+                Id = "1",
                 Alias = "Alias"
             });
             db.SaveChanges();
@@ -49,13 +49,13 @@ namespace AutoPocoIO.test.Extensions
             var db = new AppDbContext(AppDbOptions);
             db.Connector.Add(new Connector
             {
-                Id = 1,
+                Id = "1",
                 ResourceType = 2,
                 Name = "Name1"
             });
             db.Connector.Add(new Connector
             {
-                Id = 2,
+                Id = "2",
                 ResourceType = 2,
                 Name = "Name2"
             });

@@ -91,7 +91,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
                 dbContextBase.Add(new Connector
                 {
-                    Id = 1,
+                    Id = "1",
                     Name = "init",
                     Port = 123
                 });

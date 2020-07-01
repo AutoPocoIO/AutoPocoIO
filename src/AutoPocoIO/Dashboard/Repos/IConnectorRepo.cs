@@ -7,10 +7,10 @@ namespace AutoPocoIO.Dashboard.Repos
     {
         int ConnectorCount();
         IEnumerable<ConnectorViewModel> ListConnectors();
-        int Save(ConnectorViewModel model);
-        ConnectorViewModel GetById(int id);
-        int Insert(ConnectorViewModel model);
+        string Save(ConnectorViewModel model);
+        ConnectorViewModel GetById(string id);
+        string Insert(ConnectorViewModel model);
         void Validate(ConnectorViewModel model, IDictionary<string, string> errors);
-        void Delete(int id);
+        void Delete(string id);
     }
 }
