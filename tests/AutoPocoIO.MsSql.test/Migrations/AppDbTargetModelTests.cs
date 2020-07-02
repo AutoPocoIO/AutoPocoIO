@@ -37,7 +37,6 @@ namespace AutoPocoIO.test.Migrations
         {
             Assert.AreEqual("2.2.6-servicing-10079", migration.Model.FindAnnotation("ProductVersion").Value);
             Assert.AreEqual(128, migration.Model.FindAnnotation("Relational:MaxIdentifierLength").Value);
-            Assert.AreEqual(SqlServerValueGenerationStrategy.IdentityColumn, migration.Model.FindAnnotation("SqlServer:ValueGenerationStrategy").Value);
         }
 
         [TestMethod]
@@ -63,9 +62,9 @@ namespace AutoPocoIO.test.Migrations
             //Columns (if column not found then will throw nullobject)
             Assert.AreEqual(11, entity.GetProperties().Count());
 
-            Assert.AreEqual(typeof(int), entity.FindProperty("Id").ClrType);
+            Assert.AreEqual(typeof(string), entity.FindProperty("Id").ClrType);
             Assert.AreEqual(ValueGenerated.OnAdd, entity.FindProperty("Id").ValueGenerated);
-            Assert.AreEqual(SqlServerValueGenerationStrategy.IdentityColumn, entity.FindProperty("Id").FindAnnotation("SqlServer:ValueGenerationStrategy").Value);
+            Assert.AreEqual(128, entity.FindProperty("Id").GetMaxLength());
 
             Assert.AreEqual(typeof(string), entity.FindProperty("ConnectionString").ClrType);
             Assert.AreEqual(typeof(string), entity.FindProperty("DataSource").ClrType);
@@ -118,9 +117,9 @@ namespace AutoPocoIO.test.Migrations
             //Columns (if column not found then will throw nullobject)
             Assert.AreEqual(8, entity.GetProperties().Count());
 
-            Assert.AreEqual(typeof(int), entity.FindProperty("Id").ClrType);
+            Assert.AreEqual(typeof(string), entity.FindProperty("Id").ClrType);
             Assert.AreEqual(ValueGenerated.OnAdd, entity.FindProperty("Id").ValueGenerated);
-            Assert.AreEqual(SqlServerValueGenerationStrategy.IdentityColumn, entity.FindProperty("Id").FindAnnotation("SqlServer:ValueGenerationStrategy").Value);
+            Assert.AreEqual(128, entity.FindProperty("Id").GetMaxLength());
 
             Assert.AreEqual(typeof(string), entity.FindProperty("Alias").ClrType);
             Assert.AreEqual(50, entity.FindProperty("Alias").GetMaxLength());
@@ -130,7 +129,8 @@ namespace AutoPocoIO.test.Migrations
             Assert.AreEqual(500, entity.FindProperty("FKColumn").GetMaxLength());
             Assert.IsFalse(entity.FindProperty("FKColumn").IsColumnNullable());
 
-            Assert.AreEqual(typeof(int?), entity.FindProperty("FKConnectorId").ClrType);
+            Assert.AreEqual(typeof(string), entity.FindProperty("FKConnectorId").ClrType);
+            Assert.AreEqual(128, entity.FindProperty("FKConnectorId").GetMaxLength());
 
             Assert.AreEqual(typeof(string), entity.FindProperty("FKTableName").ClrType);
             Assert.AreEqual(100, entity.FindProperty("FKTableName").GetMaxLength());
@@ -140,7 +140,8 @@ namespace AutoPocoIO.test.Migrations
             Assert.AreEqual(500, entity.FindProperty("PKColumn").GetMaxLength());
             Assert.IsFalse(entity.FindProperty("PKColumn").IsColumnNullable());
 
-            Assert.AreEqual(typeof(int?), entity.FindProperty("PKConnectorId").ClrType);
+            Assert.AreEqual(typeof(string), entity.FindProperty("PKConnectorId").ClrType);
+            Assert.AreEqual(128, entity.FindProperty("PKConnectorId").GetMaxLength());
 
             Assert.AreEqual(typeof(string), entity.FindProperty("PKTableName").ClrType);
             Assert.AreEqual(100, entity.FindProperty("PKTableName").GetMaxLength());

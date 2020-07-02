@@ -195,8 +195,8 @@ namespace AutoPocoIO.test.Resources
             }
 
 
-            var list = new List<ViewModel1> { new ViewModel1 { Id = 1, Name = "a" }, new ViewModel1 { Id = 2, Name = "b" } }.AsQueryable();
-            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = 1, Name3 = "a1" }, new ViewModel2 { Id1 = 2, Name3 = "b1" } }.AsQueryable();
+            var list = new List<ViewModel1> { new ViewModel1 { Id = "1", Name = "a" }, new ViewModel1 { Id = "2", Name = "b" } }.AsQueryable();
+            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = "1", Name3 = "a1" }, new ViewModel2 { Id1 = "2", Name3 = "b1" } }.AsQueryable();
 
             var pkTable = new Table { Database = "db1", Schema = "sch", Name = "tbl1" };
             pkTable.Columns.Add(new Column { PKName = "pk", ColumnName = "Id" });
@@ -253,8 +253,8 @@ namespace AutoPocoIO.test.Resources
             }
 
 
-            var list = new List<ViewModel1> { new ViewModel1 { Id = 1, Name = "a" }, new ViewModel1 { Id = 2, Name = "b" } }.AsQueryable();
-            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = 1, Name3 = "a" }, new ViewModel2 { Id1 = 2, Name3 = "b" } }.AsQueryable();
+            var list = new List<ViewModel1> { new ViewModel1 { Id = "1", Name = "a" }, new ViewModel1 { Id = "2", Name = "b" } }.AsQueryable();
+            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = "1", Name3 = "a" }, new ViewModel2 { Id1 = "2", Name3 = "b" } }.AsQueryable();
 
             var pkTable = new Table { Database = "db1", Schema = "sch", Name = "tbl1" };
             pkTable.Columns.Add(new Column { PKName = "pk", ColumnName = "Id" });
@@ -311,8 +311,8 @@ namespace AutoPocoIO.test.Resources
             }
 
 
-            var list = new List<ViewModel1> { new ViewModel1 { Id = 7, Name = "a" }, new ViewModel1 { Id = 8, Name = "b" } }.AsQueryable();
-            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = 1, Name3 = "a" }, new ViewModel2 { Id1 = 2, Name3 = "b" } }.AsQueryable();
+            var list = new List<ViewModel1> { new ViewModel1 { Id = "7", Name = "a" }, new ViewModel1 { Id = "8", Name = "b" } }.AsQueryable();
+            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = "1", Name3 = "a" }, new ViewModel2 { Id1 = "2", Name3 = "b" } }.AsQueryable();
 
             var pkTable = new Table { Database = "db1", Schema = "sch", Name = "tbl1" };
             pkTable.Columns.Add(new Column { PKName = "pk", ColumnName = "Id" });
@@ -343,9 +343,9 @@ namespace AutoPocoIO.test.Resources
             IQueryable<dynamic> results = resource.GetResourceRecords(new Dictionary<string, string>() { { "$expand", "UJ_pkJoinListFromName3" } });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-            Assert.AreEqual(7, results.First().Id);
+            Assert.AreEqual("7", results.First().Id);
             Assert.AreEqual(1, ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromName3).Count());
-            Assert.AreEqual(1, ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromName3).First().Id1);
+            Assert.AreEqual("1", ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromName3).First().Id1);
         }
 
         [TestMethod]
@@ -369,8 +369,8 @@ namespace AutoPocoIO.test.Resources
             }
 
 
-            var list = new List<ViewModel1> { new ViewModel1 { Id = 1, Name = "a" }, new ViewModel1 { Id = 2, Name = "b" } }.AsQueryable();
-            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = 1, Name3 = "a1" }, new ViewModel2 { Id1 = 2, Name3 = "b1" } }.AsQueryable();
+            var list = new List<ViewModel1> { new ViewModel1 { Id = "1", Name = "a" }, new ViewModel1 { Id = "2", Name = "b" } }.AsQueryable();
+            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = "1", Name3 = "a1" }, new ViewModel2 { Id1 = "2", Name3 = "b1" } }.AsQueryable();
 
             var pkTable = new Table { Database = "db1", Schema = "sch", Name = "tbl1" };
             pkTable.Columns.Add(new Column { PKName = "pk", ColumnName = "Id" });
@@ -427,8 +427,8 @@ namespace AutoPocoIO.test.Resources
             }
 
 
-            var list = new List<ViewModel1> { new ViewModel1 { Id = 1, Name = "a" }, new ViewModel1 { Id = 2, Name = "b" } }.AsQueryable();
-            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = 1, Name3 = "a1" }, new ViewModel2 { Id1 = 2, Name3 = "b1" } }.AsQueryable();
+            var list = new List<ViewModel1> { new ViewModel1 { Id = "1", Name = "a" }, new ViewModel1 { Id = "2", Name = "b" } }.AsQueryable();
+            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = "1", Name3 = "a1" }, new ViewModel2 { Id1 = "2", Name3 = "b1" } }.AsQueryable();
 
             var pkTable = new Table { Database = "db1", Schema = "sch", Name = "tbl1" };
             pkTable.Columns.Add(new Column { PKName = "pk", ColumnName = "Id" });
@@ -485,8 +485,8 @@ namespace AutoPocoIO.test.Resources
             }
 
 
-            var list = new List<ViewModel1> { new ViewModel1 { Id = 1, Name = "a" }, new ViewModel1 { Id = 2, Name = "b" } }.AsQueryable();
-            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = 1, Name3 = "a1" }, new ViewModel2 { Id1 = 2, Name3 = "b1" } }.AsQueryable();
+            var list = new List<ViewModel1> { new ViewModel1 { Id = "1", Name = "a" }, new ViewModel1 { Id = "2", Name = "b" } }.AsQueryable();
+            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = "1", Name3 = "a1" }, new ViewModel2 { Id1 = "2", Name3 = "b1" } }.AsQueryable();
 
             var pkTable = new Table { Database = "db1", Schema = "sch", Name = "tbl1" };
             pkTable.Columns.Add(new Column { PKName = "pk", ColumnName = "Id" });
@@ -611,7 +611,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void GetResourceByIdWithNavProperties()
         {
-            var list = new[] { new { Id2 = 1, Name5 = "name1", ViewModel1 = new { Id = 3 }, OtherObject = new { other = 1 } } }
+            var list = new[] { new { Id2 = "1", Name5 = "name1", ViewModel1 = new { Id = "3" }, OtherObject = new { other = 1 } } }
                         .ToList()
                         .AsQueryable();
             defaultServices.AddSingleton(c =>
@@ -630,13 +630,13 @@ namespace AutoPocoIO.test.Resources
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             Assert.IsInstanceOfType(results, typeof(ViewModel3));
             Assert.IsNull(results.GetType().GetProperty("OtherObject"));
-            Assert.AreEqual(3, results.ViewModel1.Id);
+            Assert.AreEqual("3", results.ViewModel1.Id);
         }
 
         [TestMethod]
         public void UpdateTViewModelRecord()
         {
-            var model = new ViewModel1 { Id = 1, Name = "newName" };
+            var model = new ViewModel1 { Id = "1", Name = "newName" };
             var connector = new Connector { Id = "1", Name = "oldName" };
             Connector usedConnector = null;
             var mock = new Mock<IDbAdapter>();
@@ -666,7 +666,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void UpdateTViewModelRecordReturnsNullIfNotFound()
         {
-            var model = new ViewModel1 { Id = 1, Name = "newName" };
+            var model = new ViewModel1 { Id = "1", Name = "newName" };
             var mock = new Mock<IDbAdapter>();
 
             defaultServices.AddSingleton(c =>
@@ -688,7 +688,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void UpdateJTokenRecord()
         {
-            var model = JToken.FromObject(new ViewModel1 { Id = 1, Name = "newName" });
+            var model = JToken.FromObject(new ViewModel1 { Id = "1", Name = "newName" });
             var connector = new Connector { Id = "1", Name = "oldName" };
             Connector usedConnector = null;
             var mock = new Mock<IDbAdapter>();
@@ -716,7 +716,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void UpdateJTokenRecordReturnsNullIfNotFound()
         {
-            var model = JToken.FromObject(new ViewModel1 { Id = 1, Name = "newName" });
+            var model = JToken.FromObject(new ViewModel1 { Id = "1", Name = "newName" });
             var mock = new Mock<IDbAdapter>();
 
             defaultServices.AddSingleton(c =>
@@ -738,7 +738,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void InsertTViewModelRecord()
         {
-            var model = new ViewModel1 { Id = 1, Name = "newName" };
+            var model = new ViewModel1 { Id = "1", Name = "newName" };
             var connector = new Connector { Id = "1", Name = "oldName" };
             Connector usedConnector = null;
             var mock = new Mock<IDbAdapter>();
@@ -769,7 +769,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void InsertJTokenRecord()
         {
-            var model = JToken.FromObject(new ViewModel1 { Id = 1, Name = "newName" });
+            var model = JToken.FromObject(new ViewModel1 { Id = "1", Name = "newName" });
             var connector = new Connector { Id = "1", Name = "oldName" };
             Connector usedConnector = null;
             var mock = new Mock<IDbAdapter>();
@@ -848,7 +848,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void GetAllViewRecordsTrimsColumns()
         {
-            var list = new List<ViewModel1> { new ViewModel1 { Id = 1, Name = "a2", Name2 = "b" }, new ViewModel1 { Id = 2, Name = "a2", Name2 = "b2" } }.AsQueryable();
+            var list = new List<ViewModel1> { new ViewModel1 { Id = "1", Name = "a2", Name2 = "b" }, new ViewModel1 { Id = "2", Name = "a2", Name2 = "b2" } }.AsQueryable();
             var view = new View
             {
                 Database = "db1",
@@ -1014,7 +1014,7 @@ namespace AutoPocoIO.test.Resources
             Assert.AreEqual("tbl1", result.Tables.Single());
             Assert.AreEqual("vw1", result.Views.Single());
             Assert.AreEqual("sproc1", result.StoredProcedures.Single());
-            Assert.AreEqual(1, result.ConnectorId);
+            Assert.AreEqual("1", result.ConnectorId);
             Assert.AreEqual("testConn", result.ConnectorName);
             Assert.AreEqual("sch", result.Name);
             Assert.AreEqual("db1", result.DbName);
@@ -1136,7 +1136,7 @@ namespace AutoPocoIO.test.Resources
 
             //table values
             Assert.AreEqual("tbl1", result.Name);
-            Assert.AreEqual(1, result.ConnectorId);
+            Assert.AreEqual("1", result.ConnectorId);
             Assert.AreEqual("testConn", result.ConnectorName);
             Assert.AreEqual("sch", result.SchemaName);
             Assert.AreEqual("db1", result.DbName);

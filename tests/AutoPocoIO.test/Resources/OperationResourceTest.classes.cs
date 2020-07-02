@@ -15,21 +15,21 @@ namespace AutoPocoIO.test.Resources
     {
         private class ViewModel1
         {
-            public int Id { get; set; }
+            public string Id { get; set; }
             public string Name { get; set; }
             public string Name2 { get; set; }
         }
 
         private class ViewModel2
         {
-            public int Id1 { get; set; }
+            public string Id1 { get; set; }
             public string Name3 { get; set; }
             public string Name4 { get; set; }
         }
 
         private class ViewModel3
         {
-            public int Id2 { get; set; }
+            public string Id2 { get; set; }
             public string Name5 { get; set; }
             public ViewModel1 ViewModel1 { get; set; }
         }

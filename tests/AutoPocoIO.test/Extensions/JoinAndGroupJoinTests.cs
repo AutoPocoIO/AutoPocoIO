@@ -11,6 +11,13 @@ namespace AutoPocoIO.test.Extensions
     [TestCategory(TestCategories.Unit)]
     public class JoinAndGroupJoinTests : DbAccessUnitTestBase
     {
+        private class ViewModel1
+        {
+            public string Id { get; set; }
+            public string Id2 { get; set; }
+            public string Name { get; set; }
+        }
+
         [TestMethod]
         public void JoinNoResults()
         {
@@ -46,22 +53,24 @@ namespace AutoPocoIO.test.Extensions
         [TestMethod]
         public void GroupJoinWithStringValues()
         {
-            var db = new AppDbContext(AppDbOptions);
-            db.Connector.Add(new Connector
-            {
-                Id = "1",
-                ResourceType = 2,
-                Name = "Name1"
-            });
-            db.Connector.Add(new Connector
-            {
-                Id = "2",
-                ResourceType = 2,
-                Name = "Name2"
-            });
-            db.SaveChanges();
+            var list = new List<ViewModel1>
+            { 
+                new ViewModel1
+                {
+                     Id = "1",
+                     Id2 = "2",
+                     Name = "Name1"
+                },
+                new ViewModel1
+                {
+                     Id = "2",
+                     Id2 = "2",
+                     Name = "Name2"
+                }
+            }.AsQueryable();
+          
 
-            var results = db.Connector.GroupJoin<dynamic>(db.Connector, "outer.Id", "inner.ResourceType", "new(outer.Name, group as ResouceTypes)")
+            var results = list.GroupJoin<dynamic>(list, "outer.Id", "inner.Id2", "new(outer.Name, group as ResouceTypes)")
                 .ToList();
 
             Assert.AreEqual(2, results.Count());

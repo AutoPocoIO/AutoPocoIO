@@ -61,9 +61,9 @@ namespace AutoPocoIO.test.Migrations
             //Columns
             Assert.AreEqual(11, op.Columns.Count());
 
-            Assert.AreEqual(typeof(int), op.Columns.First(c => c.Name == "Id").ClrType);
+            Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "Id").ClrType);
             Assert.IsFalse(op.Columns.First(c => c.Name == "Id").IsNullable);
-            Assert.AreEqual(SqlServerValueGenerationStrategy.IdentityColumn, op.Columns.First(c => c.Name == "Id").FindAnnotation("SqlServer:ValueGenerationStrategy").Value);
+            Assert.AreEqual(128, op.Columns.First(c => c.Name == "Id").MaxLength);
 
             Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "Name").ClrType);
             Assert.IsTrue(op.Columns.First(c => c.Name == "Name").IsNullable);
@@ -138,19 +138,21 @@ namespace AutoPocoIO.test.Migrations
             //Columns
             Assert.AreEqual(8, op.Columns.Count());
 
-            Assert.AreEqual(typeof(int), op.Columns.First(c => c.Name == "Id").ClrType);
+            Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "Id").ClrType);
             Assert.IsFalse(op.Columns.First(c => c.Name == "Id").IsNullable);
-            Assert.AreEqual(SqlServerValueGenerationStrategy.IdentityColumn, op.Columns.First(c => c.Name == "Id").FindAnnotation("SqlServer:ValueGenerationStrategy").Value);
+            Assert.AreEqual(128, op.Columns.First(c => c.Name == "Id").MaxLength);
 
             Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "Alias").ClrType);
             Assert.IsFalse(op.Columns.First(c => c.Name == "Alias").IsNullable);
             Assert.AreEqual(50, op.Columns.First(c => c.Name == "Alias").MaxLength);
 
-            Assert.AreEqual(typeof(int), op.Columns.First(c => c.Name == "PKConnectorId").ClrType);
+            Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "PKConnectorId").ClrType);
             Assert.IsTrue(op.Columns.First(c => c.Name == "PKConnectorId").IsNullable);
+            Assert.AreEqual(128, op.Columns.First(c => c.Name == "PKConnectorId").MaxLength);
 
-            Assert.AreEqual(typeof(int), op.Columns.First(c => c.Name == "FKConnectorId").ClrType);
+            Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "FKConnectorId").ClrType);
             Assert.IsTrue(op.Columns.First(c => c.Name == "FKConnectorId").IsNullable);
+            Assert.AreEqual(128, op.Columns.First(c => c.Name == "FKConnectorId").MaxLength);
 
             Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "PKTableName").ClrType);
             Assert.IsFalse(op.Columns.First(c => c.Name == "PKTableName").IsNullable);
@@ -174,13 +176,13 @@ namespace AutoPocoIO.test.Migrations
         {
             var dataOps = migration.UpOperations.Where(c => c.GetType() == typeof(InsertDataOperation) && ((InsertDataOperation)c).Table == "Connector").Cast<InsertDataOperation>();
 
-            var id1 = dataOps.First(c => (int)c.Values[0, 0] == 1);
+            var id1 = dataOps.First(c => (string)c.Values[0, 0] == "4b6b6ba7-0209-4b89-91cb-0e2a67aa37c1");
             CollectionAssert.AreEqual(new[] { "Id", "ConnectionString", "DataSource", "InitialCatalog", "Name", "RecordLimit", "ResourceType", "Schema", "UserId", "IsActive" }, id1.Columns);
-            CollectionAssert.AreEqual(new object[] { 1, "", null, null, "appDb", 500, 1, "AutoPoco", null, true }, GetRow(id1.Values, 0));
+            CollectionAssert.AreEqual(new object[] { "4b6b6ba7-0209-4b89-91cb-0e2a67aa37c1", "", null, null, "AppDb", 500, 1, "AutoPoco", null, true }, GetRow(id1.Values, 0));
 
-            var id2 = dataOps.First(c => (int)c.Values[0, 0] == 2);
+            var id2 = dataOps.First(c => (string)c.Values[0, 0] == "4d74e770-54e9-4b0f-8f13-59ccb0808654");
             CollectionAssert.AreEqual(new[] { "Id", "ConnectionString", "DataSource", "InitialCatalog", "Name", "RecordLimit", "ResourceType", "Schema", "UserId", "IsActive" }, id2.Columns);
-            CollectionAssert.AreEqual(new object[] { 2, "", null, null, "logDb", 500, 1, "AutoPocoLog", null, true }, GetRow(id2.Values, 0));
+            CollectionAssert.AreEqual(new object[] { "4d74e770-54e9-4b0f-8f13-59ccb0808654", "", null, null, "LogDb", 500, 1, "AutoPocoLog", null, true }, GetRow(id2.Values, 0));
         }
 
 

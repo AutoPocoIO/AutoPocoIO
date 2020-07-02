@@ -80,7 +80,7 @@ namespace AutoPocoIO.Migrations
 
             modelBuilder.Entity("AutoPoco.Models.UserJoin", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(128);
 

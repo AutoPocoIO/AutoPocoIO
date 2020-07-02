@@ -34,7 +34,6 @@ namespace AutoPocoIO.test.Migrations
         {
             Assert.AreEqual("2.2.4-servicing-10062", snapShot.Model.FindAnnotation("ProductVersion").Value);
             Assert.AreEqual(128, snapShot.Model.FindAnnotation("Relational:MaxIdentifierLength").Value);
-            Assert.AreEqual(SqlServerValueGenerationStrategy.IdentityColumn, snapShot.Model.FindAnnotation("SqlServer:ValueGenerationStrategy").Value);
         }
 
         [TestMethod]

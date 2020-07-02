@@ -90,7 +90,7 @@ namespace AutoPocoIO.test.Services
             db.SaveChanges();
 
             IAppAdminService appAdminService = new AppAdminService(db);
-            var connector = appAdminService.GetConnection(conn1.Id);
+            var connector = appAdminService.GetConnectionById(conn1.Id);
 
             Assert.AreEqual(conn1.Id, connector.Id);
             Assert.AreEqual("connName1", connector.Name);
