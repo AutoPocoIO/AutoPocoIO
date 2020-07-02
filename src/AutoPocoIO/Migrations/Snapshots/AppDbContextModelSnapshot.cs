@@ -18,8 +18,8 @@ namespace AutoPocoIO.Migrations
             modelBuilder.Entity("AutoPoco.Models.Connector", b =>
                 {
                     b.Property<string>("Id")
-                        .IsRequired()
-                        .HasMaxLength(450);
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128);
 
                     b.Property<string>("ConnectionString");
 
@@ -81,8 +81,8 @@ namespace AutoPocoIO.Migrations
             modelBuilder.Entity("AutoPoco.Models.UserJoin", b =>
                 {
                     b.Property<int>("Id")
-                        .IsRequired()
-                        .HasMaxLength(450);
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128);
 
                     b.Property<string>("Alias")
                         .IsRequired()
@@ -93,7 +93,7 @@ namespace AutoPocoIO.Migrations
                         .HasMaxLength(500);
 
                     b.Property<string>("FKConnectorId")
-                         .HasMaxLength(450);
+                         .HasMaxLength(128);
 
                     b.Property<string>("FKTableName")
                         .IsRequired()
@@ -104,7 +104,7 @@ namespace AutoPocoIO.Migrations
                         .HasMaxLength(500);
 
                     b.Property<string>("PKConnectorId")
-                            .HasMaxLength(450);
+                            .HasMaxLength(128);
 
                     b.Property<string>("PKTableName")
                         .IsRequired()

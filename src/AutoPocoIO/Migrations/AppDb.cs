@@ -15,7 +15,7 @@ namespace AutoPocoIO.Migrations
                 schema: "AutoPoco",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(maxLength: 128, nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: true),
                     ResourceType = table.Column<int>(nullable: false),
                     Schema = table.Column<string>(maxLength: 50, nullable: true),
@@ -37,10 +37,10 @@ namespace AutoPocoIO.Migrations
                 schema: "AutoPoco",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(maxLength: 128, nullable: false),
                     Alias = table.Column<string>(maxLength: 50, nullable: false),
-                    PKConnectorId = table.Column<string>(nullable: true),
-                    FKConnectorId = table.Column<string>(nullable: true),
+                    PKConnectorId = table.Column<string>(maxLength: 128, nullable: true),
+                    FKConnectorId = table.Column<string>(maxLength: 128, nullable: true),
                     PKTableName = table.Column<string>(maxLength: 100, nullable: false),
                     FKTableName = table.Column<string>(maxLength: 100, nullable: false),
                     PKColumn = table.Column<string>(maxLength: 500, nullable: false),
