@@ -16,16 +16,18 @@
                     <th scope="col">Type</th>
                     <th scope="col">Requester</th>
                     <th scope="col">Connector</th>
+                    <th scope="col">Resouce</th>
+                    <th scope="col">Resource Key</th>
                     <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var row in (IEnumerable<RequestGridViewModel>)ViewBag["requests"])
                 {
-                    <tr>
-                        <th scope="row">@row.DateTimeUtc</th>
-                        <td>
-                            <span class="badge badge-pill" style="color:#fff;background-color:
+                <tr>
+                    <th scope="row">@row.DateTimeUtc</th>
+                    <td>
+                        <span class="badge badge-pill" style="color:#fff;background-color:
                                 @switch (row.RequestType)
                                 {
                                     case "GET": @("#1b5168")
@@ -37,13 +39,15 @@
                                     case "PUT": @("#ffba00")
                                         break;
                                 };">
-                                @row.RequestType
-                            </span>
-                        </td>
-                        <td>@row.Requester</td>
-                        <td>@row.Connector</td>
-                        <td style="color: @if (row.Status == "HTTP 200 : OK" || row.Status == "HTTP 302 : Found") { @("green")} else { @("red")} ">@(row.Status)</td>
-                    </tr>
+                            @row.RequestType
+                        </span>
+                    </td>
+                    <td>@row.Requester</td>
+                    <td>@row.Connector</td>
+                    <td>@row.Resource</td>
+                    <td>@row.ResourceId</td>
+                    <td style="color: @if (row.Status == "HTTP 200 : OK" || row.Status == "HTTP 302 : Found") { @("green")} else { @("red")} ">@(row.Status)</td>
+                </tr>
                 }
             </tbody>
         </table>

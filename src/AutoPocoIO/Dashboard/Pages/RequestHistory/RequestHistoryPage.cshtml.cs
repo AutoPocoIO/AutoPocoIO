@@ -45,6 +45,8 @@ WriteLiteral(@"
                     <th scope=""col"">Type</th>
                     <th scope=""col"">Requester</th>
                     <th scope=""col"">Connector</th>
+                    <th scope=""col"">Resouce</th>
+                    <th scope=""col"">Resource Key</th>
                     <th scope=""col"">Status</th>
                 </tr>
             </thead>
@@ -55,13 +57,13 @@ WriteLiteral(@"
                  foreach (var row in (IEnumerable<RequestGridViewModel>)ViewBag["requests"])
                 {
 
-WriteLiteral("                    <tr>\r\n                        <th scope=\"row\">");
+WriteLiteral("                <tr>\r\n                    <th scope=\"row\">");
 
 
-                                   Write(row.DateTimeUtc);
+                               Write(row.DateTimeUtc);
 
-WriteLiteral("</th>\r\n                        <td>\r\n                            <span class=\"bad" +
-"ge badge-pill\" style=\"color:#fff;background-color:\r\n");
+WriteLiteral("</th>\r\n                    <td>\r\n                        <span class=\"badge badge" +
+"-pill\" style=\"color:#fff;background-color:\r\n");
 
 
                                  switch (row.RequestType)
@@ -87,38 +89,48 @@ WriteLiteral("</th>\r\n                        <td>\r\n                         
                                                             
                                         break;
                                 }
-WriteLiteral(";\">\r\n                                ");
+WriteLiteral(";\">\r\n                            ");
 
 
-                           Write(row.RequestType);
+                       Write(row.RequestType);
 
-WriteLiteral("\r\n                            </span>\r\n                        </td>\r\n           " +
-"             <td>");
-
-
-                       Write(row.Requester);
-
-WriteLiteral("</td>\r\n                        <td>");
+WriteLiteral("\r\n                        </span>\r\n                    </td>\r\n                   " +
+" <td>");
 
 
-                       Write(row.Connector);
+                   Write(row.Requester);
+
+WriteLiteral("</td>\r\n                    <td>");
 
 
-                                          WriteLiteral("</td>\r\n                        <td style=\"color: ");
+                   Write(row.Connector);
 
-                                           if (row.Status == "HTTP 200 : OK" || row.Status == "HTTP 302 : Found") { 
-                                                                                                                Write("green");
+WriteLiteral("</td>\r\n                    <td>");
 
-                                                                                                                              } else { 
-                                                                                                                                   Write("red");
 
-                                                                                                                                               }
+                   Write(row.Resource);
+
+WriteLiteral("</td>\r\n                    <td>");
+
+
+                   Write(row.ResourceId);
+
+
+                                       WriteLiteral("</td>\r\n                    <td style=\"color: ");
+
+                                       if (row.Status == "HTTP 200 : OK" || row.Status == "HTTP 302 : Found") { 
+                                                                                                            Write("green");
+
+                                                                                                                          } else { 
+                                                                                                                               Write("red");
+
+                                                                                                                                           }
 WriteLiteral(" \">");
 
 
-                                                                                                                                               Write(row.Status);
+                                                                                                                                           Write(row.Status);
 
-WriteLiteral("</td>\r\n                    </tr>\r\n");
+WriteLiteral("</td>\r\n                </tr>\r\n");
 
 
                 }

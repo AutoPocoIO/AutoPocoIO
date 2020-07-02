@@ -21,6 +21,8 @@ namespace AutoPocoIO.Migrations
                     DateTimeUtc = table.Column<DateTime>(type: "datetime2(4)", nullable: true),
                     DayOfRequest = table.Column<DateTime>(nullable: true, computedColumnSql: "CONVERT(date, DateTimeUtc)"),
                     RequestType = table.Column<string>(maxLength: 10, nullable: true),
+                    ResourceName = table.Column<string>(maxLength: 128, nullable: true),
+                    ResourceId = table.Column<string>(maxLength: 128, nullable: true),
                     Connector = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>

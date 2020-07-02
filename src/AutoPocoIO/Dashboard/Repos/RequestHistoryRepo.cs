@@ -37,6 +37,8 @@ namespace AutoPocoIO.Dashboard.Repos
                 Requester = c.Request.RequesterIp,
                 RequestGuid = c.Request.RequestGuid,
                 RequestType = c.Request.RequestType,
+                Resource = c.Request.ResourceName,
+                ResourceId = c.Request.ResourceId,
                 Status = c.Status,
                 DateTimeUtc = c.Request.DateTimeUtc == null ? (DateTime?)null :
                                              c.Request.DateTimeUtc.Value.AddMinutes(offset)

@@ -63,7 +63,7 @@ namespace AutoPocoIO.test.Migrations
 
 
             //Columns
-            Assert.AreEqual(7, op.Columns.Count());
+            Assert.AreEqual(9, op.Columns.Count());
 
             Assert.AreEqual(typeof(long), op.Columns.First(c => c.Name == "RequestId").ClrType);
             Assert.IsFalse(op.Columns.First(c => c.Name == "RequestId").IsNullable);
@@ -91,6 +91,11 @@ namespace AutoPocoIO.test.Migrations
             Assert.IsTrue(op.Columns.First(c => c.Name == "Connector").IsNullable);
             Assert.AreEqual(50, op.Columns.First(c => c.Name == "Connector").MaxLength);
 
+            Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "ResourceName").ClrType);
+            Assert.AreEqual(128, op.Columns.First(c => c.Name == "ResourceName").MaxLength);
+
+            Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "ResourceId").ClrType);
+            Assert.AreEqual(128, op.Columns.First(c => c.Name == "ResourceId").MaxLength);
         }
 
         [TestMethod]

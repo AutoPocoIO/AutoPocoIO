@@ -62,10 +62,11 @@ namespace AutoPocoIO.Services
             {
                 Connector = values.ConnectorName,
                 Resource = values.ResourceName,
+                ResourceId = values.ResourceId,
                 ResourceType = values.ResourceType,
                 RequestType = values.HttpMethod,
                 RequestTime = requestTime,
-                RequestGuid = Guid.NewGuid(),
+                RequestGuid = Guid.NewGuid()
             });
         }
 
@@ -83,6 +84,25 @@ namespace AutoPocoIO.Services
                 ResourceName = tableName,
                 ResourceType = "table",
                 HttpMethod = httpMethod.ToString()
+            }, _timeProvider.UtcNow);
+        }
+
+        /// <summary>
+        /// Appened a table request when accessing a single value
+        /// </summary>
+        /// <param name="connectorName">AutoPoco Connector name</param>
+        /// <param name="tableName">Table accessed</param>
+        /// <param name="httpMethod">Requst type (GET, POST, PUT, DELETE)</param>
+        /// <param name="primaryKey">Key accessed</param>
+        public void AddTableToLogger(string connectorName, string tableName, HttpMethodType httpMethod, string primaryKey)
+        {
+            AddApiRequest(new LoggingApiContextValues
+            {
+                ConnectorName = connectorName,
+                ResourceName = tableName,
+                ResourceType = "table",
+                HttpMethod = httpMethod.ToString(),
+                ResourceId = primaryKey
             }, _timeProvider.UtcNow);
         }
 
@@ -180,7 +200,9 @@ namespace AutoPocoIO.Services
                 RequestGuid = command.RequestGuid,
                 RequestId = command.RequestTime.Ticks,
                 Connector = command.Connector,
-                RequestType = command.RequestType
+                RequestType = command.RequestType,
+                ResourceName = command.Resource,
+                ResourceId = command.ResourceId
             };
 
             db.RequestLogs.Add(requestLog);

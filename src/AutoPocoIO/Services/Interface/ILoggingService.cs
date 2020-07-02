@@ -18,6 +18,7 @@ namespace AutoPocoIO.Services
         void AddSchemaToLogger(string connectorName);
         void AddSprocToLogger(string connectorName, string sprocName, HttpMethodType httpMethod);
         void AddTableToLogger(string connectorName, string tableName, HttpMethodType httpMethod);
+        void AddTableToLogger(string connectorName, string tableName, HttpMethodType httpMethod, string primaryKey);
         void AddViewToLogger(string connectorName, string viewName);
         Task LogAll();
         void AddContextInfomation(ContextLogParameters logParameters);

@@ -91,7 +91,7 @@ namespace AutoPocoIO.Api
         /// <returns>The record with matching PK. Null if not found.</returns>
         public object GetById(string connectorName, string tableName, string id, ILoggingService loggingService = null)
         {
-            loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET);
+            loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET, id);
 
             IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.read, tableName);
             var data = resource.GetResourceRecordById(id);
@@ -109,7 +109,7 @@ namespace AutoPocoIO.Api
         /// <returns></returns>
         public TViewModel GetById<TViewModel>(string connectorName, string tableName, string id, ILoggingService loggingService = null) where TViewModel : class
         {
-            loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET);
+            loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET, id);
 
             //Manually $expand to prevent nulls on non pk joins
             var joinProperties = typeof(TViewModel).GetProperties()
@@ -173,7 +173,7 @@ namespace AutoPocoIO.Api
         /// <returns>The updated object</returns>
         public object UpdateRow(string connectorName, string tableName, string keys, JToken value, ILoggingService loggingService = null)
         {
-            loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.PUT);
+            loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.PUT, keys);
             Check.NotNull(value, nameof(value));
 
             IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.write, tableName);
@@ -191,7 +191,7 @@ namespace AutoPocoIO.Api
         /// <returns>The updated object</returns>
         public TViewModel UpdateRow<TViewModel>(string connectorName, string tableName, string id, TViewModel value, ILoggingService loggingService = null) where TViewModel : class
         {
-            loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.PUT);
+            loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.PUT, id);
 
             IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.write, tableName);
             return resource.UpdateResourceRecordById(value, id);
@@ -207,7 +207,7 @@ namespace AutoPocoIO.Api
         /// <returns>The removed object</returns>
         public object DeleteRow(string connectorName, string tableName, string id, ILoggingService loggingService = null)
         {
-            loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.DELETE);
+            loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.DELETE, id);
 
             IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.delete, tableName);
             return resource.DeleteResourceRecordById(id);
@@ -241,7 +241,5 @@ namespace AutoPocoIO.Api
             IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.Any, tableName);
             return resource.GetColumnDefinition(columnName);
         }
-
-
     }
 }

@@ -73,7 +73,7 @@ namespace AutoPocoIO.test.Migrations
 
 
             //Columns (if column not found then will throw nullobject)
-            Assert.AreEqual(7, entity.GetProperties().Count());
+            Assert.AreEqual(9, entity.GetProperties().Count());
 
             Assert.AreEqual(typeof(long), entity.FindProperty("RequestId").ClrType);
             Assert.AreEqual(typeof(Guid), entity.FindProperty("RequestGuid").ClrType);
@@ -92,6 +92,12 @@ namespace AutoPocoIO.test.Migrations
 
             Assert.AreEqual(typeof(string), entity.FindProperty("RequesterIp").ClrType);
             Assert.AreEqual(39, entity.FindProperty("RequesterIp").GetMaxLength());
+
+            Assert.AreEqual(typeof(string), entity.FindProperty("ResourceName").ClrType);
+            Assert.AreEqual(128, entity.FindProperty("ResourceName").GetMaxLength());
+
+            Assert.AreEqual(typeof(string), entity.FindProperty("ResourceId").ClrType);
+            Assert.AreEqual(128, entity.FindProperty("ResourceId").GetMaxLength());
 
         }
         [TestMethod]

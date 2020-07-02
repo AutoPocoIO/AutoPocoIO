@@ -11,5 +11,7 @@ namespace AutoPocoIO.Dashboard.ViewModels
         public string Status { get; set; }
         public string Requester { get; set; }
         public string Resource { get; set; }
+        public string ResourceId { get; set; }
+
     }
 }

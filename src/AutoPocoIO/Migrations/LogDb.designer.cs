@@ -39,6 +39,12 @@ namespace AutoPocoIO.Migrations
                     b.Property<string>("RequestType")
                         .HasMaxLength(10);
 
+                    b.Property<string>("ResourceName")
+                       .HasMaxLength(128);
+
+                    b.Property<string>("ResourceId")
+                       .HasMaxLength(128);
+
                     b.Property<string>("RequesterIp")
                         .HasMaxLength(39);
 
@@ -74,6 +80,7 @@ namespace AutoPocoIO.Migrations
 
                     b.Property<string>("Status")
                         .HasMaxLength(51);
+
 
                     b.Property<string>("Exception");
 

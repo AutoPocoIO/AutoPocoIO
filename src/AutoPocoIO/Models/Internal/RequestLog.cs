@@ -22,6 +22,12 @@ namespace AutoPocoIO.Models
         [MaxLength(10)]
         public string RequestType { get; set; }
 
+        [MaxLength(128)]
+        public string ResourceName { get; set; }
+
+        [MaxLength(128)]
+        public string ResourceId { get; set; }
+
         [MaxLength(50)]
         public string Connector { get; set; }
     }
