@@ -50,7 +50,13 @@ namespace System.Linq.AutoPoco
             {
                 var destObject = Activator.CreateInstance<T>();
                 foreach(var property in properties)
-                    property.SetValue(destObject, sourceObject.FirstOrDefault(c => c.Key.Equals(property.Name, StringComparison.OrdinalIgnoreCase)).Value);
+                {
+                    var value = sourceObject.FirstOrDefault(c => c.Key.Equals(property.Name, StringComparison.OrdinalIgnoreCase)).Value;
+                    if (value == DBNull.Value)
+                        value = null;
+                    property.SetValue(destObject, value);
+                }
+                    
 
                 mapped.Add(destObject);
             }
