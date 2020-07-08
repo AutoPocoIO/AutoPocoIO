@@ -55,7 +55,7 @@ namespace AutoPocoIO.Resources
             }
 
             string paramNames = string.Join(",", spoc.Parameters.Select(c => c.Name + (c.IsOutput ? " out" : "")));
-            return Db.DynamicListFromSql($"{spoc.Schema}.{spoc.Name} {paramNames}", objectParameters);
+            return Db.DynamicListFromSql($"[{spoc.Database}].[{spoc.Schema}].[{spoc.Name}] {paramNames}", objectParameters);
         }
     }
 }
