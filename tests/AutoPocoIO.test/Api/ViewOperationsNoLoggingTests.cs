@@ -18,7 +18,7 @@ namespace AutoPocoIO.test.Api
         [TestInitialize]
         public void InitOperation()
         {
-            viewOperations = new ViewOperations(serviceProvider);
+            viewOperations = new ViewOperations(resourceFactoryMock.Object);
         }
 
         [TestMethod]

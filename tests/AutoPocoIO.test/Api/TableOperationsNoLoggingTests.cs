@@ -24,7 +24,7 @@ namespace AutoPocoIO.test.Api
         [TestInitialize]
         public void InitOperation()
         {
-            tableOperations = new TableOperations(serviceProvider);
+            tableOperations = new TableOperations(resourceFactoryMock.Object, queryStringService.Object);
         }
 
         [TestMethod]

@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.Owin
 {
+    /// <summary>
+    /// Handle middleware pages
+    /// </summary>
     public class DashboardMiddleware : IOwinMiddlewareWithDI
     {
         private readonly ILoggingService _loggingService;
@@ -19,6 +22,11 @@ namespace AutoPocoIO.Owin
         private readonly DashboardRoutes _routes;
         private readonly IServiceProvider _serviceProvider;
 
+        /// <summary>
+        /// Initialize instance of middleware and maps services.
+        /// </summary>
+        /// <param name="provider">Root service provider.</param>
+        /// <param name="loggingService">Shared instance of logging service across the owin pipeline.</param>
         public DashboardMiddleware(IServiceProvider provider, ILoggingService loggingService)
         {
             _basePath = "/" + AutoPocoConfiguration.DashboardPathPrefix;
@@ -35,8 +43,10 @@ namespace AutoPocoIO.Owin
 
         }
 
+        ///<inheritdoc/>
         public OwinMiddleware NextComponent { get; set; }
 
+        ///<inheritdoc/>
         public async Task Invoke(IOwinContext context)
         {
             Check.NotNull(context, nameof(context));

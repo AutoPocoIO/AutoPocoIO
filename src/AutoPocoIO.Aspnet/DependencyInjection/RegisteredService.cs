@@ -5,7 +5,7 @@ namespace AutoPoco.DependencyInjection
 {
     internal class RegisteredService : IRegistratedService
     {
-        private ServiceDescriptor _descriptor;
+        private readonly ServiceDescriptor _descriptor;
 
         public RegisteredService(ServiceDescriptor descriptor)
         {

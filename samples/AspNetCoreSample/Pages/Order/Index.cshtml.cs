@@ -1,6 +1,5 @@
 ﻿using AspNetCoreSample.ViewModels;
 using AutoPocoIO.Api;
-using AutoPocoIO.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AspNetCoreSample.Pages.Order
@@ -8,12 +7,10 @@ namespace AspNetCoreSample.Pages.Order
     public class IndexModel : PageModel
     {
         private readonly ITableOperations _tableOperations;
-        private readonly ILoggingService _loggingService;
 
-        public IndexModel(ITableOperations tableOperations, ILoggingService loggingService)
+        public IndexModel(ITableOperations tableOperations)
         {
             _tableOperations = tableOperations;
-            _loggingService = loggingService;
         }
 
         public OrderDetailViewModel item { get; set; }

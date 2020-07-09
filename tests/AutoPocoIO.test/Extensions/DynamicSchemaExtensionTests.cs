@@ -112,10 +112,10 @@ namespace AutoPocoIO.test.Extensions
                 ConnectionStringDecrypted = "connStr"
             };
 
-            resource.Object.ConfigureAction(connector,OperationType.read, "obj");
-            resource.Object.LoadProc("schema1", "proc2");
+            resource.Object.ConfigureAction(connector,OperationType.read, "proc2");
+            resource.Object.LoadProc();
 
-            Assert.AreEqual("schema1", config.FilterSchema);
+            Assert.AreEqual("sch1", config.FilterSchema);
             Assert.IsNull(config.IncludedTable);
             Assert.AreEqual("proc2", config.IncludedStoredProcedure);
 

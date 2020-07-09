@@ -3,14 +3,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
 namespace AutoPocoIO.Dashboard.Extensions
 {
+    /// <summary>
+    /// Dashboard model extensions
+    /// </summary>
     public static class ModelExtensions
     {
+        /// <summary>
+        /// Get value from form values
+        /// </summary>
+        /// <typeparam name="TProperty">Expected property type</typeparam>
+        /// <param name="form">Form values</param>
+        /// <param name="key">Form property name</param>
+        /// <returns></returns>
         public static TProperty FindValue<TProperty>(this IDictionary<string, string[]> form, string key)
         {
             Check.NotNull(form, nameof(form));
@@ -58,9 +67,22 @@ namespace AutoPocoIO.Dashboard.Extensions
             return (TProperty)property;
         }
 
+       
+        /// <summary>
+        /// Get string value from Regex match
+        /// </summary>
+        /// <param name="match">Regex match</param>
+        /// <param name="key">Group to parse to string</param>
+        /// <returns></returns>
+        public static string GetString(this Match match, string key)
+        {
+            Check.NotNull(match, nameof(match));
+            return match.Groups[key].Value;
+        }
+
         private static object FindValue(Type type, string value)
         {
-            object property = type.IsValueType ? Activator.CreateInstance(type) : null;
+            object property;
 
             TypeConverter converter = TypeDescriptor.GetConverter(type);
             if (type == typeof(string))
@@ -73,16 +95,6 @@ namespace AutoPocoIO.Dashboard.Extensions
             return property;
         }
 
-        public static int ToInt(this Match match, string key)
-        {
-            Check.NotNull(match, nameof(match));
-            return int.Parse(match.Groups[key].Value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
-        }
-
-        public static string GetString(this Match match, string key)
-        {
-            Check.NotNull(match, nameof(match));
-            return match.Groups[key].Value;
-        }
+  
     }
 }

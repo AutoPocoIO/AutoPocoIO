@@ -9,19 +9,29 @@ using System.Linq;
 
 namespace AutoPocoIO.Dashboard.Repos
 {
+    /// <summary>
+    ///  Get information about request logs.
+    /// </summary>
     public class RequestHistoryRepo : IRequestHistoryRepo
     {
         private readonly LogDbContext _db;
         private readonly ITimeProvider _timeProvider;
 
+        /// <summary>
+        /// Initialize repository.
+        /// </summary>
+        /// <param name="provider">Middleware scoped provider.</param>
+        /// <param name="timeProvider">Server time information.</param>
         public RequestHistoryRepo(IServiceProvider provider, ITimeProvider timeProvider)
         {
             Check.NotNull(provider, nameof(provider));
+            Check.NotNull(timeProvider, nameof(timeProvider));
 
             _db = provider.GetService<LogDbContext>();
             _timeProvider = timeProvider;
         }
 
+        ///<inheritdoc/>
         public virtual IEnumerable<RequestGridViewModel> ListRequest(int recordLimit)
         {
             var offset = TimeZoneInfo.Local.GetUtcOffset(_timeProvider.Now).TotalMinutes;

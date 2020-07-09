@@ -12,7 +12,7 @@ namespace AutoPocoIO.Resources
 
         public static ServiceProviderCache Instance { get; } = new ServiceProviderCache();
 
-        public virtual IServiceProvider GetOrAdd(IDynamicResource resource, IServiceProvider rootProvider)
+        public virtual IServiceProvider GetOrAdd(IOperationResource resource, IServiceProvider rootProvider)
         {
             return _configurations.GetOrAdd(
                resource.ResourceType,

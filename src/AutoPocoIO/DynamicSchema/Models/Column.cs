@@ -119,6 +119,9 @@ namespace AutoPocoIO.DynamicSchema.Models
             }
         }
 
+        /// <summary>
+        /// Flag the column to add the Browsable attribute
+        /// </summary>
         public bool Browsable
         {
             get

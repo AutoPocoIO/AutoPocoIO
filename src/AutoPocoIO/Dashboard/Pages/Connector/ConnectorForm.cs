@@ -14,7 +14,7 @@ namespace AutoPocoIO.Dashboard.Pages
     {
         private readonly IConnectorRepo _repo;
         private ConnectorViewModel model;
-        private IDictionary<string, string> errors;
+        private readonly IDictionary<string, string> errors;
 
         public ConnectorForm(IConnectorRepo repo, ILayoutPage layout)
         {

@@ -6,10 +6,19 @@ using AutoPocoIO.Middleware.Dispatchers;
 
 namespace AutoPocoIO.Dashboard
 {
+    /// <summary>
+    /// Define routes with middleware dispatchers.
+    /// </summary>
     public class DashboardRoutes
     {
+        /// <summary>
+        /// Routes for middleware dashboard.
+        /// </summary>
         public RouteCollection Routes { get; }
 
+        /// <summary>
+        /// Initialize Routes.
+        /// </summary>
         public DashboardRoutes()
         {
             Routes = new RouteCollection();

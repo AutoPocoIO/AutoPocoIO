@@ -37,7 +37,7 @@ namespace AutoPocoIO.AspNet.test.DependencyInjection
         {
             Assert.AreEqual(0, InternalServiceInfo.Count);
 
-            var serviceInfo = registry.GetServiceInfo(typeof(Class1));
+            registry.GetServiceInfo(typeof(Class1));
 
             Assert.AreEqual(1, InternalServiceInfo.Count);
         }

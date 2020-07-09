@@ -5,14 +5,24 @@ using System.Web.Http;
 
 namespace AutoPocoIO.CustomAttributes
 {
-    internal class DynamicRoutePrefixAttribute : RoutePrefixAttribute
+    /// <summary>
+    /// Prepend route prefix with dashboard prefix
+    /// </summary>
+    public class DynamicRoutePrefixAttribute : RoutePrefixAttribute
     {
         private readonly string _prefix;
+        /// <summary>
+        /// Sets prefix to "DashboardRoute/<paramref name="prefix"/>".
+        /// </summary>
+        /// <param name="prefix">Route Prefix</param>
         public DynamicRoutePrefixAttribute(string prefix) : base(prefix)
         {
             _prefix = prefix;
         }
 
+        /// <summary>
+        /// Route prefix with dashboard path prepended.
+        /// </summary>
         public override string Prefix
         {
             get

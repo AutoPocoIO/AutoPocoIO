@@ -9,13 +9,13 @@ namespace AutoPocoIO.Owin
     public interface IOwinMiddlewareWithDI
     {
         /// <summary>
-        /// Next middleware in the owin pipeline
+        /// Next middleware in the owin pipeline.
         /// </summary>
         OwinMiddleware NextComponent { get; set; }
         /// <summary>
-        /// 
+        /// Action to be called in Owin pipeline.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="context">Current request's Owin envirnoment.</param>
         /// <returns></returns>
         Task Invoke(IOwinContext context);
     }

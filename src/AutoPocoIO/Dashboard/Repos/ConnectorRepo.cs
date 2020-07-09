@@ -20,6 +20,7 @@ namespace AutoPocoIO.Dashboard.Repos
             _factory = factory;
         }
 
+        ///<inheritdoc/>
         public virtual IEnumerable<ConnectorViewModel> ListConnectors()
         {
             return _db.Connector
@@ -36,8 +37,10 @@ namespace AutoPocoIO.Dashboard.Repos
                 }).OrderBy(c => c.Name);
         }
 
+        ///<inheritdoc/>
         public virtual int ConnectorCount() => _db.Connector.Count();
 
+        ///<inheritdoc/>
         public string Save(ConnectorViewModel model)
         {
             model.ResourceType = 1;
@@ -69,6 +72,7 @@ namespace AutoPocoIO.Dashboard.Repos
             return connector.Id;
         }
 
+        ///<inheritdoc/>
         public ConnectorViewModel GetById(string id)
         {
             var model = _db.Connector.Select(c => new ConnectorViewModel
@@ -94,6 +98,7 @@ namespace AutoPocoIO.Dashboard.Repos
             return model;
         }
 
+        ///<inheritdoc/>
         public string Insert(ConnectorViewModel model)
         {
             model.ResourceType = 1;
@@ -128,6 +133,7 @@ namespace AutoPocoIO.Dashboard.Repos
             return connector.Id;
         }
 
+        ///<inheritdoc/>
         public void Validate(ConnectorViewModel model, IDictionary<string, string> errors)
         {
             errors.Clear();
@@ -166,6 +172,7 @@ namespace AutoPocoIO.Dashboard.Repos
 
         }
 
+        ///<inheritdoc/>
         public void Delete(string id)
         {
             var connector = _db.Connector.Find(id);

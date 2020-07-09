@@ -25,7 +25,8 @@ namespace AutoPocoIO.WebApi
         /// <summary>
         /// Default constructor with logging injected
         /// </summary>
-        /// <param name="loggingService">Dependency injected logging for all end points</param>
+        /// <param name="schemaOperations">Access schema definitions operations</param>
+        /// <param name="loggingService">Logging for all end points</param>
         public SchemaController(ISchemaOperations schemaOperations, ILoggingService loggingService)
         {
             _loggingService = loggingService;

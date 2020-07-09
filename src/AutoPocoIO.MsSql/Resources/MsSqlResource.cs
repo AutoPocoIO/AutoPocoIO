@@ -30,9 +30,9 @@ namespace AutoPocoIO.Resources
             base.ApplyServices(serviceCollection, rootProvider);
         }
 
-        public IDictionary<string, object> ExecuteProc(IDictionary<string, object> parameterDictionary)
+        public override IDictionary<string, object> ExecuteProc(IDictionary<string, object> parameterDictionary)
         {
-            this.LoadProc(SchemaName, DbObjectName);
+            this.LoadProc();
 
 
             StoredProcedure spoc = DbSchema.GetStoredProcedure(SchemaName, DbObjectName);

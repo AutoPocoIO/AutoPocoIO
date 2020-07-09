@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 namespace AutoPocoIO.LoggingMiddleware
 {
 
+    /// <summary>
+    /// Owin middleware for logging request and responses
+    /// </summary>
     public class LogRequestAndResponseMiddleware : IOwinMiddlewareWithDI, IDisposable
     {
         private readonly ILoggingService _loggingService;
@@ -18,14 +21,19 @@ namespace AutoPocoIO.LoggingMiddleware
         private MemoryStream RequestBuffer;
         private MemoryStream ResponseBuffer;
 
-
+        /// <summary>
+        /// Initialize middleware on request with services
+        /// </summary>
+        /// <param name="loggingService">Request scoped logging service</param>
         public LogRequestAndResponseMiddleware(ILoggingService loggingService)
         {
             _loggingService = loggingService;
         }
 
+        ///<inheritdoc/>
         public OwinMiddleware NextComponent { get; set; }
 
+        ///<inheritdoc/>
         public async Task Invoke(IOwinContext context)
         {
             Check.NotNull(context, nameof(context));
@@ -83,12 +91,14 @@ namespace AutoPocoIO.LoggingMiddleware
             await ResponseBuffer.CopyToAsync(stream).ConfigureAwait(false);
         }
 
+        ///<inheritdoc/>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        ///<inheritdoc/>
         protected virtual void Dispose(bool disposing)
         {
             if (isDisposed) return;

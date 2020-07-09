@@ -9,7 +9,7 @@ namespace AutoPoco.DependencyInjection
 {
     internal class Container : IContainer
     {
-        private IServiceRegistry _serviceRegistry;
+        private readonly IServiceRegistry _serviceRegistry;
         private readonly ConcurrentDictionary<Guid, object> _sharedInstances = new ConcurrentDictionary<Guid, object>();
         private readonly List<IDisposable> _disposables = new List<IDisposable>();
 

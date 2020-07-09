@@ -2,8 +2,6 @@
 using AutoPocoIO.Factories;
 using AutoPocoIO.Resources;
 using AutoPocoIO.Services;
-using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Linq;
 using System.Linq.AutoPoco;
 
@@ -16,50 +14,33 @@ namespace AutoPocoIO.Api
     {
         private readonly IResourceFactory _resourceFactory;
 
-        public IOperationResource OperationResource { get; private set; }
-
-        public ViewOperations(IServiceProvider serviceProvider)
+        /// <summary>
+        /// Initialize view operations with access to all registered resource types.
+        /// </summary>
+        /// <param name="resourceFactory">Get resource from the connector.</param>
+        public ViewOperations(IResourceFactory resourceFactory)
         {
-            _resourceFactory = serviceProvider.GetRequiredService<IResourceFactory>();
+            _resourceFactory = resourceFactory;
         }
 
-        /// <summary>
-        /// Retrieve data from a given view
-        /// </summary>
-        /// <param name="connectorName">Name of the database to access.</param>
-        /// <param name="viewName">Name of the view in the database.</param>
-        /// <param name="loggingService">Include logging serivce to log this API call.</param>
-        /// <returns>Dyanamic IQueryable of the results and the connector max.</returns>
+        /// <inheritdoc />
         public (IQueryable<object> list, int recordLimit) GetAllAndRecordLimit(string connectorName, string viewName, ILoggingService loggingService = null)
         {
             loggingService?.AddViewToLogger(connectorName, viewName);
-            OperationResource = _resourceFactory.GetResource(connectorName, OperationType.read, viewName);
-            return (OperationResource.GetViewRecords(), OperationResource.Connector.RecordLimit);
+            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.read, viewName);
+            return (resource.GetViewRecords(), resource.Connector.RecordLimit);
         }
 
-        /// <summary>
-        /// Retrieve data from a given view
-        /// </summary>
-        /// <param name="connectorName">Name of the database to access.</param>
-        /// <param name="viewName">Name of the view in the database.</param>
-        /// <param name="loggingService">Include logging serivce to log this API call.</param>
-        /// <returns>Dyanamic IQueryable of the results</returns>
+        /// <inheritdoc />
         public IQueryable<object> GetAll(string connectorName, string viewName, ILoggingService loggingService = null)
         {
             loggingService?.AddViewToLogger(connectorName, viewName);
-            OperationResource = _resourceFactory.GetResource(connectorName, OperationType.read, viewName);
-            return OperationResource.GetViewRecords();
+            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.read, viewName);
+            return resource.GetViewRecords();
         }
 
-        /// <summary>
-        /// Retrieve data from a given view and project them to <typeparamref name="TViewModel"/>
-        /// </summary>
-        /// <typeparam name="TViewModel">Type to project the results to.</typeparam>
-        /// <param name="connectorName">Name of the database to access.</param>
-        /// <param name="viewName">Name of the view in the database.</param>
-        /// <param name="loggingService">Include logging serivce to log this API call.</param>
-        /// <returns>IQueryable of <typeparamref name="TViewModel"/></returns>
 
+        /// <inheritdoc />
         public IQueryable<TViewModel> GetAll<TViewModel>(string connectorName, string viewName, ILoggingService loggingService = null)
         {
             return GetAll(connectorName, viewName, loggingService)

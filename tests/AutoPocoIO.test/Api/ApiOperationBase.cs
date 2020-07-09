@@ -17,7 +17,7 @@ namespace AutoPocoIO.test.Api
     {
         protected LoggingServiceCheckApi loggingService;
         internal Mock<IResourceFactory> resourceFactoryMock;
-        protected IServiceProvider serviceProvider;
+        internal Mock<IRequestQueryStringService> queryStringService;
         internal AppDbContext db;
         protected IQueryable<object> iqueryable;
 
@@ -45,20 +45,12 @@ namespace AutoPocoIO.test.Api
 
             resourceFactoryMock = new Mock<IResourceFactory>();
 
-            var queryStringService = new Mock<IRequestQueryStringService>();
+            queryStringService = new Mock<IRequestQueryStringService>();
             queryStringService.Setup(c => c.GetQueryStrings())
                 .Returns(new Dictionary<string, string>());
 
             var timeProvider = new Mock<ITimeProvider>();
             timeProvider.Setup(c => c.UtcNow).Returns(new DateTime(2020, 1, 1));
-
-            var services = new ServiceCollection();
-            services.AddTransient(c => resourceFactoryMock.Object);
-            services.AddTransient(c => queryStringService.Object);
-            services.AddTransient(c => db);
-            services.AddTransient(c => timeProvider.Object);
-
-            serviceProvider = services.BuildServiceProvider();
 
             loggingService = new LoggingServiceCheckApi(timeProvider.Object);
         }

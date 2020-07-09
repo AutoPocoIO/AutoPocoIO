@@ -64,8 +64,10 @@ namespace AutoPocoIO.AspNet.test.DependencyInjection
         [TestMethod]
         public void IgnoreContainerIfNotUsingAutoPocoIOC()
         {
-            var config = new HttpConfiguration();
-            config.DependencyResolver = Mock.Of<IDependencyResolver>();
+            HttpConfiguration config = new HttpConfiguration
+            {
+                DependencyResolver = Mock.Of<IDependencyResolver>()
+            };
 
             using (var server = TestServer.Create(app =>
             {

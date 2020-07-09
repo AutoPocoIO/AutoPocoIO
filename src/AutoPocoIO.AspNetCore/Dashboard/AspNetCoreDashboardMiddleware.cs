@@ -10,17 +10,31 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.Dashboard
 {
+    /// <summary>
+    /// Middleware to show the AutoPocoIO dashbard.
+    /// </summary>
     public class AspNetCoreDashboardMiddleware
     {
         private readonly RequestDelegate _next;
         private DashboardRoutes _routes;
         private IServiceProvider _serviceProvider;
 
+        /// <summary>
+        /// Use Middleware.
+        /// </summary>
+        /// <param name="next">Next middleware in the pipeline.</param>
         public AspNetCoreDashboardMiddleware(RequestDelegate next)
         {
             _next = next;
         }
 
+        /// <summary>
+        /// Find dispatcher for the dashboard page requested 
+        /// </summary>
+        /// <param name="httpContext">Current HttpContext of the request</param>
+        /// <param name="provider">Application service profider</param>
+        /// <param name="loggingService">AutoPocoIO resource operation logging service</param>
+        /// <returns></returns>
         public async Task Invoke(HttpContext httpContext, IServiceProvider provider, ILoggingService loggingService)
         {
             Check.NotNull(httpContext, nameof(httpContext));

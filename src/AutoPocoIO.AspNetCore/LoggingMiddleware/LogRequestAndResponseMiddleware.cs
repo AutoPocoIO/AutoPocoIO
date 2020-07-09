@@ -9,16 +9,28 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.LoggingMiddleware
 {
+    /// <summary>
+    /// ASP.NET Core middleware for logging request and responses
+    /// </summary>
     public class LogRequestAndResponseMiddleware
     {
         private readonly RequestDelegate _next;
 
-
+        /// <summary>
+        /// Initialize middleware on startup
+        /// </summary>
+        /// <param name="next">Next middleware in the pipeline</param>
         public LogRequestAndResponseMiddleware(RequestDelegate next)
         {
             _next = next;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="loggingService"></param>
+        /// <returns></returns>
         public virtual async Task InvokeAsync(HttpContext context, ILoggingService loggingService)
         {
             Check.NotNull(context, nameof(context));

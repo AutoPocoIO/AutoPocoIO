@@ -128,10 +128,10 @@ namespace System.Linq.AutoPoco
 
     }
 
-    [ExcludeFromCodeCoverage]
     /// <summary>
     /// Dynamic linq class
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public abstract class DynamicClass
     {
         /// <summary>

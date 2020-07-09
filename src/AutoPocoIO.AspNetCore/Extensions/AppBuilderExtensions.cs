@@ -86,6 +86,7 @@ namespace AutoPocoIO.Extensions
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="pathMatch"></param>
+        /// <param name="args">Additional middleware consturctor values</param>
         /// <returns></returns>
         public static IApplicationBuilder UseMiddlewareWhen<TMiddleware>(this IApplicationBuilder builder, PathString pathMatch, params object[] args)
         {

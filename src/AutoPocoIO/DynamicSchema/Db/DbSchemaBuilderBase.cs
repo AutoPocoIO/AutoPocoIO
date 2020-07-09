@@ -10,11 +10,20 @@ using System.Globalization;
 
 namespace AutoPocoIO.DynamicSchema.Db
 {
+    /// <summary>
+    /// Base class to populate schema information
+    /// </summary>
     public abstract class DbSchemaBuilderBase : IDbSchemaBuilder
     {
         private readonly IDbSchema _dbSchema;
         private readonly IDbTypeMapper _typeMapper;
 
+        /// <summary>
+        /// Initalize schmea builder
+        /// </summary>
+        /// <param name="config">Resource configuration</param>
+        /// <param name="dbSchema">Schmea infomration to populate</param>
+        /// <param name="typeMapper">How to map db types to c# types</param>
         public DbSchemaBuilderBase(
             Config config,
             IDbSchema dbSchema,
@@ -26,17 +35,40 @@ namespace AutoPocoIO.DynamicSchema.Db
         }
 
 
+        /// <summary>
+        /// Create command to get column information.
+        /// </summary>
+        /// <param name="dbConnection">Database to pull the information from.</param>
+        /// <returns></returns>
         protected abstract IDbCommand BuildColumnsCommand(IDbConnection dbConnection);
+        /// <summary>
+        /// Create command to get stored procedure information.
+        /// </summary>
+        /// <param name="dbConnection">Database to pull the information from.</param>
+        /// <returns></returns>
         protected abstract IDbCommand BuildStoredProcedureCommand(IDbConnection dbConnection);
+        /// <summary>
+        /// Create command to get table and view information.
+        /// </summary>
+        /// <param name="dbConnection">Database to pull the information from.</param>
+        /// <returns></returns>
         protected abstract IDbCommand BuildTablesViewsCommand(IDbConnection dbConnection);
 
+        ///<inheritdoc/>
         public abstract ResourceType ResourceType { get; }
+        ///<inheritdoc/>
         public abstract IDbConnection CreateConnection();
+        ///<inheritdoc/>
         public abstract IDbConnection CreateConnection(string connectionString);
+        ///<inheritdoc/>
         public abstract DbContextOptions CreateDbContextOptions();
 
+        /// <summary>
+        /// Resource configuration
+        /// </summary>
         protected Config Config { get; }
 
+        ///<inheritdoc/>
         public virtual DataTable ExecuteSchemaCommand(IDbCommand command)
         {
             Check.NotNull(command, nameof(command));
@@ -49,6 +81,7 @@ namespace AutoPocoIO.DynamicSchema.Db
             return dtSchema;
         }
 
+        ///<inheritdoc/>
         public virtual void GetColumns()
         {
             if (string.IsNullOrEmpty(Config.IncludedStoredProcedure))
@@ -77,6 +110,7 @@ namespace AutoPocoIO.DynamicSchema.Db
             }
         }
 
+        ///<inheritdoc/>
         public virtual void GetStoredProcedures()
         {
             DataTable dtSchema = null;
@@ -96,6 +130,7 @@ namespace AutoPocoIO.DynamicSchema.Db
             }
         }
 
+        ///<inheritdoc/>
         public virtual void GetTableViews()
         {
             DataTable dtSchema = null;

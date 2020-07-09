@@ -11,6 +11,7 @@ namespace AutoPocoIO.Dashboard.Repos
     {
         private readonly LogDbContext _db;
         private readonly ITimeProvider _timeProvider;
+        private readonly Func<string, bool> IsSuccessFunc = c => c == "HTTP 200 : OK" || c == "HTTP 302 : Found";
 
         private static readonly string[] requestTypes = new[]
         {
@@ -234,6 +235,6 @@ namespace AutoPocoIO.Dashboard.Repos
                 return 0;
         }
 
-        private Func<string, bool> IsSuccessFunc = c => c == "HTTP 200 : OK" || c == "HTTP 302 : Found";
+        
     }
 }

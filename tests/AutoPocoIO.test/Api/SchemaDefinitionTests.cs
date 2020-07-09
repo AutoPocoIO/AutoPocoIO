@@ -17,7 +17,7 @@ namespace AutoPocoIO.test.Api
         [TestInitialize]
         public void InitOperation()
         {
-            schemaOperations = new SchemaOperations(serviceProvider);
+            schemaOperations = new SchemaOperations(resourceFactoryMock.Object);
 
         }
 

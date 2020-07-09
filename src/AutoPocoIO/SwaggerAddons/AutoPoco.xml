@@ -4,88 +4,138 @@
         <name>AutoPocoIO</name>
     </assembly>
     <members>
-        <member name="T:AutoPocoIO.Api.SchemaOperations">
+        <member name="T:AutoPocoIO.Api.ISchemaOperations">
             <summary>
-            View all schema objects
+            API for access database schema structure.
             </summary>
         </member>
-        <member name="M:AutoPocoIO.Api.SchemaOperations.Definition(System.String,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.ISchemaOperations.Definition(System.String,AutoPocoIO.Services.ILoggingService)">
             <summary>
-            List of objects in the database by type
-            </summary>
-            <param name="connectorName">Name of the database to access.</param>
-            <param name="loggingService">Pass in logging service if the request needs to be logged</param>
-            <returns></returns>
-        </member>
-        <member name="T:AutoPocoIO.Api.StoredProcedureOperations">
-            <summary>
-            Call Stored Procedures
-            </summary>
-        </member>
-        <member name="M:AutoPocoIO.Api.StoredProcedureOperations.ExecuteNoParameters(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
-            <summary>
-            Execute Stored Procedure (No Params)
+            Get schema structure.
             </summary>
             <param name="connectorName">Name of the database to access.</param>
-            <param name="procedureName">Stored Procedure name in the database.</param>
-            <param name="loggingService">Pass </param>
-            <returns></returns>
+            <param name="loggingService">Optional. Log operation if not null.</param>
+            <returns>Lists of all tables, views, and stored procedures.</returns>
         </member>
-        <member name="M:AutoPocoIO.Api.StoredProcedureOperations.Execute(System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
+        <member name="T:AutoPocoIO.Api.IStoredProcedureOperations">
             <summary>
-            
+             API for accessings stored procedures.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Api.IStoredProcedureOperations.Definition(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <summary>
+            Get procedure parameters.
             </summary>
             <param name="connectorName">Name of the database to access.</param>
-            <param name="procedureName">Stored Procedure name in the database.</param>
-            <param name="parameters"></param>
-            <param name="loggingService"></param>
+            <param name="procedureName">Name of procedure.</param>
+            <param name="loggingService">Optional. Log operation if not null.</param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.Api.StoredProcedureOperations.Execute``1(System.String,System.String,``0,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.IStoredProcedureOperations.Definition(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
             <summary>
-            
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="connectorName">Name of the database to access.</param>
-            <param name="procedureName">Stored Procedure name in the database.</param>
-            <param name="parameters"></param>
-            <param name="loggingService"></param>
-            <returns></returns>
-        </member>
-        <member name="M:AutoPocoIO.Api.StoredProcedureOperations.Definition(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
-            <summary>
-            
+            Get detailed information about a specific parameter
             </summary>
             <param name="connectorName">Name of the database to access.</param>
-            <param name="procedureName">Stored Procedure name in the database.</param>
-            <param name="loggingService"></param>
+            <param name="procedureName">Name of procedure.</param>
+            <param name="parameterName">Name of parameter.</param>
+            <param name="loggingService">Optional. Log operation if not null.</param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.Api.StoredProcedureOperations.Definition(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.IStoredProcedureOperations.ExecuteNoParameters(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
             <summary>
-            
+            Execute a stored procedure that uses no parameters
             </summary>
             <param name="connectorName">Name of the database to access.</param>
-            <param name="procedureName">Stored Procedure name in the database.</param>
-            <param name="parameterName"></param>
-            <param name="loggingService"></param>
+            <param name="procedureName">Name of procedure.</param>
+            <param name="loggingService">Optional. Log operation if not null.</param>
             <returns></returns>
         </member>
-        <member name="T:AutoPocoIO.Api.TableOperations">
+        <member name="M:AutoPocoIO.Api.IStoredProcedureOperations.Execute(System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
+            <summary>
+            Execute a stored proecedure from webapi.  
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="procedureName">Name of procedure.</param>
+            <param name="parameters">Json representation of the parameters.</param>
+            <param name="loggingService">Optional. Log operation if not null.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Api.IStoredProcedureOperations.Execute``1(System.String,System.String,``0,AutoPocoIO.Services.ILoggingService)">
+            <summary>
+            Execute web api from a view model 
+            </summary>
+            <typeparam name="TViewModel">Model of stored procedure parameters</typeparam>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="procedureName">Name of procedure.</param>
+            <param name="parameters">View model mapped parameters</param>
+            <param name="loggingService">Optional. Log operation if not null.</param>
+            <returns></returns>
+        </member>
+        <member name="T:AutoPocoIO.Api.ITableOperations">
             <summary>
             Dynamicly access database tables
             </summary>
         </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.GetAll(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.ITableOperations.CreateNewRow(System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
+            <summary>
+            Insert a recored into a given table
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="value">JSON object to insert</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>An instance of the object inserted</returns>
+        </member>
+        <member name="M:AutoPocoIO.Api.ITableOperations.CreateNewRow``1(System.String,System.String,``0,AutoPocoIO.Services.ILoggingService)">
+            <summary>
+            Insert a recored into a given table
+            </summary>
+            <typeparam name="TViewModel">Type of view model</typeparam>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="value">Object to insert into <paramref name="tableName"/></param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>An instance of the object inserted. </returns>
+        </member>
+        <member name="M:AutoPocoIO.Api.ITableOperations.Definition(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <summary>
+             Describes the table and includes list of columns that exists in a given table
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>A description of <paramref name="tableName"/></returns>
+        </member>
+        <member name="M:AutoPocoIO.Api.ITableOperations.Definition(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <summary>
+            View column attirbutes
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="columnName">Name of the column in the database.</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>Column attributes</returns>
+        </member>
+        <member name="M:AutoPocoIO.Api.ITableOperations.DeleteRow(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <summary>
+            Remove record from a given table
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="id">Primary Key(s)</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>The removed object</returns>
+        </member>
+        <member name="M:AutoPocoIO.Api.ITableOperations.GetAll(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
             <summary>
             Get all records from <paramref name="tableName"/>. Intended for WebAPI controller requests.
             </summary>
             <param name="connectorName">Name of the database to access.</param>
             <param name="tableName">Name of the table in the database.</param>
-            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <param name="loggingService">Optional. Include logging serivce to log this API call.</param>
             <returns>Dyanamic IQueryable of the results and the connector max.</returns>
         </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.GetAll``1(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.ITableOperations.GetAll``1(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
             <summary>
             Get all records from <paramref name="tableName"/> and projects the to a view model. Intended to be used as the initial part of a linq query.
             </summary>
@@ -95,7 +145,7 @@
             <param name="loggingService">Include logging serivce to log this API call.</param>
             <returns>IQueryable of <typeparamref name="TViewModel"/></returns>
         </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.GetById(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.ITableOperations.GetById(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
             <summary>
             Retrieves a single record from a table by Primary Key. Note: for composite PKs,
             use a semicolon separated string.
@@ -107,39 +157,20 @@
             <param name="loggingService">LoggingService object to log the request. Null by default if no logging is required.</param>
             <returns>The record with matching PK. Null if not found.</returns>
         </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.GetById``1(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.ITableOperations.GetById``1(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
             <summary>
-            
+            Retrieves a single record from a table by Primary Key. Note: for composite PKs,
+            use a semicolon separated string.
             </summary>
             <typeparam name="TViewModel">View Model Type</typeparam>
             <param name="connectorName">Name of the database to access.</param>
             <param name="tableName">Name of the table in the database.</param>
-            <param name="id"></param>
+            <param name="id">The primary key value of the record to be retrieved as a string. 
+            For composite keys, use semicolon separated string</param>
             <param name="loggingService">Include logging serivce to log this API call.</param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.CreateNewRow(System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
-            <summary>
-            Insert a recored into a given table
-            </summary>
-            <param name="connectorName">Name of the database to access.</param>
-            <param name="tableName">Name of the table in the database.</param>
-            <param name="value">JSON object to insert</param>
-            <param name="loggingService">Include logging serivce to log this API call.</param>
-            <returns>An instance of the object inserted</returns>
-        </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.CreateNewRow``1(System.String,System.String,``0,AutoPocoIO.Services.ILoggingService)">
-            <summary>
-            Insert a recored into a given table
-            </summary>
-            <typeparam name="TViewModel">Type of view model</typeparam>
-            <param name="connectorName">Name of the database to access.</param>
-            <param name="tableName">Name of the table in the database.</param>
-            <param name="value">Object to insert into <paramref name="tableName"/></param>
-            <param name="loggingService">Include logging serivce to log this API call.</param>
-            <returns>An instance of the object inserted. </returns>
-        </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.UpdateRow(System.String,System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.ITableOperations.UpdateRow(System.String,System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
             <summary>
             Update record in a given table
             </summary>
@@ -150,7 +181,7 @@
             <param name="loggingService">Include logging serivce to log this API call.</param>
             <returns>The updated object</returns>
         </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.UpdateRow``1(System.String,System.String,System.String,``0,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.ITableOperations.UpdateRow``1(System.String,System.String,System.String,``0,AutoPocoIO.Services.ILoggingService)">
             <summary>
             Update record in a given table
             </summary>
@@ -161,50 +192,12 @@
             <param name="loggingService">Include logging serivce to log this API call.</param>
             <returns>The updated object</returns>
         </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.DeleteRow(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
-            <summary>
-            Remove record from a given table
-            </summary>
-            <param name="connectorName">Name of the database to access.</param>
-            <param name="tableName">Name of the table in the database.</param>
-            <param name="id">Primary Key(s)</param>
-            <param name="loggingService">Include logging serivce to log this API call.</param>
-            <returns>The removed object</returns>
-        </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.Definition(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
-            <summary>
-             Describes the table and includes list of columns that exists in a given table
-            </summary>
-            <param name="connectorName">Name of the database to access.</param>
-            <param name="tableName">Name of the table in the database.</param>
-            <param name="loggingService">Include logging serivce to log this API call.</param>
-            <returns>A description of <paramref name="tableName"/></returns>
-        </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.Definition(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
-            <summary>
-            View column attirbutes
-            </summary>
-            <param name="connectorName">Name of the database to access.</param>
-            <param name="tableName">Name of the table in the database.</param>
-            <param name="columnName">Name of the column in the database.</param>
-            <param name="loggingService">Include logging serivce to log this API call.</param>
-            <returns>Column attributes</returns>
-        </member>
-        <member name="T:AutoPocoIO.Api.ViewOperations">
+        <member name="T:AutoPocoIO.Api.IViewOperations">
             <summary>
             Dynamicly access database views
             </summary>
         </member>
-        <member name="M:AutoPocoIO.Api.ViewOperations.GetAllAndRecordLimit(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
-            <summary>
-            Retrieve data from a given view
-            </summary>
-            <param name="connectorName">Name of the database to access.</param>
-            <param name="viewName">Name of the view in the database.</param>
-            <param name="loggingService">Include logging serivce to log this API call.</param>
-            <returns>Dyanamic IQueryable of the results and the connector max.</returns>
-        </member>
-        <member name="M:AutoPocoIO.Api.ViewOperations.GetAll(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.IViewOperations.GetAll(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
             <summary>
             Retrieve data from a given view
             </summary>
@@ -213,7 +206,7 @@
             <param name="loggingService">Include logging serivce to log this API call.</param>
             <returns>Dyanamic IQueryable of the results</returns>
         </member>
-        <member name="M:AutoPocoIO.Api.ViewOperations.GetAll``1(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.IViewOperations.GetAll``1(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
             <summary>
             Retrieve data from a given view and project them to <typeparamref name="TViewModel"/>
             </summary>
@@ -222,6 +215,120 @@
             <param name="viewName">Name of the view in the database.</param>
             <param name="loggingService">Include logging serivce to log this API call.</param>
             <returns>IQueryable of <typeparamref name="TViewModel"/></returns>
+        </member>
+        <member name="M:AutoPocoIO.Api.IViewOperations.GetAllAndRecordLimit(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <summary>
+            Retrieve data from a given view
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="viewName">Name of the view in the database.</param>
+            <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>Dyanamic IQueryable of the results and the connector max.</returns>
+        </member>
+        <member name="T:AutoPocoIO.Api.SchemaOperations">
+            <summary>
+            View all schema objects
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Api.SchemaOperations.#ctor(AutoPocoIO.Factories.IResourceFactory)">
+            <summary>
+            Initialize schema operations with access to all registered resource types.
+            </summary>
+            <param name="resourceFactory">Get resource from the connector.</param>
+        </member>
+        <member name="M:AutoPocoIO.Api.SchemaOperations.Definition(System.String,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="T:AutoPocoIO.Api.StoredProcedureOperations">
+            <summary>
+             API for accessings stored procedures.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Api.StoredProcedureOperations.#ctor(AutoPocoIO.Factories.IResourceFactory)">
+            <summary>
+            Initialize store procedure operations with access to all registered resource types.
+            </summary>
+            <param name="resourceFactory">Get resource from the connector</param>
+        </member>
+        <member name="M:AutoPocoIO.Api.StoredProcedureOperations.ExecuteNoParameters(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.StoredProcedureOperations.Execute(System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.StoredProcedureOperations.Execute``1(System.String,System.String,``0,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.StoredProcedureOperations.Definition(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.StoredProcedureOperations.Definition(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="T:AutoPocoIO.Api.TableOperations">
+            <summary>
+            Dynamicly access database tables
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.#ctor(AutoPocoIO.Factories.IResourceFactory,AutoPocoIO.Services.IRequestQueryStringService)">
+            <summary>
+            Initialize table operations with access to all registered resource types.
+            </summary>
+            <param name="resourceFactory">Get resource from the connector.</param>
+            <param name="requestQuery">Get query string information for odata operations.</param>
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.GetAll(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.GetAll``1(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.GetById(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.GetById``1(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.CreateNewRow(System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.CreateNewRow``1(System.String,System.String,``0,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.UpdateRow(System.String,System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.UpdateRow``1(System.String,System.String,System.String,``0,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.DeleteRow(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.Definition(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.Definition(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="T:AutoPocoIO.Api.ViewOperations">
+            <summary>
+            Dynamicly access database views
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Api.ViewOperations.#ctor(AutoPocoIO.Factories.IResourceFactory)">
+            <summary>
+            Initialize view operations with access to all registered resource types.
+            </summary>
+            <param name="resourceFactory">Get resource from the connector.</param>
+        </member>
+        <member name="M:AutoPocoIO.Api.ViewOperations.GetAllAndRecordLimit(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.ViewOperations.GetAll(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.ViewOperations.GetAll``1(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+            <inheritdoc />
         </member>
         <member name="T:AutoPocoIO.Constants.ExceptionMessages">
             <summary>
@@ -274,6 +381,11 @@
               Looks up a localized string similar to The request is expecting a {0} database but it is not registered in Startup..
             </summary>
         </member>
+        <member name="P:AutoPocoIO.Constants.ExceptionMessages.DependencyResolverMissing">
+            <summary>
+              Looks up a localized string similar to Configuration missing dependency resolver. Use an overload with service collection..
+            </summary>
+        </member>
         <member name="P:AutoPocoIO.Constants.ExceptionMessages.HierarchyIdNotSupported">
             <summary>
               Looks up a localized string similar to EF Core does not support HierarchyId types yet..
@@ -324,6 +436,31 @@
               Looks up a localized string similar to Type not a sequence..
             </summary>
         </member>
+        <member name="T:AutoPocoIO.Constants.HttpMethodType">
+            <summary>
+            Http operations to be logged
+            </summary>
+        </member>
+        <member name="F:AutoPocoIO.Constants.HttpMethodType.GET">
+            <summary>
+            GET data operation
+            </summary>
+        </member>
+        <member name="F:AutoPocoIO.Constants.HttpMethodType.POST">
+            <summary>
+            Insert operation
+            </summary>
+        </member>
+        <member name="F:AutoPocoIO.Constants.HttpMethodType.PUT">
+            <summary>
+            Update operation
+            </summary>
+        </member>
+        <member name="F:AutoPocoIO.Constants.HttpMethodType.DELETE">
+            <summary>
+            Delete operation
+            </summary>
+        </member>
         <member name="T:AutoPocoIO.CustomAttributes.CompoundPrimaryKeyAttribute">
             <summary>
             Associates property with as a Primary key in a database table in OData
@@ -348,6 +485,22 @@
         <member name="P:AutoPocoIO.CustomAttributes.DatabaseNameAttribute.DatabaseName">
             <summary>
             The name of the Database
+            </summary>
+        </member>
+        <member name="T:AutoPocoIO.CustomAttributes.DynamicRoutePrefixAttribute">
+            <summary>
+            Prepend route prefix with dashboard prefix
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.CustomAttributes.DynamicRoutePrefixAttribute.#ctor(System.String)">
+            <summary>
+            Sets prefix to "DashboardRoute/<paramref name="prefix"/>".
+            </summary>
+            <param name="prefix">Route Prefix</param>
+        </member>
+        <member name="P:AutoPocoIO.CustomAttributes.DynamicRoutePrefixAttribute.Prefix">
+            <summary>
+            Route prefix with dashboard path prepended.
             </summary>
         </member>
         <member name="T:AutoPocoIO.CustomAttributes.ReferencedDbObjectAttribute">
@@ -392,6 +545,159 @@
             <param name="tableName">Table name of the referenced database object</param>
             <param name="columnName">Column name of the referenced database object</param>
         </member>
+        <member name="T:AutoPocoIO.Dashboard.DashboardRoutes">
+            <summary>
+            Define routes with middleware dispatchers.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Dashboard.DashboardRoutes.Routes">
+            <summary>
+            Routes for middleware dashboard.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.DashboardRoutes.#ctor">
+            <summary>
+            Initialize Routes.
+            </summary>
+        </member>
+        <member name="T:AutoPocoIO.Dashboard.Extensions.ModelExtensions">
+            <summary>
+            Dashboard model extensions
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Extensions.ModelExtensions.FindValue``1(System.Collections.Generic.IDictionary{System.String,System.String[]},System.String)">
+            <summary>
+            Get value from form values
+            </summary>
+            <typeparam name="TProperty">Expected property type</typeparam>
+            <param name="form">Form values</param>
+            <param name="key">Form property name</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Extensions.ModelExtensions.GetString(System.Text.RegularExpressions.Match,System.String)">
+            <summary>
+            Get string value from Regex match
+            </summary>
+            <param name="match">Regex match</param>
+            <param name="key">Group to parse to string</param>
+            <returns></returns>
+        </member>
+        <member name="T:AutoPocoIO.Dashboard.IRazorForm">
+            <summary>
+            Page containing a form.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.IRazorForm.SetForm(System.Collections.Generic.IDictionary{System.String,System.String[]})">
+            <summary>
+            Read request form and set to dictionary
+            </summary>
+            <param name="values">Result dictionary</param>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.IRazorForm.Save">
+            <summary>
+            Execute command.
+            </summary>
+            <returns>Result dispatcher.</returns>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.ConnectorRepo.ListConnectors">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.ConnectorRepo.ConnectorCount">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.ConnectorRepo.Save(AutoPocoIO.Dashboard.ViewModels.ConnectorViewModel)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.ConnectorRepo.GetById(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.ConnectorRepo.Insert(AutoPocoIO.Dashboard.ViewModels.ConnectorViewModel)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.ConnectorRepo.Validate(AutoPocoIO.Dashboard.ViewModels.ConnectorViewModel,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.ConnectorRepo.Delete(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:AutoPocoIO.Dashboard.Repos.IConnectorRepo">
+            <summary>
+            CRUD operations for connectors in the dashboard
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.IConnectorRepo.ConnectorCount">
+            <summary>
+            Total number of registered connectors
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.IConnectorRepo.ListConnectors">
+            <summary>
+            List of connector information
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.IConnectorRepo.Save(AutoPocoIO.Dashboard.ViewModels.ConnectorViewModel)">
+            <summary>
+            Update a connector
+            </summary>
+            <param name="model">Values to update connector.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.IConnectorRepo.GetById(System.String)">
+            <summary>
+            Get a single connector
+            </summary>
+            <param name="id">Connector Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.IConnectorRepo.Insert(AutoPocoIO.Dashboard.ViewModels.ConnectorViewModel)">
+            <summary>
+            Insert a connector.
+            </summary>
+            <param name="model">Values to create a connector.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.IConnectorRepo.Validate(AutoPocoIO.Dashboard.ViewModels.ConnectorViewModel,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Validate connector values on Insert/Update
+            </summary>
+            <param name="model">Values to validate</param>
+            <param name="errors">Error dictionary to display</param>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.IConnectorRepo.Delete(System.String)">
+            <summary>
+            Remove connector.
+            </summary>
+            <param name="id">Connector Id to remove.</param>
+        </member>
+        <member name="T:AutoPocoIO.Dashboard.Repos.IRequestHistoryRepo">
+            <summary>
+            Get information about request logs.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.IRequestHistoryRepo.ListRequest(System.Int32)">
+            <summary>
+            List requests information starting with the most recent.
+            </summary>
+            <param name="recordLimit">Number of records to return.</param>
+            <returns></returns>
+        </member>
+        <member name="T:AutoPocoIO.Dashboard.Repos.RequestHistoryRepo">
+            <summary>
+             Get information about request logs.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.RequestHistoryRepo.#ctor(System.IServiceProvider,AutoPocoIO.Services.ITimeProvider)">
+            <summary>
+            Initialize repository.
+            </summary>
+            <param name="provider">Middleware scoped provider.</param>
+            <param name="timeProvider">Server time information.</param>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.RequestHistoryRepo.ListRequest(System.Int32)">
+            <inheritdoc/>
+        </member>
         <member name="T:AutoPocoIO.DynamicSchema.Db.DbContextBase">
             <summary>
             Dynamic schema context
@@ -403,11 +709,66 @@
             </summary>
             <param name="modelBuilder">Builder to add relationships to in this context</param>
         </member>
+        <member name="T:AutoPocoIO.DynamicSchema.Db.DbSchema">
+            <summary>
+            Schema definition at request time
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.DynamicSchema.Db.DbSchema.#ctor">
+            <summary>
+            Initalize schmea definition lists.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Db.DbSchema.Tables">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Db.DbSchema.Columns">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Db.DbSchema.Views">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Db.DbSchema.StoredProcedures">
+            <inheritdoc/>
+        </member>
         <member name="M:AutoPocoIO.DynamicSchema.Db.DbSchema.GetHashCode">
             <summary>
             Overall hash code for the request
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.DynamicSchema.Db.DbSchema.Reset">
+            <inheritdoc/>
+        </member>
+        <member name="T:AutoPocoIO.DynamicSchema.Db.IDbSchema">
+            <summary>
+            Schema definition at request time
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.DynamicSchema.Db.IDbSchema.Reset">
+            <summary>
+            Clear <see cref="P:AutoPocoIO.DynamicSchema.Db.IDbSchema.Columns"/>, <see cref="P:AutoPocoIO.DynamicSchema.Db.IDbSchema.Tables"/>, <see cref="P:AutoPocoIO.DynamicSchema.Db.IDbSchema.Views"/>, and <see cref="P:AutoPocoIO.DynamicSchema.Db.IDbSchema.StoredProcedures"/>
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Db.IDbSchema.Columns">
+            <summary>
+            List of found columns from all objects
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Db.IDbSchema.StoredProcedures">
+            <summary>
+            Stored procedures found
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Db.IDbSchema.Tables">
+            <summary>
+            Tables found.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Db.IDbSchema.Views">
+            <summary>
+            Views found.
+            </summary>
         </member>
         <member name="T:AutoPocoIO.DynamicSchema.Db.ISchemaQueries">
             <summary>
@@ -617,6 +978,62 @@
         </member>
         <member name="P:AutoPocoIO.DynamicSchema.Models.Config.UsedConnectors">
             <summary>
+            All connectors used to call database object.  Used to link crossmnType
+            </summary>
+            <returns>A hash code for the current object</returns>
+        </member>
+        <member name="T:AutoPocoIO.DynamicSchema.Models.Config">
+            <summary>
+            Configuration settings for dynamically pulling DB objects
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.DynamicSchema.Models.Config.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Models.Config.FilterSchema">
+            <summary>
+            Target schema.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Models.Config.IncludedTable">
+            <summary>
+            Target table.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Models.Config.IncludedStoredProcedure">
+            <summary>
+            Target stored procedure.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Models.Config.ConnectionString">
+            <summary>
+            Database connection string.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Models.Config.PropertyPreFixName">
+            <summary>
+            Additional column prefix
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Models.Config.UserDefinedJoins">
+            <summary>
+            User created joins
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Models.Config.DatabaseConnectorName">
+            <summary>
+            Connector name.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Models.Config.JoinsAsString">
+            <summary>
+            Formated user joins and virtual entity joins for schema call.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Models.Config.UsedConnectors">
+            <summary>
             All connectors used to call database object.  Used to link cross database calls.
             </summary>
         </member>
@@ -692,6 +1109,16 @@
             <param name="values">Parameters</param>
             <returns></returns>
         </member>
+        <member name="M:AutoPocoIO.Extensions.ResourceExtensions.ProjectResultSet``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.String)">
+            <summary>
+            Maps a result set to a view model
+            </summary>
+            <typeparam name="TViewModel">View Model type</typeparam>
+            <param name="outputParameters">Output from the stored procedure execution.</param>
+            <param name="parameterName">Name of the parameter</param>
+            <exception cref="T:System.ArgumentException">Thrown when the parameter is not found or not a result set.</exception>
+            <returns></returns>
+        </member>
         <member name="M:AutoPocoIO.Extensions.SchemaBuilderExtensions.SetObjectType(System.String)">
              <summary>
              Convert db result to DbObject Enum
@@ -708,41 +1135,284 @@
             <param name="options"></param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.Extensions.ServiceCollectionExtensions.AddAutoPoco(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            Adds the minimum essential AutoPoco services to the specified <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>
-            </summary>
-            <param name="services"> The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> to add services to.</param>
-            <returns></returns>
-        </member>
-        <member name="M:AutoPocoIO.Extensions.ServiceCollectionExtensions.AddAutoPocoWebApiEndPoints(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            Registers default <see cref="T:System.Web.Http.ApiController"/> with minimum AutoPoco services
-            </summary>
-            <param name="services"> The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> to add services to.</param>
-            <returns></returns>
-        </member>
         <member name="T:AutoPocoIO.Extensions.AppBuilderExtensions">
             <summary>
-            Owin set up dashboard
+            AspNet Core Extenstions to set up the dashboard 
             </summary>
         </member>
-        <member name="M:AutoPocoIO.Extensions.AppBuilderExtensions.UseAutoPoco(Owin.IAppBuilder,System.Web.Http.HttpConfiguration)">
+        <member name="M:AutoPocoIO.Extensions.AppBuilderExtensions.UseAutoPoco(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
-            Default dashboard set up for with default settings
+            Default dashboard set up for with dash prefix "/autopoco"
             </summary>
             <param name="builder">The builder being used to configure the context.</param>
-            <param name="config">Current Httpconfiguration</param>
             <returns>The options builder so that further configuration can be chained.</returns>
         </member>
-        <member name="M:AutoPocoIO.Extensions.AppBuilderExtensions.UseAutoPoco(Owin.IAppBuilder,System.Web.Http.HttpConfiguration,AutoPocoIO.Models.AutoPocoOptions)">
+        <member name="M:AutoPocoIO.Extensions.AppBuilderExtensions.UseAutoPoco(Microsoft.AspNetCore.Builder.IApplicationBuilder,AutoPocoIO.Models.AutoPocoOptions)">
             <summary>
-            Set up dashboard with a basic license
+            Set up the dashboard
             </summary>
             <param name="builder">The builder being used to configure the context.</param>
             <param name="options">Dashboard setup options</param>
-            <param name="config">Current Httpconfiguration</param>
             <returns>The options builder so that further configuration can be chained.</returns>
+        </member>
+        <member name="M:AutoPocoIO.Extensions.AppBuilderExtensions.UseMiddlewareWhen``1(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Http.PathString,System.Object[])">
+            <summary>
+            Conditionally creates a branch in the request pipeline that is rejoined to the main pipeline.
+            </summary>
+            <param name="builder"></param>
+            <param name="pathMatch"></param>
+            <param name="args">Additional middleware consturctor values</param>
+            <returns></returns>
+        </member>
+        <member name="T:AutoPocoIO.Extensions.RouteExtensions">
+            <summary>
+            Http Route extensions
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Extensions.RouteExtensions.GetQueryStrings(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            Gets HttpRequest query string values
+            </summary>
+            <param name="request">Current Http Request</param>
+            <returns>Key/Value pair of query strings</returns>
+        </member>
+        <member name="T:AutoPocoIO.Extensions.ServicesCollectionExtensions">
+            <summary>
+            Configure AspNet Core Services 
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Extensions.ServicesCollectionExtensions.AddAutoPoco(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Include Swagger and Odata services 
+            </summary>
+            <param name="services">The services being used to configure the context.</param>
+            <returns>The services collection so that further configuration can be chained.</returns>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.IMiddlewareContext">
+            <summary>
+             Encapsulates all HTTP-specific information about an individual HTTP request.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareContext.Request">
+            <summary>
+            Http request information
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareContext.Response">
+            <summary>
+            Http response information
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareContext.UriMatch">
+            <summary>
+            Regex match to dispatcher
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareContext.RequestUri">
+            <summary>
+            Request uri
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareContext.QueryStrings">
+            <summary>
+            Request query strings
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareContext.InternalServiceProvider">
+            <summary>
+            Scoped middleware service provider
+            </summary>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.IMiddlewareRequest">
+            <summary>
+            Represents the incoming side of an individual HTTP request.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareRequest.Method">
+            <summary>
+            Gets the HTTP method.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareRequest.Path">
+            <summary>
+             Gets the request path from RequestPath.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareRequest.PathBase">
+            <summary>
+             Gets the RequestPathBase.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareRequest.LocalIpAddress">
+            <summary>
+            Gets the request local IP address
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareRequest.RemoteIpAddress">
+            <summary>
+            Gets the request remote IP address
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.IMiddlewareRequest.GetQuery(System.String)">
+            <summary>
+             Gets the query value collection parsed from Request QueryString
+            </summary>
+            <param name="key">The query string key to search for</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.IMiddlewareRequest.ReadFormAsync">
+            <summary>
+            Reads the request body if it is a form.
+            </summary>
+            <returns>Key/Value pair of the form values</returns>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareRequest.RequestUri">
+             <summary>
+            Returns the combined components of the request URL in a fully escaped form suitable
+            for use in HTTP headers and other HTTP operations.
+             </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareRequest.Body">
+            <summary>
+             Gets the RequestBody Stream.
+            </summary>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.IMiddlewareResponse">
+            <summary>
+            Represents the outgoing side of an individual HTTP request.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareResponse.ContentType">
+            <summary>
+            Gets or sets the value for the Content-Type response header.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareResponse.StatusCode">
+            <summary>
+            Gets or sets the HTTP response code.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.IMiddlewareResponse.Body">
+            <summary>
+            Gets or sets the response body <see cref="T:System.IO.Stream"/>.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.IMiddlewareResponse.SetExpire(System.Nullable{System.DateTimeOffset})">
+            <summary>
+            Set <c>"Expires"</c> key in header dictionary
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.IMiddlewareResponse.WriteAsync(System.String)">
+            <summary>
+             Writes the given text to the response body. UTF-8 encoding will be used.
+            </summary>
+            <param name="text">The text to write to the response.</param>
+            <returns>A task that represents the completion of the write operation.</returns>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.IMiddlewareResponse.Redirect(System.String)">
+            <summary>
+             Returns a temporary redirect response (HTTP 302) to the client.
+            </summary>
+            <param name="location"> The URL to redirect the client to. This must be properly encoded for use in http
+                headers where only ASCII characters are allowed.</param>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext">
+            <summary>
+             Encapsulates all HTTP-specific information about an individual HTTP request.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,System.IServiceProvider)">
+            <summary>
+            Initialize for each http request
+            </summary>
+            <param name="httpContext">Http request context</param>
+            <param name="internalProvider">Scoped middleware service provider</param>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext.Request">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext.Response">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext.UriMatch">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext.RequestUri">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext.QueryStrings">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext.InternalServiceProvider">
+            <inheritdoc/>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest">
+            <summary>
+            Represents the incoming side of an individual HTTP request.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.#ctor(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Initilize the middleware request from the <paramref name="context"/>
+            </summary>
+            <param name="context">HttpContext to set properties</param>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.Method">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.Path">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.PathBase">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.LocalIpAddress">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.RemoteIpAddress">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.GetQuery(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.RequestUri">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.Body">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.ReadFormAsync">
+            <inheritdoc/>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse">
+            <summary>
+            Represents the outgoing side of an individual HTTP request.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse.#ctor(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Initilize the middleware response from the <paramref name="context"/>
+            </summary>
+            <param name="context">HttpContext to set properties</param>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse.ContentType">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse.StatusCode">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse.Body">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse.WriteAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse.SetExpire(System.Nullable{System.DateTimeOffset})">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse.Redirect(System.String)">
+            <inheritdoc/>
         </member>
         <member name="T:AutoPocoIO.Models.AutoPocoOptions">
             <summary>
@@ -951,44 +1621,266 @@
             Flatten User Join information
             </summary>
         </member>
-        <member name="M:AutoPocoIO.Resources.OperationResource.GetResourceRecordById(System.String)">
+        <member name="T:AutoPocoIO.Resources.IOperationResource">
             <summary>
-            Retrieve single row by primary key
+            Dynamic database access.
             </summary>
-            <param name="keys">Primary key.</param>
+        </member>
+        <member name="P:AutoPocoIO.Resources.IOperationResource.DbSchema">
+            <summary>
+            Schema definition.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Resources.IOperationResource.Config">
+            <summary>
+            Request configuration.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Resources.IOperationResource.Connector">
+            <summary>
+            Request database connector.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Resources.IOperationResource.DatabaseName">
+            <summary>
+            Requested database.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Resources.IOperationResource.DbObjectName">
+            <summary>
+            Requested database object.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Resources.IOperationResource.SchemaName">
+            <summary>
+            Requested schema.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Resources.IOperationResource.ResourceType">
+            <summary>
+            Database type.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.ApplyServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.IServiceProvider)">
+            <summary>
+            Register resouce specific services.
+            </summary>
+            <param name="serviceCollection">Resource service collection.</param>
+            <param name="rootProvider">Application service provider.</param>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.ConfigureAction(AutoPocoIO.Models.Connector,AutoPocoIO.DynamicSchema.Enums.OperationType,System.String)">
+            <summary>
+            Configure resource operation
+            </summary>
+            <param name="connector">Request connector</param>
+            <param name="dbAction">Operations type (read, write, delete)</param>
+            <param name="dbObjectName">Database object to be accessed.</param>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.CreateNewResourceRecord``1(``0)">
+            <summary>
+            Insert a recored into a given table.
+            </summary>
+            <typeparam name="TViewModel">Type of view model</typeparam>
+            <param name="value">Object to insert into <see cref="P:AutoPocoIO.Resources.IOperationResource.DbObjectName"/> </param>
+            <returns>An instance of the object inserted.</returns>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.CreateNewResourceRecord(Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            Insert a recored into a given table
+            </summary>
+            <param name="value">Object to insert into <see cref="P:AutoPocoIO.Resources.IOperationResource.DbObjectName"/> </param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.Resources.OperationResource.UpdateResourceRecordById``1(``0,System.String)">
+        <member name="M:AutoPocoIO.Resources.IOperationResource.DeleteResourceRecordById(System.String)">
             <summary>
-             Update record
+            Remove record from a given table
             </summary>
-            <typeparam name="TViewModel">Model of values.</typeparam>
-            <param name="value">Instance of model to update.</param>
-            <param name="keys">Primary Key.</param>
+            <param name="keys">Primary Key(s)</param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.Resources.OperationResource.UpdateResourceRecordById(Newtonsoft.Json.Linq.JToken,System.String)">
+        <member name="M:AutoPocoIO.Resources.IOperationResource.ExecuteProc(System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
-             Update record
+            Execute the configured stored procedure
             </summary>
-            <param name="value">JSON object representing values</param>
-            <param name="keys">Primary Key.</param>
-            <returns>Updated record</returns>
+            <param name="parameterDictionary">Key/Value pair of input and output parameters</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.GetResourceRecordById(System.String)">
+            <summary>
+            Retrieves a single record from a table by Primary Key.
+            </summary>
+            <param name="keys">The primary key value of the record to be retrieved as a string. 
+            For composite keys, use semicolon separated string</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.GetResourceRecordById``1(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Retrieves a single record from a table by Primary Key.
+            </summary>
+            <param name="keys">The primary key value of the record to be retrieved as a string. 
+            For composite keys, use semicolon separated string</param>
+            <param name="queryString">Request query string to apply odata filters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.GetResourceRecords(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Retrieves all records in a table
+            </summary>
+            <param name="queryString">Request query string to apply odata filters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.GetViewRecords">
+            <summary>
+            Retrieves all records in a view
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.LoadDbAdapter">
+            <summary>
+            Initialize database schema for a specific object
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.UpdateResourceRecordById(Newtonsoft.Json.Linq.JToken,System.String)">
+            <summary>
+            Update a single record from a table by Primary Key.
+            </summary>
+            <param name="value">JSON object to update.</param>
+            <param name="keys">The primary key value of the record to be retrieved as a string. 
+            For composite keys, use semicolon separated string</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.UpdateResourceRecordById``1(``0,System.String)">
+            <summary>
+            Update a single record from a table by Primary Key.
+            </summary>
+            <typeparam name="TViewModel">Model of the table columns</typeparam>
+            <param name="value">Column values to update.</param>
+            <param name="keys">The primary key value of the record to be retrieved as a string. 
+            For composite keys, use semicolon separated string</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.GetColumnDefinition(System.String)">
+            <summary>
+            View column attirbutes
+            </summary>
+            <param name="columnName">Name of the column in the database.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.GetSchemaDefinition">
+            <summary>
+            List all database objects
+            </summary>
+            <returns>A list for each object type (Table, View, Stored Procedure)</returns>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.GetStoredProcedureDefinition">
+            <summary>
+            List all parameters
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.GetStoredProcedureDefinition(System.String)">
+            <summary>
+             Get a single parameter
+            </summary>
+            <param name="parameterName">Parameters name in the database</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.GetTableDefinition">
+            <summary>
+            List of columns that exists in a given table
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.LoadSchema">
+            <summary>
+            Load full schema
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.LoadProc">
+            <summary>
+            Load schema for a specific stored procedure
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Resources.OperationResource.Connector">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Resources.OperationResource.DatabaseName">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Resources.OperationResource.SchemaName">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Resources.OperationResource.DbObjectName">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Resources.OperationResource.DbSchema">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Resources.OperationResource.Config">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Resources.OperationResource.ResourceType">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.ApplyServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.IServiceProvider)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.ConfigureAction(AutoPocoIO.Models.Connector,AutoPocoIO.DynamicSchema.Enums.OperationType,System.String)">
+            <inheritdoc/>
         </member>
         <member name="M:AutoPocoIO.Resources.OperationResource.CreateNewResourceRecord``1(``0)">
-            <summary>
-             Insert a recored
-            </summary>
-            <typeparam name="TViewModel">Model of values.</typeparam>
-            <param name="value">Instance of model to update.</param>
-            <returns></returns>
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.CreateNewResourceRecord(Newtonsoft.Json.Linq.JToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.GetResourceRecordById(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.GetResourceRecordById``1(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.GetResourceRecords(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.UpdateResourceRecordById``1(``0,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.UpdateResourceRecordById(Newtonsoft.Json.Linq.JToken,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.DeleteResourceRecordById(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.GetViewRecords">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.ListSchemas">
+            <inheritdoc/>
         </member>
         <member name="M:AutoPocoIO.Resources.OperationResource.GetColumnDefinition(System.String)">
-            <summary>
-            Detailed information about a table column
-            </summary>
-            <param name="columnName">Column to look up</param>
-            <returns></returns>
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.GetSchemaDefinition">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.GetStoredProcedureDefinition">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.GetStoredProcedureDefinition(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.GetTableDefinition">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.LoadProc">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.LoadDbAdapter">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Resources.OperationResource.LoadSchema">
+            <inheritdoc/>
         </member>
         <member name="M:AutoPocoIO.Services.AppDatabaseSetupService.SetupEncryption(System.String,System.String,System.Int32)">
             <summary>
@@ -998,21 +1890,169 @@
             <param name="encryptionSecretKey">Must be 128 characters</param>
             <param name="cacheTimeoutMinutes">Length in minutes how long database configuration values stay in cache.</param>
         </member>
+        <member name="T:AutoPocoIO.Services.ILoggingService">
+            <summary>
+            Log resource operation calls
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Services.ILoggingService.LogCount">
+            <summary>
+            Number of operations ready to log
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Services.ILoggingService.Exception">
+            <summary>
+            Request exception
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Services.ILoggingService.StatusCode">
+            <summary>
+            Request status code
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Services.ILoggingService.ResponseTime">
+            <summary>
+            UTC time of response
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Services.ILoggingService.Ip">
+            <summary>
+            Requester's IP address
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Services.ILoggingService.AddSchemaToLogger(System.String)">
+            <summary>
+            Add schema operation to be logged.
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+        </member>
+        <member name="M:AutoPocoIO.Services.ILoggingService.AddSprocToLogger(System.String,System.String,AutoPocoIO.Constants.HttpMethodType)">
+            <summary>
+            Add stored procedure operation to be logged.
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="sprocName">Stored procedure name</param>
+            <param name="httpMethod">Http method type(GET, PUT, POST, DELETE)</param>
+        </member>
+        <member name="M:AutoPocoIO.Services.ILoggingService.AddTableToLogger(System.String,System.String,AutoPocoIO.Constants.HttpMethodType)">
+            <summary>
+            Add table operation to be logged.
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Table name</param>
+            <param name="httpMethod">Http method type(GET, PUT, POST, DELETE)</param>
+        </member>
+        <member name="M:AutoPocoIO.Services.ILoggingService.AddTableToLogger(System.String,System.String,AutoPocoIO.Constants.HttpMethodType,System.String)">
+            <summary>
+            Add table row operation to be logged.
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName"></param>
+            <param name="httpMethod">Http method type(GET, PUT, POST, DELETE)</param>
+            <param name="primaryKey"></param>
+        </member>
+        <member name="M:AutoPocoIO.Services.ILoggingService.AddViewToLogger(System.String,System.String)">
+            <summary>
+            Add view operation to be logged.
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="viewName">View name</param>
+        </member>
+        <member name="M:AutoPocoIO.Services.ILoggingService.LogAll">
+            <summary>
+            Log all pending operations
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Services.ILoggingService.AddContextInfomation(AutoPocoIO.LoggingMiddleware.ContextLogParameters)">
+            <summary>
+            Add Http request information to the service
+            </summary>
+            <param name="logParameters">Http request parameters to log.</param>
+        </member>
+        <member name="T:AutoPocoIO.Services.ITimeProvider">
+            <summary>
+            Get server and UTC date times.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Services.ITimeProvider.UtcNow">
+            <summary>
+            UTC date and time now
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Services.ITimeProvider.Now">
+            <summary>
+            Server date and time now
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Services.ITimeProvider.LocalToday">
+            <summary>
+            Server date time at 00:00:00 UTC
+            </summary>
+        </member>
         <member name="T:AutoPocoIO.Services.LoggingService">
             <summary>
             Log AutoPoco commands
             </summary>
         </member>
-        <member name="M:AutoPocoIO.Services.LoggingService.#ctor(AutoPocoIO.Services.ITimeProvider)">
+        <member name="M:AutoPocoIO.Services.LoggingService.#ctor(AutoPocoIO.Services.ITimeProvider,Microsoft.Extensions.DependencyInjection.IServiceScopeFactory)">
             <summary>
              Set up new logging for a request
             This constructor is not meant to be called in code.  Used for DI. 
             </summary>
+            <param name="timeProvider">Localized time provider.</param>
+            <param name="scopeFactory">Create to service scope for of thread logging.</param>
+        </member>
+        <member name="P:AutoPocoIO.Services.LoggingService.ApiRequests">
+            <summary>
+            List of request to be logged
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Services.LoggingService.ResponseTime">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Services.LoggingService.StatusCode">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Services.LoggingService.Ip">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Services.LoggingService.Exception">
+            <inheritdoc/>
         </member>
         <member name="P:AutoPocoIO.Services.LoggingService.LogCount">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Services.LoggingService.OnLogging">
             <summary>
-            Check number of API request to be logged for a request
+             Represents an event called for each api request
             </summary>
+        </member>
+        <member name="P:AutoPocoIO.Services.LoggingService.OnLogged">
+            <summary>
+             Represents an event called after the http request is logged 
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Services.LoggingService.AddTableToLogger(System.String,System.String,AutoPocoIO.Constants.HttpMethodType)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Services.LoggingService.AddTableToLogger(System.String,System.String,AutoPocoIO.Constants.HttpMethodType,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Services.LoggingService.AddViewToLogger(System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Services.LoggingService.AddSprocToLogger(System.String,System.String,AutoPocoIO.Constants.HttpMethodType)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Services.LoggingService.AddSchemaToLogger(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Services.LoggingService.LogAll">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Services.LoggingService.AddContextInfomation(AutoPocoIO.LoggingMiddleware.ContextLogParameters)">
+            <inheritdoc/>
         </member>
         <member name="M:AutoPocoIO.Services.LoggingService.AddApiRequest(AutoPocoIO.Models.LoggingApiContextValues,System.DateTime)">
             <summary>
@@ -1021,39 +2061,23 @@
             <param name="values">Request infomation</param>
             <param name="requestTime">Time of request</param>
         </member>
-        <member name="M:AutoPocoIO.Services.LoggingService.AddTableToLogger(System.String,System.String,AutoPocoIO.Constants.HttpMethodType)">
+        <member name="T:AutoPocoIO.Services.DefaultTimeProvider">
             <summary>
-            Appened a table request
+            Get server and UTC date times.
             </summary>
-            <param name="connectorName">AutoPoco Connector name</param>
-            <param name="tableName">Table accessed</param>
-            <param name="httpMethod">Requst type (GET, POST, PUT, DELETE)</param>
         </member>
-        <member name="M:AutoPocoIO.Services.LoggingService.AddViewToLogger(System.String,System.String)">
-            <summary>
-            Append a view request
-            </summary>
-            <param name="connectorName">AutoPoco connector name</param>
-            <param name="viewName">View accessed</param>
-            
+        <member name="P:AutoPocoIO.Services.DefaultTimeProvider.UtcNow">
+            <inheritdoc />
         </member>
-        <member name="M:AutoPocoIO.Services.LoggingService.AddSprocToLogger(System.String,System.String,AutoPocoIO.Constants.HttpMethodType)">
-            <summary>
-            Append a stored procedure request
-            </summary>
-            <param name="connectorName">AutoPoco connector name</param>
-            <param name="sprocName">Stored Procedure name</param>
-            <param name="httpMethod">Requst type (GET, POST, PUT, DELETE)</param>
+        <member name="P:AutoPocoIO.Services.DefaultTimeProvider.Now">
+            <inheritdoc />
         </member>
-        <member name="M:AutoPocoIO.Services.LoggingService.AddSchemaToLogger(System.String)">
-            <summary>
-            Append a schema request
-            </summary>
-            <param name="connectorName">AutoPoco connector name</param>
+        <member name="P:AutoPocoIO.Services.DefaultTimeProvider.LocalToday">
+            <inheritdoc />
         </member>
-        <member name="M:AutoPocoIO.Services.LoggingService.LogAll(Microsoft.Extensions.DependencyInjection.IServiceScope)">
+        <member name="T:AutoPocoIO.SwaggerAddons.JTokenExample">
             <summary>
-            Log all pendeing API request
+            Gives example object for JToken parameters in swagger
             </summary>
         </member>
         <member name="T:AutoPocoIO.SwaggerAddons.ODataParametersSwaggerDefinition">
@@ -1061,14 +2085,6 @@
             Adds the supported odata parameters for IQueryable endpoints 
             ONLY if no parameters are defined already.
             </summary>
-        </member>
-        <member name="M:AutoPocoIO.SwaggerAddons.ODataParametersSwaggerDefinition.Apply(Swashbuckle.Swagger.Operation,Swashbuckle.Swagger.SchemaRegistry,System.Web.Http.Description.ApiDescription)">
-            <summary>
-            Apply the filter to the operation.
-            </summary>
-            <param name="operation">The API operation to check.</param>
-            <param name="schemaRegistry">The swagger schema registry.</param>
-            <param name="apiDescription">The description of the api method.</param>
         </member>
         <member name="T:AutoPocoIO.WebApi.SchemaController">
             <summary>
@@ -1079,7 +2095,8 @@
             <summary>
             Default constructor with logging injected
             </summary>
-            <param name="loggingService">Dependency injected logging for all end points</param>
+            <param name="schemaOperations">Access schema definitions operations</param>
+            <param name="loggingService">Logging for all end points</param>
         </member>
         <member name="M:AutoPocoIO.WebApi.SchemaController.Get(System.String)">
             <summary>
@@ -1197,7 +2214,7 @@
             <param name="id">Primary key.</param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.WebApi.TablesController.Post(System.String,System.String,System.Object)">
+        <member name="M:AutoPocoIO.WebApi.TablesController.Post(System.String,System.String,Newtonsoft.Json.Linq.JToken)">
             <summary>
             Insert a recored into a given table
             </summary>
@@ -1206,7 +2223,7 @@
             <param name="value">JSON object to insert</param>
             <returns>Inserted object</returns>
         </member>
-        <member name="M:AutoPocoIO.WebApi.TablesController.Put(System.String,System.String,System.String,System.Object)">
+        <member name="M:AutoPocoIO.WebApi.TablesController.Put(System.String,System.String,System.String,Newtonsoft.Json.Linq.JToken)">
             <summary>
             Update record in a given table
             </summary>
@@ -1245,21 +2262,58 @@
             <param name="connectorName">Name of the database to access.</param>
             <param name="viewName">Name of the view in the database.</param>
         </member>
-        <member name="T:AutoPocoIO.Owin.IOwinMiddlewareWithDI">
+        <member name="T:AutoPocoIO.WebApi.ApiController">
             <summary>
-            Implmenet Owin Middlware that utilizes injected classes.
+            For same naming between .Net Framework and .Net Core
             </summary>
         </member>
-        <member name="P:AutoPocoIO.Owin.IOwinMiddlewareWithDI.Next">
+        <member name="T:AutoPocoIO.LoggingMiddleware.ContextLogParameters">
             <summary>
-            Next middleware in the owin pipeline
+            
             </summary>
         </member>
-        <member name="M:AutoPocoIO.Owin.IOwinMiddlewareWithDI.Invoke(Microsoft.Owin.IOwinContext)">
+        <member name="P:AutoPocoIO.LoggingMiddleware.ContextLogParameters.Context">
+            <summary>
+             Gets or sets the <see cref="P:Microsoft.AspNetCore.Http.HttpResponse.HttpContext"/> for this request.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.LoggingMiddleware.ContextLogParameters.StatusCode">
+            <summary>
+            Gets or sets the HTTP response code.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.LoggingMiddleware.ContextLogParameters.Exception">
+            <summary>
+            Request exception to log
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.LoggingMiddleware.ContextLogParameters.RequestBuffer">
+            <summary>
+            Buffered Request body stream
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.LoggingMiddleware.ContextLogParameters.ResponseBuffer">
+            <summary>
+            Buffered Response body stream
+            </summary>
+        </member>
+        <member name="T:AutoPocoIO.LoggingMiddleware.LogRequestAndResponseMiddleware">
+            <summary>
+            ASP.NET Core middleware for logging request and responses
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.LoggingMiddleware.LogRequestAndResponseMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            Initialize middleware on startup
+            </summary>
+            <param name="next">Next middleware in the pipeline</param>
+        </member>
+        <member name="M:AutoPocoIO.LoggingMiddleware.LogRequestAndResponseMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,AutoPocoIO.Services.ILoggingService)">
             <summary>
             
             </summary>
             <param name="context"></param>
+            <param name="loggingService"></param>
             <returns></returns>
         </member>
         <member name="T:System.Linq.AutoPoco.DynamicQueryable">
@@ -1268,6 +2322,86 @@
             Very handy when, at compile time, you don't know the type of queries that will be generated.
             </summary>
             
+        </member>
+        <member name="T:System.Linq.AutoPoco.DynamicClass">
+            <summary>
+            Dynamic linq class
+            </summary>
+        </member>
+        <member name="M:System.Linq.AutoPoco.DynamicClass.ToString">
+            <summary>
+             A string that represents the current object.
+            </summary>
+            <returns> A string that represents the current object.</returns>
+        </member>
+        <member name="T:System.Linq.AutoPoco.ParseException">
+            <summary>
+            Dynamic Linq internal exception
+            </summary>
+        </member>
+    </members>
+</doc>
+.RemoteIpAddress">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Owin.OwinMiddlewareRequest.GetQuery(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Owin.OwinMiddlewareRequest.Body">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Owin.OwinMiddlewareRequest.RequestUri">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Owin.OwinMiddlewareRequest.ReadFormAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Owin.OwinMiddlewareRequest.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Owin.OwinMiddlewareRequest.Dispose(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="T:AutoPocoIO.Owin.OwinMiddlewareResponse">
+            <summary>
+            Represents the outgoing side of an individual HTTP request.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Owin.OwinMiddlewareResponse.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initilize the middleware response from the <paramref name="environment"/>
+            </summary>
+            <param name="environment">Owin environment to set properties</param>
+        </member>
+        <member name="P:AutoPocoIO.Owin.OwinMiddlewareResponse.ContentType">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Owin.OwinMiddlewareResponse.StatusCode">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Owin.OwinMiddlewareResponse.Body">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Owin.OwinMiddlewareResponse.Redirect(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Owin.OwinMiddlewareResponse.SetExpire(System.Nullable{System.DateTimeOffset})">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Owin.OwinMiddlewareResponse.WriteAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:System.Linq.AutoPoco.DynamicQueryable">
+            <summary>
+            Microsoft provided class. It allows dynamic string based querying. 
+            Very handy when, at compile time, you don't know the type of queries that will be generated.
+            </summary>
+            
+        </member>
+        <member name="T:System.Linq.AutoPoco.DynamicClass">
+            <summary>
+            Dynamic linq class
+            </summary>
         </member>
         <member name="M:System.Linq.AutoPoco.DynamicClass.ToString">
             <summary>

@@ -3,8 +3,6 @@ using AutoPocoIO.Factories;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
 using AutoPocoIO.Services;
-using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace AutoPocoIO.Api
 {
@@ -15,17 +13,16 @@ namespace AutoPocoIO.Api
     {
 
         private readonly IResourceFactory _resourceFactory;
-        public SchemaOperations(IServiceProvider serviceProvider)
+        /// <summary>
+        /// Initialize schema operations with access to all registered resource types.
+        /// </summary>
+        /// <param name="resourceFactory">Get resource from the connector.</param>
+        public SchemaOperations(IResourceFactory resourceFactory)
         {
-            _resourceFactory = serviceProvider.GetRequiredService<IResourceFactory>();
+            _resourceFactory = resourceFactory;
         }
 
-        /// <summary>
-        /// List of objects in the database by type
-        /// </summary>
-        /// <param name="connectorName">Name of the database to access.</param>
-        /// <param name="loggingService">Pass in logging service if the request needs to be logged</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public SchemaDefinition Definition(string connectorName, ILoggingService loggingService = null)
         {
             loggingService?.AddSchemaToLogger(connectorName);

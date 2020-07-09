@@ -25,6 +25,7 @@ namespace AutoPocoIO.Extensions
         /// Default dashboard set up for with default settings
         /// </summary>
         /// <param name="builder">The builder being used to configure the context.</param>
+        /// <param name="descriptors">List of services to register with the AutoPocoIO IOC container.</param>
         /// <returns>The options builder so that further configuration can be chained.</returns>
         public static IAppBuilder UseAutoPoco(this IAppBuilder builder, IEnumerable<ServiceDescriptor> descriptors)
         {
@@ -38,6 +39,7 @@ namespace AutoPocoIO.Extensions
         /// </summary>
         /// <param name="builder">The builder being used to configure the context.</param>
         /// <param name="options">Dashboard setup options</param>
+        /// <param name="descriptors">List of services to register with the AutoPocoIO IOC container.</param>
         /// <returns>The options builder so that further configuration can be chained.</returns>
         public static IAppBuilder UseAutoPoco(this IAppBuilder builder, AutoPocoOptions options, IEnumerable<ServiceDescriptor> descriptors)
         {
@@ -51,6 +53,7 @@ namespace AutoPocoIO.Extensions
         /// <param name="builder">The builder being used to configure the context.</param>
         /// <param name="config">Current Httpconfiguration with IOC container</param>
         /// <returns>The options builder so that further configuration can be chained.</returns>
+        /// <exception cref="ArgumentException">This must have an IOC container registered</exception>
         public static IAppBuilder UseAutoPoco(this IAppBuilder builder, HttpConfiguration config)
         {
             Check.NotNull(config, nameof(config));

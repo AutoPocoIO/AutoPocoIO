@@ -1,9 +1,7 @@
 ﻿using AutoPocoIO.DynamicSchema.Db;
 using AutoPocoIO.MsSql.DynamicSchema.Runtime;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -14,10 +12,6 @@ namespace AutoPocoIO.test.Extensions
     [TestCategory(TestCategories.Unit)]
     public class StoredProcedureTests
     {
-        private readonly DbContextOptions dbOptions = new DbContextOptionsBuilder()
-             .UseInMemoryDatabase("logDb" + Guid.NewGuid().ToString())
-             .Options;
-
         private Mock<IDbCommand> Command;
         private Mock<IDbConnection> Connection;
         private Mock<IDataReader> DataReader;

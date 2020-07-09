@@ -54,24 +54,24 @@ namespace AutoPocoIO.MsSql.test.Resources
             var config = new Config();
             var schema = new Mock<IDbSchema>();
 
-            var inProc = new StoredProcedure { Schema = "sch1", Name = "Name2" };
+            var inProc = new StoredProcedure { Schema = "sch1", Name = "Name2", Database = "dbo" };
             inProc.Parameters.Add(new DBParameter { Name = "param1", IsOutput = false, Type = "DateTime" });
 
-            var outProc = new StoredProcedure { Schema = "sch1", Name = "Name3" };
+            var outProc = new StoredProcedure { Schema = "sch1", Name = "Name3", Database = "dbo" };
             outProc.Parameters.Add(new DBParameter { Name = "param1", IsOutput = true, Type = "Int" });
 
 
             schema.Setup(c => c.StoredProcedures)
                 .Returns(new List<StoredProcedure>
                 {
-                    new StoredProcedure { Schema = "sch1", Name = "Name1" },
+                    new StoredProcedure { Schema = "sch1", Name = "Name1", Database = "dbo" },
                        inProc,
                        outProc
                 });
 
             var connStringFactory = new Mock<IConnectionStringFactory>();
             connStringFactory.Setup(c => c.GetConnectionInformation(1, "conn1"))
-                .Returns(new ConnectionInformation { });
+                .Returns(new ConnectionInformation { InitialCatalog  = "dbo"});
 
             var services = new ServiceCollection();
             services.AddSingleton(Mock.Of<IDbSchemaBuilder>());
@@ -109,7 +109,7 @@ namespace AutoPocoIO.MsSql.test.Resources
 
             var results = resource.ExecuteProc(new Dictionary<string, object>());
 
-            Assert.AreEqual("sch1.Name1 ", commandText);
+            Assert.AreEqual("[dbo].[sch1].[Name1] ", commandText);
             Assert.AreEqual(0, usedParams.Count());
         }
 
@@ -128,12 +128,12 @@ namespace AutoPocoIO.MsSql.test.Resources
             command.Setup(c => c.ExecuteReader()).Returns(reader.Object);
 
             var resource = new MsSqlResource(new ServiceCollection().BuildServiceProvider());
-            resource.ConfigureAction(new Connector { ResourceType = 1, Schema = "sch1", ConnectionString = "conn1" }, OperationType.Any, "Name2");
+            resource.ConfigureAction(new Connector { ResourceType = 1, Schema = "sch1", ConnectionString = "conn1"}, OperationType.Any, "Name2");
 
             var results = (IDictionary<string, object>)resource.ExecuteProc(new Dictionary<string, object>());
 
             Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("sch1.Name2 param1", commandText);
+            Assert.AreEqual("[dbo].[sch1].[Name2] param1", commandText);
             Assert.AreEqual(1, usedParams.Count());
             Assert.AreEqual(ParameterDirection.Input, usedParams.First().Direction);
             Assert.AreEqual("param1", usedParams.First().ParameterName);
@@ -162,7 +162,7 @@ namespace AutoPocoIO.MsSql.test.Resources
             Assert.AreEqual(2, results.Count);
             Assert.AreEqual(DBNull.Value, results["param1"]);
 
-            Assert.AreEqual("sch1.Name3 param1 out", commandText);
+            Assert.AreEqual("[dbo].[sch1].[Name3] param1 out", commandText);
             Assert.AreEqual(1, usedParams.Count());
             Assert.AreEqual(ParameterDirection.Output, usedParams.First().Direction);
             Assert.AreEqual("param1", usedParams.First().ParameterName);
@@ -191,7 +191,7 @@ namespace AutoPocoIO.MsSql.test.Resources
             Assert.AreEqual(2, results.Count);
             Assert.AreEqual(123, results["param1"]);
 
-            Assert.AreEqual("sch1.Name3 param1 out", commandText);
+            Assert.AreEqual("[dbo].[sch1].[Name3] param1 out", commandText);
             Assert.AreEqual(1, usedParams.Count());
             Assert.AreEqual(ParameterDirection.Output, usedParams.First().Direction);
             Assert.AreEqual("param1", usedParams.First().ParameterName);

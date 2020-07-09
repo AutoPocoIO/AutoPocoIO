@@ -17,7 +17,7 @@ namespace AutoPocoIO.test.Api
         [TestInitialize]
         public void InitOperation()
         {
-            storedProcedureOperations = new StoredProcedureOperations(serviceProvider);
+            storedProcedureOperations = new StoredProcedureOperations(resourceFactoryMock.Object);
         }
 
         [TestMethod]

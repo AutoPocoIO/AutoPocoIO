@@ -4,9 +4,14 @@ using System.Collections.Generic;
 
 namespace AutoPocoIO.DynamicSchema.Db
 {
+    /// <summary>
+    /// Schema definition at request time
+    /// </summary>
     public class DbSchema : IDbSchema
     {
-
+        /// <summary>
+        /// Initalize schmea definition lists.
+        /// </summary>
         public DbSchema()
         {
             Tables = new List<Table>();
@@ -15,9 +20,13 @@ namespace AutoPocoIO.DynamicSchema.Db
             StoredProcedures = new List<StoredProcedure>();
         }
 
+        ///<inheritdoc/>
         public virtual List<Table> Tables { get; }
+        ///<inheritdoc/>
         public virtual List<Column> Columns { get; }
+        ///<inheritdoc/>
         public virtual List<View> Views { get; }
+        ///<inheritdoc/>
         public virtual List<StoredProcedure> StoredProcedures { get; }
 
         /// <summary>
@@ -40,6 +49,7 @@ namespace AutoPocoIO.DynamicSchema.Db
             return hash.ToHashCode();
         }
 
+        ///<inheritdoc/>
         public void Reset()
         {
             Tables.Clear();

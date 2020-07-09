@@ -8,7 +8,7 @@ namespace AutoPoco.DependencyInjection
     internal class ServiceActivator : IServiceActivator
     {
         private IEnumerable<ConstructorInfo> _constructors;
-        private Type ImplementationType;
+        private readonly Type ImplementationType;
 
         public ServiceActivator(Type implementer)
         {

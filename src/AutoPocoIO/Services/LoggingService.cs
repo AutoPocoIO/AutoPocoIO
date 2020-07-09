@@ -22,6 +22,8 @@ namespace AutoPocoIO.Services
         ///  Set up new logging for a request
         /// This constructor is not meant to be called in code.  Used for DI. 
         /// </summary>
+        /// <param name="timeProvider">Localized time provider.</param>
+        /// <param name="scopeFactory">Create to service scope for of thread logging.</param>
         public LoggingService(ITimeProvider timeProvider, IServiceScopeFactory scopeFactory)
         {
             _timeProvider = timeProvider;
@@ -29,15 +31,20 @@ namespace AutoPocoIO.Services
             ApiRequests = new List<LogRequestAndResponseCommand>();
         }
 
+        /// <summary>
+        /// List of request to be logged
+        /// </summary>
         protected List<LogRequestAndResponseCommand> ApiRequests { get; }
 
+        /// <inheritdoc/>
         public DateTime ResponseTime { get; set; }
+        /// <inheritdoc/>
         public string StatusCode { get; set; }
+        /// <inheritdoc/>
         public string Ip { get; set; }
+        /// <inheritdoc/>
         public string Exception { get; set; }
-        /// <summary>
-        /// Check number of API request to be logged for a request
-        /// </summary>
+        /// <inheritdoc/>
         public virtual int LogCount { get { return ApiRequests.Count; } }
 
         /// <summary>
@@ -49,7 +56,109 @@ namespace AutoPocoIO.Services
         /// </summary>
         public Action<IServiceProvider, ILoggingService> OnLogged { get; set; }
 
+        /// <inheritdoc/>
+        public void AddTableToLogger(string connectorName, string tableName, HttpMethodType httpMethod)
+        {
+            AddApiRequest(new LoggingApiContextValues
+            {
+                ConnectorName = connectorName,
+                ResourceName = tableName,
+                ResourceType = "table",
+                HttpMethod = httpMethod.ToString()
+            }, _timeProvider.UtcNow);
+        }
 
+        /// <inheritdoc/>
+        public void AddTableToLogger(string connectorName, string tableName, HttpMethodType httpMethod, string primaryKey)
+        {
+            AddApiRequest(new LoggingApiContextValues
+            {
+                ConnectorName = connectorName,
+                ResourceName = tableName,
+                ResourceType = "table",
+                HttpMethod = httpMethod.ToString(),
+                ResourceId = primaryKey
+            }, _timeProvider.UtcNow);
+        }
+
+        /// <inheritdoc/>
+        public void AddViewToLogger(string connectorName, string viewName)
+        {
+            AddApiRequest(new LoggingApiContextValues
+            {
+                ConnectorName = connectorName,
+                ResourceName = viewName,
+                ResourceType = "view",
+                HttpMethod = HttpMethodType.GET.ToString()
+            }, _timeProvider.UtcNow);
+        }
+
+        /// <inheritdoc/>
+        public void AddSprocToLogger(string connectorName, string sprocName, HttpMethodType httpMethod)
+        {
+            AddApiRequest(new LoggingApiContextValues
+            {
+                ConnectorName = connectorName,
+                ResourceName = sprocName,
+                ResourceType = "sproc",
+                HttpMethod = httpMethod.ToString()
+            }, _timeProvider.UtcNow);
+        }
+
+
+        /// <inheritdoc/>
+        public void AddSchemaToLogger(string connectorName)
+        {
+            AddApiRequest(new LoggingApiContextValues
+            {
+                ConnectorName = connectorName,
+                ResourceName = "",
+                ResourceType = "schema",
+                HttpMethod = HttpMethodType.GET.ToString()
+            }, _timeProvider.UtcNow);
+        }
+
+
+        /// <inheritdoc/>
+        public Task LogAll()
+        {
+            var scope = _serviceScopeFactory.CreateScope();
+            return Task.Run(() =>
+            {
+                try
+                {
+                    this.ApiRequests.ForEach(c => LogHttpRequestAndResponse(scope, c));
+                }
+                finally
+                {
+                    OnLogged?.Invoke(scope.ServiceProvider, this);
+                    scope.Dispose();
+                }
+            });
+        }
+        /// <inheritdoc/>
+        public virtual void AddContextInfomation(ContextLogParameters logParameters)
+        {
+            Check.NotNull(logParameters, nameof(logParameters));
+
+            ResponseTime = _timeProvider.UtcNow;
+            StatusCode = logParameters.DescriptionFromStatusCode(logParameters.StatusCode);
+            Ip = logParameters.GetIPFromLogParameters();
+            Exception = logParameters.Exception;
+        }
+
+        protected virtual void LogHttpRequestAndResponse(IServiceScope scope, LogRequestAndResponseCommand command)
+        {
+            Check.NotNull(scope, nameof(scope));
+            Check.NotNull(command, nameof(command));
+
+            var provider = scope.ServiceProvider;
+            OnLogging?.Invoke(provider, command, this);
+
+            var db = provider.GetRequiredService<LogDbContext>();
+            LogHttpRequest(command, db);
+            LogHttpResponse(command, db);
+        }
 
         /// <summary>
         /// Appended an API request to be logged
@@ -68,127 +177,6 @@ namespace AutoPocoIO.Services
                 RequestTime = requestTime,
                 RequestGuid = Guid.NewGuid()
             });
-        }
-
-        /// <summary>
-        /// Appened a table request
-        /// </summary>
-        /// <param name="connectorName">AutoPoco Connector name</param>
-        /// <param name="tableName">Table accessed</param>
-        /// <param name="httpMethod">Requst type (GET, POST, PUT, DELETE)</param>
-        public void AddTableToLogger(string connectorName, string tableName, HttpMethodType httpMethod)
-        {
-            AddApiRequest(new LoggingApiContextValues
-            {
-                ConnectorName = connectorName,
-                ResourceName = tableName,
-                ResourceType = "table",
-                HttpMethod = httpMethod.ToString()
-            }, _timeProvider.UtcNow);
-        }
-
-        /// <summary>
-        /// Appened a table request when accessing a single value
-        /// </summary>
-        /// <param name="connectorName">AutoPoco Connector name</param>
-        /// <param name="tableName">Table accessed</param>
-        /// <param name="httpMethod">Requst type (GET, POST, PUT, DELETE)</param>
-        /// <param name="primaryKey">Key accessed</param>
-        public void AddTableToLogger(string connectorName, string tableName, HttpMethodType httpMethod, string primaryKey)
-        {
-            AddApiRequest(new LoggingApiContextValues
-            {
-                ConnectorName = connectorName,
-                ResourceName = tableName,
-                ResourceType = "table",
-                HttpMethod = httpMethod.ToString(),
-                ResourceId = primaryKey
-            }, _timeProvider.UtcNow);
-        }
-
-        /// <summary>
-        /// Append a view request
-        /// </summary>
-        /// <param name="connectorName">AutoPoco connector name</param>
-        /// <param name="viewName">View accessed</param>
-        /// 
-        public void AddViewToLogger(string connectorName, string viewName)
-        {
-            AddApiRequest(new LoggingApiContextValues
-            {
-                ConnectorName = connectorName,
-                ResourceName = viewName,
-                ResourceType = "view",
-                HttpMethod = HttpMethodType.GET.ToString()
-            }, _timeProvider.UtcNow);
-        }
-
-        /// <summary>
-        /// Append a stored procedure request
-        /// </summary>
-        /// <param name="connectorName">AutoPoco connector name</param>
-        /// <param name="sprocName">Stored Procedure name</param>
-        /// <param name="httpMethod">Requst type (GET, POST, PUT, DELETE)</param>
-        public void AddSprocToLogger(string connectorName, string sprocName, HttpMethodType httpMethod)
-        {
-            AddApiRequest(new LoggingApiContextValues
-            {
-                ConnectorName = connectorName,
-                ResourceName = sprocName,
-                ResourceType = "sproc",
-                HttpMethod = httpMethod.ToString()
-            }, _timeProvider.UtcNow);
-        }
-
-
-        /// <summary>
-        /// Append a schema request
-        /// </summary>
-        /// <param name="connectorName">AutoPoco connector name</param>
-        public void AddSchemaToLogger(string connectorName)
-        {
-            AddApiRequest(new LoggingApiContextValues
-            {
-                ConnectorName = connectorName,
-                ResourceName = "",
-                ResourceType = "schema",
-                HttpMethod = HttpMethodType.GET.ToString()
-            }, _timeProvider.UtcNow);
-        }
-
-
-        /// <summary>
-        /// Log all pendeing API request
-        /// </summary>
-        public Task LogAll()
-        {
-            var scope = _serviceScopeFactory.CreateScope();
-            return Task.Run(() =>
-            {
-                try
-                {
-                    this.ApiRequests.ForEach(c => LogHttpRequestAndResponse(scope, c));
-                }
-                finally
-                {
-                    OnLogged?.Invoke(scope.ServiceProvider, this);
-                    scope.Dispose();
-                }
-            });
-        }
-
-
-        protected virtual void LogHttpRequestAndResponse(IServiceScope scope, LogRequestAndResponseCommand command)
-        {
-            Check.NotNull(scope, nameof(scope));
-            Check.NotNull(command, nameof(command));
-
-            var provider = scope.ServiceProvider;
-            OnLogging?.Invoke(provider, command, this);
-
-            var db = provider.GetRequiredService<LogDbContext>();
-            LogHttpRequest(command, db);
-            LogHttpResponse(command, db);
         }
 
         private void LogHttpRequest(LogRequestAndResponseCommand command, LogDbContext db)
@@ -224,15 +212,6 @@ namespace AutoPocoIO.Services
             db.ResponseLogs.Add(responseLog);
             db.SaveChanges();
         }
-
-        public virtual void AddContextInfomation(ContextLogParameters logParameters)
-        {
-             Check.NotNull(logParameters, nameof(logParameters));
-            
-            ResponseTime = _timeProvider.UtcNow;
-            StatusCode = logParameters.DescriptionFromStatusCode(logParameters.StatusCode);
-            Ip = logParameters.GetIPFromLogParameters();
-            Exception = logParameters.Exception;
-        }
+  
     }
 }

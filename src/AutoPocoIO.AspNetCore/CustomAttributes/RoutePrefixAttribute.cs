@@ -8,11 +8,18 @@ namespace AutoPocoIO.CustomAttributes
     /// </summary>
     public abstract class RoutePrefixAttribute : RouteAttribute
     {
+        /// <summary>
+        /// Sets prefix to "DashboardRoute/<paramref name="template"/>".
+        /// </summary>
+        /// <param name="template">Route Prefix</param>
         public RoutePrefixAttribute(string template)
             : base(SetUpPrefix() + template)
         {
         }
 
+        /// <summary>
+        /// Route prefix
+        /// </summary>
         public abstract string Prefix { get; }
 
         private static string SetUpPrefix()

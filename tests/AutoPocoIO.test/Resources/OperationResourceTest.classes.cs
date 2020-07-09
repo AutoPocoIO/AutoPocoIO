@@ -61,6 +61,11 @@ namespace AutoPocoIO.test.Resources
                 service.AddSingleton(c => new Mock<IDbSchemaBuilder>().Object);
                 base.ApplyServices(service, rootProvider);
             }
+
+            public override IDictionary<string, object> ExecuteProc(IDictionary<string, object> parameterDictionary)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private class OtherConfig : Config

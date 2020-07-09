@@ -8,8 +8,16 @@ using System.Web;
 
 namespace AutoPocoIO.Extensions
 {
+    /// <summary>
+    /// Http Route extensions
+    /// </summary>
     public static class RouteExtensions
     {
+        /// <summary>
+        /// Gets HttpRequest query string values for WebAPi
+        /// </summary>
+        /// <param name="request">Current Http Request</param>
+        /// <returns>Key/Value pair of query strings</returns>
         public static Dictionary<string, string> GetQueryStrings(this HttpRequestMessage request)
         {
             if (request == null)
@@ -20,6 +28,11 @@ namespace AutoPocoIO.Extensions
                                StringComparer.OrdinalIgnoreCase);
         }
 
+        /// <summary>
+        /// Gets HttpRequest query string values for MVC
+        /// </summary>
+        /// <param name="request">Current Http Request</param>
+        /// <returns>Key/Value pair of query strings</returns>
         public static Dictionary<string, string> GetQueryStrings(this HttpRequest request)
         {
             if (request == null)
