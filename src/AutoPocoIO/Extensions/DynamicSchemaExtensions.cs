@@ -7,8 +7,20 @@ using System.Reflection;
 
 namespace AutoPocoIO.Extensions
 {
+    /// <summary>
+    /// Look up database objects in the schema.
+    /// </summary>
     public static class DynamicSchemaExtensions
     {
+        /// <summary>
+        /// Find a table in the schema.
+        /// </summary>
+        /// <param name="dbSchema">Schema definition to search.</param>
+        /// <param name="databaseName">Target database.</param>
+        /// <param name="schemaName">Target schema.</param>
+        /// <param name="tableName">Target table.</param>
+        /// <returns>The found table definition.</returns>
+        /// <exception cref="TableNotFoundException"/>
         public static Table GetTable(this IDbSchema dbSchema, string databaseName, string schemaName, string tableName)
         {
             Check.NotNull(dbSchema, nameof(dbSchema));
@@ -25,6 +37,28 @@ namespace AutoPocoIO.Extensions
             catch (InvalidOperationException)
             {
                 throw new TableNotFoundException(databaseName, schemaName, tableName);
+            }
+        }
+
+        /// <summary>
+        /// Find a strored procedure in the schema.
+        /// </summary>
+        /// <param name="dbSchema">Schema definition to search.</param>
+        /// <param name="schemaName">Target schema.</param>
+        /// <param name="sprocName"></param>
+        /// <returns>The found schema definition</returns>
+        /// <exception cref="StoreProcedureNotFoundException"/>
+        public static StoredProcedure GetStoredProcedure(this IDbSchema dbSchema, string schemaName, string sprocName)
+        {
+            Check.NotNull(dbSchema, nameof(dbSchema));
+
+            try
+            {
+                return dbSchema.StoredProcedures.First(c => c.Schema.ToUpperInvariant() == schemaName.ToUpperInvariant() && c.Name.ToUpperInvariant() == sprocName.ToUpperInvariant());
+            }
+            catch (InvalidOperationException)
+            {
+                throw new StoreProcedureNotFoundException(schemaName, sprocName);
             }
         }
 
@@ -54,20 +88,6 @@ namespace AutoPocoIO.Extensions
             catch (InvalidOperationException)
             {
                 throw new ViewNotFoundException(schemaName, viewName);
-            }
-        }
-
-        public static StoredProcedure GetStoredProcedure(this IDbSchema dbSchema, string schemaName, string sprocName)
-        {
-            Check.NotNull(dbSchema, nameof(dbSchema));
-
-            try
-            {
-                return dbSchema.StoredProcedures.First(c => c.Schema.ToUpperInvariant() == schemaName.ToUpperInvariant() && c.Name.ToUpperInvariant() == sprocName.ToUpperInvariant());
-            }
-            catch (InvalidOperationException)
-            {
-                throw new StoreProcedureNotFoundException(schemaName, sprocName);
             }
         }
 

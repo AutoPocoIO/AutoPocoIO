@@ -370,29 +370,31 @@ namespace System.Linq.AutoPoco
     /// </summary>
     [Serializable]
     [ExcludeFromCodeCoverage]
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public sealed class ParseException : Exception
     {
         public ParseException(string message, int position)
+
             : base(message)
         {
             this.Position = position;
         }
-
+        
         public int Position { get; private set; }
-
+       
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, Res.ParseExceptionFormat, Message, Position);
         }
-
+       
         public ParseException()
         {
         }
-
+       
         public ParseException(string message) : base(message)
         {
         }
-
+        
         public ParseException(string message, Exception innerException) : base(message, innerException)
         {
         }
@@ -402,8 +404,8 @@ namespace System.Linq.AutoPoco
             throw new NotImplementedException();
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-    
     [ExcludeFromCodeCoverage]
     internal class ExpressionParser
     {

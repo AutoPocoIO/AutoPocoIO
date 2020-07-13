@@ -10,8 +10,16 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace AutoPocoIO.DynamicSchema.Runtime
 {
+    /// <summary>
+    /// Entity framework service replacements.
+    /// </summary>
     public static class DynamicExtensions
     {
+        /// <summary>
+        /// Remove services that cache database models.
+        /// </summary>
+        /// <param name="optionBuilder">Context builder for model.</param>
+        /// <returns>DbContextOptionsBuilder to chain calls.</returns>
         public static DbContextOptionsBuilder ReplaceEFCachingServices(this DbContextOptionsBuilder optionBuilder)
         {
             Check.NotNull(optionBuilder, nameof(optionBuilder));
@@ -27,6 +35,11 @@ namespace AutoPocoIO.DynamicSchema.Runtime
             return optionBuilder;
         }
 
+        /// <summary>
+        /// Add same server, cross database access
+        /// </summary>
+        /// <param name="optionBuilder">Context builder for model.</param>
+        /// <returns>DbContextOptionsBuilder to chain calls.</returns>
         public static DbContextOptionsBuilder ReplaceEFCrossDbServices(this DbContextOptionsBuilder optionBuilder)
         {
             Check.NotNull(optionBuilder, nameof(optionBuilder));

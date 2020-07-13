@@ -3,7 +3,6 @@ using AutoPocoIO.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace AutoPocoIO.DynamicSchema.Db
@@ -52,10 +51,6 @@ namespace AutoPocoIO.DynamicSchema.Db
             }
         }
 
-        public virtual IDbCommand CreateDbCommand()
-        {
-            return Database.GetDbConnection().CreateCommand();
-        }
 
         private Type GetTypeFromAssemblies(string variableName)
         {

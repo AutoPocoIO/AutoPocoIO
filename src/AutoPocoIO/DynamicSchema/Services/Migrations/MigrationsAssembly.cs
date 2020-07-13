@@ -50,7 +50,7 @@ namespace AutoPocoIO.DynamicSchema.Services.Migrations
 
                         var items = types.Where(c => c.IsSubclassOf(typeof(Migration))
                         && c.GetCustomAttribute<DbContextAttribute>()?.ContextType == _contextType)
-                            .Select(c => new { Id = c.GetCustomAttribute<MigrationAttribute>()?.Id, Type = c })
+                            .Select(c => new { c.GetCustomAttribute<MigrationAttribute>()?.Id, Type = c })
                             .OrderBy(c => c.Id);
 
                         foreach (var item in items)

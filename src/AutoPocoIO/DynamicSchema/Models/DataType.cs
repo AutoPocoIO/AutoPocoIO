@@ -26,6 +26,7 @@ namespace AutoPocoIO.DynamicSchema.Models
             return string.Format(CultureInfo.InvariantCulture, "({0}) {1}", DbType, SystemType.Name);
         }
 
+        ///<inheritdoc/>
         public override bool Equals(object obj)
         {
             if (!(obj is DataType))
@@ -35,21 +36,25 @@ namespace AutoPocoIO.DynamicSchema.Models
 
         }
 
+        ///<inheritdoc/>
         public override int GetHashCode()
         {
             return (DbType.GetHashCode() * 17) ^ SystemType.GetHashCode();
         }
 
+        ///<inheritdoc/>
         public static bool operator ==(DataType left, DataType right)
         {
             return left.Equals(right);
         }
 
+        ///<inheritdoc/>
         public static bool operator !=(DataType left, DataType right)
         {
             return !(left == right);
         }
 
+        ///<inheritdoc/>
         public bool Equals(DataType other)
         {
             return DbType.Equals(other.DbType, StringComparison.InvariantCultureIgnoreCase)

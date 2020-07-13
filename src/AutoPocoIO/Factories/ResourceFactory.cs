@@ -10,36 +10,44 @@ using System.Linq;
 
 namespace AutoPocoIO.Factories
 {
+    /// <summary>
+    /// Search for a resouce by connector.
+    /// </summary>
     public class ResourceFactory : IResourceFactory
     {
         private readonly IAppAdminService _appAdminService;
         private readonly IEnumerable<IOperationResource> _resources;
 
+        /// <summary>
+        /// Initialize factory with a registered resouce types.
+        /// </summary>
         public ResourceFactory(IAppAdminService appAdminService, IEnumerable<IOperationResource> resources)
         {
             _resources = resources;
             _appAdminService = appAdminService;
         }
 
-
+        ///<inheritdoc/>
         public IOperationResource GetResource(string connectorName, OperationType dbAction, string dbObjectName)
         {
             var connector = _appAdminService.GetConnection(connectorName);
             return GetResourceType(connector, dbAction, dbObjectName);
         }
-
+        ///<inheritdoc/>
         public IOperationResource GetResource(string connectorId, string dbObjectName)
         {
             var connector = _appAdminService.GetConnectionById(connectorId);
             return GetResourceType(connector, OperationType.read, dbObjectName);
         }
 
+        ///<inheritdoc/>
         public IOperationResource GetResourceById(string connectorId, OperationType dbAction, string dbObjectName)
         {
             var connector = _appAdminService.GetConnectionById(connectorId);
             return GetResourceType(connector, dbAction, dbObjectName);
         }
 
+        
         private IOperationResource GetResourceType(Connector connector, OperationType dbAction, string dbObjectName)
         {
             IOperationResource resource;

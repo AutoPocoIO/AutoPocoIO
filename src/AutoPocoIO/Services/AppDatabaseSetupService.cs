@@ -13,6 +13,9 @@ using static AutoPocoIO.AutoPocoConstants;
 
 namespace AutoPocoIO.Services
 {
+    /// <summary>
+    /// Set up connection string encyption and migrate database
+    /// </summary>
     internal class AppDatabaseSetupService : IAppDatabaseSetupService
     {
         private readonly LoggingMigrationContext _logMigrationDb;
@@ -31,12 +34,7 @@ namespace AutoPocoIO.Services
             _connectionStringFactory = connectionStringFactory;
         }
 
-        /// <summary>
-        /// Set the encryption settings
-        /// </summary>
-        /// <param name="encryptionSalt">Must be length 16</param>
-        /// <param name="encryptionSecretKey">Must be 128 characters</param>
-        /// <param name="cacheTimeoutMinutes">Length in minutes how long database configuration values stay in cache.</param>
+        ///<inheritdoc/>
         public void SetupEncryption(string encryptionSalt, string encryptionSecretKey, int cacheTimeoutMinutes)
         {
             Check.NotNull(encryptionSalt, nameof(encryptionSalt));
@@ -53,6 +51,7 @@ namespace AutoPocoIO.Services
             AutoPocoConfiguration.CacheTimeoutMinutes = cacheTimeoutMinutes;
         }
 
+        ///<inheritdoc/>
         public void Migrate()
         {
             MigrateDb(_appMigrationDb);
@@ -62,11 +61,11 @@ namespace AutoPocoIO.Services
             ConnectionInformation connectionInformation = _connectionStringFactory.GetConnectionInformation(_appDbContext.Database);
 
             //Set db connection strings
-            var appDbConnector = _appDbContext.Connector.Single(c => c.Name == DefaultConnectors.AppDB);
+            var appDbConnector = _appDbContext.Connector.SingleOrDefault(c => c.Name == DefaultConnectors.AppDB);
             appDbConnector.SetConnectionInfo(connectionInformation);
             appDbConnector.ConnectionStringDecrypted = connectionString;
 
-            var logDbConnector = _appDbContext.Connector.Single(c => c.Name == DefaultConnectors.Logging);
+            var logDbConnector = _appDbContext.Connector.SingleOrDefault(c => c.Name == DefaultConnectors.Logging);
             logDbConnector.SetConnectionInfo(connectionInformation);
             logDbConnector.ConnectionStringDecrypted = connectionString;
             _appDbContext.SaveChanges();

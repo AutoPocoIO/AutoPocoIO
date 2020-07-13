@@ -5,11 +5,25 @@
     /// </summary>
     public enum ResourceType
     {
+        /// <summary>
+        /// None provide
+        /// </summary>
         None,
+        /// <summary>
+        /// Microsoft Sql Server
+        /// </summary>
         Mssql,
+        /// <summary>
+        /// Oracle
+        /// </summary>
         Oracle,
+        /// <summary>
+        /// Active directory
+        /// </summary>
         Ldap,
-        Mysql,
-        Dashboard
+        /// <summary>
+        /// MySql
+        /// </summary>
+        Mysql
     }
 }

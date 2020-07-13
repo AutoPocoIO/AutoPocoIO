@@ -7,15 +7,27 @@ using System.Threading.Tasks;
 
 namespace AutoPocoIO.Middleware.Dispatchers
 {
+    /// <summary>
+    /// Return a page and run a function to get page data.
+    /// </summary>
+    /// <typeparam name="TPage">Page type to display.</typeparam>
     public class RazorPageDispatcher<TPage> : IMiddlewareDispatcher where TPage : RazorPage
     {
         private readonly Action<TPage, Match> _pageFunc;
 
+        /// <summary>
+        /// Initialize dispatcher a page.
+        /// </summary>
+        /// <param name="pageFunc">Page and function to display</param>
         public RazorPageDispatcher(Action<TPage, Match> pageFunc)
         {
             _pageFunc = pageFunc;
         }
 
+        /// <summary>
+        /// Run page function and parse page to response.
+        /// </summary>
+        ///<inheritdoc/>
         public Task Dispatch(IMiddlewareContext context, ILoggingService loggingService)
         {
             Check.NotNull(context, nameof(context));

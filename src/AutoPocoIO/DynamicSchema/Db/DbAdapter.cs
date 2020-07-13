@@ -1,5 +1,4 @@
-﻿using AutoPocoIO.DynamicSchema.Models;
-using AutoPocoIO.DynamicSchema.Runtime;
+﻿using AutoPocoIO.DynamicSchema.Runtime;
 using AutoPocoIO.DynamicSchema.Util;
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.Extensions;
@@ -121,7 +120,7 @@ namespace AutoPocoIO.DynamicSchema.Db
 
         }
 
-        public void Delete(dynamic obj)
+        public void Delete(object obj)
         {
             var deleteMethod = typeof(DbAdapter).GetMethod("DeleteRecord", BindingFlags.Instance | BindingFlags.NonPublic);
             deleteMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).InvokeWithException(this, new object[] { obj });

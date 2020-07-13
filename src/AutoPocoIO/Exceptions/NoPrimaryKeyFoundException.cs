@@ -1,22 +1,24 @@
-﻿using System;
-
-namespace AutoPocoIO.Exceptions
+﻿namespace AutoPocoIO.Exceptions
 {
-    [Serializable]
+    /// <summary>
+    /// Exception that sets status to 500 (Sever Error)
+    /// </summary>
     public class NoPrimaryKeyFoundException : BaseCaughtException
     {
         private readonly string _entityName;
+        /// <summary>
+        ///  Initialize exception with entity name
+        /// </summary>
+        /// <param name="entityName"></param>
         public NoPrimaryKeyFoundException(string entityName) : base()
         {
             _entityName = entityName;
         }
+        /// <inheritdoc/>
         public override string Message => $"Entity '{_entityName}' does not contain a primary key.";
-
+        /// <summary>
+        /// Status message is <c>EntityKeyNotFound</c>
+        /// </summary>
         public override string HttpErrorMessage => "EntityKeyNotFound";
-
-        protected NoPrimaryKeyFoundException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

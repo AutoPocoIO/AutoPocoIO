@@ -11,13 +11,53 @@ using System.Linq;
 
 namespace AutoPocoIO.Factories
 {
+    /// <summary>
+    /// Parse connection string from registered <see cref="IConnectionStringBuilder"/>
+    /// </summary>
     public class ConnectionStringFactory : IConnectionStringFactory
     {
         private readonly IEnumerable<IConnectionStringBuilder> _builders;
 
+        /// <summary>
+        /// Initialize factory with registered <see cref="IConnectionStringBuilder"/>
+        /// </summary>
+        /// <param name="builders"></param>
         public ConnectionStringFactory(IEnumerable<IConnectionStringBuilder> builders)
         {
             _builders = builders;
+        }
+
+        ///<inheritdoc/>
+        public ConnectionInformation GetConnectionInformation(DatabaseFacade database)
+        {
+            Check.NotNull(database, nameof(database));
+
+            int resourceType = ResourceTypeFromProviderName(database);
+            IConnectionStringBuilder builder = GetBuilder(resourceType);
+            string connectionString = database.GetDbConnection().ConnectionString;
+            return builder.ParseConnectionString(connectionString);
+        }
+        ///<inheritdoc/>
+        public string CreateConnectionString(DatabaseFacade database, ConnectionInformation connectionInformation)
+        {
+            Check.NotNull(database, nameof(database));
+            Check.NotNull(connectionInformation, nameof(connectionInformation));
+
+            int resourceType = ResourceTypeFromProviderName(database);
+            IConnectionStringBuilder builder = GetBuilder(resourceType);
+            return builder.CreateConnectionString(connectionInformation);
+        }
+        ///<inheritdoc/>
+        public ConnectionInformation GetConnectionInformation(int resourceType, string connectionString)
+        {
+            IConnectionStringBuilder builder = GetBuilder(resourceType);
+            return builder.ParseConnectionString(connectionString);
+        }
+        ///<inheritdoc/>
+        public string CreateConnectionString(int resourceType, ConnectionInformation connectionInformation)
+        {
+            IConnectionStringBuilder builder = GetBuilder(resourceType);
+            return builder.CreateConnectionString(connectionInformation);
         }
 
         private IConnectionStringBuilder GetBuilder(int resourceType)
@@ -58,36 +98,6 @@ namespace AutoPocoIO.Factories
             return 0;
         }
 
-        public ConnectionInformation GetConnectionInformation(DatabaseFacade database)
-        {
-            Check.NotNull(database, nameof(database));
 
-            int resourceType = ResourceTypeFromProviderName(database);
-            IConnectionStringBuilder builder = GetBuilder(resourceType);
-            string connectionString = database.GetDbConnection().ConnectionString;
-            return builder.ParseConnectionString(connectionString);
-        }
-
-        public string CreateConnectionString(DatabaseFacade database, ConnectionInformation connectionInformation)
-        {
-            Check.NotNull(database, nameof(database));
-            Check.NotNull(connectionInformation, nameof(connectionInformation));
-
-            int resourceType = ResourceTypeFromProviderName(database);
-            IConnectionStringBuilder builder = GetBuilder(resourceType);
-            return builder.CreateConnectionString(connectionInformation);
-        }
-
-        public ConnectionInformation GetConnectionInformation(int resourceType, string connectionString)
-        {
-            IConnectionStringBuilder builder = GetBuilder(resourceType);
-            return builder.ParseConnectionString(connectionString);
-        }
-
-        public string CreateConnectionString(int resourceType, ConnectionInformation connectionInformation)
-        {
-            IConnectionStringBuilder builder = GetBuilder(resourceType);
-            return builder.CreateConnectionString(connectionInformation);
-        }
     }
 }

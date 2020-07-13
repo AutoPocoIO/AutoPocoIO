@@ -11,8 +11,39 @@ using System.Linq.AutoPoco;
 
 namespace AutoPocoIO.Extensions
 {
+    /// <summary>
+    /// Additional methods for database objects.
+    /// </summary>
     public static class ResourceExtensions
     {
+        /// <summary>
+        /// Maps a result set to a view model
+        /// </summary>
+        /// <typeparam name="TViewModel">View Model type</typeparam>
+        /// <param name="outputParameters">Output from the stored procedure execution.</param>
+        /// <param name="parameterName">Name of the parameter</param>
+        /// <exception cref="ArgumentException">Thrown when the parameter is not found or not a result set.</exception>
+        /// <returns></returns>
+        public static IEnumerable<TViewModel> ProjectResultSet<TViewModel>(this IDictionary<string, object> outputParameters, string parameterName)
+        {
+            Check.NotNull(outputParameters, nameof(outputParameters));
+            Check.NotNull(parameterName, nameof(parameterName));
+            if (outputParameters.ContainsKey(parameterName))
+            {
+                if (outputParameters[parameterName] is IEnumerable<object>)
+                {
+                    var results = (IEnumerable<IDictionary<string, object>>)outputParameters[parameterName];
+                    return results.ProjectResultTo<TViewModel>();
+                }
+                else
+                    throw new ArgumentException($"Output Parameter {parameterName} is not a result set.  It is type {outputParameters[parameterName].GetType()}.", nameof(parameterName));
+            }
+            else
+            {
+                throw new ArgumentException($"The parameter {parameterName} was not found.  The following were found: {string.Join(",", outputParameters.Keys)}.", nameof(parameterName));
+            }
+        }
+
         internal static void LoadUserDefinedTables(this Config config, Connector connector, AppDbContext appDb)
         {
             var joins = appDb.UserJoin.Where(c => c.PKConnectorId == connector.Id || c.FKConnectorId == connector.Id)
@@ -48,32 +79,6 @@ namespace AutoPocoIO.Extensions
             connector.DataSource = connectionInformation.DataSource;
         }
 
-        /// <summary>
-        /// Maps a result set to a view model
-        /// </summary>
-        /// <typeparam name="TViewModel">View Model type</typeparam>
-        /// <param name="outputParameters">Output from the stored procedure execution.</param>
-        /// <param name="parameterName">Name of the parameter</param>
-        /// <exception cref="ArgumentException">Thrown when the parameter is not found or not a result set.</exception>
-        /// <returns></returns>
-        public static IEnumerable<TViewModel> ProjectResultSet<TViewModel>(this IDictionary<string, object> outputParameters, string parameterName)
-        {
-            Check.NotNull(outputParameters, nameof(outputParameters));
-            Check.NotNull(parameterName, nameof(parameterName));
-            if (outputParameters.ContainsKey(parameterName))
-            {
-                if (outputParameters[parameterName] is IEnumerable<object>)
-                {
-                    var results = (IEnumerable<IDictionary<string, object>>)outputParameters[parameterName];
-                    return results.ProjectResultTo<TViewModel>();
-                }
-                else
-                    throw new ArgumentException($"Output Parameter {parameterName} is not a result set.  It is type {outputParameters[parameterName].GetType()}.", nameof(parameterName));
-            }
-            else
-            {
-                throw new ArgumentException($"The parameter {parameterName} was not found.  The following were found: {string.Join(",", outputParameters.Keys)}.", nameof(parameterName));
-            }
-        }
+
     }
 }

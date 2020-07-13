@@ -8,6 +8,10 @@ namespace AutoPocoIO.CustomAttributes
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
     public sealed class CompoundPrimaryKeyAttribute : Attribute
     {
+        /// <summary>
+        /// Initialize attribute with key order
+        /// </summary>
+        /// <param name="order">Primary key position</param>
         public CompoundPrimaryKeyAttribute(int order)
         {
             Order = order;

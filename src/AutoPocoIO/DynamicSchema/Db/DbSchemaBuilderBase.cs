@@ -226,6 +226,11 @@ namespace AutoPocoIO.DynamicSchema.Db
             return currentTable;
         }
 
+        /// <summary>
+        /// Add Foriegn key information to the column
+        /// </summary>
+        /// <param name="row">Result row from database</param>
+        /// <param name="column">Target column</param>
         protected virtual void AddFKColumn(DataRow row, Column column)
         {
             Check.NotNull(row, nameof(row));

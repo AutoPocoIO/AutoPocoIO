@@ -5,15 +5,13 @@ using System;
 
 namespace AutoPocoIO.DynamicSchema.Util
 {
-    public interface IDbTypeMapper
-    {
-        DataType DBTypeToDataType(Column column);
-    }
 
+    /// <summary>
+    /// Convert Database type to C# type.
+    /// </summary>
     public class DbTypeMapper : IDbTypeMapper
     {
-        //All Types are nullable to allow blank data to raise a validation exception.
-        //PKs that are identity columns will remain non null to pass validation so they will 
+        ///<inheritdoc/>
         public virtual DataType DBTypeToDataType(Column column)
         {
             Check.NotNull(column, nameof(column));

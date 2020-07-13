@@ -11,8 +11,19 @@ using System.Reflection;
 
 namespace AutoPocoIO.Extensions
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class OdataExtensions
     {
+        /// <summary>
+        /// Apply the Odata query to the given IQueryable in the right order.
+        /// </summary>
+        /// <typeparam name="T">Query element type.</typeparam>
+        /// <param name="query"> The original <see cref="IQueryable"/>.</param>
+        /// <param name="recordLimit">Maxium number or records to return.</param>
+        /// <param name="queryString">Http request query strings to parse for odata syntax.</param>
+        /// <returns></returns>
         public static IQueryable<object> ApplyQuery<T>(this IQueryable<T> query, int recordLimit, IDictionary<string, string> queryString)
         {
             Check.NotNull(query, nameof(query));

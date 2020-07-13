@@ -6,9 +6,16 @@ using System.Text;
 
 namespace AutoPocoIO.DynamicSchema.Util
 {
+    /// <summary>
+    /// Encrypt or decrpt strings with SHA256
+    /// </summary>
     public static class EncryptDecrypt
     {
-        //Encrypt
+        /// <summary>
+        /// Encrypt connection
+        /// </summary>
+        /// <param name="plainText">Connection text</param>
+        /// <returns></returns>
         public static string EncryptString(string plainText)
         {
             if (AutoPocoConfiguration.IsUsingEncryption)
@@ -37,7 +44,11 @@ namespace AutoPocoIO.DynamicSchema.Util
             else
                 return plainText;
         }
-        //Decrypt
+        /// <summary>
+        /// Decrypt connection
+        /// </summary>
+        /// <param name="cipherText">Encypted text</param>
+        /// <returns></returns>
         public static string DecryptString(string cipherText)
         {
             if (AutoPocoConfiguration.IsUsingEncryption)

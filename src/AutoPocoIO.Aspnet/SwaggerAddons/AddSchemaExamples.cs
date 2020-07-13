@@ -6,8 +6,17 @@ using System.Collections.Generic;
 
 namespace AutoPocoIO.SwaggerAddons
 {
+    /// <summary>
+    /// Gives example object for JToken parameters in swagger
+    /// </summary>
     public class AddSchemaExamples : ISchemaFilter
     {
+        /// <summary>
+        /// Add <see cref="JToken"/> example
+        /// </summary>
+        /// <param name="schema">Schema to map definition.</param>
+        /// <param name="schemaRegistry">List of registered schemas.</param>
+        /// <param name="type">Current value to check.</param>
         public void Apply(Schema schema, SchemaRegistry schemaRegistry, Type type)
         {
             Check.NotNull(schema, nameof(schema));

@@ -1,6 +1,5 @@
 ﻿using AutoPocoIO.CustomAttributes;
 using AutoPocoIO.Exceptions;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
@@ -15,6 +14,11 @@ namespace AutoPocoIO.SwaggerAddons
     /// </summary>
     public class ODataParametersSwaggerDefinition : IOperationFilter
     {
+        /// <summary>
+        /// Add parameters for Odata operations.
+        /// </summary>
+        /// <param name="operation">Swagger operation</param>
+        /// <param name="context">Action context</param>
         public void Apply(Operation operation, OperationFilterContext context)
         {
             Check.NotNull(operation, nameof(operation));

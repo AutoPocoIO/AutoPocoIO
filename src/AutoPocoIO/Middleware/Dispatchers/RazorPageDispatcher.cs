@@ -1,31 +1,36 @@
 ﻿using AutoPocoIO.Exceptions;
 using AutoPocoIO.Services;
-using System;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AutoPocoIO.Middleware.Dispatchers
 {
+    /// <summary>
+    /// Return razor page.
+    /// </summary>
     public class RazorPageDispatcher : IMiddlewareDispatcher
     {
-        private readonly Func<Match, RazorPage> _pageFunc;
+        private readonly RazorPage _page;
 
-        public RazorPageDispatcher(Func<Match, RazorPage> pageFunc)
+        /// <summary>
+        /// Initialize dispatcher a page.
+        /// </summary>
+        /// <param name="page">Page to display</param>
+        public RazorPageDispatcher(RazorPage page)
         {
-            _pageFunc = pageFunc;
+            _page = page;
         }
 
+        /// <summary>
+        /// Parse page to response.
+        /// </summary>
+        ///<inheritdoc/>
         public Task Dispatch(IMiddlewareContext context, ILoggingService loggingService)
         {
             Check.NotNull(context, nameof(context));
             Check.NotNull(loggingService, nameof(loggingService));
 
             context.Response.ContentType = "text/html";
-            var page = _pageFunc(context.UriMatch);
-            page.LoggingService = loggingService;
-            page.Assign(context);
-
-            return context.Response.WriteAsync(page.ToString());
+            return context.Response.WriteAsync(_page.ToString());
         }
     }
 }

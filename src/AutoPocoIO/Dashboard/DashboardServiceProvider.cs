@@ -13,14 +13,28 @@ using System.Collections.Generic;
 
 namespace AutoPocoIO.Dashboard
 {
+    /// <summary>
+    /// Internal dashboard scoped services.
+    /// </summary>
     public class DashboardServiceProvider
     {
         private static IServiceProvider _provider;
 
+        /// <summary>
+        /// Initalize service provider.
+        /// </summary>
         public DashboardServiceProvider() { }
 
+        /// <summary>
+        /// Get a single static instance of the service provider
+        /// </summary>
         public static DashboardServiceProvider Instance { get; } = new DashboardServiceProvider();
 
+        /// <summary>
+        /// Register services if this is the first time using the middleware
+        /// </summary>
+        /// <param name="rootProvider">Application root provider</param>
+        /// <returns></returns>
         public virtual IServiceProvider GetServiceProvider(IServiceProvider rootProvider)
         {
             if (_provider == null)

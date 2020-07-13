@@ -161,37 +161,5 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             Assert.AreEqual("Prop1", keyName.First());
             Assert.AreEqual("Prop2", keyName.Last());
         }
-
-        [TestMethod]
-        public void CrateCommandFromDatabaseFacade()
-        {
-            var dbCommand = new Mock<DbCommand>();
-
-            var connection = new Mock<DbConnection>();
-            connection.Protected().Setup<DbCommand>("CreateDbCommand")
-                .Returns(dbCommand.Object);
-
-            var connService = new Mock<IRelationalConnection>();
-            connService.Setup(c => c.DbConnection).Returns(connection.Object);
-
-            var services = new ServiceCollection();
-            services.AddEntityFrameworkInMemoryDatabase();
-            services.AddSingleton(connService.Object);
-
-            var options = new DbContextOptionsBuilder<DbContextBase>()
-              .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
-              .UseInternalServiceProvider(services.BuildServiceProvider())
-              .Options;
-
-
-            var context = new Mock<DbContextBase>(options, new Dictionary<string, Type>(), new List<Table>());
-            var dbFacade = new Mock<DatabaseFacade>(context.Object);
-            context.Setup(c => c.Database).Returns(dbFacade.Object);
-            context.CallBase = true;
-
-            var result = context.Object.CreateDbCommand();
-
-            Assert.AreEqual(dbCommand.Object, result);
-        }
     }
 }

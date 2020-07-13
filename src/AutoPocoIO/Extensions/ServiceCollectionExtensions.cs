@@ -15,8 +15,16 @@ using System.Reflection;
 
 namespace AutoPocoIO.Extensions
 {
+    /// <summary>
+    /// Register services.
+    /// </summary>
     public static partial class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Add database specific services
+        /// </summary>
+        /// <param name="services">Services collection to add to</param>
+        /// <returns>Services collection to chain additonal methods.</returns>
         public static IServiceCollection AddDatabaseOperations(this IServiceCollection services)
         {
             //Operations
@@ -45,15 +53,12 @@ namespace AutoPocoIO.Extensions
             return services;
         }
 
-
-
-
         /// <summary>
         /// Used for provider specific configuration.
         /// </summary>
-        /// <param name="services"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
+        /// <param name="services">Services collection to add to</param>
+        /// <param name="options">Options to use on all registered dbcontexts.</param>
+        /// <returns>Services collection to chain additonal methods.</returns>
         public static IServiceCollection ConfigureApplicationDatabase(this IServiceCollection services, Action<DbContextOptionsBuilder> options)
         {
             var dbContexts = services.Where(c => typeof(DbContext).IsAssignableFrom(c.ServiceType.BaseType))

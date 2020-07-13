@@ -8,9 +8,9 @@ namespace AutoPocoIO.Dashboard.Pages
         private readonly IDataDictionaryRepo _repo;
 
         public SchemaPage(IDataDictionaryRepo repo, ILayoutPage layout)
+              : base(layout, "Data Dictionary - AutoPoco")
         {
             _repo = repo;
-            Layout = layout;
         }
 
         public virtual void ListDbObjects(string connectorId)

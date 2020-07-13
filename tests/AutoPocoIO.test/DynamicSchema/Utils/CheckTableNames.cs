@@ -1,5 +1,5 @@
-﻿using AutoPocoIO.DynamicSchema.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using static AutoPocoIO.AutoPocoConstants;
 
 namespace AutoPocoIO.test.DynamicSchema.Utils
 {

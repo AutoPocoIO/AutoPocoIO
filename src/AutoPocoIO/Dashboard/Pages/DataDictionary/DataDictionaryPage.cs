@@ -8,9 +8,9 @@ namespace AutoPocoIO.Dashboard.Pages
         private readonly IConnectorRepo _repo;
 
         public DataDictionaryPage(IConnectorRepo repo, ILayoutPage layout)
+             : base(layout, "Data Dictionary - AutoPoco")
         {
             _repo = repo;
-            Layout = layout;
         }
 
         public virtual void ListConnectors()

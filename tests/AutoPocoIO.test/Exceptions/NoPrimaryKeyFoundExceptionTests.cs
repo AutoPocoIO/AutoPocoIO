@@ -1,6 +1,5 @@
 ﻿using AutoPocoIO.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Net;
 
 namespace AutoPocoIO.test.Exceptions
@@ -9,14 +8,6 @@ namespace AutoPocoIO.test.Exceptions
     [TestCategory(TestCategories.Unit)]
     public class NoPrimaryKeyFoundExceptionTests
     {
-        private class TestEx : NoPrimaryKeyFoundException
-        {
-            public TestEx() : base(null, new System.Runtime.Serialization.StreamingContext())
-            {
-
-            }
-        }
-
         [TestMethod]
         public void IsBaseException()
         {
@@ -43,13 +34,6 @@ namespace AutoPocoIO.test.Exceptions
         {
             var ex = new NoPrimaryKeyFoundException("entity");
             Assert.AreEqual(HttpStatusCode.InternalServerError, ex.ResponseCode);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
-        public void SerilizationConstructorNotImplmented()
-        {
-            _ = new TestEx();
         }
     }
 }

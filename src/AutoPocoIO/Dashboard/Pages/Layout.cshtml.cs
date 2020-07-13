@@ -67,11 +67,13 @@ WriteLiteral(@"
     </style>
 
 
-    <title>Overview - AutoPoco</title>
-</head>
-<body>
-    <nav class=""navbar navbar-expand-lg fixed-top navbar-light bg-light"">
-        <a class=""navbar-brand"" href=""");
+    <title>");
+
+
+      Write(Title);
+
+WriteLiteral("</title>\r\n</head>\r\n<body>\r\n    <nav class=\"navbar navbar-expand-lg fixed-top navb" +
+"ar-light bg-light\">\r\n        <a class=\"navbar-brand\" href=\"");
 
 
                                  Write(TransformUrl("/"));
