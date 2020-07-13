@@ -33,7 +33,7 @@ for:
      - ps: |
          $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
          Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
-         0 : bash codecov.sh -f "coverage.xml" || echo "Error in CodeCov"
+         0 : bash codecov.sh -f "coverage.xml" | echo "Error in CodeCov"
 artifacts:
   - path: '**\*.nupkg' # find all NuGet packages recursively
   - path: '**\coverage.xml'
