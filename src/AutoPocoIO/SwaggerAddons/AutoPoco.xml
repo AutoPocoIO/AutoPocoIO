@@ -1609,6 +1609,21 @@
             </summary>
             <returns> A string that represents the current object.</returns>
         </member>
+        <member name="M:AutoPocoIO.DynamicSchema.Models.DataType.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.DynamicSchema.Models.DataType.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.DynamicSchema.Models.DataType.op_Equality(AutoPocoIO.DynamicSchema.Models.DataType,AutoPocoIO.DynamicSchema.Models.DataType)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.DynamicSchema.Models.DataType.op_Inequality(AutoPocoIO.DynamicSchema.Models.DataType,AutoPocoIO.DynamicSchema.Models.DataType)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.DynamicSchema.Models.DataType.Equals(AutoPocoIO.DynamicSchema.Models.DataType)">
+            <inheritdoc/>
+        </member>
         <member name="T:AutoPocoIO.DynamicSchema.Models.DBParameter">
             <summary>
             Stored procedure details.
@@ -1749,10 +1764,57 @@
             Created for clarity
             </summary>
         </member>
+        <member name="T:AutoPocoIO.DynamicSchema.Runtime.DynamicExtensions">
+            <summary>
+            Entity framework service replacements.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.DynamicSchema.Runtime.DynamicExtensions.ReplaceEFCachingServices(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)">
+            <summary>
+            Remove services that cache database models.
+            </summary>
+            <param name="optionBuilder">Context builder for model.</param>
+            <returns>DbContextOptionsBuilder to chain calls.</returns>
+        </member>
+        <member name="M:AutoPocoIO.DynamicSchema.Runtime.DynamicExtensions.ReplaceEFCrossDbServices(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)">
+            <summary>
+            Add same server, cross database access
+            </summary>
+            <param name="optionBuilder">Context builder for model.</param>
+            <returns>DbContextOptionsBuilder to chain calls.</returns>
+        </member>
         <member name="T:AutoPocoIO.DynamicSchema.Services.CrossDb.RelationalQueryModelVisitor">
             <summary>
                 The default relational <see cref="T:Remotion.Linq.QueryModel" /> visitor.
             </summary>
+        </member>
+        <member name="T:AutoPocoIO.DynamicSchema.Services.CrossDb.TableExpression">
+            <summary>
+            Add database name to table expressions
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.DynamicSchema.Services.CrossDb.TableExpression.#ctor(System.String,System.String,System.String,System.String,Remotion.Linq.Clauses.IQuerySource)">
+            <summary>
+            Initialize table expression with database name.
+            </summary>
+            <param name="database">Database name</param>
+            <param name="table">Table name.</param>
+            <param name="schema">Schema name.</param>
+            <param name="alias">Alias name.</param>
+            <param name="querySource">The query source.</param>
+        </member>
+        <member name="P:AutoPocoIO.DynamicSchema.Services.CrossDb.TableExpression.DatabaseName">
+            <summary>
+            Database name for expression
+            </summary>
+        </member>
+        <member name="T:AutoPocoIO.DynamicSchema.Util.DbTypeMapper">
+            <summary>
+            Convert Database type to C# type.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.DynamicSchema.Util.DbTypeMapper.DBTypeToDataType(AutoPocoIO.DynamicSchema.Models.Column)">
+            <inheritdoc/>
         </member>
         <member name="T:AutoPocoIO.DynamicSchema.Util.EncryptDecrypt">
             <summary>
@@ -1772,6 +1834,20 @@
             </summary>
             <param name="cipherText">Encypted text</param>
             <returns></returns>
+        </member>
+        <member name="T:AutoPocoIO.DynamicSchema.Util.IDbTypeMapper">
+            <summary>
+            Convert Database type to C# type.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.DynamicSchema.Util.IDbTypeMapper.DBTypeToDataType(AutoPocoIO.DynamicSchema.Models.Column)">
+            <summary>
+            Convert Database type to C# type. 
+            All Types are nullable to allow blank data to raise a validation exception.
+            PKs that are identity columns will remain non null to pass validation.
+            </summary>
+            <param name="column">The column to set system type</param>
+            <returns>An object with both database type and system types.</returns>
         </member>
         <member name="T:AutoPocoIO.Exceptions.BaseCaughtException">
             <summary>
@@ -1886,6 +1962,36 @@
             Status message is <c>TableNotFound</c>
             </summary>
         </member>
+        <member name="T:AutoPocoIO.Extensions.AutoPocoConfiguration">
+            <summary>
+            Configuration values
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Extensions.AutoPocoConfiguration.SaltVector">
+            <summary>
+            Get or set encryption salt.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Extensions.AutoPocoConfiguration.SecretKey">
+            <summary>
+            Get or set encryption secret.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Extensions.AutoPocoConfiguration.DashboardPathPrefix">
+            <summary>
+            Get or set dashboard url prefix.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Extensions.AutoPocoConfiguration.IsUsingEncryption">
+            <summary>
+            Flag showing if both salt and secret key have values.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Extensions.AutoPocoConfiguration.CacheTimeoutMinutes">
+            <summary>
+            Get or set server cache timeout.
+            </summary>
+        </member>
         <member name="M:AutoPocoIO.Extensions.DynamicObjectExtensions.GroupJoin``1(System.Linq.IQueryable{``0},System.Linq.IQueryable{``0},System.String,System.String,System.String,System.Object[])">
             <summary>
             
@@ -1898,6 +2004,52 @@
             <param name="resultsSelector">How to display results. Example : new(group as Address, outer.name as Homeowner)</param>
             <param name="values">Parameters</param>
             <returns></returns>
+        </member>
+        <member name="T:AutoPocoIO.Extensions.DynamicSchemaExtensions">
+            <summary>
+            Look up database objects in the schema.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Extensions.DynamicSchemaExtensions.GetTable(AutoPocoIO.DynamicSchema.Db.IDbSchema,System.String,System.String,System.String)">
+            <summary>
+            Find a table in the schema.
+            </summary>
+            <param name="dbSchema">Schema definition to search.</param>
+            <param name="databaseName">Target database.</param>
+            <param name="schemaName">Target schema.</param>
+            <param name="tableName">Target table.</param>
+            <returns>The found table definition.</returns>
+            <exception cref="T:AutoPocoIO.Exceptions.TableNotFoundException"/>
+        </member>
+        <member name="M:AutoPocoIO.Extensions.DynamicSchemaExtensions.GetStoredProcedure(AutoPocoIO.DynamicSchema.Db.IDbSchema,System.String,System.String)">
+            <summary>
+            Find a strored procedure in the schema.
+            </summary>
+            <param name="dbSchema">Schema definition to search.</param>
+            <param name="schemaName">Target schema.</param>
+            <param name="sprocName"></param>
+            <returns>The found schema definition</returns>
+            <exception cref="T:AutoPocoIO.Exceptions.StoreProcedureNotFoundException"/>
+        </member>
+        <member name="T:AutoPocoIO.Extensions.OdataExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Extensions.OdataExtensions.ApplyQuery``1(System.Linq.IQueryable{``0},System.Int32,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Apply the Odata query to the given IQueryable in the right order.
+            </summary>
+            <typeparam name="T">Query element type.</typeparam>
+            <param name="query"> The original <see cref="T:System.Linq.IQueryable"/>.</param>
+            <param name="recordLimit">Maxium number or records to return.</param>
+            <param name="queryString">Http request query strings to parse for odata syntax.</param>
+            <returns></returns>
+        </member>
+        <member name="T:AutoPocoIO.Extensions.ResourceExtensions">
+            <summary>
+            Additional methods for database objects.
+            </summary>
         </member>
         <member name="M:AutoPocoIO.Extensions.ResourceExtensions.ProjectResultSet``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.String)">
             <summary>
@@ -1917,13 +2069,25 @@
             <exception cref="T:System.ArgumentOutOfRangeException"></exception>
              <returns></returns>
         </member>
+        <member name="T:AutoPocoIO.Extensions.ServiceCollectionExtensions">
+            <summary>
+            Register services.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Extensions.ServiceCollectionExtensions.AddDatabaseOperations(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Add database specific services
+            </summary>
+            <param name="services">Services collection to add to</param>
+            <returns>Services collection to chain additonal methods.</returns>
+        </member>
         <member name="M:AutoPocoIO.Extensions.ServiceCollectionExtensions.ConfigureApplicationDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Microsoft.EntityFrameworkCore.DbContextOptionsBuilder})">
             <summary>
             Used for provider specific configuration.
             </summary>
-            <param name="services"></param>
-            <param name="options"></param>
-            <returns></returns>
+            <param name="services">Services collection to add to</param>
+            <param name="options">Options to use on all registered dbcontexts.</param>
+            <returns>Services collection to chain additonal methods.</returns>
         </member>
         <member name="M:AutoPocoIO.Extensions.ServiceCollectionExtensions.AddAutoPoco(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
@@ -2070,6 +2234,158 @@
             <param name="connectionString">Value to parse</param>
             <returns></returns>
         </member>
+        <member name="T:AutoPocoIO.Factories.IResourceFactory">
+            <summary>
+            Search for a resouce by connector.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Factories.IResourceFactory.GetResource(System.String,System.String)">
+            <summary>
+            Get resouce by connector id while ignoring operation type.
+            </summary>
+            <param name="connectorId">Connector id.</param>
+            <param name="dbObjectName">Database object used filter schema.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:AutoPocoIO.Factories.IResourceFactory.GetResourceById(System.String,AutoPocoIO.DynamicSchema.Enums.OperationType,System.String)">
+            <summary>
+            Get resouce by connector id.
+            </summary>
+            <param name="connectorId">Connector id.</param>
+            <param name="dbAction">Current database interaction.</param>
+            <param name="dbObjectName">Database object used filter schema.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:AutoPocoIO.Factories.IResourceFactory.GetResource(System.String,AutoPocoIO.DynamicSchema.Enums.OperationType,System.String)">
+            <summary>
+            Get resouce by connector name.
+            </summary>
+            <param name="connectorName">Connector name.</param>
+            <param name="dbAction">Current database interaction.</param>
+            <param name="dbObjectName">Database object used filter schema.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="T:AutoPocoIO.Factories.ResourceFactory">
+            <summary>
+            Search for a resouce by connector.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Factories.ResourceFactory.#ctor(AutoPocoIO.Services.IAppAdminService,System.Collections.Generic.IEnumerable{AutoPocoIO.Resources.IOperationResource})">
+            <summary>
+            Initialize factory with a registered resouce types.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Factories.ResourceFactory.GetResource(System.String,AutoPocoIO.DynamicSchema.Enums.OperationType,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Factories.ResourceFactory.GetResource(System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Factories.ResourceFactory.GetResourceById(System.String,AutoPocoIO.DynamicSchema.Enums.OperationType,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.Dispatchers.CommandDispatcher`1">
+            <summary>
+            Run action on http request.
+            </summary>
+            <typeparam name="TPage">Razor page to run action against.</typeparam>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.Dispatchers.CommandDispatcher`1.#ctor(System.Action{`0,System.Text.RegularExpressions.Match})">
+            <summary>
+            Initialize dispatcher with an action.
+            </summary>
+            <param name="command">Action to run.</param>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.Dispatchers.CommandDispatcher`1.Dispatch(AutoPocoIO.Middleware.IMiddlewareContext,AutoPocoIO.Services.ILoggingService)">
+             <summary>
+             Run action if request is a POST
+             </summary>
+            <inheritdoc/>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.Dispatchers.RazorPageDispatcher">
+            <summary>
+            Return razor page.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.Dispatchers.RazorPageDispatcher.#ctor(AutoPocoIO.Middleware.RazorPage)">
+            <summary>
+            Initialize dispatcher a page.
+            </summary>
+            <param name="page">Page to display</param>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.Dispatchers.RazorPageDispatcher.Dispatch(AutoPocoIO.Middleware.IMiddlewareContext,AutoPocoIO.Services.ILoggingService)">
+             <summary>
+             Parse page to response.
+             </summary>
+            <inheritdoc/>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.Dispatchers.RazorPageDispatcher`1">
+            <summary>
+            Return a page and run a function to get page data.
+            </summary>
+            <typeparam name="TPage">Page type to display.</typeparam>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.Dispatchers.RazorPageDispatcher`1.#ctor(System.Action{`0,System.Text.RegularExpressions.Match})">
+            <summary>
+            Initialize dispatcher a page.
+            </summary>
+            <param name="pageFunc">Page and function to display</param>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.Dispatchers.RazorPageDispatcher`1.Dispatch(AutoPocoIO.Middleware.IMiddlewareContext,AutoPocoIO.Services.ILoggingService)">
+             <summary>
+             Run page function and parse page to response.
+             </summary>
+            <inheritdoc/>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.Dispatchers.RedirectDispatcher">
+            <summary>
+            Redirect request.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.Dispatchers.RedirectDispatcher.#ctor(System.String,System.Boolean)">
+            <summary>
+            Initialize dispatcher with a path to redirect browser.
+            </summary>
+            <param name="location">Redirect path.</param>
+            <param name="useBasePath">If true prepend request base path.</param>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.Dispatchers.RedirectDispatcher.Dispatch(AutoPocoIO.Middleware.IMiddlewareContext,AutoPocoIO.Services.ILoggingService)">
+             <summary>
+             Redirect browser to location.
+             </summary>
+            <inheritdoc/>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.Dispatchers.IMiddlewareDispatcher">
+            <summary>
+            Handle middleware request.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.Dispatchers.IMiddlewareDispatcher.Dispatch(AutoPocoIO.Middleware.IMiddlewareContext,AutoPocoIO.Services.ILoggingService)">
+            <summary>
+            Set up response for middleware request.
+            </summary>
+            <param name="context">Request context.</param>
+            <param name="loggingService">Request scoped logger.</param>
+            <returns></returns>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.FormDispatcher`1">
+            <summary>
+            Run save form values on http request.
+            </summary>
+            <typeparam name="TPage">Razor page to run action against.</typeparam>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.FormDispatcher`1.Dispatch(AutoPocoIO.Middleware.IMiddlewareContext,AutoPocoIO.Services.ILoggingService)">
+             <summary>
+             Set form values and run save action if request is a POST
+             </summary>
+            <inheritdoc/>
+        </member>
         <member name="T:AutoPocoIO.Middleware.IMiddlewareContext">
             <summary>
              Encapsulates all HTTP-specific information about an individual HTTP request.
@@ -2198,6 +2514,168 @@
             </summary>
             <param name="location"> The URL to redirect the client to. This must be properly encoded for use in http
                 headers where only ASCII characters are allowed.</param>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.RazorPage">
+            <summary>
+            Base page for all middleware pages.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.#ctor">
+            <summary>
+            Initialize the page base.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.#ctor(AutoPocoIO.Middleware.ILayoutPage,System.String)">
+            <summary>
+            Initialize the page base with a layout.
+            </summary>
+            <param name="layout">Unified layout.</param>
+            <param name="title">Page title.</param>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.Execute">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.RazorPage.Layout">
+            <summary>
+            Get or set page layout
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.RazorPage.Context">
+            <summary>
+            Get or set request context
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.RazorPage.Request">
+            <summary>
+            Get or set http request
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.RazorPage.LoggingService">
+            <summary>
+            Get or set request scoped logging service
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.RazorPage.Sections">
+            <summary>
+            Get html render sections
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.RazorPage.ViewBag">
+            <summary>
+            Get view bag
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.ToString">
+            <summary>
+            Transform page to html.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.Assign(AutoPocoIO.Middleware.RazorPage)">
+            <summary>
+            Assign parent context to page.
+            </summary>
+            <param name="parentPage">Parent razor page.</param>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.TransformText(System.String)">
+            <summary>
+            Execute html render
+            </summary>
+            <param name="body">Page body if using a layout.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.Assign(AutoPocoIO.Middleware.IMiddlewareContext)">
+            <summary>
+            
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.RenderBody">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.RenderSection(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="scriptTag"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.DefineSection(System.String,System.Action)">
+            <summary>
+            
+            </summary>
+            <param name="scriptTag"></param>
+            <param name="renderAction"></param>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.WriteLiteral(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="textToAppend"></param>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.TransformUrl(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.WriteAttribute(System.String,System.Tuple{System.String,System.Int32},System.Tuple{System.String,System.Int32},System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="prefix"></param>
+            <param name="suffix"></param>
+            <param name="fragments"></param>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.Write(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.TransformArray(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.TransformArray(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.TransformArray(System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.GetViewBagValue``1(System.String)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.RazorPage.GetError(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="errorName"></param>
+            <param name="errorKey"></param>
+            <returns></returns>
         </member>
         <member name="T:AutoPocoIO.Models.AutoPocoOptions">
             <summary>
@@ -2737,13 +3215,35 @@
         <member name="M:AutoPocoIO.Resources.OperationResource.LoadSchema">
             <inheritdoc/>
         </member>
+        <member name="T:AutoPocoIO.Services.AppDatabaseSetupService">
+            <summary>
+            Set up connection string encyption and migrate database
+            </summary>
+        </member>
         <member name="M:AutoPocoIO.Services.AppDatabaseSetupService.SetupEncryption(System.String,System.String,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Services.AppDatabaseSetupService.Migrate">
+            <inheritdoc/>
+        </member>
+        <member name="T:AutoPocoIO.Services.IAppDatabaseSetupService">
+            <summary>
+            Set up connection string encyption and migrate database
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Services.IAppDatabaseSetupService.Migrate">
+            <summary>
+            Initiate database migration.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Services.IAppDatabaseSetupService.SetupEncryption(System.String,System.String,System.Int32)">
             <summary>
             Set the encryption settings
             </summary>
             <param name="encryptionSalt">Must be length 16</param>
             <param name="encryptionSecretKey">Must be 128 characters</param>
-            <param name="cacheTimeoutMinutes">Length in minutes how long database configuration values stay in cache.</param>
+            <param name="cacheTimeoutMinutes">Length in minutes how server values stay in cache.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"/>
         </member>
         <member name="T:AutoPocoIO.Services.ILoggingService">
             <summary>
@@ -2948,6 +3448,19 @@
         </member>
         <member name="M:AutoPocoIO.Services.RequestQueryStringService.GetQueryStrings">
             <inheritdoc/>
+        </member>
+        <member name="T:AutoPocoIO.SwaggerAddons.AddSchemaExamples">
+            <summary>
+            Gives example object for JToken parameters in swagger
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.SwaggerAddons.AddSchemaExamples.Apply(Swashbuckle.Swagger.Schema,Swashbuckle.Swagger.SchemaRegistry,System.Type)">
+            <summary>
+            Add <see cref="T:Newtonsoft.Json.Linq.JToken"/> example
+            </summary>
+            <param name="schema">Schema to map definition.</param>
+            <param name="schemaRegistry">List of registered schemas.</param>
+            <param name="type">Current value to check.</param>
         </member>
         <member name="T:AutoPocoIO.SwaggerAddons.ODataParametersSwaggerDefinition">
             <summary>
