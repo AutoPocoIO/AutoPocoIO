@@ -8,7 +8,7 @@ using System.Web.Http.Filters;
 
 namespace AutoPocoIO.CustomAttributes
 {
-    internal class UseJsonAttribute : ActionFilterAttribute
+    public class UseJsonAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {

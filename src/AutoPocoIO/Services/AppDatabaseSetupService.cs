@@ -54,22 +54,15 @@ namespace AutoPocoIO.Services
         ///<inheritdoc/>
         public void Migrate()
         {
+            bool hasAppDbMigration = _appMigrationDb.Database.GetAppliedMigrations().Any(c => c.Equals(MigrationNames.AppDb, StringComparison.OrdinalIgnoreCase));
             MigrateDb(_appMigrationDb);
 
-            string connectionString = _appDbContext.Database.GetDbConnection().ConnectionString;
-
-            ConnectionInformation connectionInformation = _connectionStringFactory.GetConnectionInformation(_appDbContext.Database);
-
-            //Set db connection strings
-            var appDbConnector = _appDbContext.Connector.SingleOrDefault(c => c.Name == DefaultConnectors.AppDB);
-            appDbConnector.SetConnectionInfo(connectionInformation);
-            appDbConnector.ConnectionStringDecrypted = connectionString;
-
-            var logDbConnector = _appDbContext.Connector.SingleOrDefault(c => c.Name == DefaultConnectors.Logging);
-            logDbConnector.SetConnectionInfo(connectionInformation);
-            logDbConnector.ConnectionStringDecrypted = connectionString;
-            _appDbContext.SaveChanges();
-
+            //Only change set connection string on first migration
+            if (!hasAppDbMigration)
+            {
+                UpdateConnector(DefaultConnectors.AppDB);
+                UpdateConnector(DefaultConnectors.Logging);
+            }
 
             MigrateDb(_logMigrationDb);
         }
@@ -78,6 +71,21 @@ namespace AutoPocoIO.Services
         {
             IMigrator migrator = db.Database.GetService<IMigrator>();
             migrator.Migrate();
+        }
+
+        private void UpdateConnector(string connectorName)
+        {
+            string connectionString = _appMigrationDb.Database.GetDbConnection().ConnectionString;
+            ConnectionInformation connectionInformation = _connectionStringFactory.GetConnectionInformation(_appDbContext.Database);
+
+            var connector = _appDbContext.Connector.SingleOrDefault(c => c.Name == connectorName);
+            if (connector != null)
+            {
+                connector.SetConnectionInfo(connectionInformation);
+                connector.ConnectionStringDecrypted = connectionString;
+            }
+
+            _appDbContext.SaveChanges();
         }
     }
 }
