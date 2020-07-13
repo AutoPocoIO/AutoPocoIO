@@ -70,7 +70,7 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
             classBuilder.CreateModelTypes("reqTbl");
 
             Assert.AreEqual(1, classBuilder.ExistingAssemblies.Count());
-            Assert.AreEqual($"tbl_{guid1}", classBuilder.ExistingAssemblies[asmName.ToUpperInvariant()].Name);
+            Assert.AreEqual($"tbl_{guid1}".ToUpperInvariant(), classBuilder.ExistingAssemblies[asmName.ToUpperInvariant()].Name);
             Assert.AreEqual(1, AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.ToUpperInvariant() == asmName.ToUpperInvariant()).Count());
         }
 
