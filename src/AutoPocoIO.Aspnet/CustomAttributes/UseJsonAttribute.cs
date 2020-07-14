@@ -12,6 +12,8 @@ namespace AutoPocoIO.CustomAttributes
     {
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {
+            Check.NotNull(actionExecutedContext, nameof(actionExecutedContext));
+
             if (actionExecutedContext.Response != null)
             {
                 ObjectContent content = actionExecutedContext.Response.Content as ObjectContent;
