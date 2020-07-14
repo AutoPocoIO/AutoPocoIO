@@ -2,7 +2,6 @@
 using AutoPocoIO.Dashboard.ViewModels;
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.Services;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,7 @@ namespace AutoPocoIO.Dashboard.Repos
     /// <summary>
     ///  Get information about request logs.
     /// </summary>
-    public class RequestHistoryRepo : IRequestHistoryRepo
+    internal class RequestHistoryRepo : IRequestHistoryRepo
     {
         private readonly LogDbContext _db;
         private readonly ITimeProvider _timeProvider;
@@ -20,21 +19,21 @@ namespace AutoPocoIO.Dashboard.Repos
         /// <summary>
         /// Initialize repository.
         /// </summary>
-        /// <param name="provider">Middleware scoped provider.</param>
+        /// <param name="db">Database context.</param>
         /// <param name="timeProvider">Server time information.</param>
-        public RequestHistoryRepo(IServiceProvider provider, ITimeProvider timeProvider)
+        public RequestHistoryRepo(LogDbContext db, ITimeProvider timeProvider)
         {
-            Check.NotNull(provider, nameof(provider));
+            Check.NotNull(db, nameof(db));
             Check.NotNull(timeProvider, nameof(timeProvider));
 
-            _db = provider.GetService<LogDbContext>();
+            _db = db;
             _timeProvider = timeProvider;
         }
 
         ///<inheritdoc/>
         public virtual IEnumerable<RequestGridViewModel> ListRequest(int recordLimit)
         {
-            var offset = TimeZoneInfo.Local.GetUtcOffset(_timeProvider.Now).TotalMinutes;
+            var offset = _timeProvider.UtcOffset.TotalMinutes;
 
             var requests = _db.RequestLogs.OrderByDescending(c => c.DateTimeUtc)
                                        .Take(recordLimit)

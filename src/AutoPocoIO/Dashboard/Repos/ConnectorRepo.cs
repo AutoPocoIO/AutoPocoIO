@@ -159,8 +159,8 @@ namespace AutoPocoIO.Dashboard.Repos
             else if (model.InitialCatalog.Length > 50)
                 errors[nameof(model.InitialCatalog)] = $"Database Name has a max length of 50.  {model.InitialCatalog.Length} was submitted.";
 
-            if (model.UserId.Length > 50)
-                errors[nameof(model.UserId)] = $"Database Name has a max length of 50.  {model.UserId.Length} was submitted.";
+            if (model.UserId?.Length > 50)
+                errors[nameof(model.UserId)] = $"User Id has a max length of 50.  {model.UserId.Length} was submitted.";
 
             if (string.IsNullOrEmpty(model.DataSource))
                 errors[nameof(model.DataSource)] = "Server Name is required.";

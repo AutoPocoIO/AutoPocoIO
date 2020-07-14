@@ -5,7 +5,7 @@ namespace AutoPocoIO.CustomAttributes
     /// <summary>
     /// Specifies the referenced Database Object of a property
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class ReferencedDbObjectAttribute : Attribute
     {
         /// <summary>

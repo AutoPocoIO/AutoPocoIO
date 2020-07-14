@@ -12,13 +12,8 @@ namespace AutoPocoIO.Services
         /// <inheritdoc />
         public DateTime Now => DateTime.Now;
         /// <inheritdoc />
-        public DateTime LocalToday
-        {
-            get
-            {
-                var offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
-                return DateTime.Today - offset;
-            }
-        }
+        public DateTime LocalToday => DateTime.Today - UtcOffset;
+        /// <inheritdoc />
+        public TimeSpan UtcOffset => TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
     }
 }

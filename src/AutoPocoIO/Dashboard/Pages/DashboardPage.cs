@@ -39,12 +39,12 @@ namespace AutoPocoIO.Dashboard.Pages
         private void GetCounts(int addDays)
         {
             ViewBag["TotalCount"] = _repo.TotalRequests(addDays);
-            ViewBag["SuccessfulCount"] = _repo.SuccessFulRequests(addDays);
+            ViewBag["SuccessfulCount"] = _repo.SuccessFullRequests(addDays);
             ViewBag["FailCount"] = _repo.FailedRequests(addDays);
             ViewBag["UnauthorizedCount"] = _repo.UnauthorizedRequest(addDays);
 
             ViewBag["TotalTime"] = _repo.TotalRequestsTime(addDays);
-            ViewBag["SuccessfulTime"] = _repo.SuccessFulRequestsTime(addDays);
+            ViewBag["SuccessfulTime"] = _repo.SuccessFullRequestsTime(addDays);
             ViewBag["FailCountTime"] = _repo.FailedRequestsTime(addDays);
             ViewBag["UnauthorizedTime"] = _repo.UnauthorizedRequestTime(addDays);
         }

@@ -36,7 +36,7 @@ namespace AutoPocoIO.Dashboard.Repos
                                 .Count();
         }
 
-        public virtual int SuccessFulRequests(int daysAgo)
+        public virtual int SuccessFullRequests(int daysAgo)
         {
             return GetCountByStatus(daysAgo, c => IsSuccessFunc(c));
         }
@@ -56,7 +56,7 @@ namespace AutoPocoIO.Dashboard.Repos
             return GetResponseTimeByStatus(daysAgo, c => true);
         }
 
-        public virtual int SuccessFulRequestsTime(int daysAgo)
+        public virtual int SuccessFullRequestsTime(int daysAgo)
         {
             return GetResponseTimeByStatus(daysAgo, c => IsSuccessFunc(c));
         }
@@ -74,7 +74,7 @@ namespace AutoPocoIO.Dashboard.Repos
         public virtual Tuple<string[], int[], int[]> HourlyRequest()
         {
             DateTime searchDate = _timeProvider.UtcNow.AddDays(-1);
-            var offset = TimeZoneInfo.Local.GetUtcOffset(_timeProvider.Now);
+            var offset = _timeProvider.UtcOffset;
 
             var requests = _db.RequestLogs.GroupJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid },
                                                    c => new { RequestId = c.ResponseId, c.RequestGuid },
@@ -145,7 +145,7 @@ namespace AutoPocoIO.Dashboard.Repos
         public virtual Tuple<string[], int[], int[]> WeeklyRequest()
         {
             DateTime searchDate = _timeProvider.UtcNow.AddDays(-6);
-            var offset = TimeZoneInfo.Local.GetUtcOffset(_timeProvider.Now);
+            var offset = _timeProvider.UtcOffset;
 
             var requests = _db.RequestLogs.GroupJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid },
                                                    c => new { RequestId = c.ResponseId, c.RequestGuid },
@@ -154,14 +154,13 @@ namespace AutoPocoIO.Dashboard.Repos
 
             var groups = requests.GroupBy(c => new
             {
-                Time = new DateTime(c.RequestTime.Value.Year,
-                c.RequestTime.Value.Month,
-                (c.RequestTime.Value + offset).Day),
+                Time = (c.RequestTime.Value + offset).Date,
                 Result = c.IsSuccess
             }).Select(c => new
             {
                 c.Key.Time,
                 c.Key.Result,
+                test = c.ToList(),
                 Count = c.Count()
             }
             ).ToList();

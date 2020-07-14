@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AutoPocoIO.test.Dashboard.Repos
@@ -209,5 +210,35 @@ namespace AutoPocoIO.test.Dashboard.Repos
                 Assert.AreEqual("name123", results.First().Name);
             }
         }
+
+        [TestMethod]
+        public void GetConnectorCountFromDb()
+        {
+            using (var db1 = new AppDbContext(appDbOptions))
+            {
+                db1.Connector.AddRange(new Connector
+                {
+                    Id = "1",
+                    Name = "name123",
+                },
+                new Connector
+                {
+                    Id = "2",
+                    Name = "aname123",
+                });
+
+                db1.SaveChanges();
+            }
+
+            var db = new AppDbContext(appDbOptions);
+            var repo = new ConnectorRepo(db, factory);
+
+            var count = repo.ConnectorCount();
+            Assert.AreEqual(2, count);
+        }
+
+        
+
+
     }
 }

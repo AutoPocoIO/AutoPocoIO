@@ -19,5 +19,9 @@ namespace AutoPocoIO.Services
         /// Server date time at 00:00:00 UTC
         /// </summary>
         DateTime LocalToday { get; }
+        /// <summary>
+        /// Server UTC offset
+        /// </summary>
+        TimeSpan UtcOffset { get; }
     }
 }
