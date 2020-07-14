@@ -89,7 +89,7 @@ namespace AutoPocoIO.Dashboard.Pages
         /// </summary>
         public void NewConnector()
         {
-            ViewBag["model"] = new ConnectorViewModel();
+            ViewBag["model"] = new ConnectorViewModel { IsActive = true };
         }
     }
 }

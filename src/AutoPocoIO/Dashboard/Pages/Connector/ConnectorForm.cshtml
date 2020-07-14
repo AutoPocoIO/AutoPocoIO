@@ -42,7 +42,7 @@
         </div>
         <div class="form-group">
             <label for="password">Database User Account Password</label>
-            <input type="text" class="form-control" name="password"
+            <input type="password" class="form-control" name="password"
                    value="@(GetViewBagValue<ConnectorViewModel>("model").Password)" />
             <div class="errorMessage"><span class="text-danger">@GetError("errors", nameof(ConnectorViewModel.Password))</span></div>
         </div>

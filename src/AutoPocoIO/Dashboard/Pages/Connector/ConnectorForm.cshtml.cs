@@ -106,7 +106,7 @@ WriteLiteral("\" />\r\n            <div class=\"errorMessage\"><span class=\"tex
 
 WriteLiteral("</span></div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n            <lab" +
 "el for=\"password\">Database User Account Password</label>\r\n            <input typ" +
-"e=\"text\" class=\"form-control\" name=\"password\"\r\n                   value=\"");
+"e=\"password\" class=\"form-control\" name=\"password\"\r\n                   value=\"");
 
 
                       Write(GetViewBagValue<ConnectorViewModel>("model").Password);
