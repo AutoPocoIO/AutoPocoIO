@@ -22,7 +22,7 @@ namespace AutoPocoIO.MsSql.DynamicSchema.Utils
                 ret.DbType += "(nullable)";
             }
 
-            switch (dataType.ToUpperInvariant())
+            switch (dataType)
             {
                 case "HIERARCHYID":
                     throw new ArgumentException(ExceptionMessages.HierarchyIdNotSupported, nameof(column));

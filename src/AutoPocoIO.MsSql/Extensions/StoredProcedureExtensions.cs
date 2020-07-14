@@ -15,6 +15,9 @@ namespace AutoPocoIO.Extensions
         /// <returns></returns>
         public static IEnumerable<TViewModel> ProjectMsSqlResultSet<TViewModel>(this IDictionary<string, object> outputParameters, int? resultSetIndex = null)
         {
+            if (resultSetIndex == 0)
+                resultSetIndex = null;
+
             string parameterName = "ResultSet" + resultSetIndex;
             return outputParameters.ProjectResultSet<TViewModel>(parameterName);
         }
