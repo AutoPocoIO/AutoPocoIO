@@ -39,14 +39,14 @@ namespace AutoPocoIO.Middleware.Dispatchers
             if (!"POST".Equals(request.Method, StringComparison.OrdinalIgnoreCase))
             {
                 response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
-                return Task.FromResult(false);
+                return Task.CompletedTask;
             }
 
             TPage page = context.InternalServiceProvider.GetRequiredService<TPage>();
             page.LoggingService = loggingService;
             _command(page, context.UriMatch);
             response.StatusCode = (int)HttpStatusCode.OK;
-            return Task.FromResult(true);
+            return Task.CompletedTask;
         }
     }
 }

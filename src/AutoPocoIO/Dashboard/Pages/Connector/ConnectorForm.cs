@@ -68,7 +68,7 @@ namespace AutoPocoIO.Dashboard.Pages
             ViewBag["model"] = _repo.GetById(id);
         }
         ///<inheritdoc/>
-        public void SetForm(IDictionary<string, string[]> values)
+        public virtual void SetForm(IDictionary<string, string[]> values)
         {
             model = new ConnectorViewModel()
             {
@@ -87,7 +87,7 @@ namespace AutoPocoIO.Dashboard.Pages
         /// <summary>
         /// Create new connector and set view bag
         /// </summary>
-        public void NewConnector()
+        public virtual void NewConnector()
         {
             ViewBag["model"] = new ConnectorViewModel { IsActive = true };
         }

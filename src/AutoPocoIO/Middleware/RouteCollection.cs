@@ -46,7 +46,7 @@ namespace AutoPocoIO.Middleware
                 }
             }
 
-
+            //Found but wrong http method
             if(found)
                 context.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
 

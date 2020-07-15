@@ -306,13 +306,14 @@ namespace AutoPocoIO.Middleware
         /// <returns></returns>
         protected T GetViewBagValue<T>(string key) where T: class
         {
-            return ViewBag[key] as T;
+            _ = ViewBag.TryGetValue(key, out object value);
+            return value as T;
         }
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="errorName"></param>
-        /// <param name="errorKey"></param>
+        /// <param name="errorName">Viewbag key</param>
+        /// <param name="errorKey">Error message key</param>
         /// <returns></returns>
         protected string GetError(string errorName, string errorKey) 
         {
