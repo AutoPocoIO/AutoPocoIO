@@ -1,10 +1,12 @@
 ﻿using AutoPocoIO.Dashboard;
 using AutoPocoIO.Dashboard.Pages;
 using AutoPocoIO.Dashboard.Repos;
+using AutoPocoIO.Dashboard.ViewModels;
 using AutoPocoIO.Middleware;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Generic;
 
 namespace AutoPocoIO.test.Dashboard.Pages
 {
@@ -48,5 +50,36 @@ namespace AutoPocoIO.test.Dashboard.Pages
 
             page.Verify();
         }
+
+        [TestMethod]
+        [TestCategory(TestCategories.Unit)]
+        public void ListConnectorsSetsViewBag()
+        {
+            var list = new List<ConnectorViewModel>() { new ConnectorViewModel() };
+            var repo = new Mock<IConnectorRepo>();
+            repo.Setup(c => c.ListConnectors())
+                .Returns(list);
+
+            var page = new ConnectorsPage(repo.Object, Mock.Of<ILayoutPage>());
+            page.ListConnectors();
+
+            Assert.AreEqual(list, page.ViewBag["Connectors"]);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.Unit)]
+        public void DeleteConnectorWithRepo()
+        {
+            var list = new List<ConnectorViewModel>() { new ConnectorViewModel() };
+            var repo = new Mock<IConnectorRepo>();
+            repo.Setup(c => c.Delete("123")).Verifiable();
+
+            var page = new ConnectorsPage(repo.Object, Mock.Of<ILayoutPage>());
+            page.Delete("123");
+
+            repo.Verify();
+        }
+
+
     }
 }

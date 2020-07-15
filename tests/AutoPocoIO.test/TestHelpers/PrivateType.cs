@@ -41,6 +41,12 @@ namespace Microsoft.VisualStudio.TestTools.UnitTesting
             var field = _type.GetField(name, BindingFlags.NonPublic | BindingFlags.Instance);
             return field.GetValue(_instance);
         }
+
+        public void SetField(string name, object value)
+        {
+            var field = _type.GetField(name, BindingFlags.NonPublic | BindingFlags.Instance);
+            field.SetValue(_instance, value);
+        }
     }
 #endif
 }

@@ -1,11 +1,13 @@
 ﻿using AutoPocoIO.Dashboard;
 using AutoPocoIO.Dashboard.Pages;
 using AutoPocoIO.Dashboard.Repos;
+using AutoPocoIO.Dashboard.ViewModels;
 using AutoPocoIO.Middleware;
+using AutoPocoIO.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-
+using System.Collections.Generic;
 
 namespace AutoPocoIO.test.Dashboard.Pages
 {
@@ -63,6 +65,50 @@ namespace AutoPocoIO.test.Dashboard.Pages
             page.Verify();
         }
 
-  
+        [TestMethod]
+        [TestCategory(TestCategories.Unit)]
+        public void ListConnectorsSetsViewBag()
+        {
+            var model = new List<ConnectorViewModel> { new ConnectorViewModel() { Id = "123" } };
+            var repo = new Mock<IConnectorRepo>();
+            repo.Setup(c => c.ListConnectors()).Returns(model);
+
+            var page = new DataDictionaryPage(repo.Object, Mock.Of<ILayoutPage>());
+            page.ListConnectors();
+
+            Assert.AreEqual(model, page.ViewBag["Connectors"]);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.Unit)]
+        public void ListSchemaSetsViewBag()
+        {
+            var model = new SchemaViewModel() { ConnectorId= "123" };
+            var repo = new Mock<IDataDictionaryRepo>();
+            repo.Setup(c => c.ListSchemaObject("123")).Returns(model);
+
+            var page = new SchemaPage(repo.Object, Mock.Of<ILayoutPage>());
+            page.ListDbObjects("123");
+
+            Assert.AreEqual(model, page.ViewBag["model"]);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.Unit)]
+        public void ListTableDetailsSetsViewBag()
+        {
+            var model = new TableDefinition() { ConnectorId = "123" };
+            var navs = new List<NavigationPropertyViewModel> { new NavigationPropertyViewModel() { Name = "nav1" } };
+
+            var repo = new Mock<IDataDictionaryRepo>();
+            repo.Setup(c => c.ListTableDetails("123", "tbl")).Returns(model);
+            repo.Setup(c => c.ListNavigationProperties("123", "tbl")).Returns(navs);
+
+            var page = new ObjectDetailsPage(repo.Object, Mock.Of<ILayoutPage>());
+            page.ListTableDetails("123", "tbl");
+
+            Assert.AreEqual(model, page.ViewBag["model"]);
+            Assert.AreEqual(navs, page.ViewBag["navs"]);
+        }
     }
 }
