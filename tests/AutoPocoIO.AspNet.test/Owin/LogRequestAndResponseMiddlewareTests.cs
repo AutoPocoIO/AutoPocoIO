@@ -204,30 +204,5 @@ namespace AutoPocoIO.AspNet.test.Owin
                 Assert.AreEqual("Message: outer\nInner Exception: \nStackTrace: stack123", logParameters.Exception);
             }
         }
-
-        [TestMethod]
-        public void DisposeOfLogger()
-        {
-            LogRequestAndResponseMiddleware middleware = new LogRequestAndResponseMiddleware(Mock.Of<ILoggingService>());
-            PrivateObject obj = new PrivateObject(middleware);
-
-            obj.SetField("RequestBuffer", new MemoryStream());
-            obj.SetField("ResponseBuffer", new MemoryStream());
-
-            middleware.Dispose();
-
-            
-            Assert.IsTrue((bool)obj.GetField("isDisposed"));
-        }
-
-        [TestMethod]
-        public void DisposeOfLoggerMultiThread()
-        {
-            LogRequestAndResponseMiddleware middleware = new LogRequestAndResponseMiddleware(Mock.Of<ILoggingService>());
-            PrivateObject obj = new PrivateObject(middleware);
-            obj.SetField("isDisposed", true);
-
-            middleware.Dispose();
-        }
     }
 }
