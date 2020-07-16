@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@using AspNetSample.Models
+@model HomePageModel
+
+<div>
+    <h4 style="color:red">@ViewData["ConnectorNeeded"]</h4>
+</div>
+
+<div>
+    <a href="/autopoco">Go to Dashboard</a>
+</div>
+
+<div>
+    <h4>Sample sales data</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Order Id
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Customer
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Orders)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Order_Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Order_Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a href="Edit/@item.Order_Id">Edit</a> |
+                        <a asp-page="/Order/Index" asp-route-orderId="@item.Order_Id">Details</a> |
+                        <a href="Delete/@item.Order_Id">Delete</a> |
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <ul class="pagination">
+            @for (var i = Model.CurrentPage; i <= Math.Min(Model.TotalPages, Model.CurrentPage + 10); i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a href="/?currentpage=@i" class="page-link">@i</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

@@ -25,6 +25,7 @@ namespace AspNetCoreSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoPoco()
+
                     .ConfigureSqlServerApplicationDatabase(Configuration.GetConnectionString("AppDb"))
                     .WithSqlServerResources();
             services.AddMvc();
