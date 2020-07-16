@@ -48,3 +48,5 @@ deploy:
        secure: LvjtSQVaspqe2HzrcP5NG7b4ObvMscVivtHlHB9TBQm8NTR2sWUY4V2cy2waIv5X
     on:
        branch: master    
+on_failure:     
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
