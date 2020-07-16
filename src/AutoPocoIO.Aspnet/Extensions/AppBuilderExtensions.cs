@@ -90,11 +90,13 @@ namespace AutoPocoIO.Extensions
             config.EnableDependencyInjection();
             config.Count().Filter().OrderBy().Expand().Select().MaxTop(1000);
 
-          
+            
             builder.UseWithDependencyInjection<LoggingMiddleware.LogRequestAndResponseMiddleware>(config);
 
             if (options.UseDashboard)
                 builder.UseWithDependencyInjection<DashboardMiddleware>(config);
+
+            builder.UseWebApi(config);
 
             //Migrate and set up encrption
             var dbSetupService = config.DependencyResolver.GetRequiredService<IAppDatabaseSetupService>();

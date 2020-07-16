@@ -1,10 +1,15 @@
 ﻿using AutoPoco.DependencyInjection;
+using AutoPocoIO.Exceptions;
 using AutoPocoIO.LoggingMiddleware;
 using AutoPocoIO.Owin;
 using AutoPocoIO.WebApi;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
+using System.Linq;
+using System.Reflection;
+using System.Web.Http.Controllers;
+using System.Web.Mvc;
 
 namespace AutoPocoIO.Extensions
 {
@@ -24,6 +29,26 @@ namespace AutoPocoIO.Extensions
                 .AddAutoPocoWebApiEndPoints()
                 .AddDI();
 
+        }
+
+        /// <summary>
+        /// Register all WebApi and MVC controllers types.
+        /// </summary>
+        /// <param name="services"> The <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/> to add services to.</param>
+        /// <param name="assembly">Application assembly to search for controllers</param>
+        /// <returns></returns>
+        public static IServiceCollection RegisterControllers(this IServiceCollection services, Assembly assembly)
+        {
+            Check.NotNull(assembly, nameof(assembly));
+
+            var controllers = assembly.GetTypes()
+                .Where(c => (typeof(IController).IsAssignableFrom(c) || typeof(IHttpController).IsAssignableFrom(c)) &&
+                            c.Name.EndsWith("Controller", StringComparison.Ordinal));
+
+            foreach (var controller in controllers)
+                services.TryAddTransient(controller);
+
+            return services;
         }
 
         /// <summary>
