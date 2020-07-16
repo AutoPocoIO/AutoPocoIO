@@ -37,7 +37,7 @@ for:
          bash codecov.sh -f "coverage.xml" -Z | Out-Null
          $host.SetShouldExit(0);
 artifacts:
-  - path: '**\bin\***.nupkg' # find all NuGet packages recursively
+  - path: '**\bin\**\*.nupkg' # find all NuGet packages recursively
   - path: '**\coverage.xml'
 deploy:
   - provider : NuGet
