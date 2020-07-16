@@ -49,7 +49,10 @@ namespace AutoPoco.DependencyInjection
         public void Dispose()
         {
             foreach (var obj in _disposables)
-                obj.Dispose();
+            {
+                if (obj != this)
+                    obj.Dispose();
+            }
         }
 
         public object GetService(Type serviceType)
