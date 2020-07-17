@@ -6,7 +6,7 @@ shallow_clone: true
 environment:
    VERSION: 1.0.0
    OPENCOVER_PREFIX: 'C:\Users\appveyor\.nuget\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe -register -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test'
-   OPENCOVER_SUFFIX: ' --no-build" -c %CONFIG% -output:".\coverage.xml" -returntargetcode:1000 -mergeoutput -oldStyle -filter:"+[AutoPocoIO*]* -[*.test*]*" -excludebyattribute:"*.ExcludeFromCodeCoverageAttribute" -excludebyfile:"*.cshtml.cs;*cshtml"; $env:TEST_PASS = $?; if($env:Test_PASS -eq "False") {$host.SetShouldExit(1)}'
+   OPENCOVER_SUFFIX: ' --no-build" -output:".\coverage.xml" -returntargetcode:1000 -mergeoutput -oldStyle -filter:"+[AutoPocoIO*]* -[*.test*]*" -excludebyattribute:"*.ExcludeFromCodeCoverageAttribute" -excludebyfile:"*.cshtml.cs;*cshtml"; $env:TEST_PASS = $?; if($env:Test_PASS -eq "False") {$host.SetShouldExit(1)}'
    TEST_PASS: 'False'
    CONFIG: 'Debug'
 for:
