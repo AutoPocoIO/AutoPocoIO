@@ -50,10 +50,17 @@ tableOp.UpdateRow("AdventureWorksDB", "Customer", 42, object, loggingService);
 After installation in ASP.NET, update your existing [OWIN Startup](http://www.asp.net/aspnet/overview/owin-and-katana/owin-startup-class-detection) file with the following lines of code to set.
 
 ```csharp
+using AutoPocoIO.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
+```
+
+```csharp
 public void Configuration(IAppBuilder app)
 {
     ServiceCollection services = new ServiceCollection();
     services.AddAutoPoco()
+            .RegisterControllers(Assembly.GetExecutingAssembly())
             .ConfigureSqlServerApplicationDatabase("<connection string>")
             .WithSqlServerResources();
 
