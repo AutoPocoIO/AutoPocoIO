@@ -10,11 +10,22 @@ environment:
    TEST_PASS: 'False'
    CONFIG: 'Debug'
 for:
+- 
   branches:
      only:
        - master
   environment: 
      CONFIG: 'Release'
+-
+  branches:
+     except:
+     - master
+  after_test:
+     - ps: |
+         $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH;
+         Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh;
+         bash codecov.sh -f "coverage.xml" -Z | Out-Null
+         $host.SetShouldExit(0);
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true
@@ -32,17 +43,7 @@ test_script:
   - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.test\AutoPocoIO.test.csproj --framework netcoreapp2.2 $env:OPENCOVER_SUFFIX"
   - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.test.csproj --framework netcoreapp2.2 $env:OPENCOVER_SUFFIX"
   - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.MsSql.test\AutoPocoIO.MsSql.test.csproj --framework netcoreapp2.2 $env:OPENCOVER_SUFFIX"
-for:
--
-  branches:
-     except:
-     - master
-  after_test:
-     - ps: |
-         $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH;
-         Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh;
-         bash codecov.sh -f "coverage.xml" -Z | Out-Null
-         $host.SetShouldExit(0);
+  
 artifacts:
   - path: '**\bin\**\*.nupkg' # find all NuGet packages recursively
   - path: '**\coverage.xml'
