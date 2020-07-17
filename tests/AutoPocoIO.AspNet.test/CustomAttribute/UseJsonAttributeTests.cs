@@ -160,7 +160,7 @@ namespace AutoPocoIO.AspNet.test.CustomAttribute
 #if DEBUG
             Assert.AreEqual("Exception: exMessage\nInner Exception: \nStack Trace: track123", context.Response.Content.ReadAsStringAsync().Result);
 #else
-            Assert.AreEqual("Exception: exMessage", context.Response.Content.ReadAsStringAsync().Result);
+            Assert.AreEqual("Message: exMessage", context.Response.Content.ReadAsStringAsync().Result);
 #endif
         }
 
