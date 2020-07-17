@@ -6,20 +6,27 @@ shallow_clone: true
 environment:
    VERSION: 1.0.0
    OPENCOVER_PREFIX: 'C:\Users\appveyor\.nuget\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe -register -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test'
-   OPENCOVER_SUFFIX: ' --no-build" -output:".\coverage.xml" -returntargetcode:1000 -mergeoutput -oldStyle -filter:"+[AutoPocoIO*]* -[*.test*]*" -excludebyattribute:"*.ExcludeFromCodeCoverageAttribute" -excludebyfile:"*.cshtml.cs;*cshtml"; $env:TEST_PASS = $?; if($env:Test_PASS -eq "False") {$host.SetShouldExit(1)}'
+   OPENCOVER_SUFFIX: ' --no-build" -c %CONFIG% -output:".\coverage.xml" -returntargetcode:1000 -mergeoutput -oldStyle -filter:"+[AutoPocoIO*]* -[*.test*]*" -excludebyattribute:"*.ExcludeFromCodeCoverageAttribute" -excludebyfile:"*.cshtml.cs;*cshtml"; $env:TEST_PASS = $?; if($env:Test_PASS -eq "False") {$host.SetShouldExit(1)}'
    TEST_PASS: 'False'
+   CONFIG: 'Debug'
+for:
+  branches:
+     only:
+       - master
+  environment: 
+     CONFIG: 'Release'
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true
 build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish
-  - cmd: nuget restore ./sln/AutoPocoIO.sln -verbosity quiet
-  - cmd: dotnet build ./sln/AutoPocoIO.sln /p:IsAppVeyor=true --verbosity m
-  - cmd: dotnet pack src/AutoPocoIO/AutoPocoIO.csproj -p:PackageVersion="%VERSION%-beta.%APPVEYOR_BUILD_NUMBER%"
-  - cmd: dotnet pack src/AutoPocoIO.MsSql/AutoPocoIO.MsSql.csproj -p:PackageVersion="%VERSION%-beta.%APPVEYOR_BUILD_NUMBER%"
+  - cmd: nuget restore ./sln/AutoPocoIO.sln -verbosity quiet 
+  - cmd: dotnet build ./sln/AutoPocoIO.sln /p:IsAppVeyor=true --verbosity m -c %CONFIG%
+  - cmd: dotnet pack src/AutoPocoIO/AutoPocoIO.csproj -p:PackageVersion="%VERSION%-beta.%APPVEYOR_BUILD_NUMBER%" -c %CONFIG%
+  - cmd: dotnet pack src/AutoPocoIO.MsSql/AutoPocoIO.MsSql.csproj -p:PackageVersion="%VERSION%-beta.%APPVEYOR_BUILD_NUMBER%" -c %CONFIG%
 test_script:
  # run the unit tests
-  - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.test\AutoPocoIO.test.csproj --framework net461 $env:OPENCOVER_SUFFIX"
+  - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.test\AutoPocoIO.test.csproj --framework net461 $env:OPENCOVER_SUFFIX" 
   - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.csproj --framework net461 $env:OPENCOVER_SUFFIX"
   - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.MsSql.test\AutoPocoIO.MsSql.test.csproj --framework net461 $env:OPENCOVER_SUFFIX"
   - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.test\AutoPocoIO.test.csproj --framework netcoreapp2.2 $env:OPENCOVER_SUFFIX"
