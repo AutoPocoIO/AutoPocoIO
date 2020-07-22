@@ -77,7 +77,7 @@ namespace AutoPocoIO.test.Migrations
             Assert.AreEqual(typeof(string), entity.FindProperty("UserId").ClrType);
             Assert.AreEqual(50, entity.FindProperty("UserId").GetMaxLength());
 
-            Assert.AreEqual(typeof(int), entity.FindProperty("Port").ClrType);
+            Assert.AreEqual(typeof(int?), entity.FindProperty("Port").ClrType);
             Assert.AreEqual(typeof(bool), entity.FindProperty("IsActive").ClrType);
         }
 
