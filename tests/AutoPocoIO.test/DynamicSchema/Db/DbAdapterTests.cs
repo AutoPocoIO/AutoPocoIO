@@ -1,8 +1,10 @@
 ﻿using AutoPocoIO.DynamicSchema.Db;
 using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Runtime;
+using AutoPocoIO.Exceptions;
 using AutoPocoIO.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -13,7 +15,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 {
     [TestClass]
     [TestCategory(TestCategories.Unit)]
-    public class DbAdapterTests
+    public partial class DbAdapterTests
     {
         private Mock<DynamicClassBuilder> classBuilder;
         private Mock<IDbSchemaBuilder> schemaBuilder;
@@ -42,6 +44,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
             var appDbOptions = new DbContextOptionsBuilder()
                .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
+               .ReplaceEFCachingServices()
                .Options;
 
             schemaBuilder.Setup(c => c.CreateDbContextOptions()).Returns(appDbOptions);
@@ -149,5 +152,90 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             var result = dbAdapter.GetWithoutContext("_dbo_view1", "outer1");
             Assert.IsInstanceOfType(result, typeof(DbSet<Connector>));
         }
+
+        [TestMethod]
+        public void MapPrimaryKeysFromObject()
+        {
+            SetupSchmeaBuilder();
+            var table = new Table { Name = "tbla" };
+            table.Columns.AddRange(new[] 
+            {
+                new Column { ColumnName = "Id", PKName = "pk1" },
+                new Column { ColumnName = "Name" }
+            });
+
+            schema.Setup(c => c.Tables).Returns(new List<Table>() { table });
+            string asmName = $"DYNAMICASSEMBLY._DBO_TBLA{schema.Object.Tables.First().GetHashCode()}._DBO_TBLA123456";
+            var types = new Dictionary<string, Type>() { { asmName, typeof(_dbo_tbla) } };
+            classBuilder.Setup(c => c.CreateModelTypes("_dbo_tbla"));
+            classBuilder.SetupGet(c => c.ExistingAssemblies).Returns(types);
+
+            dbAdapter.SetupDataContext("_dbo_tbla");
+
+            var model = new { id = 1, name = "test" };
+            var keys = dbAdapter.MapPrimaryKey(model);
+
+            Assert.AreEqual(1, keys.Count());
+            Assert.AreEqual("Id", keys.First().Name);
+            Assert.AreEqual(typeof(int), keys.First().Type);
+            Assert.AreEqual(1, keys.First().Value);
+        }
+
+        [TestMethod]
+        public void MapPrimaryKeysFromObjectCompoundKey()
+        {
+            SetupSchmeaBuilder();
+            var table = new Table { Name = "tblb" };
+            table.Columns.AddRange(new[]
+            {
+                new Column { ColumnName = "Id", PKName = "pk1", PKPosition = 2 },
+                new Column { ColumnName = "Name", PKName = "pk2", PKPosition = 1 }
+            });
+
+            schema.Setup(c => c.Tables).Returns(new List<Table>() { table });
+            string asmName = $"DYNAMICASSEMBLY._DBO_TBLB{schema.Object.Tables.First().GetHashCode()}._DBO_TBLB123456";
+            var types = new Dictionary<string, Type>() { { asmName, typeof(_dbo_tblb) } };
+            classBuilder.Setup(c => c.CreateModelTypes("_dbo_tblb"));
+            classBuilder.SetupGet(c => c.ExistingAssemblies).Returns(types);
+
+            dbAdapter.SetupDataContext("_dbo_tblb");
+
+            var model = new { id = 1, name = "test" };
+            var keys = dbAdapter.MapPrimaryKey(model);
+
+            Assert.AreEqual(2, keys.Count());
+            Assert.AreEqual("Name", keys.First().Name);
+            Assert.AreEqual(typeof(string), keys.First().Type);
+            Assert.AreEqual("test", keys.First().Value);
+            Assert.AreEqual("Id", keys.Last().Name);
+            Assert.AreEqual(typeof(int), keys.Last().Type);
+            Assert.AreEqual(1, keys.Last().Value);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(PrimaryKeyNotFoundException))]
+        public void MapPrimaryKeysFromObjectKeyNotFound()
+        {
+            SetupSchmeaBuilder();
+            var table = new Table { Name = "tblc" };
+            table.Columns.AddRange(new[]
+            {
+                new Column { ColumnName = "Id", PKName = "pk1" },
+                new Column { ColumnName = "Name" }
+            });
+
+            schema.Setup(c => c.Tables).Returns(new List<Table>() { table });
+            string asmName = $"DYNAMICASSEMBLY._DBO_TBLC{schema.Object.Tables.First().GetHashCode()}._DBO_TBLC123456";
+            var types = new Dictionary<string, Type>() { { asmName, typeof(_dbo_tblc) } };
+            classBuilder.Setup(c => c.CreateModelTypes("_dbo_tblc"));
+            classBuilder.SetupGet(c => c.ExistingAssemblies).Returns(types);
+
+            dbAdapter.SetupDataContext("_dbo_tblc");
+
+            var model = new { name = "test" };
+            dbAdapter.MapPrimaryKey(model);
+        }
+
+
     }
 }

@@ -90,14 +90,13 @@ namespace AutoPocoIO.WebApi
         /// </summary>
         /// <param name="connectorName">Name of the database to access.</param>
         /// <param name="tableName">Name of the table in the database.</param>
-        /// <param name="id">Primary Key.</param>
         /// <param name="value">JSON object to update.</param>
         /// <returns></returns>
         [Route("{id}")]
         [SwaggerResponse(200, "Updated object", typeof(SwaggerExampleType))]
         [HttpPut]
-        public object Put(string connectorName, string tableName, string id, [FromBody]JToken value) =>
-             _tableOps.UpdateRow(connectorName, tableName, id, value, _loggingService);
+        public object Put(string connectorName, string tableName, [FromBody]JToken value) =>
+             _tableOps.UpdateRow(connectorName, tableName, value, _loggingService);
 
         /// <summary>
         /// Remove record from a given table

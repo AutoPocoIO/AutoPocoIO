@@ -1,17 +1,12 @@
 ﻿using AutoPocoIO.DynamicSchema.Db;
 using AutoPocoIO.DynamicSchema.Models;
+using AutoPocoIO.DynamicSchema.Runtime;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.Protected;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Common;
 using System.Linq;
 
 namespace AutoPocoIO.test.DynamicSchema.Db
@@ -27,6 +22,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         {
             options = new DbContextOptionsBuilder<DbContextBase>()
               .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
+              .ReplaceEFCachingServices()
               .Options;
         }
 
@@ -82,8 +78,6 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             public int Prop1 { get; set; }
         }
 
-        #region contexts
-        //NewInstances to force OnModelCreate to be unique
         private class TestableDbContextBase : DbContextBase
         {
             internal TestableDbContextBase(DbContextOptions options, Dictionary<string, Type> assemblyTypes, List<Table> tables)
@@ -92,22 +86,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             public void TestModelCreation(ModelBuilder model) { OnModelCreating(model); }
         }
 
-        private class TestableDbContextBase1 : DbContextBase
-        {
-            internal TestableDbContextBase1(DbContextOptions options, Dictionary<string, Type> assemblyTypes, List<Table> tables)
-               : base(options, assemblyTypes, tables)
-            { }
-            public void TestModelCreation(ModelBuilder model) { OnModelCreating(model); }
-        }
-
-        private class TestableDbContextBase2 : DbContextBase
-        {
-            internal TestableDbContextBase2(DbContextOptions options, Dictionary<string, Type> assemblyTypes, List<Table> tables)
-                : base(options, assemblyTypes, tables)
-            { }
-            public void TestModelCreation(ModelBuilder model) { OnModelCreating(model); }
-        }
-        #endregion
+       
 
         [TestMethod]
         public void CheckSetExists()
@@ -130,7 +109,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             tableList[0].Columns.Add(new Column { ColumnName = "Prop1", PKName = "pk" });
 
 
-            var context = new TestableDbContextBase1(options, asms, tableList);
+            var context = new TestableDbContextBase(options, asms, tableList);
             context.TestModelCreation(new ModelBuilder(new ConventionSet()));
 
             Assert.AreEqual(1, context.Model.GetEntityTypes().Count());
@@ -150,7 +129,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
                     new Column { ColumnName = "Prop2", PKName = "pk" }
             });
 
-            var context = new TestableDbContextBase2(options, asms, tableList);
+            var context = new TestableDbContextBase(options, asms, tableList);
             context.TestModelCreation(new ModelBuilder(new ConventionSet()));
 
             Assert.AreEqual(1, context.Model.GetEntityTypes().Count());

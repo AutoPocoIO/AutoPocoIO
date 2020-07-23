@@ -7,6 +7,7 @@ using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
 using AutoPocoIO.Services;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.AutoPoco;
@@ -121,21 +122,47 @@ namespace AutoPocoIO.Api
 
 
         /// <inheritdoc />
-        public object UpdateRow(string connectorName, string tableName, string keys, JToken value, ILoggingService loggingService = null)
+        public object UpdateRow(string connectorName, string tableName, JToken value, ILoggingService loggingService = null)
         {
-            loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.PUT, keys);
             Check.NotNull(value, nameof(value));
 
             IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.write, tableName);
-            return resource.UpdateResourceRecordById(value, keys);
+            string id = string.Empty;
+            try
+            {
+                id = resource.GetPrimaryKeys(value);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                //Log even if values for PK not found
+                loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.PUT, id);
+            }
+            return resource.UpdateResourceRecordById(value, id);
         }
 
         /// <inheritdoc />
-        public TViewModel UpdateRow<TViewModel>(string connectorName, string tableName, string id, TViewModel value, ILoggingService loggingService = null) where TViewModel : class
+        public TViewModel UpdateRow<TViewModel>(string connectorName, string tableName, TViewModel value, ILoggingService loggingService = null) where TViewModel : class
         {
-            loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.PUT, id);
-
             IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.write, tableName);
+
+            string id = string.Empty;
+            try
+            {
+                id = resource.GetPrimaryKeys(value);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                //Log even if values for PK not found
+                loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.PUT, id);
+            }
             return resource.UpdateResourceRecordById(value, id);
         }
 

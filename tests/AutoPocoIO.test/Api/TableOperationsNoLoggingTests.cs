@@ -276,13 +276,14 @@ namespace AutoPocoIO.test.Api
             var objT = new IQueryableType { Id = 15 };
 
             var resource = new Mock<IOperationResource>();
+            resource.Setup(c => c.GetPrimaryKeys(obj)).Returns("15");
             resource.Setup(c => c.UpdateResourceRecordById(obj, "15"))
                 .Returns(objT);
 
             resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.write, "table1"))
                 .Returns(resource.Object);
 
-            var result = tableOperations.UpdateRow("conn1", "table1", "15", obj);
+            var result = tableOperations.UpdateRow("conn1", "table1", obj);
             Assert.AreEqual(0, loggingService.LogCount);
             Assert.AreEqual(15, ((IQueryableType)result).Id);
         }
@@ -293,13 +294,14 @@ namespace AutoPocoIO.test.Api
             var objT = new IQueryableType { Id = 15 };
 
             var resource = new Mock<IOperationResource>();
+            resource.Setup(c => c.GetPrimaryKeys(objT)).Returns("15");
             resource.Setup(c => c.UpdateResourceRecordById(objT, "15"))
                 .Returns(objT);
 
             resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.write, "table1"))
                 .Returns(resource.Object);
 
-            var result = tableOperations.UpdateRow("conn1", "table1", "15", objT);
+            var result = tableOperations.UpdateRow("conn1", "table1",  objT);
             Assert.AreEqual(0, loggingService.LogCount);
             Assert.AreEqual(15, result.Id);
         }

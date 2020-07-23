@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.Api;
 using AutoPocoIO.DynamicSchema.Enums;
+using AutoPocoIO.Exceptions;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -162,13 +163,14 @@ namespace AutoPocoIO.test.Api
             var objT = new IQueryableType { Id = 15 };
 
             var resource = new Mock<IOperationResource>();
+            resource.Setup(c => c.GetPrimaryKeys(obj)).Returns("15");
             resource.Setup(c => c.UpdateResourceRecordById(obj, "15"))
                 .Returns(objT);
 
             resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.write, "table1"))
                 .Returns(resource.Object);
 
-            var result = tableOperations.UpdateRow("conn1", "table1", "15", obj, loggingService);
+            var result = tableOperations.UpdateRow("conn1", "table1", obj, loggingService);
             Assert.AreEqual(1, loggingService.LogCount);
             Assert.AreEqual("PUT", loggingService.ApiRequests.First().RequestType);
             Assert.AreEqual(15, ((IQueryableType)result).Id);
@@ -180,16 +182,72 @@ namespace AutoPocoIO.test.Api
             var objT = new IQueryableType { Id = 15 };
 
             var resource = new Mock<IOperationResource>();
+            resource.Setup(c => c.GetPrimaryKeys(objT)).Returns("15");
             resource.Setup(c => c.UpdateResourceRecordById(objT, "15"))
                 .Returns(objT);
 
             resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.write, "table1"))
                 .Returns(resource.Object);
 
-            var result = tableOperations.UpdateRow("conn1", "table1", "15", objT, loggingService);
+            var result = tableOperations.UpdateRow("conn1", "table1", objT, loggingService);
             Assert.AreEqual(1, loggingService.LogCount);
             Assert.AreEqual("PUT", loggingService.ApiRequests.First().RequestType);
             Assert.AreEqual(15, result.Id);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void UpdateRowGetPrimaryKeyThrowsErrorButStillLogs()
+        {
+            JToken obj = new JObject
+            {
+                ["Id"] = 15
+            };
+
+            var resource = new Mock<IOperationResource>();
+            resource.Setup(c => c.GetPrimaryKeys(obj)).Throws(new NullReferenceException());
+            resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.write, "table1"))
+                .Returns(resource.Object);
+
+            try
+            {
+                var result = tableOperations.UpdateRow("conn1", "table1", obj, loggingService);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                Assert.AreEqual(1, loggingService.LogCount);
+                Assert.AreEqual("PUT", loggingService.ApiRequests.First().RequestType);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void UpdateRowTGetPrimaryKeyThrowsErrorButStillLogs()
+        {
+            var objT = new IQueryableType { Id = 15 };
+
+            var resource = new Mock<IOperationResource>();
+            resource.Setup(c => c.GetPrimaryKeys(objT)).Throws(new NullReferenceException());
+            resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.write, "table1"))
+                .Returns(resource.Object);
+
+            try
+            {
+                var result = tableOperations.UpdateRow("conn1", "table1", objT, loggingService);
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                Assert.AreEqual(1, loggingService.LogCount);
+                Assert.AreEqual("PUT", loggingService.ApiRequests.First().RequestType);
+            }
         }
 
         [TestMethod]

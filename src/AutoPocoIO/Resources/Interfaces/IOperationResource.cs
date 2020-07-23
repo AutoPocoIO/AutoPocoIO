@@ -168,5 +168,10 @@ namespace AutoPocoIO.Resources
         /// Load schema for a specific stored procedure
         /// </summary>
         void LoadProc();
+        /// <summary>
+        /// Map input to the table primary key(s)
+        /// </summary>
+        /// <returns>Semicolon seperate string of primary key values</returns>
+        string GetPrimaryKeys(object value);
     }
 }

@@ -1174,7 +1174,193 @@ namespace AutoPocoIO.test.Resources
             resource.ApplyServices(services, rootProvider);
 
             serviceReplacer.Verify(c => c.ReplaceInternalServices(rootProvider, services), Times.Once);
-
         }
+
+        [TestMethod]
+        public void GetPrimaryKeyFromModelSingleColumn()
+        {
+            var table = new Table { Name = "tbl1", Schema = "sch", Database = "db1" };
+            var model = new ViewModel1 { Id = "1", Name = "abc" };
+            var mockDb = new Mock<IDbAdapter>();
+
+            table.Columns.Add(new Column
+            {
+                ColumnName = "Id",
+                PKIsIdentity = true
+            });
+            table.Columns.Add(new Column
+            {
+                ColumnName = "Name",
+            });
+
+            defaultServices.AddSingleton(c =>
+            {
+                var mock = new Mock<IDbSchema>();
+                mock.SetupGet(d => d.Tables)
+                .Returns(new List<Table> { table });
+                return mock.Object;
+            });
+
+            defaultServices.AddSingleton(c =>
+            {
+                mockDb.Setup(d => d.SetupDataContext("db1_sch_tbl1")).Verifiable();
+                mockDb.Setup(d => d.MapPrimaryKey(model))
+                .Returns(new[] { new PrimaryKeyInformation { Value = "a" } });
+                return mockDb.Object;
+            });
+
+            ResetServiceProviderCache();
+
+            var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
+            resource.ConfigureAction(defaultConnector, OperationType.write, "tbl1");
+
+            var results = resource.GetPrimaryKeys(model);
+
+            Assert.AreEqual("a", results);
+            schemaInitializer.Verify(c => c.Initilize(), Times.Once);
+            mockDb.Verify();
+        }
+        [TestMethod]
+        public void GetPrimaryKeyFromModelMultipleColumns()
+        {
+            var table = new Table { Name = "tbl1", Schema = "sch", Database = "db1" };
+            var model = new ViewModel1 { Id = "1", Name = "abc" };
+            var mockDb = new Mock<IDbAdapter>();
+
+            table.Columns.Add(new Column
+            {
+                ColumnName = "Id",
+                PKIsIdentity = true
+            });
+            table.Columns.Add(new Column
+            {
+                ColumnName = "Name",
+            });
+
+            defaultServices.AddSingleton(c =>
+            {
+                var mock = new Mock<IDbSchema>();
+                mock.SetupGet(d => d.Tables)
+                .Returns(new List<Table> { table });
+                return mock.Object;
+            });
+
+            defaultServices.AddSingleton(c =>
+            {
+                mockDb.Setup(d => d.SetupDataContext("db1_sch_tbl1")).Verifiable();
+                mockDb.Setup(d => d.MapPrimaryKey(model))
+                .Returns(new[] {
+                    new PrimaryKeyInformation { Value = "a" },
+                    new PrimaryKeyInformation { Value = "b" },
+                });
+                return mockDb.Object;
+            });
+
+            ResetServiceProviderCache();
+
+            var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
+            resource.ConfigureAction(defaultConnector, OperationType.write, "tbl1");
+
+            var results = resource.GetPrimaryKeys(model);
+
+            Assert.AreEqual("a;b", results);
+            schemaInitializer.Verify(c => c.Initilize(), Times.Once);
+            mockDb.Verify();
+        }
+
+        [TestMethod]
+        public void GetPrimaryKeyFromJTokenSingleColumn()
+        {
+            var table = new Table { Name = "tbl1", Schema = "sch", Database = "db1" };
+            var model = new ViewModel1 { Id = "1", Name = "abc" };
+            var token = JToken.FromObject(model);
+            var mockDb = new Mock<IDbAdapter>();
+
+            table.Columns.Add(new Column
+            {
+                ColumnName = "Id",
+                PKIsIdentity = true
+            });
+            table.Columns.Add(new Column
+            {
+                ColumnName = "Name",
+            });
+
+            defaultServices.AddSingleton(c =>
+            {
+                var mock = new Mock<IDbSchema>();
+                mock.SetupGet(d => d.Tables)
+                .Returns(new List<Table> { table });
+                return mock.Object;
+            });
+
+            defaultServices.AddSingleton(c =>
+            {
+                mockDb.Setup(d => d.NewInstance("db1_sch_tbl1")).Returns(model);
+                mockDb.Setup(d => d.MapPrimaryKey(model))
+                .Returns(new[] { new PrimaryKeyInformation { Value = "a" } });
+                return mockDb.Object;
+            });
+
+            ResetServiceProviderCache();
+
+            var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
+            resource.ConfigureAction(defaultConnector, OperationType.write, "tbl1");
+
+            var results = resource.GetPrimaryKeys(token);
+
+            Assert.AreEqual("a", results);
+            schemaInitializer.Verify(c => c.Initilize(), Times.Once);
+            mockDb.Verify();
+        }
+        [TestMethod]
+        public void GetPrimaryKeyFromJTokenMultipleColumns()
+        {
+            var table = new Table { Name = "tbl1", Schema = "sch", Database = "db1" };
+            var model = new ViewModel1 { Id = "1", Name = "abc" };
+            var token = JToken.FromObject(model);
+            var mockDb = new Mock<IDbAdapter>();
+
+            table.Columns.Add(new Column
+            {
+                ColumnName = "Id",
+                PKIsIdentity = true
+            });
+            table.Columns.Add(new Column
+            {
+                ColumnName = "Name",
+            });
+
+            defaultServices.AddSingleton(c =>
+            {
+                var mock = new Mock<IDbSchema>();
+                mock.SetupGet(d => d.Tables)
+                .Returns(new List<Table> { table });
+                return mock.Object;
+            });
+
+            defaultServices.AddSingleton(c =>
+            {
+                mockDb.Setup(d => d.NewInstance("db1_sch_tbl1")).Returns(model);
+                mockDb.Setup(d => d.MapPrimaryKey(model))
+                .Returns(new[] {
+                    new PrimaryKeyInformation { Value = "a" },
+                    new PrimaryKeyInformation { Value = "b" },
+                });
+                return mockDb.Object;
+            });
+
+            ResetServiceProviderCache();
+
+            var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
+            resource.ConfigureAction(defaultConnector, OperationType.write, "tbl1");
+
+            var results = resource.GetPrimaryKeys(token);
+
+            Assert.AreEqual("a;b", results);
+            schemaInitializer.Verify(c => c.Initilize(), Times.Once);
+            mockDb.Verify();
+        }
+
     }
 }

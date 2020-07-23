@@ -100,20 +100,18 @@ namespace AutoPocoIO.Api
         /// </summary>
         /// <param name="connectorName">Name of the database to access.</param>
         /// <param name="tableName">Name of the table in the database.</param>
-        /// <param name="keys">Primary key(s)</param>
         /// <param name="value">JSON object to update</param>
         /// <param name="loggingService">Include logging serivce to log this API call.</param>
         /// <returns>The updated object</returns>
-        object UpdateRow(string connectorName, string tableName, string keys, JToken value, ILoggingService loggingService = null);
+        object UpdateRow(string connectorName, string tableName, JToken value, ILoggingService loggingService = null);
         /// <summary>
         /// Update record in a given table
         /// </summary>
         /// <param name="connectorName">Name of the database to access.</param>
         /// <param name="tableName">Name of the table in the database.</param>
-        /// <param name="id">Primary Key(s)</param>
         /// <param name="value">Object to updated in <paramref name="tableName"/></param>
         /// <param name="loggingService">Include logging serivce to log this API call.</param>
         /// <returns>The updated object</returns>
-        TViewModel UpdateRow<TViewModel>(string connectorName, string tableName, string id, TViewModel value, ILoggingService loggingService = null) where TViewModel : class;
+        TViewModel UpdateRow<TViewModel>(string connectorName, string tableName, TViewModel value, ILoggingService loggingService = null) where TViewModel : class;
     }
 }

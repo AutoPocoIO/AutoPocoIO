@@ -4,7 +4,6 @@ using AutoPocoIO.Services;
 using AutoPocoIO.WebApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,12 +87,12 @@ namespace AutoPocoIO.test.WebApi
         {
             JToken obj = JObject.FromObject(new { a = 1 });
 
-            Ops.Setup(c => c.UpdateRow("conn", "tbl", "14", obj, LoggingService))
+            Ops.Setup(c => c.UpdateRow("conn", "tbl", obj, LoggingService))
                 .Returns(obj);
 
             var controller = new TablesController(Ops.Object, LoggingService, _queryStringService);
 
-            JToken results = (JToken)controller.Put("conn", "tbl", "14", obj);
+            JToken results = (JToken)controller.Put("conn", "tbl", obj);
             dynamic resultsToObject = results.JTokenToConventionalDotNetObject();
             Assert.AreEqual(1, resultsToObject["a"]);
         }

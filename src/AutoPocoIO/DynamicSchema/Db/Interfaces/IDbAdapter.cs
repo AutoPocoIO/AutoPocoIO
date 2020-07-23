@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AutoPocoIO.DynamicSchema.Models;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
@@ -94,12 +96,7 @@ namespace AutoPocoIO.DynamicSchema.Db
         /// </summary>
         /// <param name="value"></param>
         void Update(object value);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        IQueryable<T> FilterById<T>(object id) where T : class;
+
+        IEnumerable<PrimaryKeyInformation> MapPrimaryKey(object value);
     }
 }

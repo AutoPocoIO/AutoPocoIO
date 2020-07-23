@@ -219,7 +219,22 @@ namespace AutoPocoIO.Resources
 
             return null;
         }
-
+        public string GetPrimaryKeys(object value)
+        {
+            this.LoadDbAdapter();
+            var tableVariableName = DbSchema.GetTableName(DatabaseName, SchemaName, DbObjectName);
+            if (value is JToken token)
+            {
+                var map = Db.NewInstance(tableVariableName);
+                token.PopulateObjectFromJToken(map);
+                return string.Join(";", Db.MapPrimaryKey(map));
+            }
+            else
+            {
+                Db.SetupDataContext(tableVariableName);
+                return string.Join(";", Db.MapPrimaryKey(value));
+            }
+        }
 
         ///<inheritdoc/>
         public virtual object DeleteResourceRecordById(string keys)
@@ -481,5 +496,7 @@ namespace AutoPocoIO.Resources
         private static string UserJoinReverseListName(UserJoinConfiguration userJoin) => $"{UserJoinPrefix(userJoin)}ListFrom{userJoin.PrincipalColumns.Replace(",", "And")}";
 
         private static string UserJoinPrefix(UserJoinConfiguration userJoin) => "UJ_" + userJoin.Alias;
+
+      
     }
 }

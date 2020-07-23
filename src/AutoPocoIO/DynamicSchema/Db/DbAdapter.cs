@@ -1,4 +1,5 @@
-﻿using AutoPocoIO.DynamicSchema.Runtime;
+﻿using AutoPocoIO.DynamicSchema.Models;
+using AutoPocoIO.DynamicSchema.Runtime;
 using AutoPocoIO.DynamicSchema.Util;
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.Extensions;
@@ -75,7 +76,7 @@ namespace AutoPocoIO.DynamicSchema.Db
 
         public object GetDbSet()
         {
-            var getDbSetMethod = typeof(DbAdapter).GetMethod("GetDbSet", BindingFlags.Instance | BindingFlags.NonPublic);
+            var getDbSetMethod = typeof(DbAdapter).GetMethod(nameof(GetDbSet), BindingFlags.Instance | BindingFlags.NonPublic);
             var dbset = getDbSetMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).InvokeWithException(this, null);
 
             return dbset;
@@ -85,7 +86,7 @@ namespace AutoPocoIO.DynamicSchema.Db
         {
             SetupDataContext(tableName);
 
-            var getByIdMethod = typeof(DbAdapter).GetMethod("GetById", BindingFlags.Instance | BindingFlags.NonPublic);
+            var getByIdMethod = typeof(DbAdapter).GetMethod(nameof(GetById), BindingFlags.Instance | BindingFlags.NonPublic);
             var singleRecord = getByIdMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).InvokeWithException(this, new object[] { keys });
 
             return singleRecord;
@@ -95,7 +96,7 @@ namespace AutoPocoIO.DynamicSchema.Db
         {
             SetupDataContext(tableName);
 
-            var getByIdMethod = typeof(DbAdapter).GetMethod("FilterById", BindingFlags.Instance | BindingFlags.Public);
+            var getByIdMethod = typeof(DbAdapter).GetMethod(nameof(FilterById), BindingFlags.Instance | BindingFlags.NonPublic);
             var filteredList = getByIdMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).InvokeWithException(this, new object[] { keys });
 
             return (IQueryable<object>)filteredList;
@@ -109,21 +110,27 @@ namespace AutoPocoIO.DynamicSchema.Db
 
         public void Add(object obj)
         {
-            var insertMethod = typeof(DbAdapter).GetMethod("InsertRecord", BindingFlags.Instance | BindingFlags.NonPublic);
+            var insertMethod = typeof(DbAdapter).GetMethod(nameof(InsertRecord), BindingFlags.Instance | BindingFlags.NonPublic);
             insertMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).InvokeWithException(this, new object[] { obj });
         }
 
         public void Update(object obj)
         {
-            var insertMethod = typeof(DbAdapter).GetMethod("UpdateRecord", BindingFlags.Instance | BindingFlags.NonPublic);
+            var insertMethod = typeof(DbAdapter).GetMethod(nameof(UpdateRecord), BindingFlags.Instance | BindingFlags.NonPublic);
             insertMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).InvokeWithException(this, new object[] { obj });
 
         }
 
         public void Delete(object obj)
         {
-            var deleteMethod = typeof(DbAdapter).GetMethod("DeleteRecord", BindingFlags.Instance | BindingFlags.NonPublic);
+            var deleteMethod = typeof(DbAdapter).GetMethod(nameof(DeleteRecord), BindingFlags.Instance | BindingFlags.NonPublic);
             deleteMethod.MakeGenericMethod(new Type[] { DbSetEntityType }).InvokeWithException(this, new object[] { obj });
+        }
+
+        public IEnumerable<PrimaryKeyInformation> MapPrimaryKey(object obj)
+        {
+            var keyMethod = typeof(DbAdapter).GetMethod(nameof(GetPrimaryKeyInformation), BindingFlags.Instance | BindingFlags.NonPublic);
+            return (IEnumerable<PrimaryKeyInformation>)keyMethod.MakeGenericMethod(new Type[] { DbSetEntityType, obj.GetType() }).InvokeWithException(this, new object[] { obj });
         }
 
         public int Save()
@@ -131,51 +138,55 @@ namespace AutoPocoIO.DynamicSchema.Db
             return Instance.SaveChanges();
         }
 
-        internal IEnumerable<PKInfo> GetPrimaryKeyName<T>()
+        private IEnumerable<PrimaryKeyInformation> GetPrimaryKeyName<T>()
         {
             var type = Instance.Model.FindEntityType(typeof(T));
 
             var PK = (from m in type.FindPrimaryKey().Properties
                       where m.IsPrimaryKey()
-                      select new PKInfo { Name = m.Name, Type = m.FieldInfo.FieldType });
+                      select new PrimaryKeyInformation { Name = m.Name, Type = m.FieldInfo.FieldType });
             return PK;
         }
 
+        private IEnumerable<PrimaryKeyInformation> GetPrimaryKeyInformation<TDbSet, TModel>(TModel value) 
+            where TDbSet : class 
+            where TModel : class
+        {
+            return GetPrimaryKeyName<TDbSet>()
+                   .ToList()
+                   .GetTableKeys<TDbSet, TModel>(value);
+        }
 
         private DbSet<T> GetDbSet<T>() where T : class
         {
             return (DbSet<T>)typeof(DbContextBase).GetMethod("Set", Array.Empty<Type>()).MakeGenericMethod(DbSetEntityType).InvokeWithException(Instance, null);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Called by reflection")]
         private void InsertRecord<T>(object record) where T : class
         {
             DbSet<T> table = GetDbSet<T>();
             table.Add((T)record);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Called by reflection")]
         private void UpdateRecord<T>(object record) where T : class
         {
             DbSet<T> table = GetDbSet<T>();
             table.Update((T)record);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Called by reflection")]
         private void DeleteRecord<T>(object record) where T : class
         {
             DbSet<T> table = GetDbSet<T>();
             table.Remove((T)record);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Called by reflection")]
         private T GetById<T>(object id) where T : class
         {
             IQueryable<T> table = FilterById<T>(id);
             return table.Single();
         }
 
-        public IQueryable<T> FilterById<T>(object id) where T : class
+        private IQueryable<T> FilterById<T>(object id) where T : class
         {
             var itemParameter = Expression.Parameter(typeof(T), "item");
             var PKs = GetPrimaryKeyName<T>().ToArray()
@@ -222,14 +233,6 @@ namespace AutoPocoIO.DynamicSchema.Db
             _disposed = true;
         }
 
-
-
-    }
-
-    internal class PKInfo
-    {
-        public string Name { get; set; }
-        public Type Type { get; set; }
-        public object Value { get; set; }
+   
     }
 }
