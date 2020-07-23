@@ -1,16 +1,11 @@
 ﻿using AspNetCoreSample.Migration;
 using AutoPocoIO.Api;
-using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.Extensions;
-using AutoPocoIO.Factories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
-using AspNetCoreSample.Data;
 
 namespace AspNetCoreSample
 {
@@ -31,9 +26,6 @@ namespace AspNetCoreSample
                     .ConfigureSqlServerApplicationDatabase(Configuration.GetConnectionString("AppDb"))
                     .WithSqlServerResources();
             services.AddMvc();
-
-            services.AddDbContext<AspNetCoreSampleContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("AspNetCoreSampleContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
