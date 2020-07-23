@@ -43,9 +43,9 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        <a href="Edit/@item.Order_Id">Edit</a> |
+                        <a asp-page="/Order/Edit" asp-route-orderId="@item.Order_Id">Edit</a> |
                         <a  asp-page="/Order/Index" asp-route-orderId="@item.Order_Id">Details</a> |
-                        <a href="Delete/@item.Order_Id">Delete</a> |
+                        <a asp-page="/Order/Delete" asp-route-orderId="@item.Order_Id">Delete</a> |
                     </td>
                 </tr>
             }

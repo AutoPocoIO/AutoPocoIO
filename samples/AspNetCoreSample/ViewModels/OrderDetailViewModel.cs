@@ -4,7 +4,8 @@ namespace AspNetCoreSample.ViewModels
 {
     public class OrderDetailViewModel
     {
-        public int Order_Id { get; set; }
+        public int Order_Id1 { get; set; }
+        public byte Order_Status { get; set; }
         public int Customer_Id { get; set; }
         public int Store_Id { get; set; }
         public int Staff_Id { get; set; }

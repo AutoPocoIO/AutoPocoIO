@@ -1,0 +1,56 @@
+﻿@page
+@model AspNetCoreSample.Pages.Order.EditModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>Order Details</h2>
+
+<div>
+    <form method="post">
+        @*<input type="hidden" asp-for="item.Order_Id" />*@
+        <input type="hidden" asp-for="item.Customer_Id" />
+        <input type="hidden" asp-for="item.Store_Id" />
+        <input type="hidden" asp-for="item.Staff_Id" />
+        <div class="form-group">
+            <label>Order Number</label>
+            <span class="form-control">@Html.DisplayFor(c => c.item.Order_Id1)</span>
+        </div>
+        <div class="form-group">
+            <label>Store</label>
+            <span class="form-control">@Html.DisplayFor(c => c.item.StoresObjectFromStore_Id.store_name)</span>
+        </div>
+        <div class="form-group">
+            <label asp-for="item.Order_Status" class="control-label"></label>
+            <input asp-for="item.Order_Status" class="form-control" />
+            <span asp-validation-for="item.Order_Status" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+    <div>
+        <h4>Products Ordered</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model.item.Order_itemsListFromOrder_id)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(c => product.ProductsObjectFromProduct_Id.Product_Name)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
