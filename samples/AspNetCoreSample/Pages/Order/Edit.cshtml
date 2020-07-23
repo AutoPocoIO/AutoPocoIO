@@ -9,20 +9,29 @@
 
 <div>
     <form method="post">
-        @*<input type="hidden" asp-for="item.Order_Id" />*@
-        <input type="hidden" asp-for="item.Customer_Id" />
-        <input type="hidden" asp-for="item.Store_Id" />
-        <input type="hidden" asp-for="item.Staff_Id" />
+        <input type="hidden" asp-for="item.Order_Id" />
         <div class="form-group">
             <label>Order Number</label>
-            <span class="form-control">@Html.DisplayFor(c => c.item.Order_Id1)</span>
+            <span class="form-text">@Html.DisplayFor(c => c.item.Order_Id)</span>
+        </div>
+        <div class="form-group">
+            <label>Customer</label>
+            <select name="item.Customer_Id" asp-for="item.Customer_Id" asp-items="Model.Customers" class="form-control"></select>
+            <span asp-validation-for="item.Customer_Id" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label>Store</label>
-            <span class="form-control">@Html.DisplayFor(c => c.item.StoresObjectFromStore_Id.store_name)</span>
+            <select name="item.Store_Id" asp-for="item.Store_Id" asp-items="Model.Stores" class="form-control"></select>
+            <span asp-validation-for="item.Store_Id" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="item.Order_Status" class="control-label"></label>
+            <label>Sales Rep</label>
+            <select name="item.Staff_Id" asp-for="item.Staff_Id" asp-items="Model.SalesReps" class="form-control"></select>
+            <span asp-validation-for="item.Staff_Id" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Order Status</label>
             <input asp-for="item.Order_Status" class="form-control" />
             <span asp-validation-for="item.Order_Status" class="text-danger"></span>
         </div>
@@ -38,6 +47,15 @@
                     <th>
                         Name
                     </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Total
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -46,6 +64,15 @@
                     <tr>
                         <td>
                             @Html.DisplayFor(c => product.ProductsObjectFromProduct_Id.Product_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(c => product.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(c => product.RetailPrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(c => product.ItemTotal)
                         </td>
                     </tr>
                 }

@@ -9,11 +9,19 @@
 <div>
     <div class="form-group">
         <label>Order Number</label>
-        <span class="form-control">@Html.DisplayFor(c => c.item.Order_Id1)</span>
+        <input asp-for="item.Order_Status" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label>Customer</label>
+        <input asp-for="item.CustomersObjectFromCustomer_id.Name" class="form-control" readonly />
     </div>
     <div class="form-group">
         <label>Store</label>
-        <span class="form-control">@Html.DisplayFor(c => c.item.StoresObjectFromStore_Id.store_name)</span>
+        <input asp-for="item.StoresObjectFromStore_Id.store_name" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label>Sales Rep</label>
+        <input asp-for="item.StaffsObjectFromStaff_id.Name" class="form-control" readonly />
     </div>
 
     <div>
@@ -24,6 +32,15 @@
                     <th>
                         Name
                     </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Total
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -33,15 +50,24 @@
                         <td>
                             @Html.DisplayFor(c => product.ProductsObjectFromProduct_Id.Product_Name)
                         </td>
+                        <td>
+                            @Html.DisplayFor(c => product.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(c => product.RetailPrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(c => product.ItemTotal)
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
     <form method="post">
-        <input type="hidden" asp-for="item.Order_Id1" />
+        <input type="hidden" asp-for="item.Order_Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="/">Back to List</a>
+        <a asp-page="../Index">Back to List</a>
     </form>
 </div>
 
