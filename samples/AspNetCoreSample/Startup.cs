@@ -1,11 +1,9 @@
 ﻿using AspNetCoreSample.Migration;
-using AutoPocoIO.Api;
 using AutoPocoIO.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace AspNetCoreSample
 {
@@ -22,9 +20,9 @@ namespace AspNetCoreSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoPoco()
-
                     .ConfigureSqlServerApplicationDatabase(Configuration.GetConnectionString("AppDb"))
                     .WithSqlServerResources();
+
             services.AddMvc();
         }
 
@@ -50,30 +48,7 @@ namespace AspNetCoreSample
 
             //Migrate sample database
             var migrator = new Migrator(Configuration.GetConnectionString("AppDb"));
-            migrator.Migrate();
-
-            //Try Seed sampleDb connection
-            var tableOp = app.ApplicationServices.GetRequiredService<ITableOperations>();
-
-            var connection = new
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "sampleSales",
-                ResourceType = 1,
-                Schema = "sales",
-                ConnectionString = @"Data Source=""(localdb)\MSSQLLocalDB"";Initial Catalog=autopocoCore;Persist Security Info=False;User ID=;Password=;MultipleActiveResultSets=False;Connect Timeout=30;TrustServerCertificate=False",
-                RecordLimit = 500,
-                InitialCatalog = "autopocoCore",
-                DataSource = @"(localdb)\MSSQLLocalDB",
-                IsActive = true
-            };
-
-            try
-            {
-                tableOp.CreateNewRow("appDb", "connector", connection);
-            }
-            catch (Microsoft.EntityFrameworkCore.DbUpdateException) { }
-
+            migrator.Migrate(app);
         }
     }
 }

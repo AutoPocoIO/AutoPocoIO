@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AutoPocoIO.Api;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
 namespace AspNetCoreSample.Migration
 {
@@ -18,7 +17,7 @@ namespace AspNetCoreSample.Migration
             _connection = connection;
         }
 
-        public void Migrate()
+        public void Migrate(IApplicationBuilder app)
         {
             try
             {
@@ -42,6 +41,30 @@ namespace AspNetCoreSample.Migration
                 }
             }
             catch (Exception) { }
+
+            //Try Seed sampleDb connection
+            var tableOp = app.ApplicationServices.GetRequiredService<ITableOperations>();
+            var builder = new SqlConnectionStringBuilder(_connection);
+
+            var connectionEntity = new
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "sampleSales",
+                ResourceType = 1,
+                Schema = "sales",
+                ConnectionString = _connection,
+                RecordLimit = 500,
+                builder.InitialCatalog,
+                builder.DataSource,
+                builder.UserID,
+                IsActive = true
+            };
+
+            try
+            {
+                tableOp.CreateNewRow("appDb", "connector", connectionEntity);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException) { }
         }
 
         private static string GetResource(Assembly assembly, string sqlName)
