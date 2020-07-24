@@ -1,31 +1,8 @@
 ﻿using AutoPocoIO.DynamicSchema.Models;
-/* Unmerged change from project 'AutoPocoIO (net461)'
-Before:
-using System.Collections.Generic;
-After:
-using AutoPocoIO.Collections.Generic;
-*/
 using AutoPocoIO.Exceptions;
-
-/* Unmerged change from project 'AutoPocoIO (net461)'
-Before:
-using System.Exceptions;
-using System;
 using System.Collections.Generic;
-After:
-using System;
-using System.Collections.Generic;
-using System.Exceptions;
-*/
-using System.Collections.Generic;
-/* Unmerged change from project 'AutoPocoIO (net461)'
-Before:
-using System;
-using AutoPocoIO.Exceptions;
-After:
 using System.ComponentModel;
 using System.Reflection;
-*/
 
 
 namespace AutoPocoIO.Extensions
