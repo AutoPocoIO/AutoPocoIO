@@ -29,6 +29,8 @@ for:
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true
+cache:
+  - samples/AngularSample/ClientApp/node_modules -> samples/AngularSample/ClientApp/package.json
 build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish
   - cmd: nuget restore ./sln/AutoPocoIO.sln -verbosity quiet 
