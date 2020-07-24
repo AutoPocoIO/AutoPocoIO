@@ -31,6 +31,7 @@ init:
   - cmd: git config --global core.autocrlf true
 cache:
   - samples/AngularSample/ClientApp/node_modules -> samples/AngularSample/ClientApp/package.json
+  - sln/packages -> samples/AspNetSample/packages.config
 build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish
   - cmd: nuget restore ./sln/AutoPocoIO.sln -verbosity quiet 
