@@ -98,7 +98,7 @@ namespace AutoPocoIO.AspNet.test.DependencyInjection
             var depResolver = new AutoPocoDependencyResolver(Mock.Of<IContainer>());
             var result = depResolver.GetServices(typeof(IInterface1));
 
-            CollectionAssert.AreEqual(new []{ class1}, result.ToList());
+            CollectionAssert.AreEqual(new[] { class1 }, result.ToList());
         }
 
         [TestMethod]

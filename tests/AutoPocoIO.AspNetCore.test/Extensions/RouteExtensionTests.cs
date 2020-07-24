@@ -17,7 +17,7 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
         public void Init()
         {
             response = new Mock<HttpResponse>();
-            
+
             var context = new Mock<HttpContext>();
             context.Setup(c => c.Response).Returns(response.Object);
             logParameters = new ContextLogParameters()

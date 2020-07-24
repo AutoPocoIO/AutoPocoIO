@@ -87,13 +87,13 @@ namespace AutoPocoIO.Extensions
 
         private static void AddCompoundKeyConvention(ODataModelBuilder builder)
         {
-            foreach(var entityType in builder.StructuralTypes)
+            foreach (var entityType in builder.StructuralTypes)
             {
                 IEnumerable<PropertyConfiguration> keys = entityType.Properties
                     .Where(p => p.PropertyInfo.CustomAttributes?.Any(c => c.AttributeType == typeof(CompoundPrimaryKeyAttribute)) == true)
                     .OrderBy(p => p.PropertyInfo.GetCustomAttribute<CompoundPrimaryKeyAttribute>().Order);
 
-                foreach(var key in keys)
+                foreach (var key in keys)
                 {
                     if (entityType is EntityTypeConfiguration entity)
                     {

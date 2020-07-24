@@ -278,7 +278,7 @@ namespace AutoPocoIO.DynamicSchema.Runtime
                     attribute = new CustomAttributeBuilder(KeyAttributeBuilder, new object[] { column.PKPosition });
                     propertyBuilder.SetCustomAttribute(attribute);
 
-                    //Set to prevent a fake pk from being added (views/virutal enties when PK is not selected)
+                    //Set to prevent a fake pk from being added (views when PK is not selected)
                     hasPKColumn = true;
 
                     ConstructorInfo IdentityAttributeBuilder = typeof(DatabaseGeneratedAttribute).GetConstructor(new Type[] { typeof(DatabaseGeneratedOption) });

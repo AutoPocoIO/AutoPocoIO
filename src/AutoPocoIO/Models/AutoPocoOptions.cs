@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AutoPocoIO.Models
+﻿namespace AutoPocoIO.Models
 {
     /// <summary>
     /// Middileware set up options

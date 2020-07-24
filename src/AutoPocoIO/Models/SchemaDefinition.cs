@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace AutoPocoIO.Models
 {
@@ -41,8 +40,19 @@ namespace AutoPocoIO.Models
         /// <summary>
         /// List of available table names
         /// </summary>
+
+        /* Unmerged change from project 'AutoPocoIO (net461)'
+        Before:
+                [JsonProperty(Order = -2)]
+
+                public IEnumerable<string> Tables { get; set; }
+        After:
+                [JsonProperty(Order = -2)]
+
+                public IEnumerable<string> Tables { get; set; }
+        */
         [JsonProperty(Order = -2)]
-        
+
         public IEnumerable<string> Tables { get; set; }
 
         /// <summary>
@@ -57,6 +67,6 @@ namespace AutoPocoIO.Models
         [JsonProperty(Order = -2)]
         public IEnumerable<string> StoredProcedures { get; set; }
 
-       
+
     }
 }

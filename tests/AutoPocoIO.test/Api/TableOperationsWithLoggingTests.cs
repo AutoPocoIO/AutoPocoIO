@@ -1,6 +1,5 @@
 ﻿using AutoPocoIO.Api;
 using AutoPocoIO.DynamicSchema.Enums;
-using AutoPocoIO.Exceptions;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,7 +33,7 @@ namespace AutoPocoIO.test.Api
             resource.Setup(c => c.GetResourceRecords(new Dictionary<string, string>()))
                 .Returns(iqueryable);
 
-            resourceFactoryMock.Setup(c => c.GetResource("conn1",OperationType.read, "table1"))
+            resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "table1"))
                 .Returns(resource.Object);
 
             var (list, connectorMax) = tableOperations.GetAll("conn1", "table1", loggingService);
@@ -59,7 +58,7 @@ namespace AutoPocoIO.test.Api
             resource.Setup(c => c.GetResourceRecords(new Dictionary<string, string>()))
                 .Returns(resultsList);
 
-            resourceFactoryMock.Setup(c => c.GetResource("conn1",OperationType.read, "table1T"))
+            resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "table1T"))
                 .Returns(resource.Object);
 
             var results = tableOperations.GetAll<IQueryableType>("conn1", "table1T", loggingService);
@@ -80,7 +79,7 @@ namespace AutoPocoIO.test.Api
             resource.Setup(c => c.GetResourceRecordById("1"))
                 .Returns(resultsList);
 
-            resourceFactoryMock.Setup(c => c.GetResource("conn1",OperationType.read, "table1"))
+            resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "table1"))
                 .Returns(resource.Object);
 
             var results = tableOperations.GetById("conn1", "table1", "1", loggingService);
@@ -239,7 +238,7 @@ namespace AutoPocoIO.test.Api
             {
                 var result = tableOperations.UpdateRow("conn1", "table1", objT, loggingService);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }

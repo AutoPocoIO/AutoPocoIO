@@ -28,7 +28,7 @@ namespace AutoPocoIO.AspNet.test.DependencyInjection
             get
             {
                 PrivateObject regisry = new PrivateObject(registry);
-                return (ConcurrentDictionary<Type, ServiceInfo>)regisry.GetField("_serviceInfo"); 
+                return (ConcurrentDictionary<Type, ServiceInfo>)regisry.GetField("_serviceInfo");
             }
         }
 

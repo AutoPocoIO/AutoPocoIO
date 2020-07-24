@@ -31,7 +31,7 @@ namespace AutoPocoIO.test.Api
             resource.Setup(c => c.ExecuteProc(new Dictionary<string, object>()))
                .Returns(obj);
 
-            resourceFactoryMock.Setup(c => c.GetResource("conn1",OperationType.read, "proc1"))
+            resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "proc1"))
                 .Returns(resource.Object);
 
             var results = storedProcedureOperations.ExecuteNoParameters("conn1", "proc1", loggingService);
@@ -57,7 +57,7 @@ namespace AutoPocoIO.test.Api
                .Returns(obj);
 
 
-            resourceFactoryMock.Setup(c => c.GetResource("conn1",OperationType.read, "proc1"))
+            resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "proc1"))
               .Returns(resource.Object);
 
             var results = storedProcedureOperations.Execute("conn1", "proc1", objToken, loggingService);
@@ -89,7 +89,7 @@ namespace AutoPocoIO.test.Api
                .Returns(obj);
 
 
-            resourceFactoryMock.Setup(c => c.GetResource("conn1",OperationType.read, "proc1"))
+            resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "proc1"))
               .Returns(resource.Object);
 
             var results = storedProcedureOperations.Execute("conn1", "proc1", objParams, loggingService);

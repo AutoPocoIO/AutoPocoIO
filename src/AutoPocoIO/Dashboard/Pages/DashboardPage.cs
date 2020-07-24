@@ -7,7 +7,7 @@ namespace AutoPocoIO.Dashboard.Pages
     {
         private readonly IDashboardRepo _repo;
         public DashboardPage(IDashboardRepo repo, ILayoutPage layoutPage)
-            :base(layoutPage, "Overview - AutoPoco")
+            : base(layoutPage, "Overview - AutoPoco")
         {
             _repo = repo;
         }
@@ -49,6 +49,6 @@ namespace AutoPocoIO.Dashboard.Pages
             ViewBag["UnauthorizedTime"] = _repo.UnauthorizedRequestTime(addDays);
         }
 
-       
+
     }
 }

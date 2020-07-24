@@ -301,7 +301,7 @@ namespace AutoPocoIO.test.Api
             resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.write, "table1"))
                 .Returns(resource.Object);
 
-            var result = tableOperations.UpdateRow("conn1", "table1",  objT);
+            var result = tableOperations.UpdateRow("conn1", "table1", objT);
             Assert.AreEqual(0, loggingService.LogCount);
             Assert.AreEqual(15, result.Id);
         }

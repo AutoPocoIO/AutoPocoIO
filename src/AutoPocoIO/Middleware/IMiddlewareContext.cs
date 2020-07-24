@@ -7,7 +7,7 @@ namespace AutoPocoIO.Middleware
     /// <summary>
     ///  Encapsulates all HTTP-specific information about an individual HTTP request.
     /// </summary>
-    public interface IMiddlewareContext 
+    public interface IMiddlewareContext
     {
         /// <summary>
         /// Http request information

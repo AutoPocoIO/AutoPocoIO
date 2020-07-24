@@ -96,7 +96,7 @@ namespace AutoPocoIO.Extensions
 
             optionsAction.Invoke(applicationServiceProvider, builder);
 
-            if(typeof(TContext) == typeof(AppMigrationContext) || typeof(TContext) == typeof(LoggingMigrationContext))
+            if (typeof(TContext) == typeof(AppMigrationContext) || typeof(TContext) == typeof(LoggingMigrationContext))
                 builder.ReplaceService<IMigrationsAssembly, DynamicSchema.Services.Migrations.MigrationsAssembly>();
 
             return builder.Options;

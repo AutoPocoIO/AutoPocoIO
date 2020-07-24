@@ -29,7 +29,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             {
                 if (createdCommand == command)
                 {
-                        return DtProcs;
+                    return DtProcs;
                 }
 
                 return null;
@@ -66,7 +66,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
                 }
                 return null;
             }
-            
+
             protected override IDbCommand BuildTablesViewsCommand(IDbConnection dbConnection)
             {
                 if (dbConnection == createdConn)

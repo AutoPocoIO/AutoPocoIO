@@ -4,7 +4,6 @@ using AutoPocoIO.DynamicSchema.Runtime;
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -112,8 +111,19 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         private void SetupForGetWithoutContext(string asmName)
         {
             var tables = new List<Table>() { new Table { Name = "tbl1" } };
+
+            /* Unmerged change from project 'AutoPocoIO.test (net461)'
+            Before:
+                        var views = new List<View>() { new View { Name = "view1" } };
+
+                        schema.SetupGet(c => c.Tables).Returns(tables);
+            After:
+                        var views = new List<View>() { new View { Name = "view1" } };
+
+                        schema.SetupGet(c => c.Tables).Returns(tables);
+            */
             var views = new List<View>() { new View { Name = "view1" } };
-            
+
             schema.SetupGet(c => c.Tables).Returns(tables);
             schema.SetupGet(c => c.Views).Returns(views);
 
@@ -158,7 +168,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         {
             SetupSchmeaBuilder();
             var table = new Table { Name = "tbla" };
-            table.Columns.AddRange(new[] 
+            table.Columns.AddRange(new[]
             {
                 new Column { ColumnName = "Id", PKName = "pk1" },
                 new Column { ColumnName = "Name" }

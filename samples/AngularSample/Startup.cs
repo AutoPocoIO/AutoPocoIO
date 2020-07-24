@@ -1,11 +1,12 @@
+using AspNetCoreSample.Migration;
+using AutoPocoIO.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using AutoPocoIO.Extensions;
+
 namespace AngularSample
 {
     public class Startup
@@ -49,7 +50,7 @@ namespace AngularSample
 
             app.UseHttpsRedirection();
 
-            
+
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -74,6 +75,10 @@ namespace AngularSample
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            //Migrate sample database
+            var migrator = new Migrator(Configuration.GetConnectionString("AppDb"));
+            migrator.Migrate(app);
         }
     }
 }

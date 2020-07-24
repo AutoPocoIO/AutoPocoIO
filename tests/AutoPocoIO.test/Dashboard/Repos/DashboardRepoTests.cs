@@ -40,10 +40,10 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void GetRequestsForToday()
         {
-            using(var db1 = new LogDbContext(dbOptions))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
-                    new RequestLog {RequestId = 1,  DateTimeUtc = today , RequestType = "GET"},
+                    new RequestLog { RequestId = 1, DateTimeUtc = today, RequestType = "GET" },
                     new RequestLog { RequestId = 2, DateTimeUtc = today.AddHours(1), RequestType = "GET" },
                     new RequestLog { RequestId = 3, DateTimeUtc = today.AddHours(1), RequestType = "GET" }
                     );
@@ -171,7 +171,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void CountSuccessfullRequests()
         {
-            
+
             using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(

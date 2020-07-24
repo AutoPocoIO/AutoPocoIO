@@ -3,10 +3,8 @@ using AutoPocoIO.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Owin;
 using Owin;
-using Swashbuckle.Application;
 using System.Configuration;
 using System.Reflection;
-using System.Web.Http;
 
 [assembly: OwinStartup(typeof(AspNetSample.Startup))]
 

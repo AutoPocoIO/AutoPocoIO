@@ -63,7 +63,7 @@ namespace AutoPocoIO.Extensions
             });
 
             //Map Dashboard routes
-            if(options.UseDashboard)
+            if (options.UseDashboard)
                 builder.UseMiddlewareWhen<AspNetCoreDashboardMiddleware>(dashPath);
 
             var scopeFactory = builder.ApplicationServices.GetRequiredService<IServiceScopeFactory>();

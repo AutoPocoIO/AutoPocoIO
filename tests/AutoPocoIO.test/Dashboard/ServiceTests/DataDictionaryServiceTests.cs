@@ -9,7 +9,7 @@ namespace AutoPocoIO.test.Dashboard.ServiceTests
 {
     [TestClass]
     [TestCategory(TestCategories.Integration)]
-    public class DataDictionaryServiceTests: DashboardServiceTests
+    public class DataDictionaryServiceTests : DashboardServiceTests
     {
         [TestMethod]
         public void DataDictionaryPageRegisteredDependencies()
@@ -39,6 +39,6 @@ namespace AutoPocoIO.test.Dashboard.ServiceTests
 
             Assert.IsNotNull(provider.GetService<ObjectDetailsPage>());
             Assert.IsNotNull(provider.GetService<IDataDictionaryRepo>());
-        }   
+        }
     }
 }

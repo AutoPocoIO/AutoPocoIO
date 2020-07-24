@@ -4,7 +4,6 @@ using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Resources;
-using AutoPocoIO.test.TestHelpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -70,7 +69,7 @@ namespace AutoPocoIO.test.Extensions
                 ConnectionStringDecrypted = "connStr"
             };
 
-            resource.Object.ConfigureAction(connector,OperationType.read, "obj");
+            resource.Object.ConfigureAction(connector, OperationType.read, "obj");
             resource.Object.LoadDbAdapter();
 
             Assert.AreEqual("sch1", config.FilterSchema);
@@ -91,7 +90,7 @@ namespace AutoPocoIO.test.Extensions
                 ConnectionStringDecrypted = "connStr"
             };
 
-            resource.Object.ConfigureAction(connector,OperationType.read, "obj");
+            resource.Object.ConfigureAction(connector, OperationType.read, "obj");
             resource.Object.LoadSchema();
 
             Assert.AreEqual("sch1", config.FilterSchema);
@@ -112,7 +111,7 @@ namespace AutoPocoIO.test.Extensions
                 ConnectionStringDecrypted = "connStr"
             };
 
-            resource.Object.ConfigureAction(connector,OperationType.read, "proc2");
+            resource.Object.ConfigureAction(connector, OperationType.read, "proc2");
             resource.Object.LoadProc();
 
             Assert.AreEqual("sch1", config.FilterSchema);

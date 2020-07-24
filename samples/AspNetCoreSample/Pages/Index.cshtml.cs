@@ -17,7 +17,7 @@ namespace AutoPocoIO.Sample.AspNetCore.Pages
         public IndexModel(ITableOperations tableOperations, ILoggingService loggingService)
         {
             _tableOperations = tableOperations;
-            _loggingService =  loggingService;
+            _loggingService = loggingService;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -38,7 +38,7 @@ namespace AutoPocoIO.Sample.AspNetCore.Pages
                     .Skip((CurrentPage - 1) * PageSize)
                     .Take(PageSize);
 
-               
+
             }
             catch (ConnectorNotFoundException)
             {

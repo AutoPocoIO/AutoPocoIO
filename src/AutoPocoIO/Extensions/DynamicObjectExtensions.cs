@@ -55,7 +55,7 @@ namespace AutoPocoIO.Extensions
                 return null;
 
             T entity;
-            if(typeof(T).GetCustomAttribute<CompilerGeneratedAttribute>() == null)
+            if (typeof(T).GetCustomAttribute<CompilerGeneratedAttribute>() == null)
                 entity = Activator.CreateInstance<T>();
             else
             {
@@ -112,9 +112,9 @@ namespace AutoPocoIO.Extensions
             var sourcetype = source.GetType();
             foreach (var propertyInfo in properties)
             {
-                    var sourcePropertyInfo = sourcetype.GetProperty(propertyInfo.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
-                    if (sourcePropertyInfo != null)
-                        propertyInfo.SetValue(model, sourcePropertyInfo.GetValue(source), null);
+                var sourcePropertyInfo = sourcetype.GetProperty(propertyInfo.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+                if (sourcePropertyInfo != null)
+                    propertyInfo.SetValue(model, sourcePropertyInfo.GetValue(source), null);
             }
         }
 

@@ -18,7 +18,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             private IDbCommand createdCommand;
             private int cmdCount;
 
-            public DataTable[] Dts{ get; set; }
+            public DataTable[] Dts { get; set; }
             public DataTable Dt => Dts[cmdCount];
             public SchemaBuilder1(Config config, IDbSchema dbSchema, IDbTypeMapper typeMapper) : base(config, dbSchema, typeMapper)
             {
@@ -44,7 +44,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             {
                 createdConn = Mock.Of<IDbConnection>();
                 return createdConn;
-               
+
             }
 
             public override IDbConnection CreateConnection(string connectionString)

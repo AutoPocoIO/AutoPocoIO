@@ -9,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
@@ -138,7 +137,7 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
             Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
         }
 
-      
+
 
         [TestMethod]
         public void SetExceptionInLogger()

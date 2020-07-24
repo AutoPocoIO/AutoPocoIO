@@ -5,7 +5,6 @@ using AutoPocoIO.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -131,7 +130,7 @@ namespace AutoPocoIO.test.Middleware
             var dispatcher = new RazorPageDispatcher(page);
             dispatcher.Dispatch(context, Mock.Of<ILoggingService>()).Wait();
 
-            Assert.AreEqual("text/html", content);  
+            Assert.AreEqual("text/html", content);
             Assert.AreEqual("outputHtml", responsebody);
         }
 
@@ -154,7 +153,7 @@ namespace AutoPocoIO.test.Middleware
             var dispatcher = new RedirectDispatcher("newLocation");
             dispatcher.Dispatch(context, Mock.Of<ILoggingService>()).Wait();
 
-            Assert.AreEqual("/basePath123/newLocation", location); 
+            Assert.AreEqual("/basePath123/newLocation", location);
         }
 
         [TestMethod]

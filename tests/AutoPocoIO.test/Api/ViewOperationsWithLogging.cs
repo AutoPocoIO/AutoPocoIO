@@ -31,7 +31,7 @@ namespace AutoPocoIO.test.Api
             resource.Setup(c => c.GetViewRecords())
                 .Returns(iqueryable);
 
-            resourceFactoryMock.Setup(c => c.GetResource("conn1",OperationType.read, "view1"))
+            resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "view1"))
                 .Returns(resource.Object);
 
             var (list, recordLimit) = viewOperations.GetAllAndRecordLimit("conn1", "view1", loggingService);
@@ -56,7 +56,7 @@ namespace AutoPocoIO.test.Api
             resource.Setup(c => c.GetViewRecords())
                 .Returns(resultsList);
 
-            resourceFactoryMock.Setup(c => c.GetResource("conn1",OperationType.read, "view1T"))
+            resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "view1T"))
                 .Returns(resource.Object);
 
             var results = viewOperations.GetAll<IQueryableType>("conn1", "view1T", loggingService);

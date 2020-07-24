@@ -598,9 +598,9 @@ namespace AutoPocoIO.test.Resources
 
             var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
             resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
-           
 
-            var results = resource.GetResourceRecordById<ViewModel4>("1", new Dictionary<string, string>() { {"$expand", "UJ_pkJoinListFromother" } });
+
+            var results = resource.GetResourceRecordById<ViewModel4>("1", new Dictionary<string, string>() { { "$expand", "UJ_pkJoinListFromother" } });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             Assert.IsInstanceOfType(results, typeof(ViewModel4));

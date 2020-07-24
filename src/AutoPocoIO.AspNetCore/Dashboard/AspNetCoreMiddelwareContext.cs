@@ -28,7 +28,7 @@ namespace AutoPocoIO.Middleware
         /// <inheritdoc/>
         public IMiddlewareRequest Request { get; }
         /// <inheritdoc/>
-        public IMiddlewareResponse Response { get;  }
+        public IMiddlewareResponse Response { get; }
         /// <inheritdoc/>
         public Match UriMatch { get; set; }
         /// <inheritdoc/>
@@ -36,6 +36,6 @@ namespace AutoPocoIO.Middleware
         /// <inheritdoc/>
         public IDictionary<string, string> QueryStrings { get; }
         /// <inheritdoc/>
-        public IServiceProvider InternalServiceProvider { get;  }
+        public IServiceProvider InternalServiceProvider { get; }
     }
 }

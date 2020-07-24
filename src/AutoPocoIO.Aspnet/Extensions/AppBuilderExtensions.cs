@@ -90,7 +90,7 @@ namespace AutoPocoIO.Extensions
             config.EnableDependencyInjection();
             config.Count().Filter().OrderBy().Expand().Select().MaxTop(1000);
 
-            
+
             builder.UseWithDependencyInjection<LoggingMiddleware.LogRequestAndResponseMiddleware>(config);
 
             if (options.UseDashboard)
@@ -123,7 +123,7 @@ namespace AutoPocoIO.Extensions
             //WebApi Resolver
             config.DependencyResolver = new AutoPocoDependencyResolver(container);
             config.MessageHandlers.Insert(0, new RequestScopeFromOwinHandler());
-            
+
             //MVC Resolver
             DependencyResolver.SetResolver(new AutoPocoDependencyResolver(container));
 

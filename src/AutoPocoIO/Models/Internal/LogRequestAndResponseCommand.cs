@@ -14,6 +14,6 @@ namespace AutoPocoIO.Models
 
         //Differences from MVC and WebApi
         public string RequestType { get; set; }
-        
+
     }
 }

@@ -71,7 +71,7 @@ namespace AutoPocoIO.MsSql.test.Resources
 
             var connStringFactory = new Mock<IConnectionStringFactory>();
             connStringFactory.Setup(c => c.GetConnectionInformation(1, "conn1"))
-                .Returns(new ConnectionInformation { InitialCatalog  = "dbo"});
+                .Returns(new ConnectionInformation { InitialCatalog = "dbo" });
 
             var services = new ServiceCollection();
             services.AddSingleton(Mock.Of<IDbSchemaBuilder>());
@@ -128,7 +128,7 @@ namespace AutoPocoIO.MsSql.test.Resources
             command.Setup(c => c.ExecuteReader()).Returns(reader.Object);
 
             var resource = new MsSqlResource(new ServiceCollection().BuildServiceProvider());
-            resource.ConfigureAction(new Connector { ResourceType = 1, Schema = "sch1", ConnectionString = "conn1"}, OperationType.Any, "Name2");
+            resource.ConfigureAction(new Connector { ResourceType = 1, Schema = "sch1", ConnectionString = "conn1" }, OperationType.Any, "Name2");
 
             var results = (IDictionary<string, object>)resource.ExecuteProc(new Dictionary<string, object>());
 

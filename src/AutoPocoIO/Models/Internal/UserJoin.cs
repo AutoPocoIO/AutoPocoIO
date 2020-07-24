@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AutoPocoIO.Models
 {
     [Table("UserJoin", Schema = "AutoPoco")]
-    public class UserJoin 
+    public class UserJoin
     {
         [Key]
         public string Id { get; set; }

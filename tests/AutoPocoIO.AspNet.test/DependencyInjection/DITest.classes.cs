@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace AutoPocoIO.AspNet.test.DependencyInjection
@@ -29,7 +28,7 @@ namespace AutoPocoIO.AspNet.test.DependencyInjection
 
     public class ClassWtihConstructors
     {
-        public ClassWtihConstructors(Class1 c1) 
+        public ClassWtihConstructors(Class1 c1)
         {
             this.c1 = c1;
         }

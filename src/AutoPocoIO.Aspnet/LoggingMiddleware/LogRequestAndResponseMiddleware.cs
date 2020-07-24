@@ -2,7 +2,6 @@
 using AutoPocoIO.Owin;
 using AutoPocoIO.Services;
 using Microsoft.Owin;
-using Swashbuckle.Swagger;
 using System;
 using System.IO;
 using System.Text;
@@ -17,7 +16,7 @@ namespace AutoPocoIO.LoggingMiddleware
     public class LogRequestAndResponseMiddleware : IOwinMiddlewareWithDI
     {
         private readonly ILoggingService _loggingService;
-        
+
 
         /// <summary>
         /// Initialize middleware on request with services

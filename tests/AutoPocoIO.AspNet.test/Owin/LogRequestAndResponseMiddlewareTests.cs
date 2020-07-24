@@ -8,7 +8,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Owin;
 using System;
-using System.IO;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -145,11 +144,11 @@ namespace AutoPocoIO.AspNet.test.Owin
                 Assert.AreEqual("end of pipeline", response.Content.ReadAsStringAsync().Result);
 
                 logger.Verify(c => c.LogAll(), Times.Once);
-                
+
             }
         }
 
- 
+
         [TestMethod]
         public void SetExceptionInLogger()
         {

@@ -4,7 +4,6 @@ using AutoPocoIO.Dashboard.Repos;
 using AutoPocoIO.Dashboard.ViewModels;
 using AutoPocoIO.Middleware;
 using AutoPocoIO.Middleware.Dispatchers;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -100,7 +99,7 @@ namespace AutoPocoIO.test.Dashboard.Pages
             var page = new ConnectorForm(Mock.Of<IConnectorRepo>(), Mock.Of<ILayoutPage>());
             page.SetForm(formValues);
 
-            var model = (ConnectorViewModel) new PrivateObject(page).GetField("model");
+            var model = (ConnectorViewModel)new PrivateObject(page).GetField("model");
 
             Assert.AreEqual("1234", model.Id);
             Assert.AreEqual(1, model.ResourceType);
@@ -185,7 +184,7 @@ namespace AutoPocoIO.test.Dashboard.Pages
         [TestCategory(TestCategories.Unit)]
         public void UpdateLogsAndRedirects()
         {
-            var connector = new ConnectorViewModel { Id = "123",  Name = "abc" };
+            var connector = new ConnectorViewModel { Id = "123", Name = "abc" };
 
             var repo = new Mock<IConnectorRepo>();
             repo.Setup(c => c.Save(connector)).Returns("123");

@@ -48,7 +48,7 @@ namespace AutoPocoIO.DynamicSchema.Models
         /// Connector name.
         /// </summary>
         public string DatabaseConnectorName { get; set; }
-       
+
         /// <summary>
         /// Formated user joins and virtual entity joins for schema call.
         /// </summary>
@@ -71,6 +71,6 @@ namespace AutoPocoIO.DynamicSchema.Models
         /// <summary>
         /// All connectors used to call database object.  Used to link cross database calls.
         /// </summary>
-        public IEnumerable<string> UsedConnectors { get;  set; }
+        public IEnumerable<string> UsedConnectors { get; set; }
     }
 }

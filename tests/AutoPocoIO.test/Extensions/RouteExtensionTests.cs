@@ -55,7 +55,7 @@ namespace AutoPocoIO.test.Extensions
             CollectionAssert.AreEqual(expected, results);
         }
 
-       
+
 
     }
 }

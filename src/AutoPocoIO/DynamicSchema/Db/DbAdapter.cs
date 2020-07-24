@@ -47,7 +47,7 @@ namespace AutoPocoIO.DynamicSchema.Db
             Instance = (DbContextBase)Activator.CreateInstance(typeof(DbContextBase),
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance,
                 null,
-                new object[] { dbContextOptions, _dynamicClassBuilder.ExistingAssemblies, _dbSchema.Tables},
+                new object[] { dbContextOptions, _dynamicClassBuilder.ExistingAssemblies, _dbSchema.Tables },
                 null);
 
             //Entity DbSet
@@ -148,8 +148,8 @@ namespace AutoPocoIO.DynamicSchema.Db
             return PK;
         }
 
-        private IEnumerable<PrimaryKeyInformation> GetPrimaryKeyInformation<TDbSet, TModel>(TModel value) 
-            where TDbSet : class 
+        private IEnumerable<PrimaryKeyInformation> GetPrimaryKeyInformation<TDbSet, TModel>(TModel value)
+            where TDbSet : class
             where TModel : class
         {
             return GetPrimaryKeyName<TDbSet>()
@@ -233,6 +233,6 @@ namespace AutoPocoIO.DynamicSchema.Db
             _disposed = true;
         }
 
-   
+
     }
 }

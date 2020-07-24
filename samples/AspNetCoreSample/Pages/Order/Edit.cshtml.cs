@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AspNetCoreSample.ViewModels;
+﻿using AspNetCoreSample.ViewModels;
 using AutoPocoIO.Api;
 using AutoPocoIO.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AspNetCoreSample.Pages.Order
 {
@@ -44,7 +42,7 @@ namespace AspNetCoreSample.Pages.Order
                                        .Select(c => new SelectListItem { Text = c.Name, Value = c.Staff_id.ToString() });
         }
 
-        public  IActionResult OnPost()
+        public IActionResult OnPost()
         {
             _tableOperations.UpdateRow("sampleSales", "orders", item, _loggingService);
             return RedirectToPage("../Index");

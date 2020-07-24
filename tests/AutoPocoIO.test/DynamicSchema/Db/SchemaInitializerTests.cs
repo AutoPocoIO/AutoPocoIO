@@ -54,7 +54,7 @@ namespace AutoPocoIO.Auth.test.DynamicSchema
 
             var schmea = new SchemaInitializer(config,
              schemaBuilder.Object, Mock.Of<IDbSchema>());
-            
+
             schmea.Initilize();
 
             schemaBuilder.Verify(c => c.GetTableViews(), Times.Once);

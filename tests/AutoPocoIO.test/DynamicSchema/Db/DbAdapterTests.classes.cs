@@ -6,7 +6,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
     partial class DbAdapterTests
     {
         [DatabaseName("Db1")]
-        [Table("tbla", Schema ="dbo")]
+        [Table("tbla", Schema = "dbo")]
         private class _dbo_tbla
         {
             public int Id { get; set; }

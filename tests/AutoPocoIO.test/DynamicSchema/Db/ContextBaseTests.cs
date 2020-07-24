@@ -86,7 +86,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             public void TestModelCreation(ModelBuilder model) { OnModelCreating(model); }
         }
 
-       
+
 
         [TestMethod]
         public void CheckSetExists()

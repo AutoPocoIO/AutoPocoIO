@@ -24,7 +24,7 @@ namespace AutoPocoIO.Dashboard.Pages
         /// <param name="repo">Database access.</param>
         /// <param name="layout">Unified layout.</param>
         public ConnectorForm(IConnectorRepo repo, ILayoutPage layout)
-            :base(layout, "Connectors - AutoPoco")
+            : base(layout, "Connectors - AutoPoco")
         {
             _repo = repo;
             errors = new Dictionary<string, string>();

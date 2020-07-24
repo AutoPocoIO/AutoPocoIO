@@ -1,6 +1,5 @@
 ﻿using AutoPocoIO.Constants;
 using AutoPocoIO.Context;
-using AutoPocoIO.Models;
 using AutoPocoIO.Services;
 using AutoPocoIO.test.TestHelpers;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +30,7 @@ namespace AutoPocoIO.test.Services
             TimeProvider.Setup(c => c.UtcNow).Returns(new DateTime(2020, 1, 1));
             loggingService = new LoggingService(TimeProvider.Object, scopeFactory.Object);
 
-    
+
         }
 
         [TestMethod]
@@ -57,7 +56,7 @@ namespace AutoPocoIO.test.Services
             }
         }
 
-      
+
         [TestMethod]
         public void ViewRead()
         {

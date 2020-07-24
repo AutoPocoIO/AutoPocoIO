@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace AutoPocoIO.test.Dashboard.Repos
@@ -39,8 +38,19 @@ namespace AutoPocoIO.test.Dashboard.Repos
 
             mockFactory.Setup(c => c.CreateConnectionString(1, It.IsAny<ConnectionInformation>()))
                 .Callback<int, ConnectionInformation>((r, c) => connectionInformation = c)
+
+                /* Unmerged change from project 'AutoPocoIO.test (net461)'
+                Before:
+                                .Returns("conn1");
+
+                            factory = mockFactory.Object;
+                After:
+                                .Returns("conn1");
+
+                            factory = mockFactory.Object;
+                */
                 .Returns("conn1");
-            
+
             factory = mockFactory.Object;
 
         }
@@ -237,7 +247,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             Assert.AreEqual(2, count);
         }
 
-        
+
 
 
     }

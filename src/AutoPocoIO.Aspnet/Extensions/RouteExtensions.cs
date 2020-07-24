@@ -56,7 +56,7 @@ namespace AutoPocoIO.Extensions
 
         internal static string GetIPFromLogParameters(this ContextLogParameters logParameters)
         {
-           return logParameters.Context.Request.RemoteIpAddress.ToString(CultureInfo.InvariantCulture);
+            return logParameters.Context.Request.RemoteIpAddress.ToString(CultureInfo.InvariantCulture);
         }
 
     }

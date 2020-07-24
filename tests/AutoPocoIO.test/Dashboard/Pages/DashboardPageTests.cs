@@ -66,7 +66,7 @@ namespace AutoPocoIO.test.Dashboard.Pages
             Assert.AreEqual("", page.ViewBag["IsWeekly"]);
             Assert.AreEqual("active", page.ViewBag["IsDaily"]);
 
-            CollectionAssert.AreEqual(new[] { "vals" }, (string[]) page.ViewBag["GraphLabels"]);
+            CollectionAssert.AreEqual(new[] { "vals" }, (string[])page.ViewBag["GraphLabels"]);
             CollectionAssert.AreEqual(new[] { 1 }, (int[])page.ViewBag["SuccessfulGraph"]);
             CollectionAssert.AreEqual(new[] { 2 }, (int[])page.ViewBag["FailGraph"]);
 

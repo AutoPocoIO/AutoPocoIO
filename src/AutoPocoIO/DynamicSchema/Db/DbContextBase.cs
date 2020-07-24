@@ -47,7 +47,7 @@ namespace AutoPocoIO.DynamicSchema.Db
                 if (pks.Any())
                     modelBuilder.Entity(tableType).HasKey(pks.ToArray());
                 else
-                    throw new NoPrimaryKeyFoundException($"{table.Database}.{table.Schema}.{table.Name}");    
+                    throw new NoPrimaryKeyFoundException($"{table.Database}.{table.Schema}.{table.Name}");
             }
         }
 

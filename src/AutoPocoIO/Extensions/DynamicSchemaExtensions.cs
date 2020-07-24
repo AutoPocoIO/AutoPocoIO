@@ -96,7 +96,8 @@ namespace AutoPocoIO.Extensions
             try
             {
                 return method.Invoke(obj, parameters);
-            } catch (TargetInvocationException ex)
+            }
+            catch (TargetInvocationException ex)
             {
                 throw ex.InnerException;
             }

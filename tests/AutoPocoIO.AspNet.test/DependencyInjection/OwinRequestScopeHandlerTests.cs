@@ -13,7 +13,7 @@ namespace AutoPocoIO.AspNet.test.DependencyInjection
     public class OwinRequestScopeHandlerTests
     {
 
-        private class PublicHandler: RequestScopeFromOwinHandler
+        private class PublicHandler : RequestScopeFromOwinHandler
         {
             public PublicHandler()
             {

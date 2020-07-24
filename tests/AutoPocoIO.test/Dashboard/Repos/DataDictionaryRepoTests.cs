@@ -6,15 +6,10 @@ using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
-using Microsoft.EntityFrameworkCore.Update;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.AutoPoco;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoPocoIO.test.Dashboard.Repos
 {
@@ -60,7 +55,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             var tableDef = new TableDefinition();
             var resource = new Mock<IOperationResource>();
             resource.Setup(c => c.GetTableDefinition()).Returns(tableDef);
-               
+
             var factory = new Mock<IResourceFactory>();
             factory.Setup(c => c.GetResourceById("123", OperationType.Any, "tbl12")).Returns(resource.Object);
 
@@ -70,7 +65,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             Assert.AreEqual(tableDef, result);
         }
 
-       
+
         private class OneToManyNav
         {
             public int id { get; set; }

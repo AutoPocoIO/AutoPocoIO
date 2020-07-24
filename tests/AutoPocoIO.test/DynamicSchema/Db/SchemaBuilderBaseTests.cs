@@ -112,8 +112,8 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
             builder.GetColumns();
 
-           //Verify object counts/not null
-           Assert.AreEqual(1, schema.Tables.Count());
+            //Verify object counts/not null
+            Assert.AreEqual(1, schema.Tables.Count());
         }
 
 
@@ -174,7 +174,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void DbObjectNotFound()
         {
-           
+
             config.IncludedTable = "tbl123";
             config.UsedConnectors = new List<string> { "conn1" };
 
@@ -222,7 +222,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         [TestMethod]
         public void VerifyFKColumnPropertiesIgnoredInView()
         {
-           config.IncludedTable = "tbl123";
+            config.IncludedTable = "tbl123";
             config.UsedConnectors = new List<string> { "conn1" };
             config.PropertyPreFixName = "pre123_";
 
@@ -256,7 +256,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         [TestMethod]
         public void MergeMultipleConnectors()
         {
-            
+
 
             config.IncludedTable = "tbl123";
             config.UsedConnectors = new List<string> { "conn1", "conn2" };

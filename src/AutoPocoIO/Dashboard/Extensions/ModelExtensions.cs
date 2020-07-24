@@ -51,7 +51,7 @@ namespace AutoPocoIO.Dashboard.Extensions
                         arrayExpr,
                         indexExpression,
                         valueExpr).Compile();
-                    
+
                     for (int i = 0; i < form[key].Length; i++)
                     {
                         assignFunc(values, i, FindValue(type.GetElementType(), form[key][i]));
@@ -67,7 +67,7 @@ namespace AutoPocoIO.Dashboard.Extensions
             return (TProperty)property;
         }
 
-       
+
         /// <summary>
         /// Get string value from Regex match
         /// </summary>
@@ -95,6 +95,6 @@ namespace AutoPocoIO.Dashboard.Extensions
             return property;
         }
 
-  
+
     }
 }

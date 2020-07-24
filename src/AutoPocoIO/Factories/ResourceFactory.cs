@@ -47,7 +47,7 @@ namespace AutoPocoIO.Factories
             return GetResourceType(connector, dbAction, dbObjectName);
         }
 
-        
+
         private IOperationResource GetResourceType(Connector connector, OperationType dbAction, string dbObjectName)
         {
             IOperationResource resource;

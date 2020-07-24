@@ -1,8 +1,6 @@
 ﻿using AutoPocoIO.Context;
-using AutoPocoIO.Dashboard.Pages;
 using AutoPocoIO.Middleware;
 using AutoPocoIO.Models;
-using AutoPocoIO.Resources;
 using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

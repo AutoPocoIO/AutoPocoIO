@@ -45,7 +45,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         [ExpectedException(typeof(ArgumentNullException))]
         public void QueryIsNotNull()
         {
-           new MsSqlDbSchemaBuilder(null, config, schema.Object, typeMapper);
+            new MsSqlDbSchemaBuilder(null, config, schema.Object, typeMapper);
         }
 
         [TestMethod]

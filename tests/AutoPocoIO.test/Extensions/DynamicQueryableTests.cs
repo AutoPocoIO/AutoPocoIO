@@ -14,7 +14,7 @@ namespace AutoPocoIO.test.Extensions
     {
 
 
-       [TestMethod]
+        [TestMethod]
         public void AddPropertySingleProperty()
         {
             string select = DynamicQueryable.AddProperties(typeof(SinglePropertyClass), typeof(SinglePropertyClass), new List<object>());

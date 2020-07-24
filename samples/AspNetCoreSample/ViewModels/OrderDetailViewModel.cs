@@ -16,7 +16,7 @@ namespace AspNetCoreSample.ViewModels
         public IEnumerable<OrderItemsViewModel> Order_itemsListFromOrder_id { get; set; }
     }
 
- 
+
 
 
 

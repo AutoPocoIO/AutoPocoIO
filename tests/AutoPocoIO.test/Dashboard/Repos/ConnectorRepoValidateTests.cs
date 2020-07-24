@@ -26,7 +26,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
 
             db = new AppDbContext(appDbOptions);
             repo = new ConnectorRepo(db, Mock.Of<IConnectionStringFactory>());
-            errors =  new Dictionary<string, string>();
+            errors = new Dictionary<string, string>();
         }
 
         [TestMethod]

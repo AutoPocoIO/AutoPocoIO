@@ -1,12 +1,8 @@
 ﻿using AutoPocoIO.Middleware;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoPocoIO.test.Middleware
 {
@@ -16,7 +12,7 @@ namespace AutoPocoIO.test.Middleware
     {
         private class RazorPublic : RazorPage
         {
-            public RazorPublic(ILayoutPage layout, string title) 
+            public RazorPublic(ILayoutPage layout, string title)
                 : base(layout, title)
             {
             }
@@ -99,7 +95,7 @@ namespace AutoPocoIO.test.Middleware
         [TestMethod]
         public void DefineSectionAddsToLayout()
         {
-            string sectionValue = ""; 
+            string sectionValue = "";
             var layout = new Mock<ILayoutPage>();
             layout.SetupSet(c => c.Sections["s1"] = It.IsAny<string>())
                 .Callback<string, string>((key, val) => sectionValue = val);

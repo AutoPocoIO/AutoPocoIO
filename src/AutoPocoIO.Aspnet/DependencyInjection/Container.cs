@@ -60,7 +60,7 @@ namespace AutoPoco.DependencyInjection
             //Requested a list
             if (typeof(IEnumerable).IsAssignableFrom(serviceType))
                 return GetServices(serviceType.GenericTypeArguments[0]);
-         
+
             if (_serviceRegistry.TryGetRegistration(serviceType, out var registration))
                 return GetOrCreateInstance(serviceType, registration);
 
@@ -77,7 +77,7 @@ namespace AutoPoco.DependencyInjection
 
             IList services = serviceListFunc(implementations.Count);
 
-            for(int i = 0; i < implementations.Count; i++)
+            for (int i = 0; i < implementations.Count; i++)
                 services[i] = GetOrCreateInstance(serviceType, implementations[i]);
 
             return (IEnumerable<object>)services;

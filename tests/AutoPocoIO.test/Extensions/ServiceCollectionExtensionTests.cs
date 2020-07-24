@@ -4,7 +4,6 @@ using AutoPocoIO.Extensions;
 using AutoPocoIO.Factories;
 using AutoPocoIO.LoggingMiddleware;
 using AutoPocoIO.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -94,7 +93,7 @@ namespace AutoPocoIO.test.Extensions
         public void RegisterDashbaordServices()
         {
             var services = new ServiceCollection();
-          //  services.AddAutDashboard();
+            //  services.AddAutDashboard();
 
             var provider = services.BuildServiceProvider();
             //Assert.IsNotNull(provider.GetService<IConnectionStringFactory>());

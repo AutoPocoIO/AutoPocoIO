@@ -43,7 +43,7 @@ namespace AutoPocoIO.DynamicSchema.Services.Migrations
                         {
                             types = assembly.DefinedTypes;
                         }
-                        catch(ReflectionTypeLoadException e)
+                        catch (ReflectionTypeLoadException e)
                         {
                             types = e.Types.Where(c => c != null);
                         }
@@ -59,7 +59,7 @@ namespace AutoPocoIO.DynamicSchema.Services.Migrations
                             result.Add(item.Id, item.Type.GetTypeInfo());
                         }
                     }
-                    
+
 
                     return result;
                 }

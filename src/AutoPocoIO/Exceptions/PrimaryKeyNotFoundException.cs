@@ -42,9 +42,9 @@ namespace AutoPocoIO.Exceptions
             return $"{GetAttribute<DatabaseNameAttribute>(entityType).DatabaseName}.{GetAttribute<TableAttribute>(entityType).Schema}.{GetAttribute<TableAttribute>(entityType).Name}";
         }
 
-        private static T GetAttribute<T>(Type entityType) where T: Attribute
+        private static T GetAttribute<T>(Type entityType) where T : Attribute
         {
-           return entityType.GetCustomAttribute<T>();
+            return entityType.GetCustomAttribute<T>();
         }
     }
 }

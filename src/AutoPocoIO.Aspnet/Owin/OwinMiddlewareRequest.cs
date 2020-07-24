@@ -82,7 +82,7 @@ namespace AutoPocoIO.Owin
                 _bodyCopy.Dispose();
             }
 
-        
+
 
             _isDisposed = true;
         }

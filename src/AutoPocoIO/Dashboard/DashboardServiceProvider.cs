@@ -80,7 +80,7 @@ namespace AutoPocoIO.Dashboard
                 //Request
                 services.AddTransient<IRequestHistoryRepo, RequestHistoryRepo>();
                 services.AddTransient<RequestHistoryPage>();
-                    
+
 
                 services.AddScoped<IDashboardRepo, DashboardRepo>();
                 services.AddScoped<DashboardPage>();

@@ -497,6 +497,6 @@ namespace AutoPocoIO.Resources
 
         private static string UserJoinPrefix(UserJoinConfiguration userJoin) => "UJ_" + userJoin.Alias;
 
-      
+
     }
 }

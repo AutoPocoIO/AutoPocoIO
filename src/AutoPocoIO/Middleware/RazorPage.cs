@@ -17,7 +17,7 @@ namespace AutoPocoIO.Middleware
     {
         private readonly StringBuilder _content;
         private string _body;
-        
+
         /// <summary>
         /// Initialize the page base.
         /// </summary>
@@ -60,7 +60,7 @@ namespace AutoPocoIO.Middleware
         /// <summary>
         /// Get or set request scoped logging service
         /// </summary>
-        public ILoggingService  LoggingService { get; set; }
+        public ILoggingService LoggingService { get; set; }
         /// <summary>
         /// Get html render sections
         /// </summary>
@@ -179,7 +179,7 @@ namespace AutoPocoIO.Middleware
         protected string TransformUrl(string url)
         {
             Check.NotNull(url, nameof(url));
-            return Context.Request.PathBase +  url;
+            return Context.Request.PathBase + url;
         }
 
 
@@ -251,13 +251,13 @@ namespace AutoPocoIO.Middleware
             var html = value as NonEscapedString;
             WriteLiteral(html?.ToString() ?? Encode(value.ToString()));
         }
-       
 
-      /// <summary>
-      /// 
-      /// </summary>
-      /// <param name="list"></param>
-      /// <returns></returns>
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
         protected static NonEscapedString TransformArray(object list)
         {
             Check.NotNull(list, nameof(list));
@@ -304,7 +304,7 @@ namespace AutoPocoIO.Middleware
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
-        protected T GetViewBagValue<T>(string key) where T: class
+        protected T GetViewBagValue<T>(string key) where T : class
         {
             _ = ViewBag.TryGetValue(key, out object value);
             return value as T;
@@ -315,7 +315,7 @@ namespace AutoPocoIO.Middleware
         /// <param name="errorName">Viewbag key</param>
         /// <param name="errorKey">Error message key</param>
         /// <returns></returns>
-        protected string GetError(string errorName, string errorKey) 
+        protected string GetError(string errorName, string errorKey)
         {
             if (ViewBag[errorName] is IDictionary<string, string> errors && errors.TryGetValue(errorKey, out string errorMessage))
                 return errorMessage;

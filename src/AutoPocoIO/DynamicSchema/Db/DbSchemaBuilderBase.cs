@@ -194,7 +194,7 @@ namespace AutoPocoIO.DynamicSchema.Db
             };
 
             //Add PK/FK Info to column
-            if(currentObjectType == DBOjectType.Table)
+            if (currentObjectType == DBOjectType.Table)
             {
                 column.PKName = row["PKName"].ToString();
                 column.PKPosition = Convert.ToInt32(row["PKPosition"], CultureInfo.InvariantCulture);

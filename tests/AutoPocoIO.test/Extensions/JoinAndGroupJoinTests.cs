@@ -54,7 +54,7 @@ namespace AutoPocoIO.test.Extensions
         public void GroupJoinWithStringValues()
         {
             var list = new List<ViewModel1>
-            { 
+            {
                 new ViewModel1
                 {
                      Id = "1",
@@ -68,7 +68,7 @@ namespace AutoPocoIO.test.Extensions
                      Name = "Name2"
                 }
             }.AsQueryable();
-          
+
 
             var results = list.GroupJoin<dynamic>(list, "outer.Id", "inner.Id2", "new(outer.Name, group as ResouceTypes)")
                 .ToList();

@@ -1,14 +1,10 @@
-﻿using AutoPocoIO.DynamicSchema.Enums;
-using AutoPocoIO.Exceptions;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using AutoPocoIO.Exceptions;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Dynamic;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
@@ -46,17 +42,17 @@ namespace System.Linq.AutoPoco
             var properties = destType.GetProperties().Where(c => c.CanWrite);
             List<T> mapped = new List<T>();
 
-            foreach(var sourceObject in source)
+            foreach (var sourceObject in source)
             {
                 var destObject = Activator.CreateInstance<T>();
-                foreach(var property in properties)
+                foreach (var property in properties)
                 {
                     var value = sourceObject.FirstOrDefault(c => c.Key.Equals(property.Name, StringComparison.OrdinalIgnoreCase)).Value;
                     if (value == DBNull.Value)
                         value = null;
                     property.SetValue(destObject, value);
                 }
-                    
+
 
                 mapped.Add(destObject);
             }
@@ -65,9 +61,22 @@ namespace System.Linq.AutoPoco
         }
 
         public static string AddProperties(Type souceType, Type destType, List<object> values, string navPropertyNamePlusDot = "")
+
+        /* Unmerged change from project 'AutoPocoIO (net461)'
+        Before:
+                {
+
+
+                    var destProperties = destType.GetProperties();
+        After:
+                {
+
+
+                    var destProperties = destType.GetProperties();
+        */
         {
-            
-         
+
+
             var destProperties = destType.GetProperties();
             List<string> matchingProperties = new List<string>();
 
@@ -89,7 +98,7 @@ namespace System.Linq.AutoPoco
                         && !destProperty.PropertyType.GenericTypeArguments[0].IsPrimitive)
                     {
                         string navToManySelector = $"{ navPropertyNamePlusDot}{ destProperty.Name}.Select(";
-                        navToManySelector += AddProperties(sourcePropertyInfo.PropertyType.GenericTypeArguments[0], 
+                        navToManySelector += AddProperties(sourcePropertyInfo.PropertyType.GenericTypeArguments[0],
                                                                 destProperty.PropertyType.GenericTypeArguments[0],
                                                                 values);
                         navToManySelector += $") as {navPropertyNamePlusDot}{destProperty.Name}";
@@ -119,8 +128,8 @@ namespace System.Linq.AutoPoco
             }
 
 
-            return  $"new {destType.FullName}(" +
-                     string.Join(", ", matchingProperties) + 
+            return $"new {destType.FullName}(" +
+                     string.Join(", ", matchingProperties) +
                      ")";
         }
 
@@ -378,23 +387,34 @@ namespace System.Linq.AutoPoco
             : base(message)
         {
             this.Position = position;
+
+            /* Unmerged change from project 'AutoPocoIO (net461)'
+            Before:
+                    }
+
+                    public int Position { get; private set; }
+            After:
+                    }
+
+                    public int Position { get; private set; }
+            */
         }
-        
+
         public int Position { get; private set; }
-       
+
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, Res.ParseExceptionFormat, Message, Position);
         }
-       
+
         public ParseException()
         {
         }
-       
+
         public ParseException(string message) : base(message)
         {
         }
-        
+
         public ParseException(string message, Exception innerException) : base(message, innerException)
         {
         }
@@ -581,7 +601,7 @@ namespace System.Linq.AutoPoco
             symbols.Add(name, value);
         }
 
-        
+
 
         public Expression Parse(Type resultType)
         {
@@ -1998,7 +2018,7 @@ namespace System.Linq.AutoPoco
             return d;
         }
     }
-    
+
 
 
     [ExcludeFromCodeCoverage]

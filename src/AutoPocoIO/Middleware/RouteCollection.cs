@@ -12,7 +12,7 @@ namespace AutoPocoIO.Middleware
     {
         private readonly List<Tuple<string, HttpMethodType, IMiddlewareDispatcher>> _dispatchers = new List<Tuple<string, HttpMethodType, IMiddlewareDispatcher>>();
 
-        public void Add(string pathTemplate, HttpMethodType method,  IMiddlewareDispatcher dispatcher)
+        public void Add(string pathTemplate, HttpMethodType method, IMiddlewareDispatcher dispatcher)
         {
             _dispatchers.Add(new Tuple<string, HttpMethodType, IMiddlewareDispatcher>(pathTemplate, method, dispatcher));
         }
@@ -41,13 +41,13 @@ namespace AutoPocoIO.Middleware
                 if (match.Success)
                 {
                     found = true;
-                    if(context.Request.Method.Equals(dispatcher.Item2.ToString(), StringComparison.OrdinalIgnoreCase))
+                    if (context.Request.Method.Equals(dispatcher.Item2.ToString(), StringComparison.OrdinalIgnoreCase))
                         return new Tuple<IMiddlewareDispatcher, Match>(dispatcher.Item3, match);
                 }
             }
 
             //Found but wrong http method
-            if(found)
+            if (found)
                 context.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
 
             return null;

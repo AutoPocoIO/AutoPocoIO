@@ -83,7 +83,7 @@ namespace AutoPocoIO.test.Dashboard.Pages
         [TestCategory(TestCategories.Unit)]
         public void ListSchemaSetsViewBag()
         {
-            var model = new SchemaViewModel() { ConnectorId= "123" };
+            var model = new SchemaViewModel() { ConnectorId = "123" };
             var repo = new Mock<IDataDictionaryRepo>();
             repo.Setup(c => c.ListSchemaObject("123")).Returns(model);
 

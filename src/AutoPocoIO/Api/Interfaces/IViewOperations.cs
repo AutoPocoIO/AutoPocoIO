@@ -1,5 +1,4 @@
-﻿using AutoPocoIO.Resources;
-using AutoPocoIO.Services;
+﻿using AutoPocoIO.Services;
 using System.Linq;
 
 namespace AutoPocoIO.Api

@@ -10,9 +10,9 @@ namespace AutoPocoIO.MsSql.test.Extensions
     [TestCategory(TestCategories.Unit)]
     public class StoredProcedureExtensionsTests
     {
-        private class Test1 
+        private class Test1
         {
-            public int id { get; set; } 
+            public int id { get; set; }
             public string name { get; set; }
         }
 
@@ -21,8 +21,8 @@ namespace AutoPocoIO.MsSql.test.Extensions
         {
             var output = new Dictionary<string, object>
             {
-                { "ResultSet", new List< Dictionary<string, object>> 
-                  { 
+                { "ResultSet", new List< Dictionary<string, object>>
+                  {
                     new Dictionary<string, object>
                     {
                         { "id", 1 },

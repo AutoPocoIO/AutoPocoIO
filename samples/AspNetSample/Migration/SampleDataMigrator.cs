@@ -39,7 +39,7 @@ namespace AspNetCoreSample.Migration
                     }
                 }
 
-               
+
             }
             catch (Exception) { }
 
@@ -71,7 +71,7 @@ namespace AspNetCoreSample.Migration
         private static string GetResource(Assembly assembly, string sqlName)
         {
             using (Stream s = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.Migration.{sqlName}.sql"))
-            using(StreamReader reader = new StreamReader(s))
+            using (StreamReader reader = new StreamReader(s))
             {
                 return reader.ReadToEnd();
             }

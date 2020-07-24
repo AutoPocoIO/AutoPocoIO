@@ -13,7 +13,7 @@ namespace AutoPocoIO.Resources
     /// <summary>
     /// Dynamic database access.
     /// </summary>
-    public interface IOperationResource 
+    public interface IOperationResource
     {
         /// <summary>
         /// Schema definition.

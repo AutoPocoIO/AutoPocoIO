@@ -1,5 +1,4 @@
-﻿using AutoPocoIO.DynamicSchema.Enums;
-using AutoPocoIO.Extensions;
+﻿using AutoPocoIO.Extensions;
 using AutoPocoIO.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

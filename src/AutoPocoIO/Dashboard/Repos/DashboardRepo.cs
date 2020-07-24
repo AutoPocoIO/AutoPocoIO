@@ -78,7 +78,7 @@ namespace AutoPocoIO.Dashboard.Repos
 
             var requests = _db.RequestLogs.GroupJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid },
                                                    c => new { RequestId = c.ResponseId, c.RequestGuid },
-                                                   (req, resp) => new { RequestTime = req.DateTimeUtc, IsSuccess = IsSuccessFunc(resp.FirstOrDefault().Status)})
+                                                   (req, resp) => new { RequestTime = req.DateTimeUtc, IsSuccess = IsSuccessFunc(resp.FirstOrDefault().Status) })
                                           .Where(c => c.RequestTime >= searchDate);
 
             var groups = requests.GroupBy(c => new
@@ -176,7 +176,7 @@ namespace AutoPocoIO.Dashboard.Repos
             var fail = new List<int>();
             for (int i = 0; i < 7; i++)
             {
-                if(i != 0)
+                if (i != 0)
                     keyTime = keyTime.AddDays(1);
                 keys.Add(keyTime.DayOfWeek.ToString());
 
@@ -234,6 +234,6 @@ namespace AutoPocoIO.Dashboard.Repos
                 return 0;
         }
 
-        
+
     }
 }

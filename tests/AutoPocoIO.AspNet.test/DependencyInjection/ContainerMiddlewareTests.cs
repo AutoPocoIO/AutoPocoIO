@@ -1,19 +1,13 @@
 ﻿using AutoPoco.DependencyInjection;
 using AutoPocoIO.AspNet.test.Owin;
+using Microsoft.Owin;
 using Microsoft.Owin.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Moq;
+using Owin;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Owin;
-using Moq;
-using System.Net.Http;
 using System.Web.Http.Dependencies;
-using System.Web;
-using Microsoft.Owin;
 
 namespace AutoPocoIO.AspNet.test.DependencyInjection
 {
