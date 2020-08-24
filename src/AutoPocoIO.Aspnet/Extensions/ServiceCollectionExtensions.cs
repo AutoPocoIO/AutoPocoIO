@@ -23,6 +23,9 @@ namespace AutoPocoIO.Extensions
         /// <returns></returns>
         public static IServiceCollection AddAutoPoco(this IServiceCollection services)
         {
+            //Try to add if missing
+            services.TryAddSingleton(new LoggingServiceOptions());
+
             return services
                 .AddDatabaseOperations()
                 .AddLogging()

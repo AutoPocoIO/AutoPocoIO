@@ -7,6 +7,7 @@ using AutoPocoIO.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AutoPocoIO.Services
@@ -62,7 +63,7 @@ namespace AutoPocoIO.Services
         }
 
         /// <inheritdoc/>
-        public void AddTableToLogger(string connectorName, string tableName, HttpMethodType httpMethod, string primaryKey)
+        public void AddTableToLogger(string connectorName, string tableName, HttpMethodType httpMethod, object[] primaryKey)
         {
             AddApiRequest(new LoggingApiContextValues
             {
@@ -70,7 +71,7 @@ namespace AutoPocoIO.Services
                 ResourceName = tableName,
                 ResourceType = "table",
                 HttpMethod = httpMethod.ToString(),
-                ResourceId = primaryKey
+                ResourceId = string.Join(";", primaryKey?.Select(c => c.ToString()) ?? new List<string>())
             }, _timeProvider.UtcNow);
         }
 

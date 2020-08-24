@@ -54,7 +54,15 @@ namespace AutoPocoIO.Api
         /// <param name="id">Primary Key(s)</param>
         /// <param name="loggingService">Include logging serivce to log this API call.</param>
         /// <returns>The removed object</returns>
-        object DeleteRow(string connectorName, string tableName, string id, ILoggingService loggingService = null);
+        object DeleteRow(string connectorName, string tableName, ILoggingService loggingService, params object[] id);
+        /// <summary>
+        /// Remove record from a given table
+        /// </summary>
+        /// <param name="connectorName">Name of the database to access.</param>
+        /// <param name="tableName">Name of the table in the database.</param>
+        /// <param name="id">Primary Key(s)</param>
+        /// <returns>The removed object</returns>
+        object DeleteRow(string connectorName, string tableName, params object[] id);
         /// <summary>
         /// Get all records from <paramref name="tableName"/>. Intended for WebAPI controller requests.
         /// </summary>
@@ -78,11 +86,19 @@ namespace AutoPocoIO.Api
         /// </summary>
         /// <param name="connectorName">The name of the connector to the table's schema.</param>
         /// <param name="tableName">The name of the table to retrieve the record from.</param>
-        /// <param name="id">The primary key value of the record to be retrieved as a string. 
-        /// For composite keys, use semicolon separated string</param>
+        /// <param name="id">The primary key value of the record to be retrieved as a string. </param>
         /// <param name="loggingService">LoggingService object to log the request. Null by default if no logging is required.</param>
         /// <returns>The record with matching PK. Null if not found.</returns>
-        object GetById(string connectorName, string tableName, string id, ILoggingService loggingService = null);
+        object GetById(string connectorName, string tableName, ILoggingService loggingService, params object[] id);
+        /// <summary>
+        /// Retrieves a single record from a table by Primary Key. Note: for composite PKs,
+        /// use a semicolon separated string.
+        /// </summary>
+        /// <param name="connectorName">The name of the connector to the table's schema.</param>
+        /// <param name="tableName">The name of the table to retrieve the record from.</param>
+        /// <param name="id">The primary key value of the record to be retrieved as a string. 
+        /// <returns>The record with matching PK. Null if not found.</returns>
+        object GetById(string connectorName, string tableName, params object[] id);
         /// <summary>
         /// Retrieves a single record from a table by Primary Key. Note: for composite PKs,
         /// use a semicolon separated string.
@@ -90,11 +106,20 @@ namespace AutoPocoIO.Api
         /// <typeparam name="TViewModel">View Model Type</typeparam>
         /// <param name="connectorName">Name of the database to access.</param>
         /// <param name="tableName">Name of the table in the database.</param>
-        /// <param name="id">The primary key value of the record to be retrieved as a string. 
-        /// For composite keys, use semicolon separated string</param>
+        /// <param name="id">The primary key value of the record to be retrieved as a string. </param>
         /// <param name="loggingService">Include logging serivce to log this API call.</param>
         /// <returns></returns>
-        TViewModel GetById<TViewModel>(string connectorName, string tableName, string id, ILoggingService loggingService = null) where TViewModel : class;
+        TViewModel GetById<TViewModel>(string connectorName, string tableName, ILoggingService loggingService, params object[] id) where TViewModel : class;
+        /// <summary>
+        /// Retrieves a single record from a table by Primary Key. Note: for composite PKs,
+        /// use a semicolon separated string.
+        /// </summary>
+        /// <typeparam name="TViewModel">View Model Type</typeparam>
+        /// <param name="connectorName">Name of the database to access.</param>
+        /// <param name="tableName">Name of the table in the database.</param>
+        /// <param name="id">The primary key value of the record to be retrieved as a string. </param>
+        /// <returns></returns>
+        TViewModel GetById<TViewModel>(string connectorName, string tableName, params object[] id) where TViewModel : class;
         /// <summary>
         /// Update record in a given table
         /// </summary>

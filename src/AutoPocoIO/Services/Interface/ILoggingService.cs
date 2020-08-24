@@ -58,7 +58,7 @@ namespace AutoPocoIO.Services
         /// <param name="tableName"></param>
         /// <param name="httpMethod">Http method type(GET, PUT, POST, DELETE)</param>
         /// <param name="primaryKey"></param>
-        void AddTableToLogger(string connectorName, string tableName, HttpMethodType httpMethod, string primaryKey);
+        void AddTableToLogger(string connectorName, string tableName, HttpMethodType httpMethod, object[] primaryKey);
         /// <summary>
         /// Add view operation to be logged.
         /// </summary>

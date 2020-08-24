@@ -76,7 +76,7 @@ namespace AutoPocoIO.Resources
         /// </summary>
         /// <param name="keys">Primary Key(s)</param>
         /// <returns></returns>
-        object DeleteResourceRecordById(string keys);
+        object DeleteResourceRecordById(object[] keys);
 
         /// <summary>
         /// Execute the configured stored procedure
@@ -90,7 +90,7 @@ namespace AutoPocoIO.Resources
         /// <param name="keys">The primary key value of the record to be retrieved as a string. 
         /// For composite keys, use semicolon separated string</param>
         /// <returns></returns>
-        object GetResourceRecordById(string keys);
+        object GetResourceRecordById(object[] keys);
         /// <summary>
         /// Retrieves a single record from a table by Primary Key.
         /// </summary>
@@ -98,7 +98,7 @@ namespace AutoPocoIO.Resources
         /// For composite keys, use semicolon separated string</param>
         /// <param name="queryString">Request query string to apply odata filters.</param>
         /// <returns></returns>
-        TViewModel GetResourceRecordById<TViewModel>(string keys, IDictionary<string, string> queryString);
+        TViewModel GetResourceRecordById<TViewModel>(object[] keys, IDictionary<string, string> queryString);
         /// <summary>
         /// Retrieves all records in a table
         /// </summary>
@@ -122,7 +122,7 @@ namespace AutoPocoIO.Resources
         /// <param name="keys">The primary key value of the record to be retrieved as a string. 
         /// For composite keys, use semicolon separated string</param>
         /// <returns></returns>
-        object UpdateResourceRecordById(JToken value, string keys);
+        object UpdateResourceRecordById(JToken value, object[] keys);
         /// <summary>
         /// Update a single record from a table by Primary Key.
         /// </summary>
@@ -131,7 +131,7 @@ namespace AutoPocoIO.Resources
         /// <param name="keys">The primary key value of the record to be retrieved as a string. 
         /// For composite keys, use semicolon separated string</param>
         /// <returns></returns>
-        TViewModel UpdateResourceRecordById<TViewModel>(TViewModel value, string keys) where TViewModel : class;
+        TViewModel UpdateResourceRecordById<TViewModel>(TViewModel value, object[] keys) where TViewModel : class;
         /// <summary>
         /// View column attirbutes
         /// </summary>
@@ -171,7 +171,7 @@ namespace AutoPocoIO.Resources
         /// <summary>
         /// Map input to the table primary key(s)
         /// </summary>
-        /// <returns>Semicolon seperate string of primary key values</returns>
-        string GetPrimaryKeys(object value);
+        /// <returns>Array of primary key values</returns>
+        object[] GetPrimaryKeys(object value);
     }
 }

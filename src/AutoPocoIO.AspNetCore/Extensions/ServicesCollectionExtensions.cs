@@ -26,6 +26,10 @@ namespace AutoPocoIO.Extensions
         /// <returns>The services collection so that further configuration can be chained.</returns>
         public static IServiceCollection AddAutoPoco(this IServiceCollection services)
         {
+            //Try to add if missing
+            services.TryAddSingleton(new LoggingServiceOptions());
+
+
             services.AddSwaggerGen(SwaggerConfig.SwaggerServicesFunc);
             services.AddSwaggerExamplesFromAssemblyOf<SwaggerConfig>();
 

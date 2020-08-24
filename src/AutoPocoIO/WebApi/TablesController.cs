@@ -5,6 +5,8 @@ using AutoPocoIO.Services;
 using AutoPocoIO.SwaggerAddons;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using AutoPocoIO.Exceptions;
+using System.Runtime.InteropServices;
 
 #if NETFULL
 using System.Web.Http;
@@ -67,8 +69,11 @@ namespace AutoPocoIO.WebApi
         [SwaggerResponse(200, "Single value found by the primary key", typeof(SwaggerExampleType))]
         [SwaggerOperation("getTableById")]
         [HttpGet]
-        public object Get(string connectorName, string tableName, string id) =>
-             _tableOps.GetById(connectorName, tableName, id, _loggingService);
+        public object Get(string connectorName, string tableName, string id)
+        {
+            Check.NotNull(id, nameof(id));
+            return _tableOps.GetById(connectorName, tableName, _loggingService, id.Split(new[] { ';' }, System.StringSplitOptions.RemoveEmptyEntries));
+        }
 
 
         /// <summary>
@@ -108,7 +113,10 @@ namespace AutoPocoIO.WebApi
         [Route("{id}")]
         [SwaggerResponse(200, "Deleted object", typeof(SwaggerExampleType))]
         [HttpDelete]
-        public object Delete(string connectorName, string tableName, string id) =>
-             _tableOps.DeleteRow(connectorName, tableName, id, _loggingService);
+        public object Delete(string connectorName, string tableName, string id)
+        {
+            Check.NotNull(id, nameof(id));
+            return _tableOps.DeleteRow(connectorName, tableName, _loggingService, id.Split(new[] { ';' }, System.StringSplitOptions.RemoveEmptyEntries));
+        }
     }
 }

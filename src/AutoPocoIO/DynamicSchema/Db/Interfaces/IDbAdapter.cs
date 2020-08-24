@@ -45,7 +45,7 @@ namespace AutoPocoIO.DynamicSchema.Db
         /// <param name="tableName">Table to search</param>
         /// <param name="keys">The values of the primary key for the entity to be found.</param>
         /// <returns></returns>
-        object Find(string tableName, string keys);
+        object Find(string tableName, object[] keys);
         /// <summary>
         /// Finds an entity with the given primary key values. If an entity with the given
         ///     primary key values is being tracked by the context, then it is returned immediately
@@ -56,7 +56,7 @@ namespace AutoPocoIO.DynamicSchema.Db
         /// <param name="tableName">Table to search</param>
         /// <param name="keys">The values of the primary key for the entity to be found.</param>
         /// <returns>A single value but still as an <see cref="IQueryable"/> to allow for joins.</returns>
-        IQueryable<object> FilterByKey(string tableName, string keys);
+        IQueryable<object> FilterByKey(string tableName, object[] keys);
         /// <summary>
         /// 
         /// </summary>

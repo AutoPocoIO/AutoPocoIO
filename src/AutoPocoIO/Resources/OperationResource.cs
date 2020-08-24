@@ -137,7 +137,7 @@ namespace AutoPocoIO.Resources
         }
 
         ///<inheritdoc/>
-        public virtual object GetResourceRecordById(string keys)
+        public virtual object GetResourceRecordById(object[] keys)
         {
             Check.NotNull(keys, nameof(keys));
 
@@ -148,7 +148,7 @@ namespace AutoPocoIO.Resources
         }
 
         ///<inheritdoc/>
-        public virtual TViewModel GetResourceRecordById<TViewModel>(string keys, IDictionary<string, string> queryString)
+        public virtual TViewModel GetResourceRecordById<TViewModel>(object[] keys, IDictionary<string, string> queryString)
         {
             Check.NotNull(keys, nameof(keys));
             Check.NotNull(queryString, nameof(queryString));
@@ -174,7 +174,7 @@ namespace AutoPocoIO.Resources
         }
 
         ///<inheritdoc/>
-        public virtual TViewModel UpdateResourceRecordById<TViewModel>(TViewModel value, string keys) where TViewModel : class
+        public virtual TViewModel UpdateResourceRecordById<TViewModel>(TViewModel value, object[] keys) where TViewModel : class
         {
             Check.NotNull(value, nameof(value));
             Check.NotNull(keys, nameof(keys));
@@ -199,7 +199,7 @@ namespace AutoPocoIO.Resources
         }
 
         ///<inheritdoc/>
-        public virtual object UpdateResourceRecordById(JToken value, string keys)
+        public virtual object UpdateResourceRecordById(JToken value, object[] keys)
         {
             Check.NotNull(value, nameof(value));
             Check.NotNull(keys, nameof(keys));
@@ -219,7 +219,7 @@ namespace AutoPocoIO.Resources
 
             return null;
         }
-        public string GetPrimaryKeys(object value)
+        public object[] GetPrimaryKeys(object value)
         {
             this.LoadDbAdapter();
             var tableVariableName = DbSchema.GetTableName(DatabaseName, SchemaName, DbObjectName);
@@ -227,17 +227,17 @@ namespace AutoPocoIO.Resources
             {
                 var map = Db.NewInstance(tableVariableName);
                 token.PopulateObjectFromJToken(map);
-                return string.Join(";", Db.MapPrimaryKey(map));
+                return Db.MapPrimaryKey(map).Select(c => c.ToString()).ToArray();
             }
             else
             {
                 Db.SetupDataContext(tableVariableName);
-                return string.Join(";", Db.MapPrimaryKey(value));
+                return Db.MapPrimaryKey(value).Select(c => c.ToString()).ToArray();
             }
         }
 
         ///<inheritdoc/>
-        public virtual object DeleteResourceRecordById(string keys)
+        public virtual object DeleteResourceRecordById(object[] keys)
         {
             this.LoadDbAdapter();
             var record = Db.Find(DbSchema.GetTableName(DatabaseName, SchemaName, DbObjectName), keys);

@@ -82,7 +82,7 @@ namespace AutoPocoIO.DynamicSchema.Db
             return dbset;
         }
 
-        public object Find(string tableName, string keys)
+        public object Find(string tableName, object[] keys)
         {
             SetupDataContext(tableName);
 
@@ -92,7 +92,7 @@ namespace AutoPocoIO.DynamicSchema.Db
             return singleRecord;
         }
 
-        public IQueryable<object> FilterByKey(string tableName, string keys)
+        public IQueryable<object> FilterByKey(string tableName, object[] keys)
         {
             SetupDataContext(tableName);
 
@@ -180,17 +180,17 @@ namespace AutoPocoIO.DynamicSchema.Db
             table.Remove((T)record);
         }
 
-        private T GetById<T>(object id) where T : class
+        private T GetById<T>(object[] id) where T : class
         {
             IQueryable<T> table = FilterById<T>(id);
             return table.Single();
         }
 
-        private IQueryable<T> FilterById<T>(object id) where T : class
+        private IQueryable<T> FilterById<T>(object[] id) where T : class
         {
             var itemParameter = Expression.Parameter(typeof(T), "item");
             var PKs = GetPrimaryKeyName<T>().ToArray()
-                        .GetTableKeys(id.ToString());
+                        .GetTableKeys(id);
 
             IQueryable<T> table = GetDbSet<T>();
 

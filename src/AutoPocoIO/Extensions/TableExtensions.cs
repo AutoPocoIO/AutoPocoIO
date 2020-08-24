@@ -9,14 +9,12 @@ namespace AutoPocoIO.Extensions
 {
     internal static class TableExtensions
     {
-        public static IList<PrimaryKeyInformation> GetTableKeys(this IList<PrimaryKeyInformation> PKs, string keys)
+        public static IList<PrimaryKeyInformation> GetTableKeys(this IList<PrimaryKeyInformation> PKs, object[] keys)
         {
-            var arrKeys = keys.Split(';');
-
-            for (int i = 0; i < arrKeys.Length; i++)
+            for (int i = 0; i < keys.Length; i++)
             {
                 var PK = PKs[i];
-                var keyValue = arrKeys[i];
+                var keyValue = keys[i];
 
                 var converter = TypeDescriptor.GetConverter(PK.Type);
                 PK.Value = converter.ConvertFrom(keyValue);

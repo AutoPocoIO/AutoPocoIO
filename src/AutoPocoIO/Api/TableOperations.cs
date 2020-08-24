@@ -71,7 +71,7 @@ namespace AutoPocoIO.Api
         }
 
         /// <inheritdoc />
-        public object GetById(string connectorName, string tableName, string id, ILoggingService loggingService = null)
+        public object GetById(string connectorName, string tableName, ILoggingService loggingService, params object[] id)
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET, id);
 
@@ -81,7 +81,13 @@ namespace AutoPocoIO.Api
         }
 
         /// <inheritdoc />
-        public TViewModel GetById<TViewModel>(string connectorName, string tableName, string id, ILoggingService loggingService = null) where TViewModel : class
+        public object GetById(string connectorName, string tableName, params object[] id)
+        {
+            return GetById(connectorName, tableName, null, id);
+        }
+
+        /// <inheritdoc />
+        public TViewModel GetById<TViewModel>(string connectorName, string tableName, ILoggingService loggingService, params object[] id) where TViewModel : class
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET, id);
 
@@ -97,6 +103,12 @@ namespace AutoPocoIO.Api
                 return resource.GetResourceRecordById<TViewModel>(id, new Dictionary<string, string>() { { "$expand", string.Join(",", joinProperties) } });
             else
                 return resource.GetResourceRecordById<TViewModel>(id, new Dictionary<string, string>());
+        }
+
+        /// <inheritdoc />
+        public TViewModel GetById<TViewModel>(string connectorName, string tableName,  params object[] id) where TViewModel : class
+        {
+            return GetById<TViewModel>(connectorName, tableName, null, id);
         }
 
         /// <inheritdoc />
@@ -127,7 +139,7 @@ namespace AutoPocoIO.Api
             Check.NotNull(value, nameof(value));
 
             IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.write, tableName);
-            string id = string.Empty;
+            object[] id = null;
             try
             {
                 id = resource.GetPrimaryKeys(value);
@@ -149,7 +161,7 @@ namespace AutoPocoIO.Api
         {
             IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.write, tableName);
 
-            string id = string.Empty;
+            object[] id = null;
             try
             {
                 id = resource.GetPrimaryKeys(value);
@@ -167,12 +179,18 @@ namespace AutoPocoIO.Api
         }
 
         /// <inheritdoc />
-        public object DeleteRow(string connectorName, string tableName, string id, ILoggingService loggingService = null)
+        public object DeleteRow(string connectorName, string tableName, ILoggingService loggingService, params object[] id)
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.DELETE, id);
 
             IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.delete, tableName);
             return resource.DeleteResourceRecordById(id);
+        }
+
+        /// <inheritdoc />
+        public object DeleteRow(string connectorName, string tableName, params object[] id)
+        {
+            return DeleteRow(connectorName, tableName, null, id);
         }
 
         /// <inheritdoc />
