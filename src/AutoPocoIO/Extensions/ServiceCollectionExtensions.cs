@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.Api;
 using AutoPocoIO.Context;
+using AutoPocoIO.Exceptions;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Migrations;
 using AutoPocoIO.Services;
@@ -20,6 +21,23 @@ namespace AutoPocoIO.Extensions
     /// </summary>
     public static partial class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Adds the minimum essential AutoPoco services to the specified <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/>
+        /// </summary>
+        /// <param name="services"> The <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/> to add services to.</param>
+        /// <param name="options">Events to fire before or after logging.</param>
+        /// <returns></returns>
+        public static IServiceCollection AddAutoPoco(this IServiceCollection services, Action<LoggingServiceOptions> options)
+        {
+            Check.NotNull(options, nameof(options));
+
+            LoggingServiceOptions events = new LoggingServiceOptions();
+            options(events);
+            services.AddSingleton(events);
+
+            return services.AddAutoPoco();
+        }
+
         /// <summary>
         /// Add database specific services
         /// </summary>

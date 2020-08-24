@@ -1,4 +1,6 @@
-﻿namespace AutoPocoIO.Models
+﻿using AutoPocoIO.Services;
+
+namespace AutoPocoIO.Models
 {
     /// <summary>
     /// Middileware set up options

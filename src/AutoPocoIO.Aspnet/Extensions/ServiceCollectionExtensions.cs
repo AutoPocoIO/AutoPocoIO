@@ -2,6 +2,7 @@
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.LoggingMiddleware;
 using AutoPocoIO.Owin;
+using AutoPocoIO.Services;
 using AutoPocoIO.WebApi;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -30,6 +31,7 @@ namespace AutoPocoIO.Extensions
                 .AddDI();
 
         }
+
 
         /// <summary>
         /// Register all WebApi and MVC controllers types.

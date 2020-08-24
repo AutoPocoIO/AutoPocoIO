@@ -18,16 +18,18 @@ namespace AutoPocoIO.Services
     {
         private readonly ITimeProvider _timeProvider;
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly LoggingServiceOptions _events;
         /// <summary>
         ///  Set up new logging for a request
         /// This constructor is not meant to be called in code.  Used for DI. 
         /// </summary>
         /// <param name="timeProvider">Localized time provider.</param>
         /// <param name="scopeFactory">Create to service scope for of thread logging.</param>
-        public LoggingService(ITimeProvider timeProvider, IServiceScopeFactory scopeFactory)
+        public LoggingService(ITimeProvider timeProvider, IServiceScopeFactory scopeFactory, LoggingServiceOptions events)
         {
             _timeProvider = timeProvider;
             _serviceScopeFactory = scopeFactory;
+            _events = events;
             ApiRequests = new List<LogRequestAndResponseCommand>();
         }
 
@@ -46,15 +48,6 @@ namespace AutoPocoIO.Services
         public string Exception { get; set; }
         /// <inheritdoc/>
         public virtual int LogCount { get { return ApiRequests.Count; } }
-
-        /// <summary>
-        ///  Represents an event called for each api request
-        /// </summary>
-        public Action<IServiceProvider, LogRequestAndResponseCommand, ILoggingService> OnLogging { get; set; }
-        /// <summary>
-        ///  Represents an event called after the http request is logged 
-        /// </summary>
-        public Action<IServiceProvider, ILoggingService> OnLogged { get; set; }
 
         /// <inheritdoc/>
         public void AddTableToLogger(string connectorName, string tableName, HttpMethodType httpMethod)
@@ -131,7 +124,7 @@ namespace AutoPocoIO.Services
                 }
                 finally
                 {
-                    OnLogged?.Invoke(scope.ServiceProvider, this);
+                    _events.OnLogged?.Invoke(scope.ServiceProvider, this);
                     scope.Dispose();
                 }
             });
@@ -153,7 +146,7 @@ namespace AutoPocoIO.Services
             Check.NotNull(command, nameof(command));
 
             var provider = scope.ServiceProvider;
-            OnLogging?.Invoke(provider, command, this);
+            _events.OnLogging?.Invoke(provider, command, this);
 
             var db = provider.GetRequiredService<LogDbContext>();
             LogHttpRequest(command, db);
