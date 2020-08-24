@@ -33,9 +33,9 @@ namespace AutoPocoIO.test.Extensions
             var provider = services.BuildServiceProvider();
 
 #if NETFULL
-            Assert.AreEqual(26, services.Count());
+            Assert.AreEqual(27, services.Count());
 #else
-            Assert.AreEqual(121, services.Count());
+            Assert.AreEqual(122, services.Count());
 #endif
         }
 
@@ -62,12 +62,32 @@ namespace AutoPocoIO.test.Extensions
 
             //Logging
             Assert.IsNotNull(provider.GetService<ITimeProvider>());
+            Assert.IsNotNull(provider.GetService<AutoPocoServiceOptions>());
             Assert.IsNotNull(provider.GetService<ILoggingService>());
 
 
             //Db Access
             Assert.IsNotNull(provider.GetService<IConnectionStringFactory>());
             Assert.IsNotNull(provider.GetService<IAppDatabaseSetupService>());
+        }
+
+
+        [TestMethod]
+        public void SetLoggingServiceOptions()
+        {
+            string verify = "notChanged";
+
+            var services = new ServiceCollection();
+            services.AddAutoPoco(c =>
+            {
+                c.OnLogged = (p, d) => verify = "changed";
+            });
+
+            var provider = services.BuildServiceProvider();
+
+            provider.GetService<AutoPocoServiceOptions>().OnLogged(null, null);
+
+            Assert.AreEqual("changed", verify);
 
         }
 

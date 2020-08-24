@@ -19,14 +19,14 @@ namespace AutoPocoIO.Services
     {
         private readonly ITimeProvider _timeProvider;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly LoggingServiceOptions _events;
+        private readonly AutoPocoServiceOptions _events;
         /// <summary>
         ///  Set up new logging for a request
         /// This constructor is not meant to be called in code.  Used for DI. 
         /// </summary>
         /// <param name="timeProvider">Localized time provider.</param>
         /// <param name="scopeFactory">Create to service scope for of thread logging.</param>
-        public LoggingService(ITimeProvider timeProvider, IServiceScopeFactory scopeFactory, LoggingServiceOptions events)
+        public LoggingService(ITimeProvider timeProvider, IServiceScopeFactory scopeFactory, AutoPocoServiceOptions events)
         {
             _timeProvider = timeProvider;
             _serviceScopeFactory = scopeFactory;

@@ -15,7 +15,7 @@ namespace AutoPocoIO.test.Dashboard.Pages
     {
         protected class LoggingServiceWtihPublicApi : LoggingService
         {
-            public LoggingServiceWtihPublicApi(ITimeProvider timeProvider, IServiceScopeFactory scopeFactory) : base(timeProvider, scopeFactory, new LoggingServiceOptions())
+            public LoggingServiceWtihPublicApi(ITimeProvider timeProvider, IServiceScopeFactory scopeFactory) : base(timeProvider, scopeFactory, new AutoPocoServiceOptions())
             {
             }
 

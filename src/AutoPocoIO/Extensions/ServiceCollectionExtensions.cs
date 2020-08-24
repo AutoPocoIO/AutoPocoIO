@@ -27,11 +27,11 @@ namespace AutoPocoIO.Extensions
         /// <param name="services"> The <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/> to add services to.</param>
         /// <param name="options">Events to fire before or after logging.</param>
         /// <returns></returns>
-        public static IServiceCollection AddAutoPoco(this IServiceCollection services, Action<LoggingServiceOptions> options)
+        public static IServiceCollection AddAutoPoco(this IServiceCollection services, Action<AutoPocoServiceOptions> options)
         {
             Check.NotNull(options, nameof(options));
 
-            LoggingServiceOptions events = new LoggingServiceOptions();
+            AutoPocoServiceOptions events = new AutoPocoServiceOptions();
             options(events);
             services.AddSingleton(events);
 
