@@ -30,7 +30,7 @@ namespace AspNetCoreSample.Pages.Order
         public void OnGet(int orderId)
         {
             //Not logged example because logger is not passed to operation
-            item = _tableOperations.GetById<OrderDetailViewModel>("sampleSales", "orders", orderId.ToString());
+            item = _tableOperations.GetById<OrderDetailViewModel>("sampleSales", "orders", orderId);
             Stores = _tableOperations.GetAll<StoreViewModel>("sampleSales", "stores")
                                      .OrderBy(c => c.store_name)
                                      .Select(c => new SelectListItem { Text = c.store_name, Value = c.Store_Id.ToString() });

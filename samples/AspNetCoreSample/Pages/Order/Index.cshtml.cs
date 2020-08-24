@@ -17,7 +17,7 @@ namespace AspNetCoreSample.Pages.Order
         public void OnGet(int orderId)
         {
             //Not logged example because logger is not passed to operation
-            item = _tableOperations.GetById<OrderDetailViewModel>("sampleSales", "orders", orderId.ToString());
+            item = _tableOperations.GetById<OrderDetailViewModel>("sampleSales", "orders", orderId);
         }
     }
 }
