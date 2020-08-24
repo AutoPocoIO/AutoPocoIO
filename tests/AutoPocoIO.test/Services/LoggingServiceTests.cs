@@ -28,7 +28,7 @@ namespace AutoPocoIO.test.Services
             scopeFactory.Setup(c => c.CreateScope()).Returns(scope);
 
             TimeProvider.Setup(c => c.UtcNow).Returns(new DateTime(2020, 1, 1));
-            loggingService = new LoggingService(TimeProvider.Object, scopeFactory.Object);
+            loggingService = new LoggingService(TimeProvider.Object, scopeFactory.Object, new LoggingServiceOptions());
 
 
         }

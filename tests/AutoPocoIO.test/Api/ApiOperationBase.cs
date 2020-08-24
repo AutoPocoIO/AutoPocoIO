@@ -23,7 +23,7 @@ namespace AutoPocoIO.test.Api
 
         protected class LoggingServiceCheckApi : LoggingService
         {
-            public LoggingServiceCheckApi(ITimeProvider timeProvider) : base(timeProvider, Mock.Of<IServiceScopeFactory>())
+            public LoggingServiceCheckApi(ITimeProvider timeProvider) : base(timeProvider, Mock.Of<IServiceScopeFactory>(), new LoggingServiceOptions())
             {
             }
 

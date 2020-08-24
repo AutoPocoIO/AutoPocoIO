@@ -58,7 +58,7 @@ namespace AutoPocoIO.test.WebApi
         {
             var obj = new { a = 1 };
 
-            Ops.Setup(c => c.GetById("conn", "tbl", "14", LoggingService))
+            Ops.Setup(c => c.GetById("conn", "tbl", LoggingService, "14"))
                 .Returns(obj);
 
             var controller = new TablesController(Ops.Object, LoggingService, _queryStringService);
@@ -101,7 +101,7 @@ namespace AutoPocoIO.test.WebApi
         {
             var obj = new { a = 1 };
 
-            Ops.Setup(c => c.DeleteRow("conn", "tbl", "14", LoggingService))
+            Ops.Setup(c => c.DeleteRow("conn", "tbl",  LoggingService, "14"))
                 .Returns(obj);
 
             var controller = new TablesController(Ops.Object, LoggingService, _queryStringService);

@@ -33,7 +33,7 @@ namespace AutoPocoIO.AspNet.test.CustomAttribute
         [TestInitialize]
         public void Init()
         {
-            logger = new LoggingService(Mock.Of<ITimeProvider>(), Mock.Of<IServiceScopeFactory>());
+            logger = new LoggingService(Mock.Of<ITimeProvider>(), Mock.Of<IServiceScopeFactory>(), new LoggingServiceOptions());
 
             var scope = new Mock<IDependencyScope>();
             scope.Setup(c => c.GetService(typeof(ILoggingService)))

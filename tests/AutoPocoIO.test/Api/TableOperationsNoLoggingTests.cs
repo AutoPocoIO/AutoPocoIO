@@ -139,7 +139,7 @@ namespace AutoPocoIO.test.Api
             var resultsList = new IQueryableType { Id = 1 };
 
             var resource = new Mock<IOperationResource>();
-            resource.Setup(c => c.GetResourceRecordById("1"))
+            resource.Setup(c => c.GetResourceRecordById(new object[] { "1" }))
                 .Returns(resultsList);
 
             resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "table1"))
@@ -159,7 +159,7 @@ namespace AutoPocoIO.test.Api
             var resultsList = new IQueryableType { Id = 1 };
 
             var resource = new Mock<IOperationResource>();
-            resource.Setup(c => c.GetResourceRecordById<IQueryableType>("1", new Dictionary<string, string>()))
+            resource.Setup(c => c.GetResourceRecordById<IQueryableType>(new object[] { "1" }, new Dictionary<string, string>()))
                 .Returns(resultsList);
 
             resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "table1"))
@@ -186,7 +186,7 @@ namespace AutoPocoIO.test.Api
 
             var resource = new Mock<IOperationResource>();
             resource.Setup(c => c.LoadDbAdapter()).Verifiable();
-            resource.Setup(c => c.GetResourceRecordById<IQueryableType2>("1", new Dictionary<string, string>() { { "$expand", "IntList" } }))
+            resource.Setup(c => c.GetResourceRecordById<IQueryableType2>(new object[] { "1" }, new Dictionary<string, string>() { { "$expand", "IntList" } }))
                 .Returns(result);
 
             resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "table1TList"))
@@ -214,7 +214,7 @@ namespace AutoPocoIO.test.Api
 
             var resource = new Mock<IOperationResource>();
             resource.Setup(c => c.LoadDbAdapter()).Verifiable();
-            resource.Setup(c => c.GetResourceRecordById<IQueryableTypeOneToOne>("3", new Dictionary<string, string>() { { "$expand", "OneToOne" } }))
+            resource.Setup(c => c.GetResourceRecordById<IQueryableTypeOneToOne>(new object[] { "3" }, new Dictionary<string, string>() { { "$expand", "OneToOne" } }))
                 .Returns(result);
 
             resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.read, "table1TList"))
@@ -276,8 +276,8 @@ namespace AutoPocoIO.test.Api
             var objT = new IQueryableType { Id = 15 };
 
             var resource = new Mock<IOperationResource>();
-            resource.Setup(c => c.GetPrimaryKeys(obj)).Returns("15");
-            resource.Setup(c => c.UpdateResourceRecordById(obj, "15"))
+            resource.Setup(c => c.GetPrimaryKeys(obj)).Returns(new object[] { "15" });
+            resource.Setup(c => c.UpdateResourceRecordById(obj, new object[] { "15" }))
                 .Returns(objT);
 
             resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.write, "table1"))
@@ -294,8 +294,8 @@ namespace AutoPocoIO.test.Api
             var objT = new IQueryableType { Id = 15 };
 
             var resource = new Mock<IOperationResource>();
-            resource.Setup(c => c.GetPrimaryKeys(objT)).Returns("15");
-            resource.Setup(c => c.UpdateResourceRecordById(objT, "15"))
+            resource.Setup(c => c.GetPrimaryKeys(objT)).Returns(new object[] { "15" });
+            resource.Setup(c => c.UpdateResourceRecordById(objT, new object[] { "15" }))
                 .Returns(objT);
 
             resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.write, "table1"))
@@ -312,7 +312,7 @@ namespace AutoPocoIO.test.Api
             var objT = new IQueryableType { Id = 15 };
 
             var resource = new Mock<IOperationResource>();
-            resource.Setup(c => c.DeleteResourceRecordById("15"))
+            resource.Setup(c => c.DeleteResourceRecordById(new object[] { "15" }))
                 .Returns(objT);
 
             resourceFactoryMock.Setup(c => c.GetResource("conn1", OperationType.delete, "table1"))

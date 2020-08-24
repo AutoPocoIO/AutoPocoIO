@@ -529,7 +529,7 @@ namespace AutoPocoIO.test.Resources
             defaultServices.AddSingleton(c =>
             {
                 var mock = new Mock<IDbAdapter>();
-                mock.Setup(d => d.Find("db1_sch_tbl1", "id1")).Returns(expected);
+                mock.Setup(d => d.Find("db1_sch_tbl1", new object[] { "id1" })).Returns(expected);
                 return mock.Object;
             });
 
@@ -537,7 +537,7 @@ namespace AutoPocoIO.test.Resources
 
             var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
             resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
-            var result = resource.GetResourceRecordById("id1");
+            var result = resource.GetResourceRecordById(new object[] { "id1" });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             Assert.AreEqual(expected, result);
@@ -579,7 +579,7 @@ namespace AutoPocoIO.test.Resources
             defaultServices.AddSingleton(c =>
             {
                 var mock = new Mock<IDbAdapter>();
-                mock.Setup(d => d.FilterByKey("db1_sch_tbl1", "1")).Returns(list);
+                mock.Setup(d => d.FilterByKey("db1_sch_tbl1", new object[] { "1" })).Returns(list);
                 mock.Setup(d => d.GetWithoutContext("db1_sch_tbl2", "db1_sch_tbl1")).Returns(ujlist);
                 return mock.Object;
             });
@@ -600,7 +600,7 @@ namespace AutoPocoIO.test.Resources
             resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
 
 
-            var results = resource.GetResourceRecordById<ViewModel4>("1", new Dictionary<string, string>() { { "$expand", "UJ_pkJoinListFromother" } });
+            var results = resource.GetResourceRecordById<ViewModel4>(new object[] { "1" }, new Dictionary<string, string>() { { "$expand", "UJ_pkJoinListFromother" } });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             Assert.IsInstanceOfType(results, typeof(ViewModel4));
@@ -617,7 +617,7 @@ namespace AutoPocoIO.test.Resources
             defaultServices.AddSingleton(c =>
             {
                 var mock = new Mock<IDbAdapter>();
-                mock.Setup(d => d.FilterByKey("db1_sch_tbl1", "1")).Returns(list);
+                mock.Setup(d => d.FilterByKey("db1_sch_tbl1", new object[] { "1" })).Returns(list);
                 return mock.Object;
             });
 
@@ -625,7 +625,7 @@ namespace AutoPocoIO.test.Resources
 
             var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
             resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
-            var results = resource.GetResourceRecordById<ViewModel3>("1", new Dictionary<string, string>());
+            var results = resource.GetResourceRecordById<ViewModel3>(new object[] { "1" }, new Dictionary<string, string>());
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             Assert.IsInstanceOfType(results, typeof(ViewModel3));
@@ -643,7 +643,7 @@ namespace AutoPocoIO.test.Resources
 
             defaultServices.AddSingleton(c =>
             {
-                mock.Setup(d => d.Find("db1_sch_tbl1", "id1")).Returns(connector);
+                mock.Setup(d => d.Find("db1_sch_tbl1", new object[] { "id1" })).Returns(connector);
                 mock.Setup(d => d.Update(It.IsAny<Connector>()))
                 .Callback<object>(d => usedConnector = (Connector)d);
 
@@ -654,7 +654,7 @@ namespace AutoPocoIO.test.Resources
 
             var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
             resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
-            var result = resource.UpdateResourceRecordById(model, "id1");
+            var result = resource.UpdateResourceRecordById(model, new object[] { "id1" });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mock.Verify(c => c.Save(), Times.Once);
@@ -678,7 +678,7 @@ namespace AutoPocoIO.test.Resources
 
             var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
             resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
-            var result = resource.UpdateResourceRecordById(model, "id12");
+            var result = resource.UpdateResourceRecordById(model, new object[] { "id12" });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mock.Verify(c => c.Save(), Times.Never);
@@ -695,7 +695,7 @@ namespace AutoPocoIO.test.Resources
 
             defaultServices.AddSingleton(c =>
             {
-                mock.Setup(d => d.Find("db1_sch_tbl1", "id1")).Returns(connector);
+                mock.Setup(d => d.Find("db1_sch_tbl1", new object[] { "id1" })).Returns(connector);
                 mock.Setup(d => d.Update(It.IsAny<Connector>()))
                .Callback<object>(d => usedConnector = (Connector)d);
                 return mock.Object;
@@ -705,7 +705,7 @@ namespace AutoPocoIO.test.Resources
 
             var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
             resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
-            dynamic result = resource.UpdateResourceRecordById(model, "id1");
+            dynamic result = resource.UpdateResourceRecordById(model, new object[] { "id1" });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mock.Verify(c => c.Save(), Times.Once);
@@ -728,7 +728,7 @@ namespace AutoPocoIO.test.Resources
 
             var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
             resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
-            var result = resource.UpdateResourceRecordById(model, "id12");
+            var result = resource.UpdateResourceRecordById(model, new object[] { "id12" });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mock.Verify(c => c.Save(), Times.Never);
@@ -804,7 +804,7 @@ namespace AutoPocoIO.test.Resources
 
             defaultServices.AddSingleton(c =>
             {
-                mock.Setup(d => d.Find("db1_sch_tbl1", "id1")).Returns(connector);
+                mock.Setup(d => d.Find("db1_sch_tbl1", new object[] { "id1" })).Returns(connector);
                 mock.Setup(d => d.Delete(It.IsAny<Connector>()))
                 .Callback<object>(d => usedConnector = (Connector)d);
 
@@ -816,7 +816,7 @@ namespace AutoPocoIO.test.Resources
 
             var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
             resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
-            IDictionary<string, object> result = (IDictionary<string, object>)resource.DeleteResourceRecordById("id1");
+            IDictionary<string, object> result = (IDictionary<string, object>)resource.DeleteResourceRecordById(new object[] { "id1" });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mock.Verify(c => c.Save(), Times.Once);
@@ -837,7 +837,7 @@ namespace AutoPocoIO.test.Resources
 
             var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
             resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
-            IDictionary<string, object> result = (IDictionary<string, object>)resource.DeleteResourceRecordById("id1");
+            IDictionary<string, object> result = (IDictionary<string, object>)resource.DeleteResourceRecordById(new object[] { "id1" });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mock.Verify(c => c.Save(), Times.Never);
@@ -1216,7 +1216,7 @@ namespace AutoPocoIO.test.Resources
 
             var results = resource.GetPrimaryKeys(model);
 
-            Assert.AreEqual("a", results);
+            CollectionAssert.AreEqual(new[] { "a" }, results);
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mockDb.Verify();
         }
@@ -1263,7 +1263,7 @@ namespace AutoPocoIO.test.Resources
 
             var results = resource.GetPrimaryKeys(model);
 
-            Assert.AreEqual("a;b", results);
+            CollectionAssert.AreEqual(new[] { "a", "b" }, results);
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mockDb.Verify();
         }
@@ -1309,7 +1309,7 @@ namespace AutoPocoIO.test.Resources
 
             var results = resource.GetPrimaryKeys(token);
 
-            Assert.AreEqual("a", results);
+            CollectionAssert.AreEqual(new[] { "a" }, results);
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mockDb.Verify();
         }
@@ -1357,7 +1357,7 @@ namespace AutoPocoIO.test.Resources
 
             var results = resource.GetPrimaryKeys(token);
 
-            Assert.AreEqual("a;b", results);
+            CollectionAssert.AreEqual(new[] { "a", "b" }, results);
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             mockDb.Verify();
         }

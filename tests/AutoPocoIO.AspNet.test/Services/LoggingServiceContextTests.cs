@@ -24,7 +24,7 @@ namespace AutoPocoIO.AspNet.test
         [ExpectedException(typeof(ArgumentNullException))]
         public void CheckForLogParameters()
         {
-            LoggingService service = new LoggingService(timeProvider, Mock.Of<IServiceScopeFactory>());
+            LoggingService service = new LoggingService(timeProvider, Mock.Of<IServiceScopeFactory>(), new LoggingServiceOptions());
             service.AddContextInfomation(null);
         }
 
@@ -48,7 +48,7 @@ namespace AutoPocoIO.AspNet.test
                 Exception = "ex123"
             };
 
-            LoggingService service = new LoggingService(timeProvider, Mock.Of<IServiceScopeFactory>());
+            LoggingService service = new LoggingService(timeProvider, Mock.Of<IServiceScopeFactory>(), new LoggingServiceOptions());
             service.AddContextInfomation(logParameters);
 
 

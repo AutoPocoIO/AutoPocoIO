@@ -98,7 +98,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
                 dbContextBase.SaveChanges();
                 Assert.AreEqual(1, dbContextBase.Set<Connector>().Count(), "Inital state invalid");
 
-                var connector = db.Object.Find("Table", "1");
+                var connector = db.Object.Find("Table", new object[] { "1" });
                 Assert.AreEqual("init", ((Connector)connector).Name);
                 Assert.AreEqual(123, ((Connector)connector).Port);
                 db.Verify(c => c.SetupDataContext("Table"), Times.Once);
