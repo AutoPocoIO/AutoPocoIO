@@ -1,5 +1,7 @@
 ﻿using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.Exceptions;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
@@ -11,13 +13,23 @@ namespace AutoPocoIO.Extensions
     {
         public static IList<PrimaryKeyInformation> GetTableKeys(this IList<PrimaryKeyInformation> PKs, object[] keys)
         {
-            for (int i = 0; i < keys.Length; i++)
+            for (int i = 0; i < PKs.Count; i++)
             {
                 var PK = PKs[i];
                 var keyValue = keys[i];
 
-                var converter = TypeDescriptor.GetConverter(PK.Type);
-                PK.Value = converter.ConvertFrom(keyValue);
+                if (keyValue is string)
+                {
+                    var converter = TypeDescriptor.GetConverter(PK.Type);
+                    if (converter.IsValid(keyValue))
+                        PK.Value = converter.ConvertFrom(keyValue);
+                    else
+                        throw new PrimaryKeyTypeMismatchException(PK, keyValue.ToString());
+                }
+                else if (keyValue.GetType() == PK.Type)
+                    PK.Value = keyValue;
+                else
+                    throw new PrimaryKeyTypeMismatchException(PK, keyValue.GetType());
             }
 
             return PKs;
