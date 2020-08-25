@@ -36,6 +36,9 @@ namespace AutoPoco.DependencyInjection
 
         public object Activate(IContainer container)
         {
+            if (_descriptor.ImplementationInstance != null)
+                return _descriptor.ImplementationInstance;
+
             if (_descriptor.ImplementationFactory == null)
             {
                 var activator = new ServiceActivator(_descriptor.ImplementationType);

@@ -79,5 +79,21 @@ namespace AutoPocoIO.AspNet.test.DependencyInjection
             Assert.IsInstanceOfType(result, typeof(Class1));
 
         }
+
+        [TestMethod]
+        public void ActivateFromInstance()
+        {
+            var container = Mock.Of<IContainer>();
+            Class1 instance = new Class1()
+            {
+                prop1 = 123456
+            };
+
+            var service = new ServiceDescriptor(typeof(Class1), instance);
+            var registation = new RegisteredService(service);
+
+            var result = (Class1)registation.Activate(container);
+            Assert.AreEqual(123456, result.prop1);
+        }
     }
 }
