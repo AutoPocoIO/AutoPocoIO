@@ -1,0 +1,64 @@
+﻿@model      AspNetSample.Models.OrderDetailViewModel
+
+
+<h2>Order Details</h2>
+
+<div>
+    <div class="form-group">
+        <label>Order Number</label>
+        @Html.TextBoxFor(c => c.Order_Status, new { @class = "form-control", @readonly = "" })
+    </div>
+    <div class="form-group">
+        <label>Customer</label>
+        @Html.TextBoxFor(c => c.CustomersObjectFromCustomer_id.Name, new { @class = "form-control", @readonly = "" })
+    </div>
+    <div class="form-group">
+        <label>Store</label>
+        @Html.TextBoxFor(c => c.StoresObjectFromStore_Id.store_name, new { @class = "form-control", @readonly = "" })
+    </div>
+    <div class="form-group">
+        <label>Sales Rep</label>
+        @Html.TextBoxFor(c => c.StaffsObjectFromStaff_id.Name, new { @class = "form-control", @readonly = ""})
+    </div>
+    <div>
+        <h4>Products Ordered</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Total
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model.Order_itemsListFromOrder_id)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(c => product.ProductsObjectFromProduct_Id.Product_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(c => product.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(c => product.RetailPrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(c => product.ItemTotal)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

@@ -27,7 +27,7 @@ namespace AspNetCoreSample.Pages.Order
 
         public IActionResult OnPost(int orderId)
         {
-            _tableOperations.DeleteRow("sampleSales", "orders", orderId.ToString(), _loggingService);
+            _tableOperations.DeleteRow("sampleSales", "orders", _loggingService, orderId);
             return RedirectToPage("./Index");
         }
     }

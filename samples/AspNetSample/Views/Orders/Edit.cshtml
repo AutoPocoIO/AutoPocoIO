@@ -1,0 +1,82 @@
+﻿@model AspNetSample.Models.OrderDetailsPageModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Order Details</h2>
+
+<div>
+    <form method="post">
+        @Html.HiddenFor(c => c.item.Order_Id)
+
+        <div class="form-group">
+            <label>Order Number</label>
+            <span class="form-text">@Html.DisplayFor(c => c.item.Order_Id)</span>
+        </div>
+        <div class="form-group">
+            <label>Customer</label>
+            @Html.DropDownListFor(c => c.item.Customer_Id, Model.Customers, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.item.Customer_Id, "", new { @class="text-danger"})
+        </div>
+        <div class="form-group">
+            <label>Store</label>
+            @Html.DropDownListFor(c => c.item.Store_Id, Model.Stores, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.item.Store_Id, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label>Sales Rep</label>
+            @Html.DropDownListFor(c => c.item.Staff_Id, Model.SalesReps, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.item.Staff_Id, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Order Status</label>
+            @Html.TextBoxFor(c => c.item.Order_Status, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.item.Order_Status, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+    <div>
+        <h4>Products Ordered</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Total
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model.item.Order_itemsListFromOrder_id)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(c => product.ProductsObjectFromProduct_Id.Product_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(c => product.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(c => product.RetailPrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(c => product.ItemTotal)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

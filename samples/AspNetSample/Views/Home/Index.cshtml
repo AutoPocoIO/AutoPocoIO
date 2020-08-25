@@ -33,9 +33,9 @@
             @foreach (var item in Model.Orders)
             {
                 <tr>
-                    <td>
+                    <th>
                         @Html.DisplayFor(modelItem => item.Order_Id)
-                    </td>
+                    </th>
                     <td>
                         @Html.DisplayFor(modelItem => item.Order_Status)
                     </td>
@@ -43,9 +43,9 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        <a href="Edit/@item.Order_Id">Edit</a> |
-                        <a asp-page="/Order/Index" asp-route-orderId="@item.Order_Id">Details</a> |
-                        <a href="Delete/@item.Order_Id">Delete</a> |
+                        <a href="/Orders/Edit/@item.Order_Id">Edit</a> |
+                        <a href="/Orders/@item.Order_Id">Details</a> |
+                        <a href="/Orders/Delete/@item.Order_Id">Delete</a>
                     </td>
                 </tr>
             }
