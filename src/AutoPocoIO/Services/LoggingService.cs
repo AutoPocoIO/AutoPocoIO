@@ -19,7 +19,7 @@ namespace AutoPocoIO.Services
     {
         private readonly ITimeProvider _timeProvider;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly AutoPocoServiceOptions _events;
+        
         /// <summary>
         ///  Set up new logging for a request
         /// This constructor is not meant to be called in code.  Used for DI. 
@@ -30,9 +30,15 @@ namespace AutoPocoIO.Services
         {
             _timeProvider = timeProvider;
             _serviceScopeFactory = scopeFactory;
-            _events = events;
+            Events = events;
             ApiRequests = new List<LogRequestAndResponseCommand>();
         }
+
+
+        /// <summary>
+        /// Logging events setup in the service options
+        /// </summary>
+        protected AutoPocoServiceOptions Events { get; }
 
         /// <summary>
         /// List of request to be logged
@@ -125,7 +131,7 @@ namespace AutoPocoIO.Services
                 }
                 finally
                 {
-                    _events.OnLogged?.Invoke(scope.ServiceProvider, this);
+                    Events.OnLogged?.Invoke(scope.ServiceProvider, this);
                     scope.Dispose();
                 }
             });
@@ -147,7 +153,7 @@ namespace AutoPocoIO.Services
             Check.NotNull(command, nameof(command));
 
             var provider = scope.ServiceProvider;
-            _events.OnLogging?.Invoke(provider, command, this);
+            Events.OnLogging?.Invoke(provider, command, this);
 
             var db = provider.GetRequiredService<LogDbContext>();
             LogHttpRequest(command, db);
