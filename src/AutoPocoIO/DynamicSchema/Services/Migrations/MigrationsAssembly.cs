@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
@@ -49,9 +50,9 @@ namespace AutoPocoIO.DynamicSchema.Services.Migrations
                         }
 
                         var items = types.Where(c => c.IsSubclassOf(typeof(Migration))
-                        && c.GetCustomAttribute<DbContextAttribute>()?.ContextType == _contextType)
-                            .Select(c => new { c.GetCustomAttribute<MigrationAttribute>()?.Id, Type = c })
-                            .OrderBy(c => c.Id);
+                        && TypeDescriptor.GetAttributes(c).OfType<DbContextAttribute>().Any(d => d.ContextType == _contextType)
+                        && TypeDescriptor.GetAttributes(c).OfType<MigrationAttribute>().Any())
+                            .Select(c => new { TypeDescriptor.GetAttributes(c).OfType<MigrationAttribute>().First().Id, Type = c });
 
                         foreach (var item in items)
                         {
