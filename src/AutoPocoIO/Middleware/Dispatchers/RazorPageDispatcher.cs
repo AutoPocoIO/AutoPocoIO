@@ -30,6 +30,8 @@ namespace AutoPocoIO.Middleware.Dispatchers
             Check.NotNull(loggingService, nameof(loggingService));
 
             context.Response.ContentType = "text/html";
+            _page.LoggingService = loggingService;
+            _page.Assign(context);
             return context.Response.WriteAsync(_page.ToString());
         }
     }

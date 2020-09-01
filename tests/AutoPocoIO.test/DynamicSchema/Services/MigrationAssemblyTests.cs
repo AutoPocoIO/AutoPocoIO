@@ -7,13 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Threading;
 
 namespace AutoPocoIO.test.DynamicSchema.Services
 {
@@ -23,6 +21,8 @@ namespace AutoPocoIO.test.DynamicSchema.Services
     {
         private DbContextOptions dbOptions;
         private MigrationsAssembly migrationAsm;
+        private List<Assembly> createdAssemblies;
+        private List<Type> createTypes;
 
         [TestInitialize]
         public void Init()
@@ -32,7 +32,7 @@ namespace AutoPocoIO.test.DynamicSchema.Services
                 .UseSqlite("DataSource=appDb" + Guid.NewGuid().ToString())
                 .Options;
 
-            
+            createdAssemblies = new List<Assembly>();
         }
 
         private void CreateMigrationAsmFinder()
@@ -43,17 +43,17 @@ namespace AutoPocoIO.test.DynamicSchema.Services
                                                       dbOptions,
                                                       Mock.Of<IMigrationsIdGenerator>(),
                                                       Mock.Of<IDiagnosticsLogger<DbLoggerCategory.Migrations>>());
+
+            //Filter out becuase other test asms might be in the list and waiting to be unloaded
+            PrivateObject obj = new PrivateObject(migrationAsm);
+            var asms = (Assembly[]) obj.GetField("_autoPocoAssemblies");
+            asms = asms.Where(c => createdAssemblies.Contains(c)).ToArray();
+            obj.SetField("_autoPocoAssemblies", asms);
+
+
         }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            //Set this to unused context to 'clear'
-            TypeDescriptor.AddAttributes(typeof(AsmMigration1),
-                new DbContextAttribute(typeof(AsmMigrationContextBase)));
-            TypeDescriptor.AddAttributes(typeof(AsmMigration2),
-               new DbContextAttribute(typeof(AsmMigrationContextBase)));
-        }
+       
         public class AsmMigrationBase : Migration
         {
             protected override void Up(MigrationBuilder migrationBuilder)
@@ -71,13 +71,12 @@ namespace AutoPocoIO.test.DynamicSchema.Services
 
         public class AsmMigration1 : AsmMigrationBase
         { }
-        public class AsmMigration2 : AsmMigrationBase
-        { }
+    
 
         public class AsmMigrationContext1 : AsmMigrationContextBase
         { }
 
-        private List<Type> createTypes;
+  
         private ModuleBuilder CreateMigration(string migrationId, ModuleBuilder moduleBuilder = null)
         {
             if (moduleBuilder == null)
@@ -85,6 +84,8 @@ namespace AutoPocoIO.test.DynamicSchema.Services
                 AssemblyName an = new AssemblyName("AUTOPOCOIO.name1_" + Guid.NewGuid());
                 AssemblyBuilder builder = AssemblyBuilder.DefineDynamicAssembly(an, AssemblyBuilderAccess.RunAndCollect);
                 moduleBuilder = builder.DefineDynamicModule("module1");
+
+                createdAssemblies.Add(moduleBuilder.Assembly);
             }
 
 
