@@ -34,6 +34,7 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
                 services.AddSingleton(Mock.Of<DbContextOptions<AppDbContext>>());
                 services.AddSingleton(Mock.Of<DbContextOptions<LogDbContext>>());
                 services.AddSingleton<IReplaceServices<DashboardServiceProvider>>(new ReplaceRoutes());
+                
             }
             public void Configure(IApplicationBuilder app)
             {
@@ -46,7 +47,7 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
         {
             public TestRoutes()
             {
-                Routes.Add("/forGet", HttpMethodType.GET, new RazorPageDispatcher(new TestPage()));
+                Routes.Add("/forGet", HttpMethodType.GET, new RazorPageDispatcher<TestPage>((p, m) => { }));
             }
         }
 
@@ -65,6 +66,7 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
             public IServiceCollection ReplaceInternalServices(IServiceProvider rootProvider, IServiceCollection services)
             {
                 services.AddSingleton<DashboardRoutes>(new TestRoutes());
+                services.AddTransient<TestPage>();
                 return services;
             }
         }

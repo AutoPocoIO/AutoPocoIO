@@ -37,7 +37,7 @@ namespace AutoPocoIO.AspNet.test.Owin
             services.AddSingleton(Mock.Of<DbContextOptions<AppDbContext>>());
             services.AddSingleton(Mock.Of<DbContextOptions<LogDbContext>>());
             services.AddSingleton<IReplaceServices<DashboardServiceProvider>>(new ReplaceRoutes());
-
+            
             Mock<IServiceScopeFactory> scopeProvider = new Mock<IServiceScopeFactory>();
             scopeProvider.Setup(c => c.CreateScope()).Returns(scope.Object);
 

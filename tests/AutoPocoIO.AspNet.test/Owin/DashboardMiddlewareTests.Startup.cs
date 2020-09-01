@@ -15,7 +15,7 @@ namespace AutoPocoIO.AspNet.test.Owin
         {
             public TestRoutes()
             {
-                Routes.Add("/forGet", HttpMethodType.GET, new RazorPageDispatcher(new TestPage()));
+                Routes.Add("/forGet", HttpMethodType.GET, new RazorPageDispatcher<TestPage>((p, m) => { }));
             }
         }
 
@@ -34,6 +34,7 @@ namespace AutoPocoIO.AspNet.test.Owin
             public IServiceCollection ReplaceInternalServices(IServiceProvider rootProvider, IServiceCollection services)
             {
                 services.AddSingleton<DashboardRoutes>(new TestRoutes());
+                services.AddTransient<TestPage>();
                 return services;
             }
         }
