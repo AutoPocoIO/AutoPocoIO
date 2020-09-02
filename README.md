@@ -37,12 +37,12 @@ var foo1 = viewOp.GetAll("AdventureworksDB", "vw_Customer");
 Call a Stored Procedure, with or without parameters:
 ```csharp
 var foo = storedProcedureOp.ExecuteNoParameters("AdventureWorksDB", "sproc_Customers");
-var bar = storedProcedureOp.Execute("AdventureWorksDB", "sproc_customer", "'id':1");
+var bar = storedProcedureOp.Execute("AdventureWorksDB", "sproc_customer", "'id': 1");
 ```
 Automatically log the request by passing it to the operation:
 ```csharp
-tableOp.CreateNewRow("AdventureWorksDB", "Customer", object, loggingService);
-tableOp.UpdateRow("AdventureWorksDB", "Customer", 42, object, loggingService);
+tableOp.CreateNewRow("AdventureWorksDB", "Customer", rowObject, loggingService);
+tableOp.UpdateRow("AdventureWorksDB", "Customer", rowObject, loggingService);
 ```
 
 ## Setup
