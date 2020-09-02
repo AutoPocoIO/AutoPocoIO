@@ -16,7 +16,7 @@ namespace AutoPocoIO.Migrations
                 {
                     Id = table.Column<string>(maxLength: 128, nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: true),
-                    ResourceType = table.Column<string>(nullable: true),
+                    ResourceType = table.Column<string>(maxLength: 50, nullable: true),
                     Schema = table.Column<string>(maxLength: 50, nullable: true),
                     ConnectionString = table.Column<string>(nullable: true),
                     RecordLimit = table.Column<int>(nullable: false),

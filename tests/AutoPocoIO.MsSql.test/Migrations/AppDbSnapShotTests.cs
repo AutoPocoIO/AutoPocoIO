@@ -70,7 +70,9 @@ namespace AutoPocoIO.test.Migrations
             Assert.AreEqual(50, entity.FindProperty("InitialCatalog").GetMaxLength());
 
             Assert.AreEqual(typeof(int), entity.FindProperty("RecordLimit").ClrType);
-            Assert.AreEqual(typeof(int), entity.FindProperty("ResourceType").ClrType);
+            Assert.AreEqual(typeof(string), entity.FindProperty("ResourceType").ClrType);
+            Assert.AreEqual(50, entity.FindProperty("ResourceType").GetMaxLength());
+
             Assert.AreEqual(typeof(string), entity.FindProperty("Schema").ClrType);
             Assert.AreEqual(50, entity.FindProperty("Schema").GetMaxLength());
 

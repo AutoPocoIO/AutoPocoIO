@@ -136,7 +136,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
                 {
                     Id = "12",
                     Name = "name123",
-                    ResourceType = "Microsoft.EntityFrameworkCore.SqlServer",
+                    ResourceType = "type1",
                     ConnectionString = "conn1"
                 });
 
@@ -144,8 +144,10 @@ namespace AutoPocoIO.test.Dashboard.Repos
             }
 
             var db = new AppDbContext(appDbOptions);
-            var repo = new ConnectorRepo(db, factory, new IOperationResource[] { });
-
+            var resource = new Mock<IOperationResource>();
+            resource.Setup(c => c.ResourceType).Returns("type1");
+            var repo = new ConnectorRepo(db, factory, new IOperationResource[] { resource.Object });
+            
             var actual = repo.GetById("12");
 
             Assert.AreEqual("name123", actual.Name);
