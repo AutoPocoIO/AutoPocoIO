@@ -6,7 +6,6 @@ using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
 using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +14,8 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
+using System.Linq.Dynamic.Core;
 
 namespace AutoPocoIO.test.Services
 {
@@ -22,28 +23,30 @@ namespace AutoPocoIO.test.Services
     [TestCategory(TestCategories.Unit)]
     public class AppDatabaseSetupServiceTests
     {
-        readonly string connString = $"appDbPro{Guid.NewGuid()}";
+        readonly string connString = $"appDb{Guid.NewGuid()}";
         AppDatabaseSetupService setupService;
         Mock<IMigrationsAssembly> mig;
         Mock<IHistoryRepository> applied;
-        Mock<AppDbContext> appDb;
-        List<string> migrationCalled;
+        AppDbContext appDb;
+        int migrations;
 
         [TestInitialize]
         public void Initialize()
         {
-            migrationCalled = new List<string>();
 
             mig = new Mock<IMigrationsAssembly>();
 
 
             applied = new Mock<IHistoryRepository>();
+            applied.Setup(c => c.GetAppliedMigrations()).Returns(new List<HistoryRow>());
+
             var migrator = new Mock<IMigrator>();
             migrator.Setup(c => c.Migrate(It.IsAny<string>()))
-                .Callback<string>(c => migrationCalled.Add(c));
+                .Callback<string>(c => migrations++);
 
             var connection = new Mock<DbConnection>();
             connection.Setup(c => c.ConnectionString).Returns("conn1");
+
             var connService = new Mock<IRelationalConnection>();
             connService.Setup(c => c.DbConnection).Returns(connection.Object);
 
@@ -58,33 +61,32 @@ namespace AutoPocoIO.test.Services
             appOptionBuilder.UseInMemoryDatabase(databaseName: connString);
             appOptionBuilder.UseInternalServiceProvider(services.BuildServiceProvider());
 
-            appDb = new Mock<AppDbContext>(appOptionBuilder.Options) { CallBase = true };
+            appDb = new AppDbContext(appOptionBuilder.Options);
 
-            appDb.Object.Connector.AddRange(
+            appDb.Connector.AddRange(
                 new Connector { Id = "1", Name = "appDb" },
                 new Connector { Id = "3", Name = "logDb" }
                 );
-            appDb.Object.SaveChanges();
+            appDb.SaveChanges();
 
-            var migContextOptions = new DbContextOptionsBuilder<AppMigrationContext>();
-            migContextOptions.UseInMemoryDatabase(databaseName: connString);
-            migContextOptions.UseInternalServiceProvider(services.BuildServiceProvider());
+            var migContextOptions = new DbContextOptionsBuilder<AppMigrationContext>()
+                .UseInMemoryDatabase(databaseName: connString)
+                .UseInternalServiceProvider(services.BuildServiceProvider());
 
-            var appMigDb = new Mock<AppMigrationContext>(migContextOptions.Options) { CallBase = true };
-            var logMigDb = new Mock<LoggingMigrationContext>();
+            var migLogContextOptions = new DbContextOptionsBuilder<LoggingMigrationContext>()
+                .UseInMemoryDatabase(databaseName: connString)
+                .UseInternalServiceProvider(services.BuildServiceProvider());
 
-            var appDbfacade = new Mock<DatabaseFacade>(appDb.Object);
-            var logDbfacade = new Mock<DatabaseFacade>(appDb.Object);
-            appMigDb.Setup(c => c.Database).Returns(appDbfacade.Object);
-            logMigDb.Setup(c => c.Database).Returns(logDbfacade.Object);
+            var appMigDb = new AppMigrationContext(migContextOptions.Options);
+            var logMigDb = new LoggingMigrationContext(migLogContextOptions.Options);
 
             var factory = new Mock<IConnectionStringFactory>();
-            factory.Setup(c => c.GetConnectionInformation(1, "conn1"))
+            factory.Setup(c => c.GetConnectionInformation(appDb.Database))
                 .Returns(new ConnectionInformation { InitialCatalog = "cat1" });
 
-            setupService = new AppDatabaseSetupService(logMigDb.Object,
-                                                         appMigDb.Object,
-                                                         appDb.Object,
+            setupService = new AppDatabaseSetupService(logMigDb,
+                                                         appMigDb,
+                                                         appDb,
                                                          factory.Object);
         }
 
@@ -126,33 +128,29 @@ namespace AutoPocoIO.test.Services
             Assert.AreEqual(1, AutoPocoConfiguration.CacheTimeoutMinutes);
         }
 
-        //[TestMethod]
-        //public void SetConnectionStringDuringBasicMigration()
-        //{
-        //    mig.Setup(c => c.Migrations).Returns(new Dictionary<string, TypeInfo>());
-        //    applied.Setup(c => c.GetAppliedMigrations()).Returns(new List<HistoryRow>());
+        [TestMethod]
+        public void RunMigrationForLogAndAppDbContext()
+        {
+            setupService.Migrate();
+            Assert.AreEqual(2, migrations);
+        }
 
-        //    setupService.Migrate(ResourceType.Mssql);
+        [TestMethod]
+        public void UpdateConnectionStringsOnMigrate()
+        {
+            
+            setupService.Migrate();
+            Assert.AreEqual("cat1", appDb.Connector.Single(c => c.Name == "appDb").InitialCatalog);
+            Assert.AreEqual("cat1", appDb.Connector.Single(c => c.Name == "logDb").InitialCatalog);
+        }
 
-        //    Assert.AreEqual("cat1", appDb.Object.Connector.First(c => c.Name == "appDb").InitialCatalog);
-        //    Assert.AreEqual("cat1", appDb.Object.Connector.First(c => c.Name == "logDb").InitialCatalog);
-        //}
-
-
-        //[TestMethod]
-        //public void InitalDb()
-        //{
-        //    mig.Setup(c => c.Migrations).Returns(new Dictionary<string, TypeInfo>
-        //        {
-        //            {"100000000000000_AppDb", typeof(AppMigrationContext).GetTypeInfo() },
-        //            {"200000000000000_LogDb", typeof(AppMigrationContext).GetTypeInfo() },
-
-        //        });
-        //    applied.Setup(c => c.GetAppliedMigrations())
-        //        .Returns(new List<HistoryRow>());
-
-        //    setupService.Migrate(ResourceType.Mssql);
-        //    Assert.AreEqual(2, migrationCalled.Count());
-        //}
+        [TestMethod]
+        public void SkipSetConnectionStringAfterInitalMigration()
+        {
+            applied.Setup(c => c.GetAppliedMigrations()).Returns(new List<HistoryRow>() { new HistoryRow("100000000000000_AppDb", "1") });
+            setupService.Migrate();
+            Assert.IsNull(appDb.Connector.Single(c => c.Name == "appDb").InitialCatalog);
+            Assert.IsNull(appDb.Connector.Single(c => c.Name == "logDb").InitialCatalog);
+        }
     }
 }
