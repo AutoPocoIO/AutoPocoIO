@@ -68,29 +68,12 @@ WriteLiteral("\">\r\n                    <td>");
 
                    Write(row.Name);
 
-WriteLiteral("</td>\r\n                    <td>\r\n");
+WriteLiteral("</td>\r\n                    <td>");
 
 
-                         switch (row.ResourceType)
-                        {
-                            case 1:
-                               Write("SQL");
+                   Write(row.ResourceType.Split('.').Last());
 
-                                           
-                                break;
-                            case 4: 
-                                Write("MySQL");
-
-                                              
-                                break;
-                            case 2: 
-                                Write("Oracle");
-
-                                               
-                                break;
-                        }
-
-WriteLiteral("                    </td>\r\n                    <td>");
+WriteLiteral("</td>\r\n                    <td>");
 
 
                    Write(row.DataSource);

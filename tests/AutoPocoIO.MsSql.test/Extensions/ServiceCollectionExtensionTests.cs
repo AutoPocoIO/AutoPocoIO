@@ -22,9 +22,9 @@ namespace AutoPocoIO.MsSql.test.Extensions
             var resourceServices = new ServiceCollection();
 
             PrivateObject authProvider = new PrivateObject(ServiceProviderCache.Instance);
-            var dictionary = (ConcurrentDictionary<ResourceType, IServiceProvider>)authProvider.GetField("_configurations");
+            var dictionary = (ConcurrentDictionary<string, IServiceProvider>)authProvider.GetField("_configurations");
             dictionary.Clear();
-            dictionary.GetOrAdd(ResourceType.Mssql, resourceServices.BuildServiceProvider());
+            dictionary.GetOrAdd("Microsoft.EntityFrameworkCore.SqlServer", resourceServices.BuildServiceProvider());
 
             var services = new ServiceCollection();
             services.WithSqlServerResources();

@@ -34,7 +34,8 @@ namespace AutoPocoIO.Migrations
 
                     b.Property<int>("RecordLimit");
 
-                    b.Property<int>("ResourceType");
+                    b.Property<string>("ResourceType")
+                        .HasMaxLength(50);
 
                     b.Property<int?>("Port");
 

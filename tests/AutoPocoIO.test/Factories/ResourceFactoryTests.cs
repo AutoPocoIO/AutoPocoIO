@@ -22,7 +22,7 @@ namespace AutoPocoIO.test.Factories
         {
             var resource = new Mock<IOperationResource>();
             resource.Setup(c => c.ResourceType)
-                .Returns(ResourceType.Mssql);
+                .Returns("type1");
 
             var list = new List<IOperationResource> { resource.Object };
 
@@ -34,7 +34,7 @@ namespace AutoPocoIO.test.Factories
         {
 
             appAdminService.Setup(c => c.GetConnectionById("1"))
-                .Returns(new Connector() { ResourceType = 1 });
+                .Returns(new Connector() { ResourceType = "type1" });
 
             var resource = _resourceFactory.GetResource("1", "obj1");
             Assert.IsInstanceOfType(resource, typeof(IOperationResource));
@@ -44,7 +44,7 @@ namespace AutoPocoIO.test.Factories
         public void GetResouceWithOp()
         {
             appAdminService.Setup(c => c.GetConnection("conn1"))
-               .Returns(new Connector() { ResourceType = 1 });
+               .Returns(new Connector() { ResourceType = "type1" });
 
 
             var resource = _resourceFactory.GetResource("conn1", OperationType.write, "obj1");
@@ -56,17 +56,7 @@ namespace AutoPocoIO.test.Factories
         public void GetNotRegisteredResource()
         {
             appAdminService.Setup(c => c.GetConnection("conn1"))
-                .Returns(new Connector() { ResourceType = 2 });
-
-            _resourceFactory.GetResource("conn1", OperationType.read, "obj1");
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void GetUnimplmentedResource()
-        {
-            appAdminService.Setup(c => c.GetConnection("conn1"))
-                .Returns(new Connector() { ResourceType = 45 });
+                .Returns(new Connector() { ResourceType = "type123" });
 
             _resourceFactory.GetResource("conn1", OperationType.read, "obj1");
         }

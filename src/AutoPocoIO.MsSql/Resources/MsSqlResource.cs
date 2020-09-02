@@ -1,5 +1,4 @@
 ﻿using AutoPocoIO.DynamicSchema.Db;
-using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Util;
 using AutoPocoIO.Extensions;
@@ -19,7 +18,7 @@ namespace AutoPocoIO.Resources
     {
         public MsSqlResource(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
-        public override ResourceType ResourceType => ResourceType.Mssql;
+        public override string ResourceType => typeof(Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal.SqlServerOptionsExtension).Assembly.GetName().Name;
 
         public override void ApplyServices(IServiceCollection serviceCollection, IServiceProvider rootProvider)
         {

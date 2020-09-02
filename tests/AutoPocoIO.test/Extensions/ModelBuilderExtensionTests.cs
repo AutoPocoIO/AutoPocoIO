@@ -48,14 +48,14 @@ namespace AutoPocoIO.test.Extensions
 
             Assert.AreEqual("4b6b6ba7-0209-4b89-91cb-0e2a67aa37c1", data[0].Id);
             Assert.AreEqual("appDb", data[0].Name);
-            Assert.AreEqual(1, data[0].ResourceType);
+            Assert.AreEqual("", data[0].ResourceType);
             Assert.AreEqual("", data[0].ConnectionString);
             Assert.AreEqual("AutoPoco", data[0].Schema);
             Assert.AreEqual(500, data[0].RecordLimit);
 
             Assert.AreEqual("4d74e770-54e9-4b0f-8f13-59ccb0808654", data[1].Id);
             Assert.AreEqual("logDb", data[1].Name);
-            Assert.AreEqual(1, data[1].ResourceType);
+            Assert.AreEqual("", data[1].ResourceType);
             Assert.AreEqual("", data[1].ConnectionString);
             Assert.AreEqual("AutoPocoLog", data[1].Schema);
             Assert.AreEqual(500, data[1].RecordLimit);

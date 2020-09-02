@@ -40,9 +40,9 @@ namespace AutoPocoIO.Resources
         /// </summary>
         string SchemaName { get; }
         /// <summary>
-        /// Database type.
+        /// Entity framework provider type.
         /// </summary>
-        ResourceType ResourceType { get; }
+        string ResourceType { get; }
         /// <summary>
         /// Register resouce specific services.
         /// </summary>

@@ -58,7 +58,7 @@ namespace AutoPocoIO.Resources
         ///<inheritdoc/>
         public virtual Config Config { get; }
         ///<inheritdoc/>
-        public abstract ResourceType ResourceType { get; }
+        public abstract string ResourceType { get; }
 
         protected ISchemaInitializer SchemaInitializer { get; }
         protected IServiceProvider InternalServiceProvider { get; }

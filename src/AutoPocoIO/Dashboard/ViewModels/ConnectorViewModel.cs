@@ -18,7 +18,7 @@ namespace AutoPocoIO.Dashboard.ViewModels
         /// <summary>
         /// Database type.
         /// </summary>
-        public int? ResourceType { get; set; }
+        public string ResourceType { get; set; }
         /// <summary>
         /// Database schmea.
         /// </summary>

@@ -6,7 +6,7 @@ namespace AutoPocoIO.MsSql.DynamicSchema.Db
 {
     public class MsSqlConnectionBuilder : IConnectionStringBuilder
     {
-        public ResourceType ResourceType => ResourceType.Mssql;
+        public string ResourceType => typeof(Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal.SqlServerOptionsExtension).Assembly.GetName().Name;
 
         public string CreateConnectionString(ConnectionInformation connectionInformation)
         {
@@ -33,7 +33,8 @@ namespace AutoPocoIO.MsSql.DynamicSchema.Db
                 InitialCatalog = msSqlbuilder.InitialCatalog,
                 UserId = msSqlbuilder.UserID,
                 DataSource = msSqlbuilder.DataSource,
-                Password = msSqlbuilder.Password
+                Password = msSqlbuilder.Password,
+                ResourceType = this.ResourceType
             };
         }
     }

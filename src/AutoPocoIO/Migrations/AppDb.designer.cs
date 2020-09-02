@@ -36,7 +36,8 @@ namespace AutoPocoIO.Migrations
 
                     b.Property<int>("RecordLimit");
 
-                    b.Property<int>("ResourceType");
+                    b.Property<string>("ResourceType")
+                        .HasMaxLength(50);
 
                     b.Property<int?>("Port");
 
@@ -64,7 +65,7 @@ namespace AutoPocoIO.Migrations
                             ConnectionString = "",
                             Name = "AppDb",
                             RecordLimit = 500,
-                            ResourceType = 1,
+                            ResourceType = "",
                             Schema = "AutoPoco",
                             IsActive = true
                         },
@@ -74,7 +75,7 @@ namespace AutoPocoIO.Migrations
                             ConnectionString = "",
                             Name = "LogDb",
                             RecordLimit = 500,
-                            ResourceType = 1,
+                            ResourceType = "",
                             Schema = "AutoPocoLog",
                             IsActive = true
                         });

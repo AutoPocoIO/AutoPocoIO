@@ -4,7 +4,10 @@ namespace AutoPocoIO.Resources
 {
     public interface IConnectionStringBuilder
     {
-        ResourceType ResourceType { get; }
+        /// <summary>
+        /// Entity framework provider type.
+        /// </summary>
+        string ResourceType { get; }
 
         ConnectionInformation ParseConnectionString(string connectionString);
         string CreateConnectionString(ConnectionInformation connectionInformation);

@@ -23,7 +23,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
                 DtProcs = new DataTable();
             }
 
-            public override ResourceType ResourceType => throw new NotImplementedException();
+            public override string ResourceType => throw new NotImplementedException();
 
             public override DataTable ExecuteSchemaCommand(IDbCommand command)
             {

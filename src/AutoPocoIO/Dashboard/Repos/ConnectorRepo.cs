@@ -2,6 +2,7 @@
 using AutoPocoIO.Dashboard.ViewModels;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Models;
+using AutoPocoIO.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,13 @@ namespace AutoPocoIO.Dashboard.Repos
     {
         private readonly AppDbContext _db;
         private readonly IConnectionStringFactory _factory;
+        private readonly IEnumerable<IOperationResource> _resources;
 
-        public ConnectorRepo(AppDbContext db, IConnectionStringFactory factory)
+        public ConnectorRepo(AppDbContext db, IConnectionStringFactory factory, IEnumerable<IOperationResource> resources)
         {
             _db = db;
             _factory = factory;
+            _resources = resources;
         }
 
         ///<inheritdoc/>
@@ -43,8 +46,6 @@ namespace AutoPocoIO.Dashboard.Repos
         ///<inheritdoc/>
         public string Save(ConnectorViewModel model)
         {
-            model.ResourceType = 1;
-
             var connectionInfo = new Resources.ConnectionInformation
             {
                 InitialCatalog = model.InitialCatalog,
@@ -52,12 +53,12 @@ namespace AutoPocoIO.Dashboard.Repos
                 UserId = model.UserId,
                 Password = model.Password
             };
-            model.ConnectionString = _factory.CreateConnectionString(model.ResourceType.Value, connectionInfo);
+            model.ConnectionString = _factory.CreateConnectionString(model.ResourceType, connectionInfo);
 
             Connector connector = _db.Connector.Find(model.Id);
 
             connector.Name = model.Name;
-            connector.ResourceType = model.ResourceType.Value;
+            connector.ResourceType = model.ResourceType;
             connector.Schema = model.Schema;
             connector.ConnectionString = model.ConnectionString;
             connector.RecordLimit = model.RecordLimit.Value;
@@ -89,7 +90,7 @@ namespace AutoPocoIO.Dashboard.Repos
 
             }).Single(c => c.Id == id);
 
-            var connectionInfo = _factory.GetConnectionInformation(model.ResourceType.Value, model.ConnectionStringDecrypted);
+            var connectionInfo = _factory.GetConnectionInformation(model.ResourceType, model.ConnectionStringDecrypted);
             model.InitialCatalog = connectionInfo.InitialCatalog;
             model.UserId = connectionInfo.UserId;
             model.DataSource = connectionInfo.DataSource;
@@ -101,8 +102,6 @@ namespace AutoPocoIO.Dashboard.Repos
         ///<inheritdoc/>
         public string Insert(ConnectorViewModel model)
         {
-            model.ResourceType = 1;
-
             var connectionInfo = new Resources.ConnectionInformation
             {
                 InitialCatalog = model.InitialCatalog,
@@ -110,12 +109,12 @@ namespace AutoPocoIO.Dashboard.Repos
                 UserId = model.UserId,
                 Password = model.Password
             };
-            model.ConnectionString = _factory.CreateConnectionString(model.ResourceType.Value, connectionInfo);
+            model.ConnectionString = _factory.CreateConnectionString(model.ResourceType, connectionInfo);
 
             Connector connector = new Connector
             {
                 Name = model.Name,
-                ResourceType = model.ResourceType.Value,
+                ResourceType = model.ResourceType,
                 Schema = model.Schema,
                 ConnectionString = model.ConnectionString,
                 RecordLimit = model.RecordLimit.Value,
@@ -146,7 +145,7 @@ namespace AutoPocoIO.Dashboard.Repos
                 errors[nameof(model.Name)] = $"The Connector Name {model.Name} already exists.";
             }
 
-            if (model.ResourceType == null)
+            if (string.IsNullOrEmpty(model.ResourceType))
                 errors[nameof(model.ResourceType)] = "Resource Type is required.";
 
             if (string.IsNullOrEmpty(model.Schema))
@@ -178,6 +177,11 @@ namespace AutoPocoIO.Dashboard.Repos
             var connector = _db.Connector.Find(id);
             _db.Connector.Remove(connector);
             _db.SaveChanges();
+        }
+
+        public IEnumerable<ResouceTypeViewModel> ListResoureTypes()
+        {
+            return _resources.Select(c => new ResouceTypeViewModel { ProviderName = c.ResourceType });
         }
     }
 }

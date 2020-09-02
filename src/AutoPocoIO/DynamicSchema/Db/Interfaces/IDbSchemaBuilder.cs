@@ -10,9 +10,9 @@ namespace AutoPocoIO.DynamicSchema.Db
     public interface IDbSchemaBuilder
     {
         /// <summary>
-        /// Expected database type
+        /// Entity framework provider type.
         /// </summary>
-        ResourceType ResourceType { get; }
+        string ResourceType { get; }
 
         /// <summary>
         /// Create connection from  <see cref="Models.Config.ConnectionString"/>

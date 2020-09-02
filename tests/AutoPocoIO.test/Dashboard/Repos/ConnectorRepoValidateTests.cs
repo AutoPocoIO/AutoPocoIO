@@ -2,6 +2,7 @@
 using AutoPocoIO.Dashboard.Repos;
 using AutoPocoIO.Dashboard.ViewModels;
 using AutoPocoIO.Factories;
+using AutoPocoIO.Resources;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -25,7 +26,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
               .Options;
 
             db = new AppDbContext(appDbOptions);
-            repo = new ConnectorRepo(db, Mock.Of<IConnectionStringFactory>());
+            repo = new ConnectorRepo(db, Mock.Of<IConnectionStringFactory>(), new IOperationResource[] { });
             errors = new Dictionary<string, string>();
         }
 

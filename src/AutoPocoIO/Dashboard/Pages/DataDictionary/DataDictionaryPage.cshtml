@@ -24,17 +24,7 @@
             {
                 <tr class="clickable-row" data-url="@TransformUrl("/DataDictionary/Schema/")@row.Id">
                     <td>@row.Name</td>
-                    <td>
-                        @switch (row.ResourceType)
-                        {
-                            case 1:@("SQL")
-                                break;
-                            case 4: @("MySQL")
-                                break;
-                            case 2: @("Oracle")
-                                break;
-                        }
-                    </td>
+                    <td>@row.ResourceType.Split('.').Last()</td>
                     <td>@row.DataSource</td>
                     <td>@row.InitialCatalog</td>
                     <td>@row.Schema</td>

@@ -36,15 +36,15 @@ namespace AutoPocoIO.test.Resources
                 services = defaultServices;
 
             PrivateObject authProvider = new PrivateObject(ServiceProviderCache.Instance);
-            var dictionary = (ConcurrentDictionary<ResourceType, IServiceProvider>)authProvider.GetField("_configurations");
+            var dictionary = (ConcurrentDictionary<string, IServiceProvider>)authProvider.GetField("_configurations");
             dictionary.Clear();
-            dictionary.GetOrAdd(ResourceType.None, services.BuildServiceProvider());
+            dictionary.GetOrAdd("None", services.BuildServiceProvider());
         }
 
         private void ClearServiceProviderCache()
         {
             PrivateObject authProvider = new PrivateObject(ServiceProviderCache.Instance);
-            var dictionary = (ConcurrentDictionary<ResourceType, IServiceProvider>)authProvider.GetField("_configurations");
+            var dictionary = (ConcurrentDictionary<string, IServiceProvider>)authProvider.GetField("_configurations");
             dictionary.Clear();
         }
 
@@ -53,7 +53,7 @@ namespace AutoPocoIO.test.Resources
         {
             config = new Config();
             schemaInitializer = new Mock<ISchemaInitializer>();
-            defaultConnector = new Connector { Id = "1", Name = "testConn", InitialCatalog = "db1", Schema = "sch", ResourceType = 43, ConnectionStringDecrypted = "conn" };
+            defaultConnector = new Connector { Id = "1", Name = "testConn", InitialCatalog = "db1", Schema = "sch", ResourceType = "type1", ConnectionStringDecrypted = "conn" };
             appDbOptions = new DbContextOptionsBuilder<AppDbContext>()
               .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
               .Options;
@@ -77,7 +77,7 @@ namespace AutoPocoIO.test.Resources
             defaultServices.AddSingleton(c =>
             {
                 var mock = new Mock<IConnectionStringFactory>();
-                mock.Setup(d => d.GetConnectionInformation(43, "conn"))
+                mock.Setup(d => d.GetConnectionInformation("type1", "conn"))
                 .Returns(new ConnectionInformation { UserId = "user1", InitialCatalog = "db1" });
                 return mock.Object;
             });
@@ -109,7 +109,7 @@ namespace AutoPocoIO.test.Resources
             var connector = new Connector()
             {
                 ConnectionStringDecrypted = "conn",
-                ResourceType = 43
+                ResourceType = "type1"
             };
 
             resource.ConfigureAction(connector, OperationType.read, "obj1");

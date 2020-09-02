@@ -25,7 +25,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
                 Dts = new[] { new DataTable() };
             }
 
-            public override ResourceType ResourceType => throw new NotImplementedException();
+            public override string ResourceType => throw new NotImplementedException();
 
             public override DataTable ExecuteSchemaCommand(IDbCommand command)
             {
@@ -95,7 +95,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             {
             }
 
-            public override ResourceType ResourceType => throw new NotImplementedException();
+            public override string ResourceType => throw new NotImplementedException();
 
             public override IDbConnection CreateConnection()
             {

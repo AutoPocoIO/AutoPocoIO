@@ -20,7 +20,7 @@ namespace AutoPocoIO.Extensions
                 {
                     Id = "4b6b6ba7-0209-4b89-91cb-0e2a67aa37c1",
                     Name = AutoPocoConstants.DefaultConnectors.AppDB,
-                    ResourceType = 1,
+                    ResourceType = "",
                     ConnectionString = "",
                     Schema = "AutoPoco",
                     RecordLimit = 500,
@@ -30,7 +30,7 @@ namespace AutoPocoIO.Extensions
                 {
                     Id = "4d74e770-54e9-4b0f-8f13-59ccb0808654",
                     Name = AutoPocoConstants.DefaultConnectors.Logging,
-                    ResourceType = 1,
+                    ResourceType = "",
                     ConnectionString = "",
                     Schema = "AutoPocoLog",
                     RecordLimit = 500

@@ -35,7 +35,7 @@ namespace AutoPocoIO.test.Extensions
               .Options;
 
             var connStringFactory = new Mock<IConnectionStringFactory>();
-            connStringFactory.Setup(c => c.GetConnectionInformation(1, "connStr"))
+            connStringFactory.Setup(c => c.GetConnectionInformation("type1", "connStr"))
                 .Returns(new ConnectionInformation());
 
             var service = new ServiceCollection()
@@ -47,14 +47,16 @@ namespace AutoPocoIO.test.Extensions
                .BuildServiceProvider();
 
             PrivateObject authProvider = new PrivateObject(ServiceProviderCache.Instance);
-            var dictionary = (ConcurrentDictionary<ResourceType, IServiceProvider>)authProvider.GetField("_configurations");
+            var dictionary = (ConcurrentDictionary<string, IServiceProvider>)authProvider.GetField("_configurations");
             dictionary.Clear();
-            dictionary.GetOrAdd(ResourceType.None, service);
+            dictionary.GetOrAdd("type1", service);
 
             resource = new Mock<OperationResource>(service)
             {
                 CallBase = true
             };
+
+            resource.Setup(c => c.ResourceType).Returns("type1");
         }
 
 
@@ -65,7 +67,7 @@ namespace AutoPocoIO.test.Extensions
             {
                 Name = "aa",
                 Schema = "sch1",
-                ResourceType = 1,
+                ResourceType = "type1",
                 ConnectionStringDecrypted = "connStr"
             };
 
@@ -86,7 +88,7 @@ namespace AutoPocoIO.test.Extensions
             {
                 Name = "aa",
                 Schema = "sch1",
-                ResourceType = 1,
+                ResourceType = "type1",
                 ConnectionStringDecrypted = "connStr"
             };
 
@@ -107,7 +109,7 @@ namespace AutoPocoIO.test.Extensions
             {
                 Name = "aa",
                 Schema = "sch1",
-                ResourceType = 1,
+                ResourceType = "type1",
                 ConnectionStringDecrypted = "connStr"
             };
 

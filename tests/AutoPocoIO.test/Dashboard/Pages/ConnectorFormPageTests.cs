@@ -102,7 +102,7 @@ namespace AutoPocoIO.test.Dashboard.Pages
             var model = (ConnectorViewModel)new PrivateObject(page).GetField("model");
 
             Assert.AreEqual("1234", model.Id);
-            Assert.AreEqual(1, model.ResourceType);
+            Assert.AreEqual("", model.ResourceType);
             Assert.AreEqual("name1", model.Name);
             Assert.AreEqual("serv", model.DataSource);
             Assert.AreEqual("db1", model.InitialCatalog);

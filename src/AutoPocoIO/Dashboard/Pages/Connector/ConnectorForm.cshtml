@@ -10,6 +10,17 @@
     <form class="mt-5" method="post">
         <input type="hidden" name="id" value="@(GetViewBagValue<ConnectorViewModel>("model").Id)" />
         <div class="form-group">
+            <label for="resourceType">Resource Type</label>
+            <select class="form-control" name="resourceType">
+                <option></option>
+                @foreach(var type in GetViewBagValue<IEnumerable<ResouceTypeViewModel>>("resourceTypes"))
+                {
+                    <option value="@type.ProviderName" @(GetViewBagValue<ConnectorViewModel>("model").ResourceType == type.ProviderName ? "selected" : "")>@type.DisplayName.Split('.').Last()</option>
+                }
+            </select>
+            <div class="errorMessage"><span class="text-danger">@GetError("errors", nameof(ConnectorViewModel.ResourceType))</span></div>
+        </div>
+        <div class="form-group">
             <label for="connectorName">Connector Name</label>
             <input type="text" class="form-control" name="connectorName" aria-describedby="connectorHelp" placeholder="e.g. Adventureworks"
                    value="@(GetViewBagValue<ConnectorViewModel>("model").Name)" />

@@ -28,7 +28,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
                 .Options;
 
             var mockFactory = new Mock<IConnectionStringFactory>();
-            mockFactory.Setup(c => c.GetConnectionInformation(1, "conn1"))
+            mockFactory.Setup(c => c.GetConnectionInformation("type1", "conn1"))
                 .Returns(new ConnectionInformation
                 {
                     InitialCatalog = "cat1",
@@ -36,19 +36,9 @@ namespace AutoPocoIO.test.Dashboard.Repos
                     UserId = "id"
                 });
 
-            mockFactory.Setup(c => c.CreateConnectionString(1, It.IsAny<ConnectionInformation>()))
-                .Callback<int, ConnectionInformation>((r, c) => connectionInformation = c)
+            mockFactory.Setup(c => c.CreateConnectionString("type1", It.IsAny<ConnectionInformation>()))
+                .Callback<string, ConnectionInformation>((r, c) => connectionInformation = c)
 
-                /* Unmerged change from project 'AutoPocoIO.test (net461)'
-                Before:
-                                .Returns("conn1");
-
-                            factory = mockFactory.Object;
-                After:
-                                .Returns("conn1");
-
-                            factory = mockFactory.Object;
-                */
                 .Returns("conn1");
 
             factory = mockFactory.Object;
@@ -59,12 +49,12 @@ namespace AutoPocoIO.test.Dashboard.Repos
         public void InsertAddsConnectionToDb()
         {
             var db = new AppDbContext(appDbOptions);
-            var repo = new ConnectorRepo(db, factory);
+            var repo = new ConnectorRepo(db, factory, new IOperationResource[] { });
 
             ConnectorViewModel model = new ConnectorViewModel
             {
                 Name = "name1",
-                ResourceType = 1,
+                ResourceType = "type1",
                 RecordLimit = 12,
                 Port = 123,
                 InitialCatalog = "cat1",
@@ -82,7 +72,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
                 actual = db1.Connector.First(c => c.Name == "name1");
             }
 
-            Assert.AreEqual(1, actual.ResourceType);
+            Assert.AreEqual("type1", actual.ResourceType);
             Assert.AreEqual(12, actual.RecordLimit);
             Assert.AreEqual("cat1", connectionInformation.InitialCatalog);
             Assert.AreEqual("src", connectionInformation.DataSource);
@@ -106,13 +96,13 @@ namespace AutoPocoIO.test.Dashboard.Repos
             }
 
             var db = new AppDbContext(appDbOptions);
-            var repo = new ConnectorRepo(db, factory);
+            var repo = new ConnectorRepo(db, factory, new IOperationResource[] { });
 
             ConnectorViewModel model = new ConnectorViewModel
             {
                 Id = "12",
                 Name = "name11",
-                ResourceType = 1,
+                ResourceType = "type1",
                 RecordLimit = 12,
                 Port = 123,
                 InitialCatalog = "cat1",
@@ -128,7 +118,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
                 actual = db1.Connector.First(c => c.Name == "name11");
             }
 
-            Assert.AreEqual(1, actual.ResourceType);
+            Assert.AreEqual("type1", actual.ResourceType);
             Assert.AreEqual(12, actual.RecordLimit);
             Assert.AreEqual("cat1", connectionInformation.InitialCatalog);
             Assert.AreEqual("src", connectionInformation.DataSource);
@@ -146,7 +136,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
                 {
                     Id = "12",
                     Name = "name123",
-                    ResourceType = 1,
+                    ResourceType = "Microsoft.EntityFrameworkCore.SqlServer",
                     ConnectionString = "conn1"
                 });
 
@@ -154,7 +144,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             }
 
             var db = new AppDbContext(appDbOptions);
-            var repo = new ConnectorRepo(db, factory);
+            var repo = new ConnectorRepo(db, factory, new IOperationResource[] { });
 
             var actual = repo.GetById("12");
 
@@ -181,7 +171,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             }
 
             var db = new AppDbContext(appDbOptions);
-            var repo = new ConnectorRepo(db, factory);
+            var repo = new ConnectorRepo(db, factory, new IOperationResource[] { });
 
             var results = repo.ListConnectors();
 
@@ -209,7 +199,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             }
 
             var db = new AppDbContext(appDbOptions);
-            var repo = new ConnectorRepo(db, factory);
+            var repo = new ConnectorRepo(db, factory, new IOperationResource[] { });
 
             repo.Delete("2");
 
@@ -241,7 +231,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             }
 
             var db = new AppDbContext(appDbOptions);
-            var repo = new ConnectorRepo(db, factory);
+            var repo = new ConnectorRepo(db, factory, new IOperationResource[] { });
 
             var count = repo.ConnectorCount();
             Assert.AreEqual(2, count);

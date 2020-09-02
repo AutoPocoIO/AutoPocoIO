@@ -21,7 +21,7 @@ namespace AutoPocoIO.Factories
         /// <param name="resourceType">Database type</param>
         /// <param name="connectionInformation">Values for createing a connection string</param>
         /// <returns></returns>
-        string CreateConnectionString(int resourceType, ConnectionInformation connectionInformation);
+        string CreateConnectionString(string resourceType, ConnectionInformation connectionInformation);
         /// <summary>
         /// Parse connection string based on database type
         /// </summary>
@@ -34,6 +34,6 @@ namespace AutoPocoIO.Factories
         /// <param name="resourceType">Database type</param>
         /// <param name="connectionString">Value to parse</param>
         /// <returns></returns>
-        ConnectionInformation GetConnectionInformation(int resourceType, string connectionString);
+        ConnectionInformation GetConnectionInformation(string resourceType, string connectionString);
     }
 }

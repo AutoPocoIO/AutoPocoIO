@@ -38,7 +38,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         public void ResourceTypeIsMsSql()
         {
             var builder = new MsSqlDbSchemaBuilder(query.Object, config, schema.Object, typeMapper);
-            Assert.AreEqual(ResourceType.Mssql, builder.ResourceType);
+            Assert.AreEqual("Microsoft.EntityFrameworkCore.SqlServer", builder.ResourceType);
         }
 
         [TestMethod]

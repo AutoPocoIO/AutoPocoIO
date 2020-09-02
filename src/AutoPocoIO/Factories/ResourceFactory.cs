@@ -51,22 +51,14 @@ namespace AutoPocoIO.Factories
         private IOperationResource GetResourceType(Connector connector, OperationType dbAction, string dbObjectName)
         {
             IOperationResource resource;
-
-            if (Enum.IsDefined(typeof(ResourceType), connector.ResourceType))
+            try
             {
-                ResourceType resourceType = (ResourceType)connector.ResourceType;
-
-                try
-                {
-                    resource = _resources.First(c => c.ResourceType == resourceType);
-                }
-                catch (InvalidOperationException)
-                {
-                    throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, ExceptionMessages.DbTypeNotRegistered, resourceType), nameof(connector));
-                }
+                resource = _resources.First(c => c.ResourceType == connector.ResourceType);
             }
-            else
-                throw new ArgumentOutOfRangeException(ExceptionMessages.DbAdapterNotFound);
+            catch (InvalidOperationException)
+            {
+                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, ExceptionMessages.DbTypeNotRegistered, connector.ResourceType), nameof(connector));
+            }
 
 
             resource.ConfigureAction(connector, dbAction, dbObjectName);

@@ -19,7 +19,7 @@ namespace AutoPocoIO.test.Factories
         {
             var builder = new Mock<IConnectionStringBuilder>();
             builder.Setup(c => c.ResourceType)
-                .Returns(ResourceType.Mssql);
+                .Returns("type1");
 
             builder.Setup(c => c.ParseConnectionString("parseABC"))
                 .Returns(new ConnectionInformation { InitialCatalog = "cat1" });
@@ -35,7 +35,7 @@ namespace AutoPocoIO.test.Factories
         [TestMethod]
         public void GetConnectionInfo()
         {
-            var connInfo = _resourceFactory.GetConnectionInformation(1, "parseABC");
+            var connInfo = _resourceFactory.GetConnectionInformation("type1", "parseABC");
             Assert.AreEqual("cat1", connInfo.InitialCatalog);
         }
 
@@ -43,7 +43,7 @@ namespace AutoPocoIO.test.Factories
         public void SetConnectionInfo()
         {
             var connInfo = new ConnectionInformation { InitialCatalog = "abc" };
-            var connString = _resourceFactory.CreateConnectionString(1, connInfo);
+            var connString = _resourceFactory.CreateConnectionString("type1", connInfo);
             Assert.AreEqual("conn:abc", connString);
         }
 
@@ -51,14 +51,7 @@ namespace AutoPocoIO.test.Factories
         [ExpectedException(typeof(ArgumentException))]
         public void GetNotRegisteredResource()
         {
-            _resourceFactory.GetConnectionInformation(2, "parseABC");
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void GetUnimplmentedResource()
-        {
-            _resourceFactory.GetConnectionInformation(2124, "parseABC");
+            _resourceFactory.GetConnectionInformation("type123", "parseABC");
         }
     }
 }

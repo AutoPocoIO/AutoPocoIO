@@ -7,8 +7,8 @@ namespace AutoPocoIO.Resources
 {
     internal class ServiceProviderCache
     {
-        private readonly ConcurrentDictionary<ResourceType, IServiceProvider> _configurations
-            = new ConcurrentDictionary<ResourceType, IServiceProvider>();
+        private readonly ConcurrentDictionary<string, IServiceProvider> _configurations
+            = new ConcurrentDictionary<string, IServiceProvider>();
 
         public static ServiceProviderCache Instance { get; } = new ServiceProviderCache();
 

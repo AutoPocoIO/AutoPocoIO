@@ -47,5 +47,10 @@ namespace AutoPocoIO.Dashboard.Repos
         /// </summary>
         /// <param name="id">Connector Id to remove.</param>
         void Delete(string id);
+        /// <summary>
+        /// List all registered resource types
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<ResouceTypeViewModel> ListResoureTypes();
     }
 }

@@ -70,7 +70,7 @@ namespace AutoPocoIO.MsSql.test.Resources
                 });
 
             var connStringFactory = new Mock<IConnectionStringFactory>();
-            connStringFactory.Setup(c => c.GetConnectionInformation(1, "conn1"))
+            connStringFactory.Setup(c => c.GetConnectionInformation("Microsoft.EntityFrameworkCore.SqlServer", "conn1"))
                 .Returns(new ConnectionInformation { InitialCatalog = "dbo" });
 
             var services = new ServiceCollection();
@@ -84,9 +84,9 @@ namespace AutoPocoIO.MsSql.test.Resources
             var provider = services.BuildServiceProvider();
 
             PrivateObject authProvider = new PrivateObject(ServiceProviderCache.Instance);
-            var dictionary = (ConcurrentDictionary<ResourceType, IServiceProvider>)authProvider.GetField("_configurations");
+            var dictionary = (ConcurrentDictionary<string, IServiceProvider>)authProvider.GetField("_configurations");
             dictionary.Clear();
-            dictionary.GetOrAdd(ResourceType.Mssql, provider);
+            dictionary.GetOrAdd("Microsoft.EntityFrameworkCore.SqlServer", provider);
 
         }
 
@@ -105,7 +105,7 @@ namespace AutoPocoIO.MsSql.test.Resources
 
             //mock to allow for load to 
             var resource = new MsSqlResource(new ServiceCollection().BuildServiceProvider());
-            resource.ConfigureAction(new Connector { ResourceType = 1, Schema = "sch1", ConnectionString = "conn1" }, OperationType.Any, "Name1");
+            resource.ConfigureAction(new Connector { ResourceType = "Microsoft.EntityFrameworkCore.SqlServer", Schema = "sch1", ConnectionString = "conn1" }, OperationType.Any, "Name1");
 
             var results = resource.ExecuteProc(new Dictionary<string, object>());
 
@@ -128,7 +128,7 @@ namespace AutoPocoIO.MsSql.test.Resources
             command.Setup(c => c.ExecuteReader()).Returns(reader.Object);
 
             var resource = new MsSqlResource(new ServiceCollection().BuildServiceProvider());
-            resource.ConfigureAction(new Connector { ResourceType = 1, Schema = "sch1", ConnectionString = "conn1" }, OperationType.Any, "Name2");
+            resource.ConfigureAction(new Connector { ResourceType = "Microsoft.EntityFrameworkCore.SqlServer", Schema = "sch1", ConnectionString = "conn1" }, OperationType.Any, "Name2");
 
             var results = (IDictionary<string, object>)resource.ExecuteProc(new Dictionary<string, object>());
 
@@ -155,7 +155,7 @@ namespace AutoPocoIO.MsSql.test.Resources
 
             //mock to allow for load to 
             var resource = new MsSqlResource(new ServiceCollection().BuildServiceProvider());
-            resource.ConfigureAction(new Connector { ResourceType = 1, Schema = "sch1", ConnectionString = "conn1" }, OperationType.Any, "Name3");
+            resource.ConfigureAction(new Connector { ResourceType = "Microsoft.EntityFrameworkCore.SqlServer", Schema = "sch1", ConnectionString = "conn1" }, OperationType.Any, "Name3");
 
             var results = (IDictionary<string, object>)resource.ExecuteProc(new Dictionary<string, object>());
 
@@ -184,7 +184,7 @@ namespace AutoPocoIO.MsSql.test.Resources
 
             //mock to allow for load to 
             var resource = new MsSqlResource(new ServiceCollection().BuildServiceProvider());
-            resource.ConfigureAction(new Connector { ResourceType = 1, Schema = "sch1", ConnectionString = "conn1" }, OperationType.Any, "Name3");
+            resource.ConfigureAction(new Connector { ResourceType = "Microsoft.EntityFrameworkCore.SqlServer", Schema = "sch1", ConnectionString = "conn1" }, OperationType.Any, "Name3");
 
             var results = (IDictionary<string, object>)resource.ExecuteProc(new Dictionary<string, object>() { { "param1", 123 } });
 

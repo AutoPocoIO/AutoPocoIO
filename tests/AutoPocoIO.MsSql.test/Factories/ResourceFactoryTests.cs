@@ -19,7 +19,7 @@ namespace AutoPocoIO.test.Factories
     public class ResourceFactoryTests
     {
         private IResourceFactory _resourceFactory;
-        public void Init(int resouceType)
+        public void Init(string resouceType)
         {
             var appAdminService = new Mock<IAppAdminService>();
             appAdminService.Setup(c => c.GetConnection("conn1"))
@@ -54,9 +54,9 @@ namespace AutoPocoIO.test.Factories
 
 
             PrivateObject authProvider = new PrivateObject(ServiceProviderCache.Instance);
-            var dictionary = (ConcurrentDictionary<ResourceType, IServiceProvider>)authProvider.GetField("_configurations");
+            var dictionary = (ConcurrentDictionary<string, IServiceProvider>)authProvider.GetField("_configurations");
             dictionary.Clear();
-            dictionary.GetOrAdd(ResourceType.Mssql, resourceServices);
+            dictionary.GetOrAdd("Microsoft.EntityFrameworkCore.SqlServer", resourceServices);
 
             var list = new List<IOperationResource> { new MsSqlResource(resourceServices) };
 
@@ -65,7 +65,7 @@ namespace AutoPocoIO.test.Factories
         [TestMethod]
         public void GetSqlResource()
         {
-            Init(1);
+            Init("Microsoft.EntityFrameworkCore.SqlServer");
             var resource = _resourceFactory.GetResource("conn1", OperationType.read, "obj1");
             Assert.IsInstanceOfType(resource, typeof(MsSqlResource));
         }

@@ -55,6 +55,7 @@ namespace AutoPocoIO.Dashboard.Pages
                 return new RedirectDispatcher($"/Connectors/Connector/{id}");
             }
 
+            ViewBag["resourceTypes"] = _repo.ListResoureTypes();
             ViewBag["model"] = model;
             return new RazorPageDispatcher(this);
         }
@@ -65,6 +66,7 @@ namespace AutoPocoIO.Dashboard.Pages
         /// <param name="id">Connector id</param>
         public virtual void GetById(string id)
         {
+            ViewBag["resourceTypes"] = _repo.ListResoureTypes();
             ViewBag["model"] = _repo.GetById(id);
         }
         ///<inheritdoc/>
@@ -73,7 +75,7 @@ namespace AutoPocoIO.Dashboard.Pages
             model = new ConnectorViewModel()
             {
                 Id = values.FindValue<string>("id"),
-                ResourceType = 1,
+                ResourceType = values.FindValue<string>("resourceType"),
                 Name = values.FindValue<string>("connectorName"),
                 DataSource = values.FindValue<string>("serverName"),
                 InitialCatalog = values.FindValue<string>("databaseName"),
@@ -89,6 +91,7 @@ namespace AutoPocoIO.Dashboard.Pages
         /// </summary>
         public virtual void NewConnector()
         {
+            ViewBag["resourceTypes"] = _repo.ListResoureTypes();
             ViewBag["model"] = new ConnectorViewModel { IsActive = true };
         }
     }

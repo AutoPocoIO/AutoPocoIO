@@ -77,6 +77,7 @@ namespace AutoPocoIO.Extensions
             connector.InitialCatalog = connectionInformation.InitialCatalog;
             connector.UserId = connectionInformation.UserId;
             connector.DataSource = connectionInformation.DataSource;
+            connector.ResourceType = connectionInformation.ResourceType;
         }
 
 

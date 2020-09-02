@@ -51,7 +51,7 @@ namespace AutoPocoIO.test.Resources
 
             public TestResourceServices(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
-            public override ResourceType ResourceType => ResourceType.None;
+            public override string ResourceType => "None";
 
             public IServiceProvider ExposeProvider { get => base.InternalServiceProvider; }
             public void SetConnector(Connector connector) => this.Connector = connector;

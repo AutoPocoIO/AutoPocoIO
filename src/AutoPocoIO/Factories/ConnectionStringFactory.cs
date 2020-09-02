@@ -1,5 +1,4 @@
 ﻿using AutoPocoIO.Constants;
-using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.Resources;
 using Microsoft.EntityFrameworkCore;
@@ -32,8 +31,7 @@ namespace AutoPocoIO.Factories
         {
             Check.NotNull(database, nameof(database));
 
-            int resourceType = ResourceTypeFromProviderName(database);
-            IConnectionStringBuilder builder = GetBuilder(resourceType);
+            IConnectionStringBuilder builder = GetBuilder(database.ProviderName);
             string connectionString = database.GetDbConnection().ConnectionString;
             return builder.ParseConnectionString(connectionString);
         }
@@ -43,61 +41,35 @@ namespace AutoPocoIO.Factories
             Check.NotNull(database, nameof(database));
             Check.NotNull(connectionInformation, nameof(connectionInformation));
 
-            int resourceType = ResourceTypeFromProviderName(database);
-            IConnectionStringBuilder builder = GetBuilder(resourceType);
+            IConnectionStringBuilder builder = GetBuilder(database.ProviderName);
             return builder.CreateConnectionString(connectionInformation);
         }
         ///<inheritdoc/>
-        public ConnectionInformation GetConnectionInformation(int resourceType, string connectionString)
+        public ConnectionInformation GetConnectionInformation(string resourceType, string connectionString)
         {
             IConnectionStringBuilder builder = GetBuilder(resourceType);
             return builder.ParseConnectionString(connectionString);
         }
         ///<inheritdoc/>
-        public string CreateConnectionString(int resourceType, ConnectionInformation connectionInformation)
+        public string CreateConnectionString(string resourceType, ConnectionInformation connectionInformation)
         {
             IConnectionStringBuilder builder = GetBuilder(resourceType);
             return builder.CreateConnectionString(connectionInformation);
         }
 
-        private IConnectionStringBuilder GetBuilder(int resourceType)
+        private IConnectionStringBuilder GetBuilder(string resourceType)
         {
             IConnectionStringBuilder builder;
-            if (Enum.IsDefined(typeof(ResourceType), resourceType))
+            try
             {
-                ResourceType type = (ResourceType)resourceType;
-
-                try
-                {
-                    builder = _builders.First(c => c.ResourceType == type);
-                }
-                catch (InvalidOperationException)
-                {
-                    throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, ExceptionMessages.DbTypeNotRegistered, (ResourceType)resourceType), nameof(resourceType));
-                }
+                builder = _builders.First(c => c.ResourceType == resourceType);
             }
-            else
-                throw new ArgumentOutOfRangeException(ExceptionMessages.DbAdapterNotFound);
+            catch (InvalidOperationException)
+            {
+                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, ExceptionMessages.DbTypeNotRegistered, resourceType), nameof(resourceType));
+            }
 
             return builder;
         }
-
-        private int ResourceTypeFromProviderName(DatabaseFacade database)
-        {
-            string providerName = database.ProviderName;
-            switch (providerName)
-            {
-                case "Microsoft.EntityFrameworkCore.SqlServer":
-                    return (int)ResourceType.Mssql;
-                case "Microsoft.EntityFrameworkCore.MySql":
-                    return (int)ResourceType.Mysql;
-                case "Microsoft.EntityFrameworkCore.Oracle":
-                    return (int)ResourceType.Oracle;
-            }
-
-            return 0;
-        }
-
-
     }
 }

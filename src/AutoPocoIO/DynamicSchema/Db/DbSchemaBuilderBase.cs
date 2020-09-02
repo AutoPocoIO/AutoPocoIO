@@ -55,7 +55,7 @@ namespace AutoPocoIO.DynamicSchema.Db
         protected abstract IDbCommand BuildTablesViewsCommand(IDbConnection dbConnection);
 
         ///<inheritdoc/>
-        public abstract ResourceType ResourceType { get; }
+        public abstract string ResourceType { get; }
         ///<inheritdoc/>
         public abstract IDbConnection CreateConnection();
         ///<inheritdoc/>

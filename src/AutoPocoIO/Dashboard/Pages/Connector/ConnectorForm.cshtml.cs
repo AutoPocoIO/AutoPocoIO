@@ -39,7 +39,42 @@ WriteLiteral("\r\n<div class=\"container pt-4 mt-5\">\r\n    <h1>Create Connecto
 
                                           Write(GetViewBagValue<ConnectorViewModel>("model").Id);
 
-WriteLiteral(@""" />
+WriteLiteral("\" />\r\n        <div class=\"form-group\">\r\n            <label for=\"resourceType\">Res" +
+"ource Type</label>\r\n            <select class=\"form-control\" name=\"resourceType\"" +
+">\r\n                <option></option>\r\n");
+
+
+                 foreach(var type in GetViewBagValue<IEnumerable<ResouceTypeViewModel>>("resourceTypes"))
+                {
+
+WriteLiteral("                    <option value=\"");
+
+
+                              Write(type.ProviderName);
+
+WriteLiteral("\" ");
+
+
+                                                   Write(GetViewBagValue<ConnectorViewModel>("model").ResourceType == type.ProviderName ? "selected" : "");
+
+WriteLiteral(">");
+
+
+                                                                                                                                                      Write(type.DisplayName.Split('.').Last());
+
+WriteLiteral("</option>\r\n");
+
+
+                }
+
+WriteLiteral("            </select>\r\n            <div class=\"errorMessage\"><span class=\"text-da" +
+"nger\">");
+
+
+                                                           Write(GetError("errors", nameof(ConnectorViewModel.ResourceType)));
+
+WriteLiteral(@"</span></div>
+        </div>
         <div class=""form-group"">
             <label for=""connectorName"">Connector Name</label>
             <input type=""text"" class=""form-control"" name=""connectorName"" aria-describedby=""connectorHelp"" placeholder=""e.g. Adventureworks""

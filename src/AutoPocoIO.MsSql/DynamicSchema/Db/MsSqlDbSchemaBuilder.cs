@@ -24,7 +24,7 @@ namespace AutoPocoIO.DynamicSchema.Db
             _query = query;
         }
 
-        public override ResourceType ResourceType => ResourceType.Mssql;
+        public override string ResourceType => typeof(Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal.SqlServerOptionsExtension).Assembly.GetName().Name;
 
         public override IDbConnection CreateConnection()
         {
