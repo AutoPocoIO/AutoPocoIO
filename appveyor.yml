@@ -9,6 +9,10 @@ environment:
    OPENCOVER_SUFFIX: ' --no-build -c %CONFIG%" -output:".\coverage.xml" -returntargetcode:1000 -mergeoutput -oldStyle -filter:"+[AutoPocoIO*]* -[*.test*]*" -excludebyattribute:"*.ExcludeFromCodeCoverageAttribute" -excludebyfile:"*.cshtml.cs;*cshtml;*.Designer.cs"; $env:TEST_PASS = $?; if($env:Test_PASS -eq "False") {$host.SetShouldExit(1)}'
    TEST_PASS: 'False'
    CONFIG: 'Debug'
+   GIT_HUB_USER:
+     secure: RjsXxaVLs5C3lpq67rHM9g==
+   GIT_HUB_PASS:
+     secure: LvjtSQVaspqe2HzrcP5NG7b4ObvMscVivtHlHB9TBQm8NTR2sWUY4V2cy2waIv5X
 for:
 - 
   branches:
@@ -34,18 +38,16 @@ cache:
   - sln/packages -> samples/AspNetSample/packages.config
 build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish
+  - cmd:  nuget sources add -Name github -Source https://nuget.pkg.github.com/AutoPocoIO/index.json -UserName %GIT_HUB_USER% -Password %GIT_HUB_PASS% 
   - cmd: nuget restore ./sln/AutoPocoIO.sln -verbosity quiet 
   - cmd: dotnet build ./sln/AutoPocoIO.sln /p:IsAppVeyor=true --verbosity m -c %CONFIG%
   - cmd: dotnet pack src/AutoPocoIO/AutoPocoIO.csproj -p:PackageVersion="%VERSION%-beta.%APPVEYOR_BUILD_NUMBER%" -c %CONFIG%
-  - cmd: dotnet pack src/AutoPocoIO.MsSql/AutoPocoIO.MsSql.csproj -p:PackageVersion="%VERSION%-beta.%APPVEYOR_BUILD_NUMBER%" -c %CONFIG%
 test_script:
  # run the unit tests
   - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.test\AutoPocoIO.test.csproj --framework net461 $env:OPENCOVER_SUFFIX" 
   - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.csproj --framework net461 $env:OPENCOVER_SUFFIX"
-  - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.MsSql.test\AutoPocoIO.MsSql.test.csproj --framework net461 $env:OPENCOVER_SUFFIX"
   - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.test\AutoPocoIO.test.csproj --framework netcoreapp2.2 $env:OPENCOVER_SUFFIX"
   - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.test.csproj --framework netcoreapp2.2 $env:OPENCOVER_SUFFIX"
-  - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.MsSql.test\AutoPocoIO.MsSql.test.csproj --framework netcoreapp2.2 $env:OPENCOVER_SUFFIX"
   
 artifacts:
   - path: '**\bin\**\*.nupkg' # find all NuGet packages recursively
