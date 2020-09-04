@@ -67,6 +67,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <NoWarn>1701;1702;1307</NoWarn>
+    <SignAssembly>true</SignAssembly>
     <!--<OutputPath>..\..\bin\</OutputPath>-->
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
@@ -103,6 +104,8 @@
     <Authors>AutoPocoIO</Authors>
     <RepositoryUrl>https://github.com/AutoPocoIO/AutoPocoIO</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>
+    <AssemblyOriginatorKeyFile>..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   
 

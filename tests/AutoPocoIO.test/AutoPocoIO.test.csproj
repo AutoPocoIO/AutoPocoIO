@@ -10,6 +10,8 @@
   <PropertyGroup>
     <TargetFrameworks>net461;netcoreapp2.2;</TargetFrameworks>
     <IsPackable>false</IsPackable>
+    <AssemblyOriginatorKeyFile>..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
