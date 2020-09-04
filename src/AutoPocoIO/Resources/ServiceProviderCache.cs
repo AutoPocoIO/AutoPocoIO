@@ -1,11 +1,11 @@
-﻿using AutoPocoIO.DynamicSchema.Enums;
+﻿using AutoPocoIO.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Concurrent;
 
 namespace AutoPocoIO.Resources
 {
-    internal class ServiceProviderCache
+    public class ServiceProviderCache
     {
         private readonly ConcurrentDictionary<string, IServiceProvider> _configurations
             = new ConcurrentDictionary<string, IServiceProvider>();
@@ -14,6 +14,8 @@ namespace AutoPocoIO.Resources
 
         public virtual IServiceProvider GetOrAdd(IOperationResource resource, IServiceProvider rootProvider)
         {
+            Check.NotNull(resource, nameof(resource));
+
             return _configurations.GetOrAdd(
                resource.ResourceType,
                k =>

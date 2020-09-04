@@ -122,38 +122,6 @@ namespace AutoPocoIO.test.Resources
         }
 
         [TestMethod]
-        public void GetAllSchemasFromDb()
-        {
-            using (var db = new AppDbContext(appDbOptions))
-            {
-                db.Connector.Add(new Connector
-                {
-                    InitialCatalog = "db1",
-                    Schema = "sch1",
-                    Id = "1",
-                    Name = "conn1"
-                });
-                db.Connector.Add(new Connector
-                {
-                    InitialCatalog = "db1",
-                    Schema = "asch1",
-                    Id = "2",
-                    Name = "conn2"
-                });
-                db.SaveChanges();
-            }
-
-            ResetServiceProviderCache();
-
-            var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
-            resource.SetConnector(defaultConnector);
-            var schemas = resource.ListSchemas();
-
-            Assert.AreEqual(2, schemas.Count());
-            Assert.AreEqual("asch1", schemas.First().Name);
-        }
-
-        [TestMethod]
         public void GetResourceRecordsWithOutExpandUserJoins()
         {
             var list = new List<object> { new { a = "a" }, new { a = "b" } }.AsQueryable();
