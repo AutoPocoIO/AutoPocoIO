@@ -47,8 +47,8 @@
     <Reference Include="AutoPocoIO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\sln\packages\AutoPocoIO.1.0.0-beta.269\lib\net461\AutoPocoIO.dll</HintPath>
     </Reference>
-    <Reference Include="AutoPocoIO.MsSql, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\sln\packages\AutoPocoIO.MsSql.1.0.0-beta.5\lib\netstandard2.0\AutoPocoIO.MsSql.dll</HintPath>
+    <Reference Include="AutoPocoIO.MsSql, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a3d3699c7c8f879f, processorArchitecture=MSIL">
+      <HintPath>..\..\sln\packages\AutoPocoIO.MsSql.1.0.0-rc.1\lib\netstandard2.0\AutoPocoIO.MsSql.dll</HintPath>
     </Reference>
     <Reference Include="GeoAPI, Version=1.7.5.0, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
       <HintPath>..\..\sln\packages\GeoAPI.Core.1.7.5\lib\net45\GeoAPI.dll</HintPath>
