@@ -44,8 +44,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoPocoIO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\sln\packages\AutoPocoIO.1.0.0-beta.269\lib\net461\AutoPocoIO.dll</HintPath>
+    <Reference Include="AutoPocoIO, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a3d3699c7c8f879f, processorArchitecture=MSIL">
+      <HintPath>..\..\sln\packages\AutoPocoIO.1.0.0-rc.1\lib\net461\AutoPocoIO.dll</HintPath>
     </Reference>
     <Reference Include="AutoPocoIO.MsSql, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a3d3699c7c8f879f, processorArchitecture=MSIL">
       <HintPath>..\..\sln\packages\AutoPocoIO.MsSql.1.0.0-rc.1\lib\netstandard2.0\AutoPocoIO.MsSql.dll</HintPath>
