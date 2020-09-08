@@ -11,7 +11,6 @@
     <TargetFrameworks>net461;netstandard2.0;</TargetFrameworks>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Configurations>Debug;Release;</Configurations>
-    <Description>Dynamically create Poco classes on request.</Description>
     <PackageId>AutoPocoIO</PackageId>
     <Company>AutoPocoIO</Company>
     <Authors>AutoPocoIO</Authors>
@@ -24,6 +23,10 @@
   <ItemGroup>
     <None Remove="SwaggerAddons\AutoPoco.xml" />
     <None Remove="SwaggerAddons\swagger.css" />
+    <None Include="..\..\sln\AutoPocoIcon.jpeg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SwaggerAddons\AutoPoco.xml" />
@@ -68,6 +71,12 @@
   <PropertyGroup>
     <NoWarn>1701;1702;1307</NoWarn>
     <SignAssembly>true</SignAssembly>
+    <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>AutoPocoIcon.jpeg</PackageIcon>
+    <PackageTags>autopoco poco-generator poco</PackageTags>
+    <PackageProjectUrl>http://autopoco.io/</PackageProjectUrl>
     <!--<OutputPath>..\..\bin\</OutputPath>-->
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
@@ -98,7 +107,7 @@
     <SccProvider>SAK</SccProvider>
     <SccAuxPath>SAK</SccAuxPath>
     <SccLocalPath>SAK</SccLocalPath>
-    <Description>Dynamically create Poco classes on request.</Description>
+    <Description>Auto generate POCO classes at runtime for use in .NET Framework &amp; .NET Core applications. No DbContext required; classes are created from database schema.</Description>
     <PackageId>AutoPocoIO</PackageId>
     <Company>AutoPocoIO</Company>
     <Authors>AutoPocoIO</Authors>
