@@ -12,21 +12,23 @@ namespace AutoPocoIO.Api
     public class SchemaOperations : ISchemaOperations
     {
 
-        private readonly IResourceFactory _resourceFactory;
         /// <summary>
         /// Initialize schema operations with access to all registered resource types.
         /// </summary>
         /// <param name="resourceFactory">Get resource from the connector.</param>
         public SchemaOperations(IResourceFactory resourceFactory)
         {
-            _resourceFactory = resourceFactory;
+            ResourceFactory = resourceFactory;
         }
+
+        /// <inheritdoc />
+        public IResourceFactory ResourceFactory { get; }
 
         /// <inheritdoc />
         public SchemaDefinition Definition(string connectorName, ILoggingService loggingService = null)
         {
             loggingService?.AddSchemaToLogger(connectorName);
-            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.Any, string.Empty);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.Any, string.Empty);
             return resource.GetSchemaDefinition();
         }
     }

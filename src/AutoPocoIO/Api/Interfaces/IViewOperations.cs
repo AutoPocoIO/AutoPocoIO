@@ -1,4 +1,5 @@
-﻿using AutoPocoIO.Services;
+﻿using AutoPocoIO.Factories;
+using AutoPocoIO.Services;
 using System.Linq;
 
 namespace AutoPocoIO.Api
@@ -8,6 +9,11 @@ namespace AutoPocoIO.Api
     /// </summary>
     public interface IViewOperations
     {
+        /// <summary>
+        /// Factory to find the correct database resource
+        /// </summary>
+        IResourceFactory ResourceFactory { get; }
+
         /// <summary>
         /// Retrieve data from a given view
         /// </summary>

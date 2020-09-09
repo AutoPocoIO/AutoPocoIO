@@ -1,4 +1,5 @@
-﻿using AutoPocoIO.Models;
+﻿using AutoPocoIO.Factories;
+using AutoPocoIO.Models;
 using AutoPocoIO.Services;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
@@ -10,6 +11,11 @@ namespace AutoPocoIO.Api
     /// </summary>
     public interface IStoredProcedureOperations
     {
+        /// <summary>
+        /// Factory to find the correct database resource
+        /// </summary>
+        IResourceFactory ResourceFactory { get; }
+
         /// <summary>
         /// Get procedure parameters.
         /// </summary>

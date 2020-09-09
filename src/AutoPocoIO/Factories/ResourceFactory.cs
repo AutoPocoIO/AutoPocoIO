@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.Constants;
 using AutoPocoIO.DynamicSchema.Enums;
+using AutoPocoIO.Exceptions;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
 using AutoPocoIO.Services;
@@ -48,8 +49,10 @@ namespace AutoPocoIO.Factories
         }
 
 
-        private IOperationResource GetResourceType(Connector connector, OperationType dbAction, string dbObjectName)
+        protected virtual IOperationResource GetResourceType(Connector connector, OperationType dbAction, string dbObjectName)
         {
+            Check.NotNull(connector, nameof(connector));
+
             IOperationResource resource;
             try
             {

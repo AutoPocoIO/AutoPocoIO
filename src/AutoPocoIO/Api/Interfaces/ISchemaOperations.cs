@@ -1,4 +1,5 @@
-﻿using AutoPocoIO.Models;
+﻿using AutoPocoIO.Factories;
+using AutoPocoIO.Models;
 using AutoPocoIO.Services;
 
 namespace AutoPocoIO.Api
@@ -8,6 +9,10 @@ namespace AutoPocoIO.Api
     /// </summary>
     public interface ISchemaOperations
     {
+        /// <summary>
+        /// Factory to find the correct database resource
+        /// </summary>
+        IResourceFactory ResourceFactory { get; }
         /// <summary>
         /// Get schema structure.
         /// </summary>

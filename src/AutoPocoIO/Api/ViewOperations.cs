@@ -12,22 +12,23 @@ namespace AutoPocoIO.Api
     /// </summary>
     public class ViewOperations : IViewOperations
     {
-        private readonly IResourceFactory _resourceFactory;
-
         /// <summary>
         /// Initialize view operations with access to all registered resource types.
         /// </summary>
         /// <param name="resourceFactory">Get resource from the connector.</param>
         public ViewOperations(IResourceFactory resourceFactory)
         {
-            _resourceFactory = resourceFactory;
+            ResourceFactory = resourceFactory;
         }
+
+        /// <inheritdoc />
+        public IResourceFactory ResourceFactory { get; }
 
         /// <inheritdoc />
         public (IQueryable<object> list, int recordLimit) GetAllAndRecordLimit(string connectorName, string viewName, ILoggingService loggingService = null)
         {
             loggingService?.AddViewToLogger(connectorName, viewName);
-            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.read, viewName);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.read, viewName);
             return (resource.GetViewRecords(), resource.Connector.RecordLimit);
         }
 
@@ -35,7 +36,7 @@ namespace AutoPocoIO.Api
         public IQueryable<object> GetAll(string connectorName, string viewName, ILoggingService loggingService = null)
         {
             loggingService?.AddViewToLogger(connectorName, viewName);
-            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.read, viewName);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.read, viewName);
             return resource.GetViewRecords();
         }
 

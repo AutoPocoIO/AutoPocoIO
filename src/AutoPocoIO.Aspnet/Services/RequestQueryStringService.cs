@@ -12,7 +12,7 @@ namespace AutoPocoIO.Services
         ///<inheritdoc/>
         public IDictionary<string, string> GetQueryStrings()
         {
-            return HttpContext.Current.Request.GetQueryStrings();
+            return HttpContext.Current?.Request.GetQueryStrings() ?? new Dictionary<string, string>();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace AutoPocoIO.Api
     /// </summary>
     public partial class TableOperations : ITableOperations
     {
-        private readonly IResourceFactory _resourceFactory;
+        
         private readonly IRequestQueryStringService _requestQuery;
         /// <summary>
         /// Initialize table operations with access to all registered resource types.
@@ -30,10 +30,12 @@ namespace AutoPocoIO.Api
         /// <param name="requestQuery">Get query string information for odata operations.</param>
         public TableOperations(IResourceFactory resourceFactory, IRequestQueryStringService requestQuery)
         {
-            _resourceFactory = resourceFactory;
+            ResourceFactory = resourceFactory;
             _requestQuery = requestQuery;
         }
 
+        /// <inheritdoc />
+        public IResourceFactory ResourceFactory { get; }
 
         /// <inheritdoc />
         public (IQueryable<object> list, int connectorMax) GetAll(string connectorName, string tableName, ILoggingService loggingService = null)
@@ -42,7 +44,7 @@ namespace AutoPocoIO.Api
             Check.NotEmpty(tableName, nameof(tableName));
 
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET);
-            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.read, tableName);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.read, tableName);
 
             var queryString = _requestQuery.GetQueryStrings();
 
@@ -53,7 +55,7 @@ namespace AutoPocoIO.Api
         public IQueryable<TViewModel> GetAll<TViewModel>(string connectorName, string tableName, ILoggingService loggingService = null)
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET);
-            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.read, tableName);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.read, tableName);
 
             //Manually $expand to prevent nulls on non pk joins
             var joinProperties = typeof(TViewModel).GetProperties()
@@ -75,7 +77,7 @@ namespace AutoPocoIO.Api
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET, id);
 
-            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.read, tableName);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.read, tableName);
             var data = resource.GetResourceRecordById(id);
             return data;
         }
@@ -97,7 +99,7 @@ namespace AutoPocoIO.Api
                                                             (c.PropertyType.IsGenericType && c.PropertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
                                        .Select(c => c.Name);
 
-            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.read, tableName);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.read, tableName);
 
             if (joinProperties.Any())
                 return resource.GetResourceRecordById<TViewModel>(id, new Dictionary<string, string>() { { "$expand", string.Join(",", joinProperties) } });
@@ -117,7 +119,7 @@ namespace AutoPocoIO.Api
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.POST);
             Check.NotNull(value, nameof(value));
 
-            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.write, tableName);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.write, tableName);
             var data = resource.CreateNewResourceRecord(value);
             return data;
         }
@@ -127,7 +129,7 @@ namespace AutoPocoIO.Api
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.POST);
 
-            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.write, tableName);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.write, tableName);
             var data = resource.CreateNewResourceRecord(value);
             return DynamicObjectExtensions.PopulateModel<TViewModel>(data);
         }
@@ -138,7 +140,7 @@ namespace AutoPocoIO.Api
         {
             Check.NotNull(value, nameof(value));
 
-            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.write, tableName);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.write, tableName);
             object[] id = null;
             try
             {
@@ -159,7 +161,7 @@ namespace AutoPocoIO.Api
         /// <inheritdoc />
         public TViewModel UpdateRow<TViewModel>(string connectorName, string tableName, TViewModel value, ILoggingService loggingService = null) where TViewModel : class
         {
-            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.write, tableName);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.write, tableName);
 
             object[] id = null;
             try
@@ -183,7 +185,7 @@ namespace AutoPocoIO.Api
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.DELETE, id);
 
-            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.delete, tableName);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.delete, tableName);
             return resource.DeleteResourceRecordById(id);
         }
 
@@ -197,7 +199,7 @@ namespace AutoPocoIO.Api
         public TableDefinition Definition(string connectorName, string tableName, ILoggingService loggingService = null)
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET);
-            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.Any, tableName);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.Any, tableName);
             return resource.GetTableDefinition();
         }
 
@@ -205,7 +207,7 @@ namespace AutoPocoIO.Api
         public ColumnDefinition Definition(string connectorName, string tableName, string columnName, ILoggingService loggingService = null)
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET);
-            IOperationResource resource = _resourceFactory.GetResource(connectorName, OperationType.Any, tableName);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.Any, tableName);
             return resource.GetColumnDefinition(columnName);
         }
     }

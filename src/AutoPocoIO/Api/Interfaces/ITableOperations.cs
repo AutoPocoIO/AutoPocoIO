@@ -1,4 +1,5 @@
-﻿using AutoPocoIO.Models;
+﻿using AutoPocoIO.Factories;
+using AutoPocoIO.Models;
 using AutoPocoIO.Services;
 using Newtonsoft.Json.Linq;
 using System.Linq;
@@ -10,6 +11,11 @@ namespace AutoPocoIO.Api
     /// </summary>
     public interface ITableOperations
     {
+        /// <summary>
+        /// Factory to find the correct database resource
+        /// </summary>
+        IResourceFactory ResourceFactory { get; }
+
         /// <summary>
         /// Insert a recored into a given table
         /// </summary>
