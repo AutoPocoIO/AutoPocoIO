@@ -64,6 +64,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
     <PackageReference Include="Swashbuckle.Core" Version="5.6.0" />
     <PackageReference Include="Microsoft.AspNet.OData" Version="7.1.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.7" />
