@@ -51,7 +51,7 @@ namespace AspNetCoreSample.Migration
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "sampleSales",
-                ResourceType = 1,
+                ResourceType = "Microsoft.EntityFrameworkCore.SqlServer",
                 Schema = "sales",
                 ConnectionString = _connection,
                 RecordLimit = 500,
