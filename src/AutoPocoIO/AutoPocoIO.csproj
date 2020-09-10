@@ -41,11 +41,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime;build;analyzers</IncludeAssets>
     </PackageReference>
-    
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.4" />
-   
-    
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.16" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
     
@@ -58,9 +54,7 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="4.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters " Version="4.5.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.1.0" />
-    <PackageReference Include="X.PagedList.Mvc.Core" Version="7.9.1" />
     <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
   </ItemGroup>
  
@@ -68,23 +62,12 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
     <DefineConstants>net461;NETFULL;</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup>
-    <NoWarn>1701;1702;1307</NoWarn>
-    <SignAssembly>true</SignAssembly>
-    <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <RepositoryType>git</RepositoryType>
-    <PackageIcon>AutoPocoIcon.jpeg</PackageIcon>
-    <PackageTags>autopoco poco-generator poco</PackageTags>
-    <PackageProjectUrl>http://autopoco.io/</PackageProjectUrl>
-    <!--<OutputPath>..\..\bin\</OutputPath>-->
-  </PropertyGroup>
+
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <PackageReference Include="Swashbuckle.Core" Version="5.6.0" />
     <PackageReference Include="Microsoft.AspNet.OData" Version="7.1.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.7" />
-    <PackageReference Include="X.PagedList.Mvc" Version="7.9.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -101,6 +84,17 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <PropertyGroup>
+    <NoWarn>1701;1702;1307</NoWarn>
+    <SignAssembly>true</SignAssembly>
+    <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>AutoPocoIcon.jpeg</PackageIcon>
+    <PackageTags>autopoco poco-generator poco</PackageTags>
+    <PackageProjectUrl>http://autopoco.io/</PackageProjectUrl>
+    <!--<OutputPath>..\..\bin\</OutputPath>-->
+  </PropertyGroup>
   
   <PropertyGroup Label="Globals">
     <SccProjectName>SAK</SccProjectName>

@@ -79,7 +79,7 @@ namespace AutoPocoIO.test.Migrations
 
             Assert.AreEqual(typeof(DateTime?), entity.FindProperty("DayOfRequest").ClrType);
             Assert.AreEqual(ValueGenerated.OnAddOrUpdate, entity.FindProperty("DayOfRequest").ValueGenerated);
-            Assert.AreEqual("CONVERT(date, DateTimeUtc)", entity.FindProperty("DayOfRequest").SqlServer().ComputedColumnSql);
+            Assert.AreEqual("CONVERT(date, DateTimeUtc)", entity.FindProperty("DayOfRequest").Relational().ComputedColumnSql);
 
             Assert.AreEqual(typeof(string), entity.FindProperty("RequestType").ClrType);
             Assert.AreEqual(10, entity.FindProperty("RequestType").GetMaxLength());
@@ -123,7 +123,7 @@ namespace AutoPocoIO.test.Migrations
 
             Assert.AreEqual(typeof(DateTime?), entity.FindProperty("DayOfResponse").ClrType);
             Assert.AreEqual(ValueGenerated.OnAddOrUpdate, entity.FindProperty("DayOfResponse").ValueGenerated);
-            Assert.AreEqual("CONVERT(date, DateTimeUtc)", entity.FindProperty("DayOfResponse").SqlServer().ComputedColumnSql);
+            Assert.AreEqual("CONVERT(date, DateTimeUtc)", entity.FindProperty("DayOfResponse").Relational().ComputedColumnSql);
 
             Assert.AreEqual(typeof(string), entity.FindProperty("Status").ClrType);
             Assert.AreEqual(51, entity.FindProperty("Status").GetMaxLength());
