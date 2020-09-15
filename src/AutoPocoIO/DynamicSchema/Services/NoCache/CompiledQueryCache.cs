@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
+﻿
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,17 @@ namespace AutoPocoIO.DynamicSchema.Services.NoCache
         public CompiledQueryCache(IMemoryCache memoryCache) : base(memoryCache)
         { }
 
-        public override Func<QueryContext, IAsyncEnumerable<TResult>> GetOrAddAsyncQuery<TResult>(object cacheKey, Func<Func<QueryContext, IAsyncEnumerable<TResult>>> compiler)
+#if NETCORE3_1
+        public override Func<QueryContext, TResult> GetOrAddAsyncQuery<TResult>(object cacheKey, Func<Func<QueryContext, TResult>> compiler)
         {
             return GetOrAddQueryCore(compiler);
         }
+#else
+public override Func<QueryContext, IAsyncEnumerable<TResult>> GetOrAddAsyncQuery<TResult>(object cacheKey, Func<Func<QueryContext, IAsyncEnumerable<TResult>>> compiler)
+        {
+            return GetOrAddQueryCore(compiler);
+        }
+#endif
 
         public override Func<QueryContext, TResult> GetOrAddQuery<TResult>(object cacheKey, Func<Func<QueryContext, TResult>> compiler)
         {

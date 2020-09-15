@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.CustomAttributes;
 using AutoPocoIO.Exceptions;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
@@ -14,12 +15,17 @@ namespace AutoPocoIO.SwaggerAddons
     /// </summary>
     public class ODataParametersSwaggerDefinition : IOperationFilter
     {
+
         /// <summary>
         /// Add parameters for Odata operations.
         /// </summary>
         /// <param name="operation">Swagger operation</param>
         /// <param name="context">Action context</param>
+#if NETCORE2_2
         public void Apply(Operation operation, OperationFilterContext context)
+#else
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+#endif
         {
             Check.NotNull(operation, nameof(operation));
             Check.NotNull(context, nameof(context));
@@ -28,76 +34,74 @@ namespace AutoPocoIO.SwaggerAddons
             {
                 if (operation.Parameters == null)
                 {
+#if NETCORE2_2
+
                     operation.Parameters = new List<IParameter>();
+#else
+       
+                    operation.Parameters = new List<OpenApiParameter>();
+#endif
                 }
 
-                operation.Parameters.Add(new NonBodyParameter
+                operation.Parameters.Add(new OpenApiParameter
                 {
                     Name = "$filter",
                     Description = "Filter the results using OData syntax.",
                     Required = false,
-                    Type = "string",
-                    In = "query"
+                    In = ParameterLocation.Query
                 });
-                operation.Parameters.Add(new NonBodyParameter
+                operation.Parameters.Add(new OpenApiParameter
                 {
                     Name = "$select",
                     Description = "Select columns using OData syntax.",
                     Required = false,
-                    Type = "string",
-                    In = "query"
+                    In = ParameterLocation.Query
                 });
-                operation.Parameters.Add(new NonBodyParameter
+                operation.Parameters.Add(new OpenApiParameter
                 {
                     Name = "$expand",
                     Description = "Expand nested data using OData syntax.",
                     Required = false,
-                    Type = "string",
-                    In = "query"
+                    In = ParameterLocation.Query
                 });
-                operation.Parameters.Add(new NonBodyParameter
+                operation.Parameters.Add(new OpenApiParameter
                 {
                     Name = "$orderby",
                     Description = "Order the results using OData syntax.",
                     Required = false,
-                    Type = "string",
-                    In = "query"
+                    In = ParameterLocation.Query
                 });
 
-                operation.Parameters.Add(new NonBodyParameter
+                operation.Parameters.Add(new OpenApiParameter
                 {
                     Name = "$skip",
                     Description = "The number of results to skip.",
                     Required = false,
-                    Type = "integer",
-                    In = "query"
+                    In = ParameterLocation.Query
                 });
 
-                operation.Parameters.Add(new NonBodyParameter
+                operation.Parameters.Add(new OpenApiParameter
                 {
                     Name = "$top",
                     Description = "The number of results to return.",
                     Required = false,
-                    Type = "integer",
-                    In = "query"
+                    In = ParameterLocation.Query
                 });
 
-                operation.Parameters.Add(new NonBodyParameter
+                operation.Parameters.Add(new OpenApiParameter
                 {
                     Name = "$apply",
                     Description = "Return applied filter.",
                     Required = false,
-                    Type = "string",
-                    In = "query"
+                    In = ParameterLocation.Query
                 });
 
-                operation.Parameters.Add(new NonBodyParameter
+                operation.Parameters.Add(new OpenApiParameter
                 {
                     Name = "$count",
                     Description = "Return the total count.",
                     Required = false,
-                    Type = "boolean",
-                    In = "query"
+                    In = ParameterLocation.Query
                 });
             }
         }

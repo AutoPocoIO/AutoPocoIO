@@ -12,12 +12,19 @@ namespace AutoPocoIO.DynamicSchema.Services.NoCache
     [ExcludeFromCodeCoverage]
     internal class DbSetFinder : Microsoft.EntityFrameworkCore.Internal.DbSetFinder
     {
+
+#if NETCORE3_1
+        public override IReadOnlyList<DbSetProperty> FindSets(Type contextType)
+        {
+            return FindSetsNonCached(contextType);
+        }
+#else
         public override IReadOnlyList<DbSetProperty> FindSets(DbContext context)
         {
-            return FindSets(context.GetType());
+            return FindSetsNonCached(context.GetType());
         }
-
-        private static DbSetProperty[] FindSets(Type contextType)
+#endif
+        private static DbSetProperty[] FindSetsNonCached(Type contextType)
         {
             var factory = new ClrPropertySetterFactory();
 

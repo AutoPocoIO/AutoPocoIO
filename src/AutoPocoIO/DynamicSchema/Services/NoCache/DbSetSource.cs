@@ -12,18 +12,26 @@ namespace AutoPocoIO.DynamicSchema.Services.NoCache
         private static readonly MethodInfo _genericCreateSet
            = typeof(DbSetSource).GetTypeInfo().GetDeclaredMethod(nameof(CreateSetFactory));
 
-        private static readonly MethodInfo _genericCreateQuery
-            = typeof(DbSetSource).GetTypeInfo().GetDeclaredMethod(nameof(CreateQueryFactory));
+      
 
         public override object Create(DbContext context, Type type)
         {
             return CreateCore(context, type, _genericCreateSet);
         }
 
+#if NETCORE2_2 || NETFULL
+        private static readonly MethodInfo _genericCreateQuery
+            = typeof(DbSetSource).GetTypeInfo().GetDeclaredMethod(nameof(CreateQueryFactory));
+
         public override object CreateQuery(DbContext context, Type type)
         {
             return CreateCore(context, type, _genericCreateQuery);
         }
+
+            private static Func<DbContext, DbQuery<TQuery>> CreateQueryFactory<TQuery>()
+            where TQuery : class
+            => c => new InternalDbQuery<TQuery>(c);
+#endif
 
         private object CreateCore(DbContext context, Type type, MethodInfo createMethod)
         {
@@ -38,8 +46,6 @@ namespace AutoPocoIO.DynamicSchema.Services.NoCache
            where TEntity : class
            => c => new InternalDbSet<TEntity>(c);
 
-        private static Func<DbContext, DbQuery<TQuery>> CreateQueryFactory<TQuery>()
-            where TQuery : class
-            => c => new InternalDbQuery<TQuery>(c);
+    
     }
 }

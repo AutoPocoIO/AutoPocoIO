@@ -2,6 +2,7 @@ using AutoPocoIO.SwaggerAddons;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -25,7 +26,7 @@ namespace AutoPocoIO
 
                 return c =>
                 {
-                    c.SwaggerDoc("v1", new Info { Title = "AutoPoco", Version = "v1" });
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "AutoPoco", Version = "v1" });
                     c.OperationFilter<ODataParametersSwaggerDefinition>();
                     c.ExampleFilters();
 

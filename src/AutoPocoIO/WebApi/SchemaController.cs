@@ -8,7 +8,6 @@ using Swashbuckle.Swagger.Annotations;
 #else
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Microsoft.AspNetCore.Authorization;
 #endif
 
 namespace AutoPocoIO.WebApi

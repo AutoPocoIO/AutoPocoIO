@@ -2,12 +2,19 @@
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Query;
-using Microsoft.AspNetCore.Builder.Internal;
+
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
+
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+
+#if NETCORE3_1
+using Microsoft.AspNetCore.Builder;
+#else
+using Microsoft.AspNetCore.Builder.Internal;
+using Microsoft.AspNetCore.Http.Internal;
+#endif
 
 namespace AutoPocoIO.Extensions
 {
@@ -39,16 +46,14 @@ namespace AutoPocoIO.Extensions
             {
                 RequestServices = provider
             };
-            var request = new DefaultHttpRequest(httpContext)
-            {
-                Method = "GET",
-                Host = new HostString(uri.Host),
-                Scheme = uri.Scheme,
-                Path = uri.LocalPath,
-                QueryString = new QueryString(uri.Query)
-            };
 
-            return new ODataQueryOptions(context, request);
+            httpContext.Request.Method = "GET";
+            httpContext.Request.Host = new HostString(uri.Host);
+            httpContext.Request.Scheme = uri.Scheme;
+            httpContext.Request.Path = uri.LocalPath;
+            httpContext.Request.QueryString = new QueryString(uri.Query);
+
+            return new ODataQueryOptions(context, httpContext.Request);
         }
 
         public static ODataConventionModelBuilder ConfigureConventionBuilder()

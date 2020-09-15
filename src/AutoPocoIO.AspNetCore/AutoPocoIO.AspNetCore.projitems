@@ -32,6 +32,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\RequestQueryStringService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SwaggerAddons\JTokenExample.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SwaggerAddons\ODataParametersSwaggerDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SwaggerAddons\OpenApiInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SwaggerAddons\SwaggerConfig.cs" />
   </ItemGroup>
 </Project>
