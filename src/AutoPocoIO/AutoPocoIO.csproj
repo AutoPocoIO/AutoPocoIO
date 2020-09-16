@@ -95,14 +95,14 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">
     <Compile Remove="DynamicSchema\Services\CrossDb\EF22\**" />
-    <EmbeddedResource Remove="DynamicSchema\Services\CrossDb\EF22\**" />
-    <None Remove="DynamicSchema\Services\CrossDb\EF22\**" />
+    <!--<EmbeddedResource Remove="DynamicSchema\Services\CrossDb\EF22\**" />
+    <None Remove="DynamicSchema\Services\CrossDb\EF22\**" />-->
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFramework)' == 'net461'">
     <Compile Remove="DynamicSchema\Services\CrossDb\EF31\**" />
-    <EmbeddedResource Remove="DynamicSchema\Services\CrossDb\EF31\**" />
-    <None Remove="DynamicSchema\Services\CrossDb\EF31\**" />
+    <!--<EmbeddedResource Remove="DynamicSchema\Services\CrossDb\EF31\**" />
+    <None Remove="DynamicSchema\Services\CrossDb\EF31\**" />-->
   </ItemGroup>
   
   <ItemGroup>

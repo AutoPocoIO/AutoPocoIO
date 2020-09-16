@@ -4,7 +4,7 @@ using AutoPocoIO.Exceptions;
 using AutoPocoIO.LoggingMiddleware;
 using AutoPocoIO.Models;
 using AutoPocoIO.Services;
-//using Microsoft.AspNet.OData.Extensions;
+using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Internal;
@@ -48,11 +48,11 @@ namespace AutoPocoIO.Extensions
             AutoPocoConfiguration.DashboardPathPrefix = options.DashboardPath.Trim('/');
             string dashPath = "/" + AutoPocoConfiguration.DashboardPathPrefix;
 
-//#if NETCORE2_2
-//            builder.UseEndpointRouting();
-//#else
-//            builder.UseRouting();
-//#endif 
+#if NETCORE2_2
+           // builder.UseEndpointRouting();
+#else
+            builder.UseRouting();
+#endif 
 
             builder.UseSwagger(SwaggerConfig.SwaggerAppBuilderFunc(dashPath));
             builder.UseSwaggerUI(SwaggerConfig.SwaggerUIAppBuilderFunc(dashPath));
@@ -66,22 +66,22 @@ namespace AutoPocoIO.Extensions
             if (options.UseDashboard)
                 builder.UseMiddlewareWhen<AspNetCoreDashboardMiddleware>(dashPath);
 
-//            //Enable OData
-//#if NETCORE2_2
-//            builder.UseMvc(routeBuilder =>
-//            {
-//                routeBuilder.EnableDependencyInjection();
-//                routeBuilder.Count().Filter().OrderBy().Expand().Select().MaxTop(1000);
-//            });
+            //Enable OData
+#if NETCORE2_2
+            builder.UseMvc(routeBuilder =>
+            {
+                routeBuilder.EnableDependencyInjection();
+                routeBuilder.Count().Filter().OrderBy().Expand().Select().MaxTop(1000);
+            });
 
-//#else
-//             builder.UseEndpoints(routeBuilder =>
-//            {
-//                routeBuilder.MapControllers();
-//                routeBuilder.EnableDependencyInjection();
-//                routeBuilder.Count().Filter().OrderBy().Expand().Select().MaxTop(1000);
-//            });
-//#endif
+#else
+             builder.UseEndpoints(routeBuilder =>
+            {
+                routeBuilder.MapControllers();
+                routeBuilder.EnableDependencyInjection();
+                routeBuilder.Count().Filter().OrderBy().Expand().Select().MaxTop(1000);
+            });
+#endif
 
             var scopeFactory = builder.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             using (var scope = scopeFactory.CreateScope())

@@ -1,6 +1,7 @@
 ﻿using AutoPocoIO.Extensions;
 using AutoPocoIO.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -92,6 +93,16 @@ namespace AutoPocoIO.test.Extensions
             Assert.AreEqual("ResponseId,RequestGuid", data[0].FKColumn);
         }
 
+
+#if NETCORE3_1
+        private Mock<EntityTypeBuilder<T>> MockEntityTypeBuilder<T>() where T : class
+        {
+            Model model = new Model();
+            IMutableEntityType entityType = new EntityType("a", model, ConfigurationSource.Explicit);
+
+            return new Mock<EntityTypeBuilder<T>>(entityType);
+        }
+#else
         private Mock<EntityTypeBuilder<T>> MockEntityTypeBuilder<T>() where T : class
         {
             Model model = new Model();
@@ -101,5 +112,6 @@ namespace AutoPocoIO.test.Extensions
 
             return new Mock<EntityTypeBuilder<T>>(internalEntityTypeBuilder);
         }
+#endif
     }
 }

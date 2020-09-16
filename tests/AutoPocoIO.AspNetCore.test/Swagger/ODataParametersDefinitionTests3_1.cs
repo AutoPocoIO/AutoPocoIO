@@ -1,8 +1,9 @@
-﻿#if NETCORE2_2
-
+﻿
+#if NETCORE3_1
 using AutoPocoIO.CustomAttributes;
 using AutoPocoIO.SwaggerAddons;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Swashbuckle.AspNetCore.Swagger;
@@ -15,10 +16,10 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
 {
     [TestClass]
     [TestCategory(TestCategories.Unit)]
-    public class ODataParametersDefinitionTests
+    public class ODataParametersDefinitionTests3_1
     {
         readonly ODataParametersSwaggerDefinition swaggerDef = new ODataParametersSwaggerDefinition();
-        Operation op = new Operation { Parameters = null };
+        OpenApiOperation op = new OpenApiOperation { Parameters = null };
         ApiDescription api;
         MethodInfo oDataAction;
         OperationFilterContext context;
@@ -34,13 +35,13 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
 
             oDataAction = mockMethodInfo.Object;
 
-            context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), Mock.Of<MethodInfo>());
+            context = new OperationFilterContext(api, Mock.Of<ISchemaGenerator>(), Mock.Of<SchemaRepository>(), Mock.Of<MethodInfo>());
         }
 
         [TestMethod]
         public void SkipOdataParamsIfMissingAttr()
         {
-            op = new Operation { Parameters = new List<IParameter> { new NonBodyParameter { Name = "orginial" } } };
+            op = new OpenApiOperation { Parameters = new List<OpenApiParameter> { new OpenApiParameter { Name = "orginial" } } };
             swaggerDef.Apply(op, context);
 
             Assert.AreEqual(1, op.Parameters.Count());
@@ -49,8 +50,8 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
         [TestMethod]
         public void AppendOdataOpsIfSomeAlreadyExists()
         {
-            op = new Operation { Parameters = new List<IParameter> { new NonBodyParameter { Name = "orginial" } } };
-            context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
+            op = new OpenApiOperation { Parameters = new List<OpenApiParameter> { new OpenApiParameter { Name = "orginial" } } };
+            context = new OperationFilterContext(api, Mock.Of<ISchemaGenerator>(), Mock.Of<SchemaRepository>(), oDataAction);
             swaggerDef.Apply(op, context);
 
 
@@ -60,7 +61,7 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
         [TestMethod]
         public void SetToOdataOpsIfNoParamsAlreadyExists()
         {
-            context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
+            context = new OperationFilterContext(api, Mock.Of<ISchemaGenerator>(), Mock.Of<SchemaRepository>(), oDataAction);
             swaggerDef.Apply(op, context);
 
             Assert.AreEqual(8, op.Parameters.Count());
@@ -69,13 +70,12 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
         [TestMethod]
         public void UseOdataAddsSelectParameter()
         {
-            context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
+            context = new OperationFilterContext(api, Mock.Of<ISchemaGenerator>(), Mock.Of<SchemaRepository>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$select");
+            var odataOp = (OpenApiParameter)op.Parameters.First(c => c.Name == "$select");
 
-            Assert.AreEqual("string", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
+            Assert.AreEqual(ParameterLocation.Query, odataOp.In);
             Assert.AreEqual(false, odataOp.Required);
             Assert.AreEqual("Select columns using OData syntax.", odataOp.Description);
         }
@@ -83,13 +83,12 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
         [TestMethod]
         public void UseOdataAddsExpandParameter()
         {
-            context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
+            context = new OperationFilterContext(api, Mock.Of<ISchemaGenerator>(), Mock.Of<SchemaRepository>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$expand");
+            var odataOp = (OpenApiParameter)op.Parameters.First(c => c.Name == "$expand");
 
-            Assert.AreEqual("string", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
+            Assert.AreEqual(ParameterLocation.Query, odataOp.In);
             Assert.AreEqual(false, odataOp.Required);
             Assert.AreEqual("Expand nested data using OData syntax.", odataOp.Description);
         }
@@ -97,13 +96,12 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
         [TestMethod]
         public void UseOdataAddsOrderByParameter()
         {
-            context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
+            context = new OperationFilterContext(api, Mock.Of<ISchemaGenerator>(), Mock.Of<SchemaRepository>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$orderby");
+            var odataOp = (OpenApiParameter)op.Parameters.First(c => c.Name == "$orderby");
 
-            Assert.AreEqual("string", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
+            Assert.AreEqual(ParameterLocation.Query, odataOp.In);
             Assert.AreEqual(false, odataOp.Required);
             Assert.AreEqual("Order the results using OData syntax.", odataOp.Description);
         }
@@ -111,13 +109,12 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
         [TestMethod]
         public void UseOdataAddsSkipParameter()
         {
-            context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
+            context = new OperationFilterContext(api, Mock.Of<ISchemaGenerator>(), Mock.Of<SchemaRepository>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$skip");
+            var odataOp = (OpenApiParameter)op.Parameters.First(c => c.Name == "$skip");
 
-            Assert.AreEqual("integer", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
+            Assert.AreEqual(ParameterLocation.Query, odataOp.In);
             Assert.AreEqual(false, odataOp.Required);
             Assert.AreEqual("The number of results to skip.", odataOp.Description);
         }
@@ -125,13 +122,12 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
         [TestMethod]
         public void UseOdataAddsTopParameter()
         {
-            context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
+            context = new OperationFilterContext(api, Mock.Of<ISchemaGenerator>(), Mock.Of<SchemaRepository>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$top");
+            var odataOp = (OpenApiParameter)op.Parameters.First(c => c.Name == "$top");
 
-            Assert.AreEqual("integer", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
+            Assert.AreEqual(ParameterLocation.Query, odataOp.In);
             Assert.AreEqual(false, odataOp.Required);
             Assert.AreEqual("The number of results to return.", odataOp.Description);
         }
@@ -139,13 +135,12 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
         [TestMethod]
         public void UseOdataAddsApplyParameter()
         {
-            context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
+            context = new OperationFilterContext(api, Mock.Of<ISchemaGenerator>(), Mock.Of<SchemaRepository>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$apply");
+            var odataOp = (OpenApiParameter)op.Parameters.First(c => c.Name == "$apply");
 
-            Assert.AreEqual("string", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
+            Assert.AreEqual(ParameterLocation.Query, odataOp.In);
             Assert.AreEqual(false, odataOp.Required);
             Assert.AreEqual("Return applied filter.", odataOp.Description);
         }
@@ -153,13 +148,12 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
         [TestMethod]
         public void UseOdataAddsCountParameter()
         {
-            context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
+            context = new OperationFilterContext(api, Mock.Of<ISchemaGenerator>(), Mock.Of<SchemaRepository>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$count");
+            var odataOp = (OpenApiParameter)op.Parameters.First(c => c.Name == "$count");
 
-            Assert.AreEqual("boolean", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
+            Assert.AreEqual(ParameterLocation.Query, odataOp.In);
             Assert.AreEqual(false, odataOp.Required);
             Assert.AreEqual("Return the total count.", odataOp.Description);
         }

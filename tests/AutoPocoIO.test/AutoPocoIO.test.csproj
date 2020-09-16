@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netcoreapp2.2;</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp2.2;netcoreapp3.1;</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <AssemblyOriginatorKeyFile>..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
@@ -39,6 +39,9 @@
   </PropertyGroup>
     <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
     <DefineConstants>NETCORE;NETCORE2_2</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">
+    <DefineConstants>NETCORE;NETCORE3_1</DefineConstants>
   </PropertyGroup>
   <!--<PropertyGroup>
     <OutputPath>..\..\bin\</OutputPath>
