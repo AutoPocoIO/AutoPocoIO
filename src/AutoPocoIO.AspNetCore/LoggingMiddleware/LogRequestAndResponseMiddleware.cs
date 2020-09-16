@@ -41,7 +41,8 @@ namespace AutoPocoIO.LoggingMiddleware
 
             var stream = context.Response.Body;
             MemoryStream RequestBuffer = new MemoryStream();
-            context.Request.Body.CopyTo(RequestBuffer);
+            await context.Request.Body.CopyToAsync(RequestBuffer)
+                .ConfigureAwait(false);
             RequestBuffer.Position = 0; // rewind
             context.Request.Body = RequestBuffer;
 

@@ -60,20 +60,25 @@ namespace System.Linq.AutoPoco
             return mapped;
         }
 
+#if EF22
+        public static IEnumerable<TResult> LeftJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, IEnumerable<TInner>, TResult> resultSelector)
+        {
+            return outer.GroupJoin(inner, outerKeySelector, innerKeySelector, resultSelector);
+        }
+#else
+        public static IEnumerable<TResult> LeftJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, IEnumerable<TInner>, TResult> resultSelector)
+        {
+            var lookup = inner.ToLookup(innerKeySelector);
+            foreach (var outerElement in outer)
+            {
+                var key = outerKeySelector(outerElement);
+                var val = lookup.Contains(key) ? lookup[key] : new List<TInner>();
+                yield return resultSelector(outerElement, val);
+            }
+        }
+#endif
+
         public static string AddProperties(Type souceType, Type destType, List<object> values, string navPropertyNamePlusDot = "")
-
-        /* Unmerged change from project 'AutoPocoIO (net461)'
-        Before:
-                {
-
-
-                    var destProperties = destType.GetProperties();
-        After:
-                {
-
-
-                    var destProperties = destType.GetProperties();
-        */
         {
 
 

@@ -9,6 +9,11 @@
             API for access database schema structure.
             </summary>
         </member>
+        <member name="P:AutoPocoIO.Api.ISchemaOperations.ResourceFactory">
+            <summary>
+            Factory to find the correct database resource
+            </summary>
+        </member>
         <member name="M:AutoPocoIO.Api.ISchemaOperations.Definition(System.String,AutoPocoIO.Services.ILoggingService)">
             <summary>
             Get schema structure.
@@ -20,6 +25,11 @@
         <member name="T:AutoPocoIO.Api.IStoredProcedureOperations">
             <summary>
              API for accessings stored procedures.
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Api.IStoredProcedureOperations.ResourceFactory">
+            <summary>
+            Factory to find the correct database resource
             </summary>
         </member>
         <member name="M:AutoPocoIO.Api.IStoredProcedureOperations.Definition(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
@@ -76,6 +86,11 @@
             Dynamicly access database tables
             </summary>
         </member>
+        <member name="P:AutoPocoIO.Api.ITableOperations.ResourceFactory">
+            <summary>
+            Factory to find the correct database resource
+            </summary>
+        </member>
         <member name="M:AutoPocoIO.Api.ITableOperations.CreateNewRow(System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
             <summary>
             Insert a recored into a given table
@@ -116,7 +131,7 @@
             <param name="loggingService">Include logging serivce to log this API call.</param>
             <returns>Column attributes</returns>
         </member>
-        <member name="M:AutoPocoIO.Api.ITableOperations.DeleteRow(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.ITableOperations.DeleteRow(System.String,System.String,AutoPocoIO.Services.ILoggingService,System.Object[])">
             <summary>
             Remove record from a given table
             </summary>
@@ -124,6 +139,15 @@
             <param name="tableName">Name of the table in the database.</param>
             <param name="id">Primary Key(s)</param>
             <param name="loggingService">Include logging serivce to log this API call.</param>
+            <returns>The removed object</returns>
+        </member>
+        <member name="M:AutoPocoIO.Api.ITableOperations.DeleteRow(System.String,System.String,System.Object[])">
+            <summary>
+            Remove record from a given table
+            </summary>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="id">Primary Key(s)</param>
             <returns>The removed object</returns>
         </member>
         <member name="M:AutoPocoIO.Api.ITableOperations.GetAll(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
@@ -145,19 +169,19 @@
             <param name="loggingService">Include logging serivce to log this API call.</param>
             <returns>IQueryable of <typeparamref name="TViewModel"/></returns>
         </member>
-        <member name="M:AutoPocoIO.Api.ITableOperations.GetById(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.ITableOperations.GetById(System.String,System.String,AutoPocoIO.Services.ILoggingService,System.Object[])">
             <summary>
             Retrieves a single record from a table by Primary Key. Note: for composite PKs,
             use a semicolon separated string.
             </summary>
             <param name="connectorName">The name of the connector to the table's schema.</param>
             <param name="tableName">The name of the table to retrieve the record from.</param>
-            <param name="id">The primary key value of the record to be retrieved as a string. 
-            For composite keys, use semicolon separated string</param>
+            <param name="id">The primary key value of the record to be retrieved as a string. </param>
             <param name="loggingService">LoggingService object to log the request. Null by default if no logging is required.</param>
             <returns>The record with matching PK. Null if not found.</returns>
         </member>
-        <member name="M:AutoPocoIO.Api.ITableOperations.GetById``1(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+        <!-- Badly formed XML comment ignored for member "M:AutoPocoIO.Api.ITableOperations.GetById(System.String,System.String,System.Object[])" -->
+        <member name="M:AutoPocoIO.Api.ITableOperations.GetById``1(System.String,System.String,AutoPocoIO.Services.ILoggingService,System.Object[])">
             <summary>
             Retrieves a single record from a table by Primary Key. Note: for composite PKs,
             use a semicolon separated string.
@@ -165,29 +189,37 @@
             <typeparam name="TViewModel">View Model Type</typeparam>
             <param name="connectorName">Name of the database to access.</param>
             <param name="tableName">Name of the table in the database.</param>
-            <param name="id">The primary key value of the record to be retrieved as a string. 
-            For composite keys, use semicolon separated string</param>
+            <param name="id">The primary key value of the record to be retrieved as a string. </param>
             <param name="loggingService">Include logging serivce to log this API call.</param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.Api.ITableOperations.UpdateRow(System.String,System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.ITableOperations.GetById``1(System.String,System.String,System.Object[])">
+            <summary>
+            Retrieves a single record from a table by Primary Key. Note: for composite PKs,
+            use a semicolon separated string.
+            </summary>
+            <typeparam name="TViewModel">View Model Type</typeparam>
+            <param name="connectorName">Name of the database to access.</param>
+            <param name="tableName">Name of the table in the database.</param>
+            <param name="id">The primary key value of the record to be retrieved as a string. </param>
+            <returns></returns>
+        </member>
+        <member name="M:AutoPocoIO.Api.ITableOperations.UpdateRow(System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
             <summary>
             Update record in a given table
             </summary>
             <param name="connectorName">Name of the database to access.</param>
             <param name="tableName">Name of the table in the database.</param>
-            <param name="keys">Primary key(s)</param>
             <param name="value">JSON object to update</param>
             <param name="loggingService">Include logging serivce to log this API call.</param>
             <returns>The updated object</returns>
         </member>
-        <member name="M:AutoPocoIO.Api.ITableOperations.UpdateRow``1(System.String,System.String,System.String,``0,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.ITableOperations.UpdateRow``1(System.String,System.String,``0,AutoPocoIO.Services.ILoggingService)">
             <summary>
             Update record in a given table
             </summary>
             <param name="connectorName">Name of the database to access.</param>
             <param name="tableName">Name of the table in the database.</param>
-            <param name="id">Primary Key(s)</param>
             <param name="value">Object to updated in <paramref name="tableName"/></param>
             <param name="loggingService">Include logging serivce to log this API call.</param>
             <returns>The updated object</returns>
@@ -195,6 +227,11 @@
         <member name="T:AutoPocoIO.Api.IViewOperations">
             <summary>
             Dynamicly access database views
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Api.IViewOperations.ResourceFactory">
+            <summary>
+            Factory to find the correct database resource
             </summary>
         </member>
         <member name="M:AutoPocoIO.Api.IViewOperations.GetAll(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
@@ -236,6 +273,9 @@
             </summary>
             <param name="resourceFactory">Get resource from the connector.</param>
         </member>
+        <member name="P:AutoPocoIO.Api.SchemaOperations.ResourceFactory">
+            <inheritdoc />
+        </member>
         <member name="M:AutoPocoIO.Api.SchemaOperations.Definition(System.String,AutoPocoIO.Services.ILoggingService)">
             <inheritdoc />
         </member>
@@ -249,6 +289,9 @@
             Initialize store procedure operations with access to all registered resource types.
             </summary>
             <param name="resourceFactory">Get resource from the connector</param>
+        </member>
+        <member name="P:AutoPocoIO.Api.StoredProcedureOperations.ResourceFactory">
+            <inheritdoc />
         </member>
         <member name="M:AutoPocoIO.Api.StoredProcedureOperations.ExecuteNoParameters(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
             <inheritdoc />
@@ -277,16 +320,25 @@
             <param name="resourceFactory">Get resource from the connector.</param>
             <param name="requestQuery">Get query string information for odata operations.</param>
         </member>
+        <member name="P:AutoPocoIO.Api.TableOperations.ResourceFactory">
+            <inheritdoc />
+        </member>
         <member name="M:AutoPocoIO.Api.TableOperations.GetAll(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
             <inheritdoc />
         </member>
         <member name="M:AutoPocoIO.Api.TableOperations.GetAll``1(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
             <inheritdoc />
         </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.GetById(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.TableOperations.GetById(System.String,System.String,AutoPocoIO.Services.ILoggingService,System.Object[])">
             <inheritdoc />
         </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.GetById``1(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.TableOperations.GetById(System.String,System.String,System.Object[])">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.GetById``1(System.String,System.String,AutoPocoIO.Services.ILoggingService,System.Object[])">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.GetById``1(System.String,System.String,System.Object[])">
             <inheritdoc />
         </member>
         <member name="M:AutoPocoIO.Api.TableOperations.CreateNewRow(System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
@@ -295,13 +347,16 @@
         <member name="M:AutoPocoIO.Api.TableOperations.CreateNewRow``1(System.String,System.String,``0,AutoPocoIO.Services.ILoggingService)">
             <inheritdoc />
         </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.UpdateRow(System.String,System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.TableOperations.UpdateRow(System.String,System.String,Newtonsoft.Json.Linq.JToken,AutoPocoIO.Services.ILoggingService)">
             <inheritdoc />
         </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.UpdateRow``1(System.String,System.String,System.String,``0,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.TableOperations.UpdateRow``1(System.String,System.String,``0,AutoPocoIO.Services.ILoggingService)">
             <inheritdoc />
         </member>
-        <member name="M:AutoPocoIO.Api.TableOperations.DeleteRow(System.String,System.String,System.String,AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.Api.TableOperations.DeleteRow(System.String,System.String,AutoPocoIO.Services.ILoggingService,System.Object[])">
+            <inheritdoc />
+        </member>
+        <member name="M:AutoPocoIO.Api.TableOperations.DeleteRow(System.String,System.String,System.Object[])">
             <inheritdoc />
         </member>
         <member name="M:AutoPocoIO.Api.TableOperations.Definition(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
@@ -320,6 +375,9 @@
             Initialize view operations with access to all registered resource types.
             </summary>
             <param name="resourceFactory">Get resource from the connector.</param>
+        </member>
+        <member name="P:AutoPocoIO.Api.ViewOperations.ResourceFactory">
+            <inheritdoc />
         </member>
         <member name="M:AutoPocoIO.Api.ViewOperations.GetAllAndRecordLimit(System.String,System.String,AutoPocoIO.Services.ILoggingService)">
             <inheritdoc />
@@ -601,6 +659,32 @@
             Flag for swagger to add Odata standard filters.
             </summary>
         </member>
+        <member name="T:AutoPocoIO.CustomAttributes.UseJsonAttribute">
+            <summary>
+            End point produces json or plain text
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.CustomAttributes.UseJsonAttribute.#ctor">
+            <summary>
+            Initialize produce attribute with json and plain text content types
+            </summary>
+        </member>
+        <member name="T:AutoPocoIO.CustomAttributes.RoutePrefixAttribute">
+            <summary>
+            Core workaround for no RoutePrefix Attribute
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.CustomAttributes.RoutePrefixAttribute.#ctor(System.String)">
+            <summary>
+            Sets prefix to "DashboardRoute/<paramref name="template"/>".
+            </summary>
+            <param name="template">Route Prefix</param>
+        </member>
+        <member name="P:AutoPocoIO.CustomAttributes.RoutePrefixAttribute.Prefix">
+            <summary>
+            Route prefix
+            </summary>
+        </member>
         <member name="T:AutoPocoIO.Dashboard.DashboardRoutes">
             <summary>
             Define routes with middleware dispatchers.
@@ -821,6 +905,12 @@
             </summary>
             <param name="id">Connector Id to remove.</param>
         </member>
+        <member name="M:AutoPocoIO.Dashboard.Repos.IConnectorRepo.ListResoureTypes">
+            <summary>
+            List all registered resource types
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:AutoPocoIO.Dashboard.Repos.IRequestHistoryRepo">
             <summary>
             Get information about request logs.
@@ -838,11 +928,11 @@
              Get information about request logs.
             </summary>
         </member>
-        <member name="M:AutoPocoIO.Dashboard.Repos.RequestHistoryRepo.#ctor(System.IServiceProvider,AutoPocoIO.Services.ITimeProvider)">
+        <member name="M:AutoPocoIO.Dashboard.Repos.RequestHistoryRepo.#ctor(AutoPocoIO.Context.LogDbContext,AutoPocoIO.Services.ITimeProvider)">
             <summary>
             Initialize repository.
             </summary>
-            <param name="provider">Middleware scoped provider.</param>
+            <param name="db">Database context.</param>
             <param name="timeProvider">Server time information.</param>
         </member>
         <member name="M:AutoPocoIO.Dashboard.Repos.RequestHistoryRepo.ListRequest(System.Int32)">
@@ -962,6 +1052,26 @@
             <summary>
             Database Primary key (if applicable)
             </summary>
+        </member>
+        <member name="T:AutoPocoIO.Dashboard.AspNetCoreDashboardMiddleware">
+            <summary>
+            Middleware to show the AutoPocoIO dashbard.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.AspNetCoreDashboardMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            Use Middleware.
+            </summary>
+            <param name="next">Next middleware in the pipeline.</param>
+        </member>
+        <member name="M:AutoPocoIO.Dashboard.AspNetCoreDashboardMiddleware.Invoke(Microsoft.AspNetCore.Http.HttpContext,System.IServiceProvider,AutoPocoIO.Services.ILoggingService)">
+            <summary>
+            Find dispatcher for the dashboard page requested 
+            </summary>
+            <param name="httpContext">Current HttpContext of the request</param>
+            <param name="provider">Application service profider</param>
+            <param name="loggingService">AutoPocoIO resource operation logging service</param>
+            <returns></returns>
         </member>
         <member name="T:AutoPocoIO.DynamicSchema.Db.DbContextBase">
             <summary>
@@ -1107,7 +1217,7 @@
             </summary>
             <param name="value"></param>
         </member>
-        <member name="M:AutoPocoIO.DynamicSchema.Db.IDbAdapter.Find(System.String,System.String)">
+        <member name="M:AutoPocoIO.DynamicSchema.Db.IDbAdapter.Find(System.String,System.Object[])">
             <summary>
             Finds an entity with the given primary key values. If an entity with the given
                 primary key values is being tracked by the context, then it is returned immediately
@@ -1119,7 +1229,7 @@
             <param name="keys">The values of the primary key for the entity to be found.</param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.DynamicSchema.Db.IDbAdapter.FilterByKey(System.String,System.String)">
+        <member name="M:AutoPocoIO.DynamicSchema.Db.IDbAdapter.FilterByKey(System.String,System.Object[])">
             <summary>
             Finds an entity with the given primary key values. If an entity with the given
                 primary key values is being tracked by the context, then it is returned immediately
@@ -1177,14 +1287,6 @@
             </summary>
             <param name="value"></param>
         </member>
-        <member name="M:AutoPocoIO.DynamicSchema.Db.IDbAdapter.FilterById``1(System.Object)">
-            <summary>
-            
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
         <member name="T:AutoPocoIO.DynamicSchema.Db.IDbContextBase">
             <summary>
             A DbContext instance represents a session with the database and can be used to
@@ -1240,7 +1342,7 @@
         </member>
         <member name="P:AutoPocoIO.DynamicSchema.Db.IDbSchemaBuilder.ResourceType">
             <summary>
-            Expected database type
+            Entity framework provider type.
             </summary>
         </member>
         <member name="M:AutoPocoIO.DynamicSchema.Db.IDbSchemaBuilder.CreateConnection">
@@ -1368,36 +1470,6 @@
         <member name="F:AutoPocoIO.DynamicSchema.Enums.OperationType.Any">
             <summary>
             Schema operation
-            </summary>
-        </member>
-        <member name="T:AutoPocoIO.DynamicSchema.Enums.ResourceType">
-            <summary>
-            Database Types
-            </summary>
-        </member>
-        <member name="F:AutoPocoIO.DynamicSchema.Enums.ResourceType.None">
-            <summary>
-            None provide
-            </summary>
-        </member>
-        <member name="F:AutoPocoIO.DynamicSchema.Enums.ResourceType.Mssql">
-            <summary>
-            Microsoft Sql Server
-            </summary>
-        </member>
-        <member name="F:AutoPocoIO.DynamicSchema.Enums.ResourceType.Oracle">
-            <summary>
-            Oracle
-            </summary>
-        </member>
-        <member name="F:AutoPocoIO.DynamicSchema.Enums.ResourceType.Ldap">
-            <summary>
-            Active directory
-            </summary>
-        </member>
-        <member name="F:AutoPocoIO.DynamicSchema.Enums.ResourceType.Mysql">
-            <summary>
-            MySql
             </summary>
         </member>
         <member name="T:AutoPocoIO.DynamicSchema.Models.Column">
@@ -1783,17 +1855,12 @@
             <param name="optionBuilder">Context builder for model.</param>
             <returns>DbContextOptionsBuilder to chain calls.</returns>
         </member>
-        <member name="T:AutoPocoIO.DynamicSchema.Services.CrossDb.RelationalQueryModelVisitor">
-            <summary>
-                The default relational <see cref="T:Remotion.Linq.QueryModel" /> visitor.
-            </summary>
-        </member>
         <member name="T:AutoPocoIO.DynamicSchema.Services.CrossDb.TableExpression">
             <summary>
             Add database name to table expressions
             </summary>
         </member>
-        <member name="M:AutoPocoIO.DynamicSchema.Services.CrossDb.TableExpression.#ctor(System.String,System.String,System.String,System.String,Remotion.Linq.Clauses.IQuerySource)">
+        <member name="M:AutoPocoIO.DynamicSchema.Services.CrossDb.TableExpression.#ctor(System.String,System.String,System.String,System.String)">
             <summary>
             Initialize table expression with database name.
             </summary>
@@ -1801,7 +1868,6 @@
             <param name="table">Table name.</param>
             <param name="schema">Schema name.</param>
             <param name="alias">Alias name.</param>
-            <param name="querySource">The query source.</param>
         </member>
         <member name="P:AutoPocoIO.DynamicSchema.Services.CrossDb.TableExpression.DatabaseName">
             <summary>
@@ -1848,119 +1914,6 @@
             </summary>
             <param name="column">The column to set system type</param>
             <returns>An object with both database type and system types.</returns>
-        </member>
-        <member name="T:AutoPocoIO.Exceptions.BaseCaughtException">
-            <summary>
-            Base exception to show in logger
-            </summary>
-        </member>
-        <member name="M:AutoPocoIO.Exceptions.BaseCaughtException.#ctor">
-            <summary>
-            Initialize exception with 500 status code
-            </summary>
-        </member>
-        <member name="M:AutoPocoIO.Exceptions.BaseCaughtException.#ctor(System.Net.HttpStatusCode)">
-            <summary>
-            Initialize exception with custom status code 
-            </summary>
-            <param name="httpStatus">Exception resonse code</param>
-        </member>
-        <member name="P:AutoPocoIO.Exceptions.BaseCaughtException.ResponseCode">
-            <summary>
-            Http Status code
-            </summary>
-        </member>
-        <member name="P:AutoPocoIO.Exceptions.BaseCaughtException.HttpErrorMessage">
-            <summary>
-            Short error message to explain status. Default is <c>"InternalServerError"</c>
-            </summary>
-        </member>
-        <member name="T:AutoPocoIO.Exceptions.Check">
-            <summary>
-            Check if values are null/empty
-            </summary>
-        </member>
-        <member name="M:AutoPocoIO.Exceptions.Check.NotNull``1(``0,System.String)">
-            <summary>
-            Throw an excpetion if value is not null.
-            </summary>
-            <typeparam name="T">Type of parameter</typeparam>
-            <param name="value">Parameter to check</param>
-            <param name="parameterName">Parameter name</param>
-            <exception cref="T:System.ArgumentNullException"></exception>
-        </member>
-        <member name="M:AutoPocoIO.Exceptions.Check.NotEmpty(System.String,System.String)">
-            <summary>
-            Throw an exception if value is null or empty.
-            </summary>
-            <param name="value">Value to check.</param>
-            <param name="parameterName">Method parameter name.</param>
-            <returns></returns>
-        </member>
-        <member name="T:AutoPocoIO.Exceptions.ConnectorNotFoundException">
-            <summary>
-            Exception that sets status to 400 (Bad Request)
-            </summary>
-        </member>
-        <member name="M:AutoPocoIO.Exceptions.ConnectorNotFoundException.#ctor(System.String)">
-            <summary>
-            Initialize exception with connector name
-            </summary>
-            <param name="name">Connector name</param>
-        </member>
-        <member name="M:AutoPocoIO.Exceptions.ConnectorNotFoundException.#ctor(System.Int32)">
-            <summary>
-            Initialize exception with connector id
-            </summary>
-            <param name="id">Connector id</param>
-        </member>
-        <member name="P:AutoPocoIO.Exceptions.ConnectorNotFoundException.Message">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Exceptions.ConnectorNotFoundException.HttpErrorMessage">
-            <summary>
-            Status message is <c>ConnectorNotFound</c>
-            </summary>
-        </member>
-        <member name="T:AutoPocoIO.Exceptions.NoPrimaryKeyFoundException">
-            <summary>
-            Exception that sets status to 500 (Sever Error)
-            </summary>
-        </member>
-        <member name="M:AutoPocoIO.Exceptions.NoPrimaryKeyFoundException.#ctor(System.String)">
-            <summary>
-             Initialize exception with entity name
-            </summary>
-            <param name="entityName"></param>
-        </member>
-        <member name="P:AutoPocoIO.Exceptions.NoPrimaryKeyFoundException.Message">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Exceptions.NoPrimaryKeyFoundException.HttpErrorMessage">
-            <summary>
-            Status message is <c>EntityKeyNotFound</c>
-            </summary>
-        </member>
-        <member name="T:AutoPocoIO.Exceptions.TableNotFoundException">
-            <summary>
-            Exception that sets status to 500 (Server Error)
-            </summary>
-        </member>
-        <member name="M:AutoPocoIO.Exceptions.TableNotFoundException.#ctor(System.String,System.String,System.String)">
-            <summary>
-            Initialize exception table information
-            </summary>
-            <param name="databaseName"></param>
-            <param name="schemaName"></param>
-            <param name="tableName"></param>
-        </member>
-        <member name="P:AutoPocoIO.Exceptions.TableNotFoundException.Message">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Exceptions.TableNotFoundException.HttpErrorMessage">
-            <summary>
-            Status message is <c>TableNotFound</c>
-            </summary>
         </member>
         <member name="T:AutoPocoIO.Extensions.AutoPocoConfiguration">
             <summary>
@@ -2074,6 +2027,14 @@
             Register services.
             </summary>
         </member>
+        <member name="M:AutoPocoIO.Extensions.ServiceCollectionExtensions.AddAutoPoco(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{AutoPocoIO.Services.AutoPocoServiceOptions})">
+            <summary>
+            Adds the minimum essential AutoPoco services to the specified <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>
+            </summary>
+            <param name="services"> The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> to add services to.</param>
+            <param name="options">Events to fire before or after logging.</param>
+            <returns></returns>
+        </member>
         <member name="M:AutoPocoIO.Extensions.ServiceCollectionExtensions.AddDatabaseOperations(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             Add database specific services
@@ -2089,71 +2050,33 @@
             <param name="options">Options to use on all registered dbcontexts.</param>
             <returns>Services collection to chain additonal methods.</returns>
         </member>
-        <member name="M:AutoPocoIO.Extensions.ServiceCollectionExtensions.AddAutoPoco(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            Adds the minimum essential AutoPoco services to the specified <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>
-            </summary>
-            <param name="services"> The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> to add services to.</param>
-            <returns></returns>
-        </member>
-        <member name="M:AutoPocoIO.Extensions.ServiceCollectionExtensions.AddAutoPocoWebApiEndPoints(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            Registers default <see cref="T:System.Web.Http.ApiController"/> with minimum AutoPoco services
-            </summary>
-            <param name="services"> The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> to add services to.</param>
-            <returns></returns>
-        </member>
         <member name="T:AutoPocoIO.Extensions.AppBuilderExtensions">
             <summary>
-            Owin set up dashboard
+            AspNet Core Extenstions to set up the dashboard 
             </summary>
         </member>
-        <member name="M:AutoPocoIO.Extensions.AppBuilderExtensions.UseAutoPoco(Owin.IAppBuilder,System.Collections.Generic.IEnumerable{Microsoft.Extensions.DependencyInjection.ServiceDescriptor})">
+        <member name="M:AutoPocoIO.Extensions.AppBuilderExtensions.UseAutoPoco(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
-            Default dashboard set up for with default settings
-            </summary>
-            <param name="builder">The builder being used to configure the context.</param>
-            <param name="descriptors">List of services to register with the AutoPocoIO IOC container.</param>
-            <returns>The options builder so that further configuration can be chained.</returns>
-        </member>
-        <member name="M:AutoPocoIO.Extensions.AppBuilderExtensions.UseAutoPoco(Owin.IAppBuilder,AutoPocoIO.Models.AutoPocoOptions,System.Collections.Generic.IEnumerable{Microsoft.Extensions.DependencyInjection.ServiceDescriptor})">
-            <summary>
-            Default dashboard set up for with default settings
+            Default dashboard set up for with dash prefix "/autopoco"
             </summary>
             <param name="builder">The builder being used to configure the context.</param>
-            <param name="options">Dashboard setup options</param>
-            <param name="descriptors">List of services to register with the AutoPocoIO IOC container.</param>
             <returns>The options builder so that further configuration can be chained.</returns>
         </member>
-        <member name="M:AutoPocoIO.Extensions.AppBuilderExtensions.UseAutoPoco(Owin.IAppBuilder,System.Web.Http.HttpConfiguration)">
+        <member name="M:AutoPocoIO.Extensions.AppBuilderExtensions.UseAutoPoco(Microsoft.AspNetCore.Builder.IApplicationBuilder,AutoPocoIO.Models.AutoPocoOptions)">
             <summary>
-            Default dashboard set up for with default settings
-            </summary>
-            <param name="builder">The builder being used to configure the context.</param>
-            <param name="config">Current Httpconfiguration with IOC container</param>
-            <returns>The options builder so that further configuration can be chained.</returns>
-            <exception cref="T:System.ArgumentException">This must have an IOC container registered</exception>
-        </member>
-        <member name="M:AutoPocoIO.Extensions.AppBuilderExtensions.UseAutoPoco(Owin.IAppBuilder,System.Web.Http.HttpConfiguration,AutoPocoIO.Models.AutoPocoOptions)">
-            <summary>
-            Set up dashboard with a basic license
+            Set up the dashboard
             </summary>
             <param name="builder">The builder being used to configure the context.</param>
             <param name="options">Dashboard setup options</param>
-            <param name="config">Current Httpconfiguration</param>
             <returns>The options builder so that further configuration can be chained.</returns>
         </member>
-        <member name="T:AutoPocoIO.Extensions.DependencyResolverExtensions">
+        <member name="M:AutoPocoIO.Extensions.AppBuilderExtensions.UseMiddlewareWhen``1(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Http.PathString,System.Object[])">
             <summary>
-            Add GetRequiredService to <see cref="T:System.Web.Http.Dependencies.IDependencyResolver"/>
+            Conditionally creates a branch in the request pipeline that is rejoined to the main pipeline.
             </summary>
-        </member>
-        <member name="M:AutoPocoIO.Extensions.DependencyResolverExtensions.GetRequiredService``1(System.Web.Http.Dependencies.IDependencyResolver)">
-            <summary>
-            Get a service from dependency resolver
-            </summary>
-            <typeparam name="T">Type of services</typeparam>
-            <param name="dependencyResolver">Config resolver</param>
+            <param name="builder"></param>
+            <param name="pathMatch"></param>
+            <param name="args">Additional middleware consturctor values</param>
             <returns></returns>
         </member>
         <member name="T:AutoPocoIO.Extensions.RouteExtensions">
@@ -2161,19 +2084,157 @@
             Http Route extensions
             </summary>
         </member>
-        <member name="M:AutoPocoIO.Extensions.RouteExtensions.GetQueryStrings(System.Net.Http.HttpRequestMessage)">
+        <member name="M:AutoPocoIO.Extensions.RouteExtensions.GetQueryStrings(Microsoft.AspNetCore.Http.HttpRequest)">
             <summary>
-            Gets HttpRequest query string values for WebAPi
+            Gets HttpRequest query string values
             </summary>
             <param name="request">Current Http Request</param>
             <returns>Key/Value pair of query strings</returns>
         </member>
-        <member name="M:AutoPocoIO.Extensions.RouteExtensions.GetQueryStrings(System.Web.HttpRequest)">
+        <member name="T:AutoPocoIO.Extensions.ServicesCollectionExtensions">
             <summary>
-            Gets HttpRequest query string values for MVC
+            Configure AspNet Core Services 
             </summary>
-            <param name="request">Current Http Request</param>
-            <returns>Key/Value pair of query strings</returns>
+        </member>
+        <member name="M:AutoPocoIO.Extensions.ServicesCollectionExtensions.AddAutoPoco(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Include Swagger and Odata services 
+            </summary>
+            <param name="services">The services being used to configure the context.</param>
+            <returns>The services collection so that further configuration can be chained.</returns>
+        </member>
+        <member name="T:AutoPocoIO.Exceptions.BaseCaughtException">
+            <summary>
+            Base exception to show in logger
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Exceptions.BaseCaughtException.#ctor">
+            <summary>
+            Initialize exception with 500 status code
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Exceptions.BaseCaughtException.#ctor(System.Net.HttpStatusCode)">
+            <summary>
+            Initialize exception with custom status code 
+            </summary>
+            <param name="httpStatus">Exception resonse code</param>
+        </member>
+        <member name="P:AutoPocoIO.Exceptions.BaseCaughtException.ResponseCode">
+            <summary>
+            Http Status code
+            </summary>
+        </member>
+        <member name="P:AutoPocoIO.Exceptions.BaseCaughtException.HttpErrorMessage">
+            <summary>
+            Short error message to explain status. Default is <c>"InternalServerError"</c>
+            </summary>
+        </member>
+        <member name="T:AutoPocoIO.Exceptions.Check">
+            <summary>
+            Check if values are null/empty
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Exceptions.Check.NotNull``1(``0,System.String)">
+            <summary>
+            Throw an excpetion if value is not null.
+            </summary>
+            <typeparam name="T">Type of parameter</typeparam>
+            <param name="value">Parameter to check</param>
+            <param name="parameterName">Parameter name</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:AutoPocoIO.Exceptions.Check.NotEmpty(System.String,System.String)">
+            <summary>
+            Throw an exception if value is null or empty.
+            </summary>
+            <param name="value">Value to check.</param>
+            <param name="parameterName">Method parameter name.</param>
+            <returns></returns>
+        </member>
+        <member name="T:AutoPocoIO.Exceptions.ConnectorNotFoundException">
+            <summary>
+            Exception that sets status to 400 (Bad Request)
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Exceptions.ConnectorNotFoundException.#ctor(System.String)">
+            <summary>
+            Initialize exception with connector name
+            </summary>
+            <param name="name">Connector name</param>
+        </member>
+        <member name="M:AutoPocoIO.Exceptions.ConnectorNotFoundException.#ctor(System.Int32)">
+            <summary>
+            Initialize exception with connector id
+            </summary>
+            <param name="id">Connector id</param>
+        </member>
+        <member name="P:AutoPocoIO.Exceptions.ConnectorNotFoundException.Message">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Exceptions.ConnectorNotFoundException.HttpErrorMessage">
+            <summary>
+            Status message is <c>ConnectorNotFound</c>
+            </summary>
+        </member>
+        <member name="T:AutoPocoIO.Exceptions.NoPrimaryKeyFoundException">
+            <summary>
+            Exception that sets status to 500 (Sever Error)
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Exceptions.NoPrimaryKeyFoundException.#ctor(System.String)">
+            <summary>
+             Initialize exception with entity name
+            </summary>
+            <param name="entityName"></param>
+        </member>
+        <member name="P:AutoPocoIO.Exceptions.NoPrimaryKeyFoundException.Message">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Exceptions.NoPrimaryKeyFoundException.HttpErrorMessage">
+            <summary>
+            Status message is <c>EntityKeyNotFound</c>
+            </summary>
+        </member>
+        <member name="T:AutoPocoIO.Exceptions.PrimaryKeyNotFoundException">
+            <summary>
+             Exception that sets status to 500 (Sever Error)
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Exceptions.PrimaryKeyNotFoundException.#ctor(System.String,System.Collections.Generic.IList{AutoPocoIO.DynamicSchema.Models.PrimaryKeyInformation})">
+            <summary>
+             Initialize exception with entity name
+            </summary>
+            <param name="entityName"></param>
+            <param name="expectedKeys">Entity key information</param>
+        </member>
+        <member name="P:AutoPocoIO.Exceptions.PrimaryKeyNotFoundException.Message">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Exceptions.PrimaryKeyNotFoundException.HttpErrorMessage">
+            <summary>
+            Status message is <c>EntityKeyNotFound</c>
+            </summary>
+        </member>
+        <member name="T:AutoPocoIO.Exceptions.TableNotFoundException">
+            <summary>
+            Exception that sets status to 500 (Server Error)
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Exceptions.TableNotFoundException.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initialize exception table information
+            </summary>
+            <param name="databaseName"></param>
+            <param name="schemaName"></param>
+            <param name="tableName"></param>
+        </member>
+        <member name="P:AutoPocoIO.Exceptions.TableNotFoundException.Message">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Exceptions.TableNotFoundException.HttpErrorMessage">
+            <summary>
+            Status message is <c>TableNotFound</c>
+            </summary>
         </member>
         <member name="T:AutoPocoIO.Factories.ConnectionStringFactory">
             <summary>
@@ -2192,10 +2253,10 @@
         <member name="M:AutoPocoIO.Factories.ConnectionStringFactory.CreateConnectionString(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,AutoPocoIO.Resources.ConnectionInformation)">
             <inheritdoc/>
         </member>
-        <member name="M:AutoPocoIO.Factories.ConnectionStringFactory.GetConnectionInformation(System.Int32,System.String)">
+        <member name="M:AutoPocoIO.Factories.ConnectionStringFactory.GetConnectionInformation(System.String,System.String)">
             <inheritdoc/>
         </member>
-        <member name="M:AutoPocoIO.Factories.ConnectionStringFactory.CreateConnectionString(System.Int32,AutoPocoIO.Resources.ConnectionInformation)">
+        <member name="M:AutoPocoIO.Factories.ConnectionStringFactory.CreateConnectionString(System.String,AutoPocoIO.Resources.ConnectionInformation)">
             <inheritdoc/>
         </member>
         <member name="T:AutoPocoIO.Factories.IConnectionStringFactory">
@@ -2211,7 +2272,7 @@
             <param name="connectionInformation">Values for createing a connection string</param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.Factories.IConnectionStringFactory.CreateConnectionString(System.Int32,AutoPocoIO.Resources.ConnectionInformation)">
+        <member name="M:AutoPocoIO.Factories.IConnectionStringFactory.CreateConnectionString(System.String,AutoPocoIO.Resources.ConnectionInformation)">
             <summary>
             Combine connection information to create a connection string base on resource type
             </summary>
@@ -2226,7 +2287,7 @@
             <param name="database">Database used to look up type and connection string</param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.Factories.IConnectionStringFactory.GetConnectionInformation(System.Int32,System.String)">
+        <member name="M:AutoPocoIO.Factories.IConnectionStringFactory.GetConnectionInformation(System.String,System.String)">
             <summary>
             Parse connection string based on database type
             </summary>
@@ -2673,9 +2734,106 @@
             <summary>
             
             </summary>
-            <param name="errorName"></param>
-            <param name="errorKey"></param>
+            <param name="errorName">Viewbag key</param>
+            <param name="errorKey">Error message key</param>
             <returns></returns>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext">
+            <summary>
+             Encapsulates all HTTP-specific information about an individual HTTP request.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,System.IServiceProvider)">
+            <summary>
+            Initialize for each http request
+            </summary>
+            <param name="httpContext">Http request context</param>
+            <param name="internalProvider">Scoped middleware service provider</param>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext.Request">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext.Response">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext.UriMatch">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext.RequestUri">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext.QueryStrings">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareContext.InternalServiceProvider">
+            <inheritdoc/>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest">
+            <summary>
+            Represents the incoming side of an individual HTTP request.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.#ctor(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Initilize the middleware request from the <paramref name="context"/>
+            </summary>
+            <param name="context">HttpContext to set properties</param>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.Method">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.Path">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.PathBase">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.LocalIpAddress">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.RemoteIpAddress">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.GetQuery(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.RequestUri">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.Body">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareRequest.ReadFormAsync">
+            <inheritdoc/>
+        </member>
+        <member name="T:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse">
+            <summary>
+            Represents the outgoing side of an individual HTTP request.
+            </summary>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse.#ctor(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Initilize the middleware response from the <paramref name="context"/>
+            </summary>
+            <param name="context">HttpContext to set properties</param>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse.ContentType">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse.StatusCode">
+            <inheritdoc/>
+        </member>
+        <member name="P:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse.Body">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse.WriteAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse.SetExpire(System.Nullable{System.DateTimeOffset})">
+            <inheritdoc/>
+        </member>
+        <member name="M:AutoPocoIO.Middleware.AspNetCoreMiddlewareResponse.Redirect(System.String)">
+            <inheritdoc/>
         </member>
         <member name="T:AutoPocoIO.Models.AutoPocoOptions">
             <summary>
@@ -2954,6 +3112,11 @@
             Flatten User Join information
             </summary>
         </member>
+        <member name="P:AutoPocoIO.Resources.IConnectionStringBuilder.ResourceType">
+            <summary>
+            Entity framework provider type.
+            </summary>
+        </member>
         <member name="T:AutoPocoIO.Resources.IOperationResource">
             <summary>
             Dynamic database access.
@@ -2991,7 +3154,7 @@
         </member>
         <member name="P:AutoPocoIO.Resources.IOperationResource.ResourceType">
             <summary>
-            Database type.
+            Entity framework provider type.
             </summary>
         </member>
         <member name="M:AutoPocoIO.Resources.IOperationResource.ApplyServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.IServiceProvider)">
@@ -3024,7 +3187,7 @@
             <param name="value">Object to insert into <see cref="P:AutoPocoIO.Resources.IOperationResource.DbObjectName"/> </param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.Resources.IOperationResource.DeleteResourceRecordById(System.String)">
+        <member name="M:AutoPocoIO.Resources.IOperationResource.DeleteResourceRecordById(System.Object[])">
             <summary>
             Remove record from a given table
             </summary>
@@ -3038,7 +3201,7 @@
             <param name="parameterDictionary">Key/Value pair of input and output parameters</param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.Resources.IOperationResource.GetResourceRecordById(System.String)">
+        <member name="M:AutoPocoIO.Resources.IOperationResource.GetResourceRecordById(System.Object[])">
             <summary>
             Retrieves a single record from a table by Primary Key.
             </summary>
@@ -3046,7 +3209,7 @@
             For composite keys, use semicolon separated string</param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.Resources.IOperationResource.GetResourceRecordById``1(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:AutoPocoIO.Resources.IOperationResource.GetResourceRecordById``1(System.Object[],System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
             Retrieves a single record from a table by Primary Key.
             </summary>
@@ -3073,7 +3236,7 @@
             Initialize database schema for a specific object
             </summary>
         </member>
-        <member name="M:AutoPocoIO.Resources.IOperationResource.UpdateResourceRecordById(Newtonsoft.Json.Linq.JToken,System.String)">
+        <member name="M:AutoPocoIO.Resources.IOperationResource.UpdateResourceRecordById(Newtonsoft.Json.Linq.JToken,System.Object[])">
             <summary>
             Update a single record from a table by Primary Key.
             </summary>
@@ -3082,7 +3245,7 @@
             For composite keys, use semicolon separated string</param>
             <returns></returns>
         </member>
-        <member name="M:AutoPocoIO.Resources.IOperationResource.UpdateResourceRecordById``1(``0,System.String)">
+        <member name="M:AutoPocoIO.Resources.IOperationResource.UpdateResourceRecordById``1(``0,System.Object[])">
             <summary>
             Update a single record from a table by Primary Key.
             </summary>
@@ -3134,6 +3297,12 @@
             Load schema for a specific stored procedure
             </summary>
         </member>
+        <member name="M:AutoPocoIO.Resources.IOperationResource.GetPrimaryKeys(System.Object)">
+            <summary>
+            Map input to the table primary key(s)
+            </summary>
+            <returns>Array of primary key values</returns>
+        </member>
         <member name="P:AutoPocoIO.Resources.OperationResource.Connector">
             <inheritdoc/>
         </member>
@@ -3167,22 +3336,22 @@
         <member name="M:AutoPocoIO.Resources.OperationResource.CreateNewResourceRecord(Newtonsoft.Json.Linq.JToken)">
             <inheritdoc/>
         </member>
-        <member name="M:AutoPocoIO.Resources.OperationResource.GetResourceRecordById(System.String)">
+        <member name="M:AutoPocoIO.Resources.OperationResource.GetResourceRecordById(System.Object[])">
             <inheritdoc/>
         </member>
-        <member name="M:AutoPocoIO.Resources.OperationResource.GetResourceRecordById``1(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:AutoPocoIO.Resources.OperationResource.GetResourceRecordById``1(System.Object[],System.Collections.Generic.IDictionary{System.String,System.String})">
             <inheritdoc/>
         </member>
         <member name="M:AutoPocoIO.Resources.OperationResource.GetResourceRecords(System.Collections.Generic.IDictionary{System.String,System.String})">
             <inheritdoc/>
         </member>
-        <member name="M:AutoPocoIO.Resources.OperationResource.UpdateResourceRecordById``1(``0,System.String)">
+        <member name="M:AutoPocoIO.Resources.OperationResource.UpdateResourceRecordById``1(``0,System.Object[])">
             <inheritdoc/>
         </member>
-        <member name="M:AutoPocoIO.Resources.OperationResource.UpdateResourceRecordById(Newtonsoft.Json.Linq.JToken,System.String)">
+        <member name="M:AutoPocoIO.Resources.OperationResource.UpdateResourceRecordById(Newtonsoft.Json.Linq.JToken,System.Object[])">
             <inheritdoc/>
         </member>
-        <member name="M:AutoPocoIO.Resources.OperationResource.DeleteResourceRecordById(System.String)">
+        <member name="M:AutoPocoIO.Resources.OperationResource.DeleteResourceRecordById(System.Object[])">
             <inheritdoc/>
         </member>
         <member name="M:AutoPocoIO.Resources.OperationResource.GetViewRecords">
@@ -3297,7 +3466,7 @@
             <param name="tableName">Table name</param>
             <param name="httpMethod">Http method type(GET, PUT, POST, DELETE)</param>
         </member>
-        <member name="M:AutoPocoIO.Services.ILoggingService.AddTableToLogger(System.String,System.String,AutoPocoIO.Constants.HttpMethodType,System.String)">
+        <member name="M:AutoPocoIO.Services.ILoggingService.AddTableToLogger(System.String,System.String,AutoPocoIO.Constants.HttpMethodType,System.Object[])">
             <summary>
             Add table row operation to be logged.
             </summary>
@@ -3356,18 +3525,28 @@
             Server date time at 00:00:00 UTC
             </summary>
         </member>
+        <member name="P:AutoPocoIO.Services.ITimeProvider.UtcOffset">
+            <summary>
+            Server UTC offset
+            </summary>
+        </member>
         <member name="T:AutoPocoIO.Services.LoggingService">
             <summary>
             Log AutoPoco commands
             </summary>
         </member>
-        <member name="M:AutoPocoIO.Services.LoggingService.#ctor(AutoPocoIO.Services.ITimeProvider,Microsoft.Extensions.DependencyInjection.IServiceScopeFactory)">
+        <member name="M:AutoPocoIO.Services.LoggingService.#ctor(AutoPocoIO.Services.ITimeProvider,Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,AutoPocoIO.Services.AutoPocoServiceOptions)">
             <summary>
              Set up new logging for a request
             This constructor is not meant to be called in code.  Used for DI. 
             </summary>
             <param name="timeProvider">Localized time provider.</param>
             <param name="scopeFactory">Create to service scope for of thread logging.</param>
+        </member>
+        <member name="P:AutoPocoIO.Services.LoggingService.Events">
+            <summary>
+            Logging events setup in the service options
+            </summary>
         </member>
         <member name="P:AutoPocoIO.Services.LoggingService.ApiRequests">
             <summary>
@@ -3389,20 +3568,10 @@
         <member name="P:AutoPocoIO.Services.LoggingService.LogCount">
             <inheritdoc/>
         </member>
-        <member name="P:AutoPocoIO.Services.LoggingService.OnLogging">
-            <summary>
-             Represents an event called for each api request
-            </summary>
-        </member>
-        <member name="P:AutoPocoIO.Services.LoggingService.OnLogged">
-            <summary>
-             Represents an event called after the http request is logged 
-            </summary>
-        </member>
         <member name="M:AutoPocoIO.Services.LoggingService.AddTableToLogger(System.String,System.String,AutoPocoIO.Constants.HttpMethodType)">
             <inheritdoc/>
         </member>
-        <member name="M:AutoPocoIO.Services.LoggingService.AddTableToLogger(System.String,System.String,AutoPocoIO.Constants.HttpMethodType,System.String)">
+        <member name="M:AutoPocoIO.Services.LoggingService.AddTableToLogger(System.String,System.String,AutoPocoIO.Constants.HttpMethodType,System.Object[])">
             <inheritdoc/>
         </member>
         <member name="M:AutoPocoIO.Services.LoggingService.AddViewToLogger(System.String,System.String)">
@@ -3441,26 +3610,27 @@
         <member name="P:AutoPocoIO.Services.DefaultTimeProvider.LocalToday">
             <inheritdoc />
         </member>
+        <member name="P:AutoPocoIO.Services.DefaultTimeProvider.UtcOffset">
+            <inheritdoc />
+        </member>
         <member name="T:AutoPocoIO.Services.RequestQueryStringService">
             <summary>
             Access Http Request query strings.
             </summary>
         </member>
+        <member name="M:AutoPocoIO.Services.RequestQueryStringService.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+            <summary>
+            Initialize with access to <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/>
+            </summary>
+            <param name="contextAccessor"></param>
+        </member>
         <member name="M:AutoPocoIO.Services.RequestQueryStringService.GetQueryStrings">
             <inheritdoc/>
         </member>
-        <member name="T:AutoPocoIO.SwaggerAddons.AddSchemaExamples">
+        <member name="T:AutoPocoIO.SwaggerAddons.JTokenExample">
             <summary>
             Gives example object for JToken parameters in swagger
             </summary>
-        </member>
-        <member name="M:AutoPocoIO.SwaggerAddons.AddSchemaExamples.Apply(Swashbuckle.Swagger.Schema,Swashbuckle.Swagger.SchemaRegistry,System.Type)">
-            <summary>
-            Add <see cref="T:Newtonsoft.Json.Linq.JToken"/> example
-            </summary>
-            <param name="schema">Schema to map definition.</param>
-            <param name="schemaRegistry">List of registered schemas.</param>
-            <param name="type">Current value to check.</param>
         </member>
         <member name="T:AutoPocoIO.SwaggerAddons.ODataParametersSwaggerDefinition">
             <summary>
@@ -3468,13 +3638,12 @@
             ONLY if no parameters are defined already.
             </summary>
         </member>
-        <member name="M:AutoPocoIO.SwaggerAddons.ODataParametersSwaggerDefinition.Apply(Swashbuckle.Swagger.Operation,Swashbuckle.Swagger.SchemaRegistry,System.Web.Http.Description.ApiDescription)">
+        <member name="M:AutoPocoIO.SwaggerAddons.ODataParametersSwaggerDefinition.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
             <summary>
-            Apply the filter to the operation.
+            Add parameters for Odata operations.
             </summary>
-            <param name="operation">The API operation to check.</param>
-            <param name="schemaRegistry">The swagger schema registry.</param>
-            <param name="apiDescription">The description of the api method.</param>
+            <param name="operation">Swagger operation</param>
+            <param name="context">Action context</param>
         </member>
         <member name="T:AutoPocoIO.WebApi.SchemaController">
             <summary>
@@ -3613,13 +3782,12 @@
             <param name="value">JSON object to insert</param>
             <returns>Inserted object</returns>
         </member>
-        <member name="M:AutoPocoIO.WebApi.TablesController.Put(System.String,System.String,System.String,Newtonsoft.Json.Linq.JToken)">
+        <member name="M:AutoPocoIO.WebApi.TablesController.Put(System.String,System.String,Newtonsoft.Json.Linq.JToken)">
             <summary>
             Update record in a given table
             </summary>
             <param name="connectorName">Name of the database to access.</param>
             <param name="tableName">Name of the table in the database.</param>
-            <param name="id">Primary Key.</param>
             <param name="value">JSON object to update.</param>
             <returns></returns>
         </member>
@@ -3652,6 +3820,11 @@
             <param name="connectorName">Name of the database to access.</param>
             <param name="viewName">Name of the view in the database.</param>
         </member>
+        <member name="T:AutoPocoIO.WebApi.ApiController">
+            <summary>
+            For same naming between .Net Framework and .Net Core
+            </summary>
+        </member>
         <member name="T:AutoPocoIO.LoggingMiddleware.ContextLogParameters">
             <summary>
             
@@ -3659,210 +3832,47 @@
         </member>
         <member name="P:AutoPocoIO.LoggingMiddleware.ContextLogParameters.Context">
             <summary>
-            
+             Gets or sets the <see cref="P:Microsoft.AspNetCore.Http.HttpResponse.HttpContext"/> for this request.
             </summary>
         </member>
         <member name="P:AutoPocoIO.LoggingMiddleware.ContextLogParameters.StatusCode">
             <summary>
-            
+            Gets or sets the HTTP response code.
             </summary>
         </member>
         <member name="P:AutoPocoIO.LoggingMiddleware.ContextLogParameters.Exception">
             <summary>
-            
+            Request exception to log
             </summary>
         </member>
         <member name="P:AutoPocoIO.LoggingMiddleware.ContextLogParameters.RequestBuffer">
             <summary>
-            
+            Buffered Request body stream
             </summary>
         </member>
         <member name="P:AutoPocoIO.LoggingMiddleware.ContextLogParameters.ResponseBuffer">
             <summary>
-            
+            Buffered Response body stream
             </summary>
         </member>
         <member name="T:AutoPocoIO.LoggingMiddleware.LogRequestAndResponseMiddleware">
             <summary>
-            Owin middleware for logging request and responses
+            ASP.NET Core middleware for logging request and responses
             </summary>
         </member>
-        <member name="M:AutoPocoIO.LoggingMiddleware.LogRequestAndResponseMiddleware.#ctor(AutoPocoIO.Services.ILoggingService)">
+        <member name="M:AutoPocoIO.LoggingMiddleware.LogRequestAndResponseMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
             <summary>
-            Initialize middleware on request with services
+            Initialize middleware on startup
             </summary>
-            <param name="loggingService">Request scoped logging service</param>
+            <param name="next">Next middleware in the pipeline</param>
         </member>
-        <member name="P:AutoPocoIO.LoggingMiddleware.LogRequestAndResponseMiddleware.NextComponent">
-            <inheritdoc/>
-        </member>
-        <member name="M:AutoPocoIO.LoggingMiddleware.LogRequestAndResponseMiddleware.Invoke(Microsoft.Owin.IOwinContext)">
-            <inheritdoc/>
-        </member>
-        <member name="M:AutoPocoIO.LoggingMiddleware.LogRequestAndResponseMiddleware.Dispose">
-            <inheritdoc/>
-        </member>
-        <member name="M:AutoPocoIO.LoggingMiddleware.LogRequestAndResponseMiddleware.Dispose(System.Boolean)">
-            <inheritdoc/>
-        </member>
-        <member name="T:AutoPocoIO.Owin.DashboardMiddleware">
+        <member name="M:AutoPocoIO.LoggingMiddleware.LogRequestAndResponseMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,AutoPocoIO.Services.ILoggingService)">
             <summary>
-            Handle middleware pages
+            
             </summary>
-        </member>
-        <member name="M:AutoPocoIO.Owin.DashboardMiddleware.#ctor(System.IServiceProvider,AutoPocoIO.Services.ILoggingService)">
-            <summary>
-            Initialize instance of middleware and maps services.
-            </summary>
-            <param name="provider">Root service provider.</param>
-            <param name="loggingService">Shared instance of logging service across the owin pipeline.</param>
-        </member>
-        <member name="P:AutoPocoIO.Owin.DashboardMiddleware.NextComponent">
-            <inheritdoc/>
-        </member>
-        <member name="M:AutoPocoIO.Owin.DashboardMiddleware.Invoke(Microsoft.Owin.IOwinContext)">
-            <inheritdoc/>
-        </member>
-        <member name="T:AutoPocoIO.Owin.OwinMiddlewareContext">
-            <summary>
-            Encapsulates all HTTP-specific information about an individual HTTP request.
-            </summary>
-        </member>
-        <member name="M:AutoPocoIO.Owin.OwinMiddlewareContext.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object},System.IServiceProvider)">
-            <summary>
-            Initialize for each http request
-            </summary>
-            <param name="environment">Owin environment</param>
-            <param name="internalProvider">Scoped middleware service provider</param>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareContext.Environment">
-            <summary>
-            Owin middleware environment variables
-            </summary>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareContext.Request">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareContext.Response">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareContext.UriMatch">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareContext.RequestUri">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareContext.QueryStrings">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareContext.InternalServiceProvider">
-            <inheritdoc/>
-        </member>
-        <member name="T:AutoPocoIO.Owin.IOwinMiddlewareWithDI">
-            <summary>
-            Implmenet Owin Middlware that utilizes injected classes.
-            </summary>
-        </member>
-        <member name="P:AutoPocoIO.Owin.IOwinMiddlewareWithDI.NextComponent">
-            <summary>
-            Next middleware in the owin pipeline.
-            </summary>
-        </member>
-        <member name="M:AutoPocoIO.Owin.IOwinMiddlewareWithDI.Invoke(Microsoft.Owin.IOwinContext)">
-            <summary>
-            Action to be called in Owin pipeline.
-            </summary>
-            <param name="context">Current request's Owin envirnoment.</param>
+            <param name="context"></param>
+            <param name="loggingService"></param>
             <returns></returns>
-        </member>
-        <member name="T:AutoPocoIO.Owin.OwinContainerWrapper`1">
-            <summary>
-            Encapsulates Owin middleware to start from IOC container
-            </summary>
-            <typeparam name="T">Middleware type</typeparam>
-        </member>
-        <member name="M:AutoPocoIO.Owin.OwinContainerWrapper`1.#ctor(Microsoft.Owin.OwinMiddleware,System.Web.Http.HttpConfiguration)">
-            <summary>
-            Initialize Owin wrapper
-            </summary>
-            <param name="next">Next owin middleware in the pipeline</param>
-            <param name="config">Configuration that IOC is registered with.</param>
-        </member>
-        <member name="M:AutoPocoIO.Owin.OwinContainerWrapper`1.Invoke(Microsoft.Owin.IOwinContext)">
-            <inheritdoc/>
-        </member>
-        <member name="T:AutoPocoIO.Owin.OwinMiddlewareRequest">
-            <summary>
-            Represents the incoming side of an individual HTTP request.
-            </summary>
-        </member>
-        <member name="M:AutoPocoIO.Owin.OwinMiddlewareRequest.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Initilize the middleware request from the <paramref name="environment"/>
-            </summary>
-            <param name="environment">Owin environment to set properties</param>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareRequest.Method">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareRequest.Path">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareRequest.PathBase">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareRequest.LocalIpAddress">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareRequest.RemoteIpAddress">
-            <inheritdoc/>
-        </member>
-        <member name="M:AutoPocoIO.Owin.OwinMiddlewareRequest.GetQuery(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareRequest.Body">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareRequest.RequestUri">
-            <inheritdoc/>
-        </member>
-        <member name="M:AutoPocoIO.Owin.OwinMiddlewareRequest.ReadFormAsync">
-            <inheritdoc/>
-        </member>
-        <member name="M:AutoPocoIO.Owin.OwinMiddlewareRequest.Dispose">
-            <inheritdoc/>
-        </member>
-        <member name="M:AutoPocoIO.Owin.OwinMiddlewareRequest.Dispose(System.Boolean)">
-            <inheritdoc/>
-        </member>
-        <member name="T:AutoPocoIO.Owin.OwinMiddlewareResponse">
-            <summary>
-            Represents the outgoing side of an individual HTTP request.
-            </summary>
-        </member>
-        <member name="M:AutoPocoIO.Owin.OwinMiddlewareResponse.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Initilize the middleware response from the <paramref name="environment"/>
-            </summary>
-            <param name="environment">Owin environment to set properties</param>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareResponse.ContentType">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareResponse.StatusCode">
-            <inheritdoc/>
-        </member>
-        <member name="P:AutoPocoIO.Owin.OwinMiddlewareResponse.Body">
-            <inheritdoc/>
-        </member>
-        <member name="M:AutoPocoIO.Owin.OwinMiddlewareResponse.Redirect(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:AutoPocoIO.Owin.OwinMiddlewareResponse.SetExpire(System.Nullable{System.DateTimeOffset})">
-            <inheritdoc/>
-        </member>
-        <member name="M:AutoPocoIO.Owin.OwinMiddlewareResponse.WriteAsync(System.String)">
-            <inheritdoc/>
         </member>
         <member name="T:System.Linq.AutoPoco.DynamicQueryable">
             <summary>
@@ -3885,16 +3895,6 @@
         <member name="T:System.Linq.AutoPoco.ParseException">
             <summary>
             Dynamic Linq internal exception
-            </summary>
-        </member>
-        <member name="T:AutoPoco.DependencyInjection.PreApplicationStart">
-            <summary>
-            Register IOC scope cleanup
-            </summary>
-        </member>
-        <member name="M:AutoPoco.DependencyInjection.PreApplicationStart.Start">
-            <summary>
-            Register IOC scope cleanup
             </summary>
         </member>
     </members>

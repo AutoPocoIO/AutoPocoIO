@@ -15,8 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="Moq" Version="4.13.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
@@ -24,8 +22,18 @@
     <PackageReference Include="OpenCover" Version="4.7.922" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.*" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.*" />
+  </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461'">
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.*" />
     <Reference Include="System.Web" />
   </ItemGroup>
              
@@ -35,10 +43,10 @@
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
-    <DefineConstants>net461;NETFULL;</DefineConstants>
+    <DefineConstants>net461;EF22;NETFULL;</DefineConstants>
   </PropertyGroup>
     <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
-    <DefineConstants>NETCORE;NETCORE2_2</DefineConstants>
+    <DefineConstants>NETCORE;EF22;NETCORE2_2</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">
     <DefineConstants>NETCORE;NETCORE3_1</DefineConstants>

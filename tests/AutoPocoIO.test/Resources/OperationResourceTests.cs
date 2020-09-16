@@ -150,6 +150,7 @@ namespace AutoPocoIO.test.Resources
                 db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
                 {
+                    Id = "1",
                     Alias = "pkJoin",
                     PKConnectorId = "1",
                     PKTableName = "tbl1",
@@ -208,6 +209,7 @@ namespace AutoPocoIO.test.Resources
                 db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
                 {
+                    Id = "1",
                     Alias = "pkJoin",
                     PKConnectorId = "1",
                     PKTableName = "tbl1",
@@ -266,6 +268,7 @@ namespace AutoPocoIO.test.Resources
                 db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
                 {
+                    Id = "1",
                     Alias = "pkJoin",
                     PKConnectorId = "1",
                     PKTableName = "tbl1",
@@ -324,6 +327,7 @@ namespace AutoPocoIO.test.Resources
                 db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
                 {
+                    Id = "1",
                     Alias = "pkJoin",
                     PKConnectorId = "1",
                     PKTableName = "tbl1",
@@ -382,6 +386,7 @@ namespace AutoPocoIO.test.Resources
                 db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
                 {
+                    Id = "1",
                     Alias = "fkJoin",
                     PKConnectorId = "1",
                     PKTableName = "tbl2",
@@ -440,6 +445,7 @@ namespace AutoPocoIO.test.Resources
                 db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
                 {
+                    Id = "1",
                     Alias = "fkJoin",
                     PKConnectorId = "1",
                     PKTableName = "tbl2",
@@ -519,6 +525,7 @@ namespace AutoPocoIO.test.Resources
                 db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
                 {
+                    Id = "1",
                     Alias = "pkJoin",
                     PKConnectorId = "1",
                     PKTableName = "tbl1",

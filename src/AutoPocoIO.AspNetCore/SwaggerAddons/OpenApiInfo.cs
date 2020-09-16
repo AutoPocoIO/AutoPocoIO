@@ -28,7 +28,7 @@ namespace Microsoft.OpenApi.Models
         public string Description { get; set; }
         public bool Required { get; set; }
 
-        public Dictionary<string, object> Extensions => throw new System.NotImplementedException();
+        public Dictionary<string, object> Extensions { get; set; }
     }
 
     internal enum ParameterLocation

@@ -22,6 +22,7 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
         private static readonly string dashPath = "autoPocoPath";
         HttpClient client;
 
+#if NETCORE2_2
         private class TestStartup
         {
 
@@ -40,6 +41,31 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
                 app.UseSwaggerUI(SwaggerConfig.SwaggerUIAppBuilderFunc(dashPath));
             }
         }
+#else
+        private class TestStartup
+        {
+
+            public void ConfigureServices(IServiceCollection services)
+            {
+                services.AddAutoPoco();
+                services.AddRazorPages();
+            }
+#pragma warning disable IDE0060 // Remove unused parameter
+            public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+#pragma warning restore IDE0060 // Remove unused parameter
+            {
+                app.UseAutoPoco(new Models.AutoPocoOptions { DashboardPath = "/autoPocoPath" });
+
+                app.UseStaticFiles();
+
+
+                app.UseEndpoints(routes =>
+                {
+                    routes.MapRazorPages();
+                });
+            }
+        }
+#endif
 
         [TestInitialize]
         public void Init()
@@ -75,13 +101,8 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             string result = client.GetStringAsync("autoPocoPath/swagger/v1/swagger.json").Result;
             var resultObj = JObject.Parse(result);
 
-            var jObject = JObject.FromObject(new
-            {
-                version = "v1",
-                title = "AutoPoco",
-            });
-
-            Assert.AreEqual(jObject.ToString(), resultObj["info"].ToString());
+            Assert.AreEqual("AutoPoco", resultObj["info"]["title"].ToString());
+            Assert.AreEqual("v1", resultObj["info"]["version"].ToString());
         }
 
         [TestMethod]

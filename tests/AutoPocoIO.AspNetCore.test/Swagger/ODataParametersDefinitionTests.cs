@@ -72,10 +72,9 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$select");
+            var odataOp = op.Parameters.First(c => c.Name == "$select");
 
-            Assert.AreEqual("string", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
+            Assert.AreEqual("Query", odataOp.In);
             Assert.AreEqual(false, odataOp.Required);
             Assert.AreEqual("Select columns using OData syntax.", odataOp.Description);
         }
@@ -86,10 +85,9 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$expand");
+            var odataOp = op.Parameters.First(c => c.Name == "$expand");
 
-            Assert.AreEqual("string", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
+            Assert.AreEqual("Query", odataOp.In);
             Assert.AreEqual(false, odataOp.Required);
             Assert.AreEqual("Expand nested data using OData syntax.", odataOp.Description);
         }
@@ -100,10 +98,9 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$orderby");
+            var odataOp = op.Parameters.First(c => c.Name == "$orderby");
 
-            Assert.AreEqual("string", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
+            Assert.AreEqual("Query", odataOp.In);
             Assert.AreEqual(false, odataOp.Required);
             Assert.AreEqual("Order the results using OData syntax.", odataOp.Description);
         }
@@ -114,10 +111,9 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$skip");
+            var odataOp = op.Parameters.First(c => c.Name == "$skip");
 
-            Assert.AreEqual("integer", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
+            Assert.AreEqual("Query", odataOp.In);
             Assert.AreEqual(false, odataOp.Required);
             Assert.AreEqual("The number of results to skip.", odataOp.Description);
         }
@@ -128,10 +124,9 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$top");
+            var odataOp = op.Parameters.First(c => c.Name == "$top");
 
-            Assert.AreEqual("integer", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
+            Assert.AreEqual("Query", odataOp.In);
             Assert.AreEqual(false, odataOp.Required);
             Assert.AreEqual("The number of results to return.", odataOp.Description);
         }
@@ -142,10 +137,9 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$apply");
+            var odataOp = op.Parameters.First(c => c.Name == "$apply");
 
-            Assert.AreEqual("string", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
+            Assert.AreEqual("Query", odataOp.In);
             Assert.AreEqual(false, odataOp.Required);
             Assert.AreEqual("Return applied filter.", odataOp.Description);
         }
@@ -156,10 +150,9 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
             context = new OperationFilterContext(api, Mock.Of<ISchemaRegistry>(), oDataAction);
             swaggerDef.Apply(op, context);
 
-            var odataOp = (NonBodyParameter)op.Parameters.First(c => c.Name == "$count");
+            var odataOp = op.Parameters.First(c => c.Name == "$count");
 
-            Assert.AreEqual("boolean", odataOp.Type);
-            Assert.AreEqual("query", odataOp.In);
+            Assert.AreEqual("Query", odataOp.In);
             Assert.AreEqual(false, odataOp.Required);
             Assert.AreEqual("Return the total count.", odataOp.Description);
         }

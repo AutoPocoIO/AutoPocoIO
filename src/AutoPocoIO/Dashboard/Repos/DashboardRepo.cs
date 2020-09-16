@@ -4,6 +4,7 @@ using AutoPocoIO.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.AutoPoco;
 
 namespace AutoPocoIO.Dashboard.Repos
 {
@@ -76,9 +77,9 @@ namespace AutoPocoIO.Dashboard.Repos
             DateTime searchDate = _timeProvider.UtcNow.AddDays(-1);
             var offset = _timeProvider.UtcOffset;
 
-            var requests = _db.RequestLogs.GroupJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid },
+            var requests = _db.RequestLogs.LeftJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid },
                                                    c => new { RequestId = c.ResponseId, c.RequestGuid },
-                                                   (req, resp) => new { RequestTime = req.DateTimeUtc, IsSuccess = IsSuccessFunc(resp.FirstOrDefault().Status) })
+                                                   (req, resp) => new { RequestTime = req.DateTimeUtc, IsSuccess = IsSuccessFunc(resp.FirstOrDefault()?.Status) })
                                           .Where(c => c.RequestTime >= searchDate);
 
             var groups = requests.GroupBy(c => new
@@ -147,9 +148,9 @@ namespace AutoPocoIO.Dashboard.Repos
             DateTime searchDate = _timeProvider.UtcNow.AddDays(-6);
             var offset = _timeProvider.UtcOffset;
 
-            var requests = _db.RequestLogs.GroupJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid },
+            var requests = _db.RequestLogs.LeftJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid },
                                                    c => new { RequestId = c.ResponseId, c.RequestGuid },
-                                                   (req, resp) => new { RequestTime = req.DateTimeUtc, IsSuccess = IsSuccessFunc(resp.FirstOrDefault().Status) })
+                                                   (req, resp) => new { RequestTime = req.DateTimeUtc, IsSuccess = IsSuccessFunc(resp.FirstOrDefault()?.Status) })
                                           .Where(c => c.RequestTime >= searchDate);
 
             var groups = requests.GroupBy(c => new
@@ -211,9 +212,9 @@ namespace AutoPocoIO.Dashboard.Repos
         {
             DateTime searchDate = _timeProvider.LocalToday.AddDays(Math.Abs(daysAgo) * -1);
 
-            var requests = _db.RequestLogs.GroupJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid },
+            var requests = _db.RequestLogs.LeftJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid },
                                                     c => new { RequestId = c.ResponseId, c.RequestGuid },
-                                                    (req, resp) => new { req.DateTimeUtc, resp.FirstOrDefault().Status });
+                                                    (req, resp) => new { req.DateTimeUtc, resp.FirstOrDefault()?.Status });
 
             return requests.Where(c => c.DateTimeUtc >= searchDate && status.Invoke(c.Status))
                         .Count();
@@ -223,9 +224,9 @@ namespace AutoPocoIO.Dashboard.Repos
         {
             DateTime searchDate = _timeProvider.LocalToday.AddDays(Math.Abs(daysAgo) * -1);
 
-            var requests = _db.RequestLogs.GroupJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid },
+            var requests = _db.RequestLogs.LeftJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid },
                                                     c => new { RequestId = c.ResponseId, c.RequestGuid },
-                                                    (req, resp) => new { RequestTime = req.DateTimeUtc, resp.FirstOrDefault().Status, ResponseTime = resp.FirstOrDefault().DateTimeUtc })
+                                                    (req, resp) => new { RequestTime = req.DateTimeUtc, resp.FirstOrDefault().Status, ResponseTime = resp.FirstOrDefault()?.DateTimeUtc })
                                         .Where(c => c.RequestTime >= searchDate && status.Invoke(c.Status))
                                         .Where(c => c.RequestTime != null && c.ResponseTime != null);
             if (requests.Any())

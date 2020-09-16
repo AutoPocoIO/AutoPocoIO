@@ -5,6 +5,7 @@ using AutoPocoIO.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.AutoPoco;
 
 namespace AutoPocoIO.Dashboard.Repos
 {
@@ -37,8 +38,8 @@ namespace AutoPocoIO.Dashboard.Repos
 
             var requests = _db.RequestLogs.OrderByDescending(c => c.DateTimeUtc)
                                        .Take(recordLimit)
-                                       .GroupJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid }, c => new { RequestId = c.ResponseId, c.RequestGuid },
-                                               (req, resp) => new { Request = req, resp.FirstOrDefault().Status });
+                                       .LeftJoin(_db.ResponseLogs, c => new { c.RequestId, c.RequestGuid }, c => new { RequestId = c.ResponseId, c.RequestGuid },
+                                               (req, resp) => new { Request = req, resp.FirstOrDefault()?.Status });
 
             return requests.Select(c => new RequestGridViewModel
             {

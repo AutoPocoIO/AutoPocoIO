@@ -26,7 +26,7 @@ namespace AutoPocoIO.DynamicSchema.Runtime
             optionBuilder.ReplaceService<IDbSetFinder, Services.NoCache.DbSetFinder>();
             optionBuilder.ReplaceService<IDbSetSource, Services.NoCache.DbSetSource>();
 
-#if NETFULL || NETCORE2_2
+#if EF22
             optionBuilder.ReplaceService<IDbQuerySource, Services.NoCache.DbSetSource>();
 #endif
             optionBuilder.ReplaceService<ICompiledQueryCache, Services.NoCache.CompiledQueryCache>();

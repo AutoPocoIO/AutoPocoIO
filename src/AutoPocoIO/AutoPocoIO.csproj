@@ -15,6 +15,7 @@
     <Company>AutoPocoIO</Company>
     <Authors>AutoPocoIO</Authors>
     <RepositoryUrl>https://github.com/AutoPocoIO/AutoPocoIO</RepositoryUrl>
+    <OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
   <!--<DocumentationFile>SwaggerAddons\AutoPoco.xml</DocumentationFile>-->
   </PropertyGroup>
 
@@ -50,7 +51,7 @@
 
   <!-- .NET CORE 2.2 references, compilation flags and build options -->
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>NETCORE;NETCORE2_2</DefineConstants>
+    <DefineConstants>NETCORE;EF22;NETCORE2_2</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[2.2.0, 2.3.0)" />
@@ -68,7 +69,7 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[3.1.0, 3.2)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.*" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="5.6.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters " Version="5.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.4.1" />
      <PackageReference Include="Microsoft.OData.Core" Version="7.7.1" />
@@ -78,7 +79,7 @@
  
   <!-- .NET 4.5 references, compilation flags and build options -->
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
-    <DefineConstants>net461;NETFULL;</DefineConstants>
+    <DefineConstants>net461;EF22;NETFULL;</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">

@@ -23,7 +23,7 @@ namespace AutoPocoIO.test.Services
     [TestCategory(TestCategories.Unit)]
     public class AppDatabaseSetupServiceTests
     {
-        readonly string connString = $"appDb{Guid.NewGuid()}";
+        readonly string connString = "DataSource=appDb" + Guid.NewGuid().ToString();
         AppDatabaseSetupService setupService;
         Mock<IMigrationsAssembly> mig;
         Mock<IHistoryRepository> applied;
@@ -51,7 +51,7 @@ namespace AutoPocoIO.test.Services
             connService.Setup(c => c.DbConnection).Returns(connection.Object);
 
             var services = new ServiceCollection();
-            services.AddEntityFrameworkInMemoryDatabase();
+            services.AddEntityFrameworkSqlite();
             services.AddSingleton(mig.Object);
             services.AddSingleton(applied.Object);
             services.AddSingleton(migrator.Object);
@@ -59,7 +59,6 @@ namespace AutoPocoIO.test.Services
 
             var appOptionBuilder = new DbContextOptionsBuilder<AppDbContext>();
             appOptionBuilder.UseInMemoryDatabase(databaseName: connString);
-            appOptionBuilder.UseInternalServiceProvider(services.BuildServiceProvider());
 
             appDb = new AppDbContext(appOptionBuilder.Options);
 
@@ -70,11 +69,11 @@ namespace AutoPocoIO.test.Services
             appDb.SaveChanges();
 
             var migContextOptions = new DbContextOptionsBuilder<AppMigrationContext>()
-                .UseInMemoryDatabase(databaseName: connString)
+                 .UseSqlite(connString)
                 .UseInternalServiceProvider(services.BuildServiceProvider());
 
             var migLogContextOptions = new DbContextOptionsBuilder<LoggingMigrationContext>()
-                .UseInMemoryDatabase(databaseName: connString)
+                 .UseSqlite(connString)
                 .UseInternalServiceProvider(services.BuildServiceProvider());
 
             var appMigDb = new AppMigrationContext(migContextOptions.Options);

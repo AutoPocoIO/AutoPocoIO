@@ -84,16 +84,16 @@ namespace AutoPocoIO.Extensions
 #endif
 
             var scopeFactory = builder.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
-            using (var scope = scopeFactory.CreateScope())
-            {
-                var provider = scope.ServiceProvider;
-                var dbSetupService = provider.GetRequiredService<IAppDatabaseSetupService>();
+            //using (var scope = scopeFactory.CreateScope())
+            //{
+            //    var provider = scope.ServiceProvider;
+            //    var dbSetupService = provider.GetRequiredService<IAppDatabaseSetupService>();
 
-                if (!string.IsNullOrEmpty(options.SaltVector) || !string.IsNullOrEmpty(options.SecretKey))
-                    dbSetupService.SetupEncryption(options.SaltVector, options.SecretKey, options.CacheTimeoutMinutes);
+            //    if (!string.IsNullOrEmpty(options.SaltVector) || !string.IsNullOrEmpty(options.SecretKey))
+            //        dbSetupService.SetupEncryption(options.SaltVector, options.SecretKey, options.CacheTimeoutMinutes);
 
-                dbSetupService.Migrate();
-            }
+            //    dbSetupService.Migrate();
+            //}
 
             return builder;
         }

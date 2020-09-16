@@ -34,6 +34,7 @@ namespace AutoPocoIO.test.Extensions
                 });
                 db.UserJoin.Add(new UserJoin
                 {
+                    Id = "1",
                     PKTableName = "pk",
                     PKConnectorId = "1",
                     FKTableName = "fk",

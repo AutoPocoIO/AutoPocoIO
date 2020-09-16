@@ -28,11 +28,10 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
             optionBuilder.Object.ReplaceEFCachingServices();
 
-            optionBuilder.Verify(c => c.ReplaceService<It.IsAnyType, It.IsAnyType>(), Times.Exactly(7));
             optionBuilder.Verify(c => c.ReplaceService<IModelSource, AutoPocoIO.DynamicSchema.Services.NoCache.ModelSource>(), Times.Once);
             optionBuilder.Verify(c => c.ReplaceService<IDbSetFinder, AutoPocoIO.DynamicSchema.Services.NoCache.DbSetFinder>(), Times.Once);
             optionBuilder.Verify(c => c.ReplaceService<IDbSetSource, AutoPocoIO.DynamicSchema.Services.NoCache.DbSetSource>(), Times.Once);
-#if NETCORE2_2 || NETFULL
+#if EF22
             optionBuilder.Verify(c => c.ReplaceService<It.IsAnyType, It.IsAnyType>(), Times.Exactly(7));
             optionBuilder.Verify(c => c.ReplaceService<IDbQuerySource, AutoPocoIO.DynamicSchema.Services.NoCache.DbSetSource>(), Times.Once);
 #else
