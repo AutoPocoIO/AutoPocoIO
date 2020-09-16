@@ -1,4 +1,4 @@
-﻿#if NETCORE2_2
+﻿#if EF22
 
 using Swashbuckle.AspNetCore.Swagger;
 using System.Collections.Generic;

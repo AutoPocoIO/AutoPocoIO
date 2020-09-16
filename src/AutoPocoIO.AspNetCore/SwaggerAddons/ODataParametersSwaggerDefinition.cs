@@ -21,7 +21,7 @@ namespace AutoPocoIO.SwaggerAddons
         /// </summary>
         /// <param name="operation">Swagger operation</param>
         /// <param name="context">Action context</param>
-#if NETCORE2_2
+#if EF22
         public void Apply(Operation operation, OperationFilterContext context)
 #else
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
@@ -34,7 +34,7 @@ namespace AutoPocoIO.SwaggerAddons
             {
                 if (operation.Parameters == null)
                 {
-#if NETCORE2_2
+#if EF22
 
                     operation.Parameters = new List<IParameter>();
 #else

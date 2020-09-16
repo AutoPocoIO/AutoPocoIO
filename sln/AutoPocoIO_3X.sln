@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.AspNet", "..\src\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.shproj", "{38F8D4FF-FF0F-48AD-8CB1-1618EF4D1DE9}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.AspNetCore", "..\src\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.shproj", "{E2D69D9D-44AC-41CE-9BD8-AC886BE7312E}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.Shared", "..\src\AutoPocoIO.Shared\AutoPocoIO.Shared.shproj", "{37867A0F-0051-427B-AD11-406198B5A370}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO_3X", "..\src\AutoPocoIO_3X\AutoPocoIO_3X.csproj", "{55917236-7C5B-42AC-9D5E-90D6BDF6182B}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\src\AutoPocoIO.Shared\AutoPocoIO.Shared.projitems*{37867a0f-0051-427b-ad11-406198b5a370}*SharedItemsImports = 13
+		..\src\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems*{38f8d4ff-ff0f-48ad-8cb1-1618ef4d1de9}*SharedItemsImports = 13
+		..\src\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems*{55917236-7c5b-42ac-9d5e-90d6bdf6182b}*SharedItemsImports = 5
+		..\src\AutoPocoIO.Shared\AutoPocoIO.Shared.projitems*{55917236-7c5b-42ac-9d5e-90d6bdf6182b}*SharedItemsImports = 5
+		..\src\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems*{e2d69d9d-44ac-41ce-9bd8-ac886be7312e}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{55917236-7C5B-42AC-9D5E-90D6BDF6182B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55917236-7C5B-42AC-9D5E-90D6BDF6182B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55917236-7C5B-42AC-9D5E-90D6BDF6182B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55917236-7C5B-42AC-9D5E-90D6BDF6182B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {53447C7B-D1D4-4496-AE73-5901503A7214}
+	EndGlobalSection
+EndGlobal

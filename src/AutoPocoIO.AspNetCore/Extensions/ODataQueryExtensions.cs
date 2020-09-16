@@ -2,19 +2,14 @@
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Query;
-
+using Microsoft.AspNetCore.Builder;
+#if EF22
+using Microsoft.AspNetCore.Builder.Internal;
+#endif
 using Microsoft.AspNetCore.Http;
-
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-
-#if NETCORE3_1
-using Microsoft.AspNetCore.Builder;
-#else
-using Microsoft.AspNetCore.Builder.Internal;
-using Microsoft.AspNetCore.Http.Internal;
-#endif
 
 namespace AutoPocoIO.Extensions
 {

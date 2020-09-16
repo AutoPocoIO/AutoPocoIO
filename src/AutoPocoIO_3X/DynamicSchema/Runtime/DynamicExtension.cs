@@ -25,10 +25,6 @@ namespace AutoPocoIO.DynamicSchema.Runtime
             optionBuilder.ReplaceService<IModelSource, Services.NoCache.ModelSource>();
             optionBuilder.ReplaceService<IDbSetFinder, Services.NoCache.DbSetFinder>();
             optionBuilder.ReplaceService<IDbSetSource, Services.NoCache.DbSetSource>();
-
-#if EF22
-            optionBuilder.ReplaceService<IDbQuerySource, Services.NoCache.DbSetSource>();
-#endif
             optionBuilder.ReplaceService<ICompiledQueryCache, Services.NoCache.CompiledQueryCache>();
             optionBuilder.ReplaceService<IEntityFinderSource, Services.NoCache.EntityFinderSource>();
             optionBuilder.ReplaceService<IRelationalValueBufferFactoryFactory, Services.NoCache.TypedRelationalValueBufferFactoryFactory>();
@@ -45,13 +41,7 @@ namespace AutoPocoIO.DynamicSchema.Runtime
         {
             Check.NotNull(optionBuilder, nameof(optionBuilder));
 
-#if NETCORE3_1
             optionBuilder.ReplaceService<ISqlExpressionFactory, Services.CrossDb.SqlExpressionFactory>();
-#else
-            optionBuilder.ReplaceService<Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.IEntityQueryableExpressionVisitorFactory, Services.CrossDb.RelationalEntityQueryableExpressionVisitorFactory>();
-            optionBuilder.ReplaceService<Microsoft.EntityFrameworkCore.Query.Expressions.ISelectExpressionFactory, Services.CrossDb.SelectExpressionFactory>();
-            optionBuilder.ReplaceService<IEntityQueryModelVisitorFactory, Services.CrossDb.RelationalQueryModelVisitorFactory>();
-#endif
             return optionBuilder;
 
         }

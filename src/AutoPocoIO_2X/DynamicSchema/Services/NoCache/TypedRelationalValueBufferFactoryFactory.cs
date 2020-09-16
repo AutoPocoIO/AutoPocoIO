@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
+using Remotion.Linq.Parsing.ExpressionVisitors;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -10,14 +12,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-#if NETFULL || NETCORE2_2
-using Remotion.Linq.Parsing.ExpressionVisitors;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-#else
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Query;
-#endif
 namespace AutoPocoIO.DynamicSchema.Services.NoCache
 {
     [ExcludeFromCodeCoverage]

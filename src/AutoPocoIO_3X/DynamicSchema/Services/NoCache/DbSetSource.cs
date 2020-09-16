@@ -19,20 +19,6 @@ namespace AutoPocoIO.DynamicSchema.Services.NoCache
             return CreateCore(context, type, _genericCreateSet);
         }
 
-#if NETCORE2_2 || NETFULL
-        private static readonly MethodInfo _genericCreateQuery
-            = typeof(DbSetSource).GetTypeInfo().GetDeclaredMethod(nameof(CreateQueryFactory));
-
-        public override object CreateQuery(DbContext context, Type type)
-        {
-            return CreateCore(context, type, _genericCreateQuery);
-        }
-
-            private static Func<DbContext, DbQuery<TQuery>> CreateQueryFactory<TQuery>()
-            where TQuery : class
-            => c => new InternalDbQuery<TQuery>(c);
-#endif
-
         private object CreateCore(DbContext context, Type type, MethodInfo createMethod)
         {
             var func = (Func<DbContext, object>)createMethod

@@ -22,7 +22,7 @@
   <Import Project="..\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'net461'" />
   <Import Project="..\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFramework)' == 'netcoreapp3.1'" />
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <None Remove="SwaggerAddons\AutoPoco.xml" />
     <None Remove="SwaggerAddons\swagger.css" />
     <None Include="..\..\sln\AutoPocoIcon.jpeg">
@@ -33,7 +33,7 @@
   <ItemGroup>
     <EmbeddedResource Include="SwaggerAddons\AutoPoco.xml" />
     <EmbeddedResource Include="SwaggerAddons\swagger.css" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <!--Shared -->
   <ItemGroup>
@@ -67,7 +67,7 @@
     <DefineConstants>NETCORE;NETCORE3_1</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[3.1.0, 3.2)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[3.1.0, 3.2)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.*" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters " Version="5.1.2" />
