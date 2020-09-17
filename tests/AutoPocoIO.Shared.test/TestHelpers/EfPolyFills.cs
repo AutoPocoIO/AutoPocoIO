@@ -1,4 +1,4 @@
-﻿#if NETCORE3_1
+﻿#if EF31
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -70,7 +70,9 @@ namespace AutoPocoIO.test
     }
 
 }
+#endif
 
+#if NETCORE3_1 && EF31
 
 namespace Microsoft.AspNetCore.Http.Internal
 {

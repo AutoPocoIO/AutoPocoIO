@@ -94,7 +94,7 @@ namespace AutoPocoIO.test.Extensions
         }
 
 
-#if NETCORE3_1
+#if EF31
         private Mock<EntityTypeBuilder<T>> MockEntityTypeBuilder<T>() where T : class
         {
             Model model = new Model();

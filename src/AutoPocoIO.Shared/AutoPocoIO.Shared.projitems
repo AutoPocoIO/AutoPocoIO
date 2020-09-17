@@ -199,7 +199,7 @@
     <None Include="$(MSBuildThisFileDirectory)Dashboard\Pages\RequestHistory\RequestHistoryPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)SwaggerAddons\AutoPoco.xml" />
-    <Content Include="$(MSBuildThisFileDirectory)SwaggerAddons\swagger.css" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)SwaggerAddons\AutoPoco.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)SwaggerAddons\swagger.css" />
   </ItemGroup>
 </Project>

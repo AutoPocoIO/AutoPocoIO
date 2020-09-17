@@ -8,7 +8,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard2.0;</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp2.2;</TargetFrameworks>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Configurations>Debug;Release;</Configurations>
     <PackageId>AutoPocoIO</PackageId>
@@ -18,11 +18,28 @@
     <OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
     <AssemblyName>AutoPocoIO</AssemblyName>
     <RootNamespace>AutoPocoIO</RootNamespace>
+    <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>AutoPocoIcon.jpeg</PackageIcon>
+    <PackageTags>autopoco poco-generator poco</PackageTags>
+    <PackageProjectUrl>http://autopoco.io/</PackageProjectUrl>
     <FileVersion>2.2.0.0</FileVersion>
     <AssemblyVersion>2.2.0.0</AssemblyVersion>
+    <AssemblyOriginatorKeyFile>..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
     <!--<DocumentationFile>SwaggerAddons\AutoPoco.xml</DocumentationFile>-->
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="SwaggerAddons\AutoPoco.xml" />
+    <None Remove="SwaggerAddons\swagger.css" />
+    <None Include="..\..\sln\AutoPocoIcon.jpeg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
@@ -35,12 +52,11 @@
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
 
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+  
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'" >
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="4.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters " Version="4.5.5" />
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.4.1" />
-    <PackageReference Include="Microsoft.OData.Core" Version="7.7.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.1.0" />
     <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
@@ -52,16 +68,16 @@
 
     <Reference Include="System.Web" />
   </ItemGroup>
-  
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>NETCORE;EF22</DefineConstants>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
+    <DefineConstants>NETCORE;EF22;NETCORE2_2</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
     <DefineConstants>NETFULL;EF22</DefineConstants>
   </PropertyGroup>
 
   <Import Project="..\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'net461'" />
-  <Import Project="..\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'netstandard2.0'" />
+  <Import Project="..\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'netcoreapp2.2'" />
   <Import Project="..\AutoPocoIO.Shared\AutoPocoIO.Shared.projitems" Label="Shared" />
   
 </Project>

@@ -48,7 +48,7 @@ namespace AutoPocoIO.Extensions
             AutoPocoConfiguration.DashboardPathPrefix = options.DashboardPath.Trim('/');
             string dashPath = "/" + AutoPocoConfiguration.DashboardPathPrefix;
 
-#if EF22
+#if NETCORE2_2
            // builder.UseEndpointRouting();
 #else
             builder.UseRouting();
@@ -67,7 +67,7 @@ namespace AutoPocoIO.Extensions
                 builder.UseMiddlewareWhen<AspNetCoreDashboardMiddleware>(dashPath);
 
             //Enable OData
-#if EF22
+#if NETCORE2_2
             builder.UseMvc(routeBuilder =>
             {
                 routeBuilder.EnableDependencyInjection();

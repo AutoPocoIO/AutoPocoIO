@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-#if NETCORE2_2 || NETFULL
+#if EF22
 using Microsoft.EntityFrameworkCore.Query.Expressions;
 using Microsoft.EntityFrameworkCore.Query.ExpressionVisitors;
 #endif
@@ -50,7 +50,7 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
 
             optionBuilder.Object.ReplaceEFCrossDbServices();
 
-#if NETCORE2_2 || NETFULL
+#if EF22
             optionBuilder.Verify(c => c.ReplaceService<It.IsAnyType, It.IsAnyType>(), Times.Exactly(3));
             optionBuilder.Verify(c => c.ReplaceService<IEntityQueryableExpressionVisitorFactory, AutoPocoIO.DynamicSchema.Services.CrossDb.RelationalEntityQueryableExpressionVisitorFactory>(), Times.Once);
             optionBuilder.Verify(c => c.ReplaceService<ISelectExpressionFactory, AutoPocoIO.DynamicSchema.Services.CrossDb.SelectExpressionFactory>(), Times.Once);

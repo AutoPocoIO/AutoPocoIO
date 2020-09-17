@@ -19,10 +19,27 @@
     <LangVersion>8.0</LangVersion>
     <AssemblyName>AutoPocoIO</AssemblyName>
     <RootNamespace>AutoPocoIO</RootNamespace>
+    <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>AutoPocoIcon.jpeg</PackageIcon>
+    <PackageTags>autopoco poco-generator poco</PackageTags>
+    <PackageProjectUrl>http://autopoco.io/</PackageProjectUrl>
     <FileVersion>3.1.0.0</FileVersion>
     <AssemblyVersion>3.1.0.0</AssemblyVersion>
+    <AssemblyOriginatorKeyFile>..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
     <!--<DocumentationFile>SwaggerAddons\AutoPoco.xml</DocumentationFile>-->
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="SwaggerAddons\AutoPoco.xml" />
+    <None Remove="SwaggerAddons\swagger.css" />
+    <None Include="..\..\sln\AutoPocoIcon.jpeg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
