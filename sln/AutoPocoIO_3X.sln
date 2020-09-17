@@ -20,15 +20,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", 
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.Shared.test", "..\tests\AutoPocoIO.Shared.test\AutoPocoIO.Shared.test.shproj", "{59FE5B9E-FD1F-42E1-B426-122C2EBCDA5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPocoIO_3X.test", "..\tests\3X tests\AutoPocoIO_3X.test\AutoPocoIO_3X.test.csproj", "{CB5813AB-59EE-42B9-B5EA-3C2195A5D57C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO_3X.test", "..\tests\3X tests\AutoPocoIO_3X.test\AutoPocoIO_3X.test.csproj", "{CB5813AB-59EE-42B9-B5EA-3C2195A5D57C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPocoIO_3X.AspNet.test", "..\tests\3X tests\AutoPocoIO_3X.AspNet.test\AutoPocoIO_3X.AspNet.test.csproj", "{4AEC7234-B719-414D-8466-7D005FBC6FAF}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.AspNet.test", "..\tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.shproj", "{A3F5B21A-325B-4859-9A6D-759B9A073B58}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\src\AutoPocoIO.Shared\AutoPocoIO.Shared.projitems*{37867a0f-0051-427b-ad11-406198b5a370}*SharedItemsImports = 13
 		..\src\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems*{38f8d4ff-ff0f-48ad-8cb1-1618ef4d1de9}*SharedItemsImports = 13
+		..\tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.projitems*{4aec7234-b719-414d-8466-7d005fbc6faf}*SharedItemsImports = 5
 		..\src\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems*{55917236-7c5b-42ac-9d5e-90d6bdf6182b}*SharedItemsImports = 5
 		..\src\AutoPocoIO.Shared\AutoPocoIO.Shared.projitems*{55917236-7c5b-42ac-9d5e-90d6bdf6182b}*SharedItemsImports = 5
 		..\tests\AutoPocoIO.Shared.test\AutoPocoIO.Shared.test.projitems*{59fe5b9e-fd1f-42e1-b426-122c2ebcda5b}*SharedItemsImports = 13
+		..\tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.projitems*{a3f5b21a-325b-4859-9a6d-759b9a073b58}*SharedItemsImports = 13
 		..\tests\AutoPocoIO.Shared.test\AutoPocoIO.Shared.test.projitems*{cb5813ab-59ee-42b9-b5ea-3c2195a5d57c}*SharedItemsImports = 5
 		..\src\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems*{e2d69d9d-44ac-41ce-9bd8-ac886be7312e}*SharedItemsImports = 13
 	EndGlobalSection
@@ -45,6 +51,10 @@ Global
 		{CB5813AB-59EE-42B9-B5EA-3C2195A5D57C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB5813AB-59EE-42B9-B5EA-3C2195A5D57C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB5813AB-59EE-42B9-B5EA-3C2195A5D57C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AEC7234-B719-414D-8466-7D005FBC6FAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AEC7234-B719-414D-8466-7D005FBC6FAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AEC7234-B719-414D-8466-7D005FBC6FAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AEC7234-B719-414D-8466-7D005FBC6FAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +62,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{59FE5B9E-FD1F-42E1-B426-122C2EBCDA5B} = {04B8C937-426B-435F-A8F1-6C40BCF63756}
 		{CB5813AB-59EE-42B9-B5EA-3C2195A5D57C} = {04B8C937-426B-435F-A8F1-6C40BCF63756}
+		{4AEC7234-B719-414D-8466-7D005FBC6FAF} = {04B8C937-426B-435F-A8F1-6C40BCF63756}
+		{A3F5B21A-325B-4859-9A6D-759B9A073B58} = {04B8C937-426B-435F-A8F1-6C40BCF63756}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53447C7B-D1D4-4496-AE73-5901503A7214}

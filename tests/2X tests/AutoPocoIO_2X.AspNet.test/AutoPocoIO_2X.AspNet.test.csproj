@@ -10,12 +10,11 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
     <IsPackable>false</IsPackable>
-    <AssemblyOriginatorKeyFile>..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
+    <AssemblyName>AutoPocoIO.AspNet.test</AssemblyName>
   </PropertyGroup>
-  <!--<PropertyGroup>
-    <OutputPath>..\..\bin\</OutputPath>
-  </PropertyGroup>-->
+
 
 
   <ItemGroup>
@@ -32,14 +31,11 @@
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\AutoPocoIO\AutoPocoIO.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\AutoPocoIO_2X\AutoPocoIO_2X.csproj" />
     <Reference Include="System.Web" />
   </ItemGroup>
+
+  <Import Project="..\..\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.projitems" Label="Shared" />
 
 </Project>

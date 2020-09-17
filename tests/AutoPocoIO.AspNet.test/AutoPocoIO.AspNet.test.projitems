@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>a3f5b21a-325b-4859-9a6d-759b9a073b58</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>AutoPocoIO.AspNet.test</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CustomAttribute\UseJsonAttributeTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ContainerMiddlewareTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ContainerTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\DependencyResolverTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\DependencyScopeTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\DITest.classes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\MappedConstructorTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\OwinRequestScopeHandlerTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\RegisteredServiceTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ServiceActivatorTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ServiceInfoTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ServiceRegistryTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ServiceScopeFactoryTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ServiceScopeTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\AppbuilderExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DependencyResolverExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\MvcRouteExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\RouteExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Owin\DashboardMiddlewareTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Owin\DashboardMiddlewareTests.Startup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Owin\EndOfPipeLineTestMiddleware.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Owin\LogRequestAndResponseMiddlewareTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Owin\OwinContainerWrapperTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\LoggingServiceContextTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Swagger\ODataParametersDefinitionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Swagger\SchemaExampleTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Swagger\SwaggerConfigTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestCategories.cs" />
+  </ItemGroup>
+</Project>
