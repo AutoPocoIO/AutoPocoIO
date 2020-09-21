@@ -26,12 +26,18 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.AspNet.test", ".
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO_2X.AspNet.test", "..\tests\2X tests\AutoPocoIO_2X.AspNet.test\AutoPocoIO_2X.AspNet.test.csproj", "{BAE0213E-113B-4D95-9CC6-1AE2C681CA2E}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.AspNetCore.test", "..\tests\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.test.shproj", "{308C60F3-748F-405D-A104-12FD7730D788}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO_2X.AspNetCore.test", "..\tests\2X tests\AutoPocoIO_2X.AspNetCore.test\AutoPocoIO_2X.AspNetCore.test.csproj", "{A4F7A443-D398-45A4-BC60-85AF8BD19686}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\tests\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.test.projitems*{308c60f3-748f-405d-a104-12fd7730d788}*SharedItemsImports = 13
 		..\src\AutoPocoIO.Shared\AutoPocoIO.Shared.projitems*{37867a0f-0051-427b-ad11-406198b5a370}*SharedItemsImports = 13
 		..\src\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems*{38f8d4ff-ff0f-48ad-8cb1-1618ef4d1de9}*SharedItemsImports = 13
 		..\tests\AutoPocoIO.Shared.test\AutoPocoIO.Shared.test.projitems*{59fe5b9e-fd1f-42e1-b426-122c2ebcda5b}*SharedItemsImports = 13
 		..\tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.projitems*{a3f5b21a-325b-4859-9a6d-759b9a073b58}*SharedItemsImports = 13
+		..\tests\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.test.projitems*{a4f7a443-d398-45a4-bc60-85af8bd19686}*SharedItemsImports = 5
 		..\tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.projitems*{bae0213e-113b-4d95-9cc6-1ae2c681ca2e}*SharedItemsImports = 5
 		..\src\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems*{e2d69d9d-44ac-41ce-9bd8-ac886be7312e}*SharedItemsImports = 13
 		..\tests\AutoPocoIO.Shared.test\AutoPocoIO.Shared.test.projitems*{f0745271-71de-428e-8d35-92007714872a}*SharedItemsImports = 5
@@ -55,6 +61,10 @@ Global
 		{BAE0213E-113B-4D95-9CC6-1AE2C681CA2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAE0213E-113B-4D95-9CC6-1AE2C681CA2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAE0213E-113B-4D95-9CC6-1AE2C681CA2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F7A443-D398-45A4-BC60-85AF8BD19686}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F7A443-D398-45A4-BC60-85AF8BD19686}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F7A443-D398-45A4-BC60-85AF8BD19686}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F7A443-D398-45A4-BC60-85AF8BD19686}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +74,8 @@ Global
 		{F0745271-71DE-428E-8D35-92007714872A} = {A32711B5-2BDF-411D-BA02-96377A99601A}
 		{A3F5B21A-325B-4859-9A6D-759B9A073B58} = {A32711B5-2BDF-411D-BA02-96377A99601A}
 		{BAE0213E-113B-4D95-9CC6-1AE2C681CA2E} = {A32711B5-2BDF-411D-BA02-96377A99601A}
+		{308C60F3-748F-405D-A104-12FD7730D788} = {A32711B5-2BDF-411D-BA02-96377A99601A}
+		{A4F7A443-D398-45A4-BC60-85AF8BD19686} = {A32711B5-2BDF-411D-BA02-96377A99601A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {31B24E56-75B5-4A44-AD1A-AD02D0C3DCD7}

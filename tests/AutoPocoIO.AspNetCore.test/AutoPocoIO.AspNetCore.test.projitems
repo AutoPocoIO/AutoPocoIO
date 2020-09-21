@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>308c60f3-748f-405d-a104-12fd7730d788</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>AutoPocoIO.AspNetCore.test</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CustomAttributes\UseJsonTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\AppbuilderExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\RouteExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ServiceCollectionExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\DashboardMiddlewareTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\DashboardMiddlewareTests.Startup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\EndOfPipeLineTestMiddleware.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\LogRequestAndResponseMiddlewareTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PrivateType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\LoggingServiceContextTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Swagger\SwaggerConfigTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestCategories.cs" />
+  </ItemGroup>
+</Project>

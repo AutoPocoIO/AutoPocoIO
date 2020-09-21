@@ -8,11 +8,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.2;netcoreapp3.1;</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.2;</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
-    <AssemblyOriginatorKeyFile>..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
+    <AssemblyName>AutoPocoIO.AspNetCore.test</AssemblyName>
   </PropertyGroup>
 
   <!--<PropertyGroup>
@@ -28,28 +29,32 @@
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
     <PackageReference Include="Moq" Version="4.13.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.*" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.*" />
+
+    <ProjectReference Include="..\..\..\src\AutoPocoIO_2X\AutoPocoIO_2X.csproj" />
+    
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\AutoPocoIO\AutoPocoIO.csproj" />
+  <Import Project="..\..\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.test.projitems" Label="Shared" />
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
+   
   </ItemGroup>
+  <!--<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.*" />
+  </ItemGroup>-->
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
     <DefineConstants>NETCORE2_2</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">
+
+  
+  <!--<PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">
     <DefineConstants>NETCORE3_1</DefineConstants>
-  </PropertyGroup>
+  </PropertyGroup>-->
 
 
 </Project>

@@ -1,5 +1,4 @@
 ﻿
-#if NETCORE3_1
 using AutoPocoIO.CustomAttributes;
 using AutoPocoIO.SwaggerAddons;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -16,7 +15,7 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
 {
     [TestClass]
     [TestCategory(TestCategories.Unit)]
-    public class ODataParametersDefinitionTests3_1
+    public class ODataParametersDefinitionTests
     {
         readonly ODataParametersSwaggerDefinition swaggerDef = new ODataParametersSwaggerDefinition();
         OpenApiOperation op = new OpenApiOperation { Parameters = null };
@@ -159,4 +158,3 @@ namespace AutoPocoIO.AspNetCore.test.Swagger
         }
     }
 }
-#endif

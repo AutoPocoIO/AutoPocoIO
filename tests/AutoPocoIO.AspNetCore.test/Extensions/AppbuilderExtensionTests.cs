@@ -8,16 +8,12 @@ using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-
-#if NETCORE2_2
-using Microsoft.AspNetCore.Builder.Internal;
-#endif
-
 
 namespace AutoPocoIO.AspNetCore.test.Extensions
 {
@@ -25,20 +21,23 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
     [TestCategory(TestCategories.Unit)]
     public class AppbuilderExtensionTests
     {
-        private IApplicationBuilder builder;
         private DbContextOptions<AppDbContext> appDbOptions;
+        private IWebHostBuilder hostBuilder;
 
-        private static IServiceCollection startupServices;
+        private static Action<IApplicationBuilder> builder;
+        private static Action<IServiceCollection> startupServices;
+        
         private class TestStartup
         {
             public void ConfigureServices(IServiceCollection services)
             {
-                startupServices = services;
+                startupServices(services);
             }
 #pragma warning disable IDE0060 // Remove unused parameter
             public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 #pragma warning restore IDE0060 // Remove unused parameter
             {
+                builder(app);
             }
         }
 
@@ -52,22 +51,25 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
             var db = new AppDbContext(appDbOptions);
 
             //Configure with default .net core services
-            startupServices = new ServiceCollection();
-            WebHost.CreateDefaultBuilder(new string[0]).UseStartup<TestStartup>().Build();
+            hostBuilder = WebHost.CreateDefaultBuilder(new string[0]).UseStartup<TestStartup>();
 
-            var serviceCollection = startupServices;
-            serviceCollection.AddSingleton(db);
-            serviceCollection.AddOData();
-            serviceCollection.AddMvcCore();
-            serviceCollection.AddSingleton(Mock.Of<IAppDatabaseSetupService>());
+            startupServices = c =>
+            {
+                c.AddSingleton(db);
+                c.AddOData();
+                c.AddMvcCore();
+                c.AddSingleton(Mock.Of<IAppDatabaseSetupService>());
+            };
 
-            builder = new ApplicationBuilder(serviceCollection.BuildServiceProvider());
+          //  builder = new ApplicationBuilder(serviceCollection.BuildServiceProvider());
         }
 
         [TestMethod]
         public void UseDashboardSetsPathToAutoPoco()
         {
-            builder.UseAutoPoco();
+            builder = c => c.UseAutoPoco();
+            _ = new TestServer(hostBuilder);
+
             Assert.AreEqual("autopoco", AutoPocoConfiguration.DashboardPathPrefix);
         }
 
@@ -79,7 +81,8 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
             {
                 DashboardPath = "/dashPath123"
             };
-            builder.UseAutoPoco(options);
+            builder = c => c.UseAutoPoco(options);
+            _ = new TestServer(hostBuilder);
             Assert.AreEqual("dashPath123", AutoPocoConfiguration.DashboardPathPrefix);
         }
 
@@ -92,7 +95,8 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
             {
                 DashboardPath = "a"
             };
-            builder.UseAutoPoco(options);
+            builder = c => c.UseAutoPoco(options);
+            _ = new TestServer(hostBuilder);
         }
 
         [TestMethod]
@@ -103,25 +107,29 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
             {
                 DashboardPath = "dash"
             };
-            builder.UseAutoPoco(options);
+            builder = c => c.UseAutoPoco(options);
+            _ = new TestServer(hostBuilder);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void UseDashboardChecksForPath()
         {
-            builder.UseAutoPoco(null);
+            builder = c => c.UseAutoPoco(null);
+            _ = new TestServer(hostBuilder);
         }
 
         [TestMethod]
         public void UseAutoPocoSetsUpOdata()
         {
-            builder.UseAutoPoco();
+            IApplicationBuilder appBuilder = null;
+            builder = c => appBuilder = c.UseAutoPoco();
+            _ = new TestServer(hostBuilder);
 
-            Assert.IsNotNull(builder.ApplicationServices.GetService<ODataOptions>());
-            Assert.IsNotNull(builder.ApplicationServices.GetService<IPerRouteContainer>());
+            Assert.IsNotNull(appBuilder.ApplicationServices.GetService<ODataOptions>());
+            Assert.IsNotNull(appBuilder.ApplicationServices.GetService<IPerRouteContainer>());
 
-            DefaultQuerySettings odataSettings = builder.ApplicationServices.GetService<DefaultQuerySettings>();
+            DefaultQuerySettings odataSettings = appBuilder.ApplicationServices.GetService<DefaultQuerySettings>();
 
             Assert.IsTrue(odataSettings.EnableCount);
             Assert.IsTrue(odataSettings.EnableOrderBy);

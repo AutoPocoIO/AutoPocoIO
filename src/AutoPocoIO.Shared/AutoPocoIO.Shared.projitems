@@ -122,6 +122,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Factories\Interfaces\IConnectionStringFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Factories\Interfaces\IResourceFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Factories\ResourceFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GlobalSuppressions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Middleware\Dispatchers\CommandDispatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Middleware\Dispatchers\FormDispatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Middleware\Dispatchers\RazorPageDispatcher.cs" />

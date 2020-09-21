@@ -75,7 +75,7 @@
     <DefineConstants>NETCORE;EF31</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
-    <DefineConstants>NETFULL;EF31`1</DefineConstants>
+    <DefineConstants>NETFULL;EF31</DefineConstants>
   </PropertyGroup>
 
   <Import Project="..\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'net461'" />

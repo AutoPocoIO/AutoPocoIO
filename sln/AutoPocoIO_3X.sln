@@ -26,8 +26,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPocoIO_3X.AspNet.test",
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.AspNet.test", "..\tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.shproj", "{A3F5B21A-325B-4859-9A6D-759B9A073B58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPocoIO_3X.AspNetCore.test", "..\tests\3X tests\AutoPocoIO_3X.AspNetCore.test\AutoPocoIO_3X.AspNetCore.test.csproj", "{1F591296-E23E-4D99-8AEB-6927E7AB18AC}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.AspNetCore.test", "..\tests\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.test.shproj", "{308C60F3-748F-405D-A104-12FD7730D788}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\tests\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.test.projitems*{1f591296-e23e-4d99-8aeb-6927e7ab18ac}*SharedItemsImports = 5
+		..\tests\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.test.projitems*{308c60f3-748f-405d-a104-12fd7730d788}*SharedItemsImports = 13
 		..\src\AutoPocoIO.Shared\AutoPocoIO.Shared.projitems*{37867a0f-0051-427b-ad11-406198b5a370}*SharedItemsImports = 13
 		..\src\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems*{38f8d4ff-ff0f-48ad-8cb1-1618ef4d1de9}*SharedItemsImports = 13
 		..\tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.projitems*{4aec7234-b719-414d-8466-7d005fbc6faf}*SharedItemsImports = 5
@@ -55,6 +61,10 @@ Global
 		{4AEC7234-B719-414D-8466-7D005FBC6FAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AEC7234-B719-414D-8466-7D005FBC6FAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AEC7234-B719-414D-8466-7D005FBC6FAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F591296-E23E-4D99-8AEB-6927E7AB18AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F591296-E23E-4D99-8AEB-6927E7AB18AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F591296-E23E-4D99-8AEB-6927E7AB18AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F591296-E23E-4D99-8AEB-6927E7AB18AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +74,8 @@ Global
 		{CB5813AB-59EE-42B9-B5EA-3C2195A5D57C} = {04B8C937-426B-435F-A8F1-6C40BCF63756}
 		{4AEC7234-B719-414D-8466-7D005FBC6FAF} = {04B8C937-426B-435F-A8F1-6C40BCF63756}
 		{A3F5B21A-325B-4859-9A6D-759B9A073B58} = {04B8C937-426B-435F-A8F1-6C40BCF63756}
+		{1F591296-E23E-4D99-8AEB-6927E7AB18AC} = {04B8C937-426B-435F-A8F1-6C40BCF63756}
+		{308C60F3-748F-405D-A104-12FD7730D788} = {04B8C937-426B-435F-A8F1-6C40BCF63756}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53447C7B-D1D4-4496-AE73-5901503A7214}
