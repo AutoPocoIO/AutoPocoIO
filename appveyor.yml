@@ -7,11 +7,11 @@ environment:
    matrix:
      - VERSION: 2.2.0
        PROJECT_SUFFIX: _2X
-       TEST_FOLDER: '2X tests'
+       TEST_FOLDER: 2X
        CORE_VERSION: netcoreapp2.2
      - VERSION: 3.1.0
        PROJECT_SUFFIX: _3X
-       TEST_FOLDER: '3X tests'
+       TEST_FOLDER: 3X
        CORE_VERSION: netcoreapp3.1
    OPENCOVER_PREFIX: 'C:\Users\appveyor\.nuget\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe -register -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test'
    OPENCOVER_SUFFIX: ' --no-build -c %CONFIG%" -output:".\coverage.xml" -returntargetcode:1000 -mergeoutput -oldStyle -filter:"+[AutoPocoIO*]* -[*.test*]*" -excludebyattribute:"*.ExcludeFromCodeCoverageAttribute" -excludebyfile:"*.cshtml.cs;*cshtml;*.Designer.cs"; $env:TEST_PASS = $?; if($env:Test_PASS -eq "False") {$host.SetShouldExit(1)}'
@@ -53,10 +53,10 @@ build_script:
   - cmd: dotnet pack src/AutoPocoIO%PROJECT_SUFFIX%/AutoPocoIO%PROJECT_SUFFIX%.csproj -p:PackageVersion="%VERSION%-beta.%APPVEYOR_BUILD_NUMBER%" -c %CONFIG%
 test_script:
  # run the unit tests
-  - ps: iex "$env:OPENCOVER_PREFIX  tests\2X\AutoPocoIO$env:PROJECT_SUFFIX.test\AutoPocoIO$env:PROJECT_SUFFIX.test.csproj" --framework net461 $env:OPENCOVER_SUFFIX" 
-  - ps: iex "$env:OPENCOVER_PREFIX 'tests\2X\AutoPocoIO$env:PROJECT_SUFFIX.AspNet.test\AutoPocoIO$env:PROJECT_SUFFIX.AspNet.test.csproj' --framework net461 $env:OPENCOVER_SUFFIX"
-  - ps: iex "$env:OPENCOVER_PREFIX 'tests\2X\AutoPocoIO$env:PROJECT_SUFFIX.test\AutoPocoIO$env:PROJECT_SUFFIX.test.csproj' --framework $env:CORE_VERSION $env:OPENCOVER_SUFFIX"
-  - ps: iex "$env:OPENCOVER_PREFIX 'tests\2X\AutoPocoIO$env:PROJECT_SUFFIX.AspNetCore.test\AutoPocoIO$env:PROJECT_SUFFIX.AspNetCore.test.csproj' --framework $env:CORE_VERSION $env:OPENCOVER_SUFFIX"
+  - ps: iex "$env:OPENCOVER_PREFIX tests\$env:TEST_FOLDER\AutoPocoIO$env:PROJECT_SUFFIX.test\AutoPocoIO$env:PROJECT_SUFFIX.test.csproj --framework net461 $env:OPENCOVER_SUFFIX" 
+  - ps: iex "$env:OPENCOVER_PREFIX tests\$env:TEST_FOLDER\AutoPocoIO$env:PROJECT_SUFFIX.AspNet.test\AutoPocoIO$env:PROJECT_SUFFIX.AspNet.test.csproj --framework net461 $env:OPENCOVER_SUFFIX"
+  - ps: iex "$env:OPENCOVER_PREFIX tests\$env:TEST_FOLDER\AutoPocoIO$env:PROJECT_SUFFIX.test\AutoPocoIO$env:PROJECT_SUFFIX.test.csproj --framework $env:CORE_VERSION $env:OPENCOVER_SUFFIX"
+  - ps: iex "$env:OPENCOVER_PREFIX tests\$env:TEST_FOLDER\AutoPocoIO$env:PROJECT_SUFFIX.AspNetCore.test\AutoPocoIO$env:PROJECT_SUFFIX.AspNetCore.test.csproj --framework $env:CORE_VERSION $env:OPENCOVER_SUFFIX"
   
 artifacts:
   - path: '**\bin\**\*.nupkg' # find all NuGet packages recursively
