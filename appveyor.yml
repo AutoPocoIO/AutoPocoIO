@@ -7,11 +7,11 @@ environment:
    matrix:
      - VERSION: 2.2.0
        PROJECT_SUFFIX: _2X
-       TEST_FOLDER: 2X tests
+       TEST_FOLDER: '2X tests'
        CORE_VERSION: netcoreapp2.2
      - VERSION: 3.1.0
        PROJECT_SUFFIX: _3X
-       TEST_FOLDER: 3X tests
+       TEST_FOLDER: '3X tests'
        CORE_VERSION: netcoreapp3.1
    OPENCOVER_PREFIX: 'C:\Users\appveyor\.nuget\packages\OpenCover\4.7.922\tools\OpenCover.Console.exe -register -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test'
    OPENCOVER_SUFFIX: ' --no-build -c %CONFIG%" -output:".\coverage.xml" -returntargetcode:1000 -mergeoutput -oldStyle -filter:"+[AutoPocoIO*]* -[*.test*]*" -excludebyattribute:"*.ExcludeFromCodeCoverageAttribute" -excludebyfile:"*.cshtml.cs;*cshtml;*.Designer.cs"; $env:TEST_PASS = $?; if($env:Test_PASS -eq "False") {$host.SetShouldExit(1)}'
