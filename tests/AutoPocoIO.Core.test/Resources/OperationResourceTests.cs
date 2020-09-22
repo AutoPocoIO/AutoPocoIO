@@ -4,6 +4,7 @@ using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Runtime;
 using AutoPocoIO.DynamicSchema.Util;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
@@ -60,7 +61,7 @@ namespace AutoPocoIO.test.Resources
 
             defaultServices = new ServiceCollection();
             defaultServices.AddSingleton(config);
-            defaultServices.AddSingleton(new AppDbContext(appDbOptions));
+            defaultServices.AddSingleton(new AppDbContext(appDbOptions, new ContextEntityConfiguration()));
             defaultServices.AddSingleton(appDbOptions);
             defaultServices.AddSingleton(Mock.Of<IDbSchemaBuilder>());
             defaultServices.AddSingleton(schemaInitializer.Object);
@@ -145,7 +146,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void GetResourceRecordsWithExpandUserJoinsPK()
         {
-            using (var db = new AppDbContext(appDbOptions))
+            using (var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
             {
                 db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
@@ -204,7 +205,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void GetResourceRecordsWithExpandUserJoinsPKCompoundKey()
         {
-            using (var db = new AppDbContext(appDbOptions))
+            using (var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
             {
                 db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
@@ -263,7 +264,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void GetResourceRecordsWithExpandUserJoinsNonValueTypePK()
         {
-            using (var db = new AppDbContext(appDbOptions))
+            using (var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
             {
                 db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
@@ -322,7 +323,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void GetResourceRecordsWithExpandUserJoinsPKShowNullPropertyIfNotInExpand()
         {
-            using (var db = new AppDbContext(appDbOptions))
+            using (var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
             {
                 db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
@@ -381,7 +382,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void GetResourceRecordsWithExpandUserJoinsFK()
         {
-            using (var db = new AppDbContext(appDbOptions))
+            using (var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
             {
                 db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
@@ -440,7 +441,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void GetResourceRecordsWithExpandUserJoinsFKShowNullPropertyIfNotInExpand()
         {
-            using (var db = new AppDbContext(appDbOptions))
+            using (var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
             {
                 db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin
@@ -520,7 +521,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void GetResourceByIdExpandUserJoin()
         {
-            using (var db = new AppDbContext(appDbOptions))
+            using (var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
             {
                 db.Connector.Add(new Connector { InitialCatalog = "db1", Schema = "sch", Id = "1" });
                 db.UserJoin.Add(new UserJoin

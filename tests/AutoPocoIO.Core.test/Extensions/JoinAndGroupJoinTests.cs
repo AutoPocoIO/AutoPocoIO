@@ -1,8 +1,10 @@
 ﻿using AutoPocoIO.Context;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Extensions;
 using AutoPocoIO.Models;
 using AutoPocoIO.test.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System.Collections.Generic;
 using System.Linq;
 namespace AutoPocoIO.test.Extensions
@@ -21,7 +23,7 @@ namespace AutoPocoIO.test.Extensions
         [TestMethod]
         public void JoinNoResults()
         {
-            var db = new AppDbContext(AppDbOptions);
+            var db = new AppDbContext(AppDbOptions, new ContextEntityConfiguration());
             var results = db.Connector.Join<dynamic>(db.UserJoin, "Id", "Id", "new(outer.Name, inner.Alias)");
             Assert.AreEqual(0, results.Count());
         }
@@ -29,7 +31,7 @@ namespace AutoPocoIO.test.Extensions
         [TestMethod]
         public void JoinWithStringValues()
         {
-            var db = new AppDbContext(AppDbOptions);
+            var db = new AppDbContext(AppDbOptions, new ContextEntityConfiguration());
             db.Connector.Add(new Connector
             {
                 Id = "1",

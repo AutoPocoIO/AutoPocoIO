@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.Context;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Extensions;
 using AutoPocoIO.Models;
 using AutoPocoIO.Services;
@@ -48,7 +49,7 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
              .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
              .Options;
 
-            var db = new AppDbContext(appDbOptions);
+            var db = new AppDbContext(appDbOptions, new VersionedContextEntityConfiguration());
 
             //Configure with default .net core services
             hostBuilder = WebHost.CreateDefaultBuilder(new string[0]).UseStartup<TestStartup>();

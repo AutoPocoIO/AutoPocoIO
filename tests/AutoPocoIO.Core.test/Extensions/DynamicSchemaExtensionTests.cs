@@ -2,6 +2,7 @@
 using AutoPocoIO.DynamicSchema.Db;
 using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.DynamicSchema.Models;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Resources;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +43,7 @@ namespace AutoPocoIO.test.Extensions
                .AddSingleton(config)
                .AddSingleton(schemaBuilder.Object)
                .AddSingleton(schemaInitializer.Object)
-               .AddSingleton(new AppDbContext(appDbOptions))
+               .AddSingleton(new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
                .AddTransient(c => connStringFactory.Object)
                .BuildServiceProvider();
 

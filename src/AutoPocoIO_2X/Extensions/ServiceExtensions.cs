@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.Api;
 using AutoPocoIO.Context;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Migrations;
@@ -35,7 +36,7 @@ namespace AutoPocoIO.Extensions
 
             services.AddAutoPoco();
             services.TryAddTransient<IRequestQueryStringService, RequestQueryStringService>();
-
+            services.AddTransient<IContextEntityConfiguration, VersionedContextEntityConfiguration>();
             return services;
         }
     }

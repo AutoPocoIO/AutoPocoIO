@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.Context;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Extensions;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Migrations;
@@ -60,7 +61,7 @@ namespace AutoPocoIO.test.Services
             var appOptionBuilder = new DbContextOptionsBuilder<AppDbContext>();
             appOptionBuilder.UseInMemoryDatabase(databaseName: connString);
 
-            appDb = new AppDbContext(appOptionBuilder.Options);
+            appDb = new AppDbContext(appOptionBuilder.Options, new ContextEntityConfiguration());
 
             appDb.Connector.AddRange(
                 new Connector { Id = "1", Name = "appDb" },

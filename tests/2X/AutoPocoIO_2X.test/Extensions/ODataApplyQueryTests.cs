@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.Context;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Extensions;
 using AutoPocoIO.Models;
 using AutoPocoIO.test.TestHelpers;
@@ -29,7 +30,7 @@ namespace AutoPocoIO.test.Extensions
         public void ThrowExceptionIfRequestingOverLimit()
         {
             SetQueryString(("$top", "6"));
-            var db = new AppDbContext(AppDbOptions);
+            var db = new AppDbContext(AppDbOptions, new VersionedContextEntityConfiguration());
             db.Connector.ApplyQuery(2, queryString);
             Assert.Fail("Apply Query should have failed");
         }
@@ -38,7 +39,7 @@ namespace AutoPocoIO.test.Extensions
         public void TakeTopIfUnderLimit()
         {
             SetQueryString(("$top", "1"));
-            var db = new AppDbContext(AppDbOptions);
+            var db = new AppDbContext(AppDbOptions, new VersionedContextEntityConfiguration());
             db.Connector.AddRange(new Connector(), new Connector());
             db.SaveChanges();
 
@@ -50,7 +51,7 @@ namespace AutoPocoIO.test.Extensions
         public void SetTopToLimitIfNotInQueryString()
         {
             SetQueryString();
-            var db = new AppDbContext(AppDbOptions);
+            var db = new AppDbContext(AppDbOptions, new VersionedContextEntityConfiguration());
             db.Connector.AddRange(new Connector(), new Connector(), new Connector());
             db.SaveChanges();
 
@@ -62,7 +63,7 @@ namespace AutoPocoIO.test.Extensions
         public void AppenedTopAndKeepOtherParams()
         {
             SetQueryString(("abc", "123"));
-            var db = new AppDbContext(AppDbOptions);
+            var db = new AppDbContext(AppDbOptions, new VersionedContextEntityConfiguration());
             db.Connector.AddRange(new Connector(), new Connector(), new Connector());
             db.SaveChanges();
 
@@ -75,7 +76,7 @@ namespace AutoPocoIO.test.Extensions
         public void OrderBy()
         {
             SetQueryString(("$orderby", "name"));
-            var db = new AppDbContext(AppDbOptions);
+            var db = new AppDbContext(AppDbOptions, new VersionedContextEntityConfiguration());
             db.Connector.AddRange(
                 new Connector { Name = "c" },
                 new Connector { Name = "a" },
@@ -91,7 +92,7 @@ namespace AutoPocoIO.test.Extensions
         public void OrderByWithTop2()
         {
             SetQueryString(("$orderby", "name"), ("$top", "2"));
-            var db = new AppDbContext(AppDbOptions);
+            var db = new AppDbContext(AppDbOptions, new VersionedContextEntityConfiguration());
             db.Connector.AddRange(
                 new Connector { Name = "c" },
                 new Connector { Name = "a" },
@@ -107,7 +108,7 @@ namespace AutoPocoIO.test.Extensions
         public void GetCount()
         {
             SetQueryString(("$count", "true"));
-            var db = new AppDbContext(AppDbOptions);
+            var db = new AppDbContext(AppDbOptions, new VersionedContextEntityConfiguration());
             db.Connector.AddRange(
                 new Connector { Name = "c" },
                 new Connector { Name = "a" },
@@ -123,7 +124,7 @@ namespace AutoPocoIO.test.Extensions
         public void GetCountIgnoreLimit()
         {
             SetQueryString(("$count", "true"));
-            var db = new AppDbContext(AppDbOptions);
+            var db = new AppDbContext(AppDbOptions, new VersionedContextEntityConfiguration());
             db.Connector.AddRange(
                 new Connector { Name = "c" },
                 new Connector { Name = "a" },
@@ -139,7 +140,7 @@ namespace AutoPocoIO.test.Extensions
         public void GetCountWithTop()
         {
             SetQueryString(("$count", "true"), ("$top", "2"));
-            var db = new AppDbContext(AppDbOptions);
+            var db = new AppDbContext(AppDbOptions, new VersionedContextEntityConfiguration());
             db.Connector.AddRange(
                 new Connector { Name = "c" },
                 new Connector { Name = "a" },
@@ -155,7 +156,7 @@ namespace AutoPocoIO.test.Extensions
         public void GetCountWithFilter()
         {
             SetQueryString(("$count", "true"), ("$filter", "name eq 'a'"));
-            var db = new AppDbContext(AppDbOptions);
+            var db = new AppDbContext(AppDbOptions, new VersionedContextEntityConfiguration());
             db.Connector.AddRange(
                 new Connector { Name = "c" },
                 new Connector { Name = "a" },

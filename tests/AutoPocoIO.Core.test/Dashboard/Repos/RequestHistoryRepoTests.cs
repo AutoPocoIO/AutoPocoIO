@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.Context;
 using AutoPocoIO.Dashboard.Repos;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Models;
 using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             var timeProvider = new Mock<ITimeProvider>();
             timeProvider.Setup(c => c.UtcOffset).Returns(TimeSpan.FromHours(-4));
 
-            var db = new LogDbContext(dbOptions);
+            var db = new LogDbContext(dbOptions, new ContextEntityConfiguration());
             repo = new RequestHistoryRepo(db, timeProvider.Object);
 
             guid = Guid.NewGuid();
@@ -38,7 +39,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void GetRecentRequests()
         {
-            using (var db1 = new LogDbContext(dbOptions))
+            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, RequestGuid = guid, DateTimeUtc = today, RequestType = "GET" },
@@ -62,7 +63,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void GetNullDate()
         {
-            using (var db1 = new LogDbContext(dbOptions))
+            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, RequestGuid = guid, RequestType = "GET" }
@@ -79,7 +80,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void TakeOnlyRecordLimit()
         {
-            using (var db1 = new LogDbContext(dbOptions))
+            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, RequestGuid = guid, RequestType = "GET" },

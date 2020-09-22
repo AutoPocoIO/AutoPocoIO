@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.Api;
 using AutoPocoIO.Context;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Extensions;
 using AutoPocoIO.Factories;
 using AutoPocoIO.LoggingMiddleware;
@@ -7,6 +8,7 @@ using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System.Linq;
 
 namespace AutoPocoIO.test.Extensions
@@ -128,11 +130,12 @@ namespace AutoPocoIO.test.Extensions
         {
 
             var services = new ServiceCollection();
+            services.AddSingleton(Mock.Of<IContextEntityConfiguration>());
             services.AddScoped<LogDbContext>();
             services.AddScoped<AppDbContext>();
             services.ConfigureApplicationDatabase(c => c.UseInMemoryDatabase(databaseName: "db123"));
 
-            Assert.AreEqual(4, services.Count());
+            Assert.AreEqual(5, services.Count());
 
             //Assert singleton lifetime
             Assert.AreEqual(ServiceLifetime.Singleton, services.First(c => c.ServiceType == typeof(DbContextOptions<LogDbContext>)).Lifetime);

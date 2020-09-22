@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.Context;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Middleware;
 using AutoPocoIO.Models;
 using AutoPocoIO.Services;
@@ -34,7 +35,7 @@ namespace AutoPocoIO.test.Dashboard.Pages
               .UseInMemoryDatabase(databaseName: "db" + Guid.NewGuid().ToString())
               .Options;
 
-            var db = new AppDbContext(AppDbOptions);
+            var db = new AppDbContext(AppDbOptions, new ContextEntityConfiguration());
 
             var timeProvider = new Mock<ITimeProvider>();
             timeProvider.Setup(c => c.UtcNow).Returns(new DateTime(2020, 1, 1));

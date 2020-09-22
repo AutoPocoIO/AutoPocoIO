@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.Context;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,8 +30,8 @@ namespace AutoPocoIO.test.TestHelpers
                .Options;
 
             //Set up DI
-            var logDb = new LogDbContext(LogDbOptions);
-            var appDb = new AppDbContext(AppDbOptions);
+            var logDb = new LogDbContext(LogDbOptions, new VersionedContextEntityConfiguration());
+            var appDb = new AppDbContext(AppDbOptions, new VersionedContextEntityConfiguration());
 
             TimeProvider = new Mock<ITimeProvider>();
 

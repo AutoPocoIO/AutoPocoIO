@@ -1,6 +1,7 @@
 ﻿using AutoPocoIO.Context;
 using AutoPocoIO.Dashboard.Repos;
 using AutoPocoIO.Dashboard.ViewModels;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Resources;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
               .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
               .Options;
 
-            db = new AppDbContext(appDbOptions);
+            db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
             repo = new ConnectorRepo(db, Mock.Of<IConnectionStringFactory>(), new IOperationResource[] { });
             errors = new Dictionary<string, string>();
         }

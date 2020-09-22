@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.Context;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Models;
 using AutoPocoIO.Services;
@@ -37,7 +38,7 @@ namespace AutoPocoIO.test.Api
              .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
              .Options;
 
-            db = new AppDbContext(appDbOptions);
+            db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
 
             var iqueryableMock = new Mock<IQueryable<object>>();
             iqueryableMock.Setup(c => c.ElementType).Returns(typeof(IQueryableType));

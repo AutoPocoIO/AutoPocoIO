@@ -1,9 +1,11 @@
 ﻿using AutoPocoIO.Context;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.Models;
 using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 
 namespace AutoPocoIO.test.Services
@@ -25,7 +27,7 @@ namespace AutoPocoIO.test.Services
         [TestMethod]
         public void FindConnector()
         {
-            var db = new AppDbContext(appDbOptions);
+            var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
             db.Connector.Add(new Connector
             {
                 Id = "1",
@@ -48,7 +50,7 @@ namespace AutoPocoIO.test.Services
         public void ConnectorNotFound()
         {
 
-            var db = new AppDbContext(appDbOptions);
+            var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
             db.Connector.Add(new Connector
             {
                 Name = "connName1"
@@ -64,7 +66,7 @@ namespace AutoPocoIO.test.Services
         public void ConnectorNotActive()
         {
 
-            var db = new AppDbContext(appDbOptions);
+            var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
             db.Connector.Add(new Connector
             {
                 Name = "connName1",
@@ -79,7 +81,7 @@ namespace AutoPocoIO.test.Services
         [TestMethod]
         public void FindConnectorById()
         {
-            var db = new AppDbContext(appDbOptions);
+            var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
             var conn1 = new Connector
             {
                 Name = "connName1",
@@ -101,7 +103,7 @@ namespace AutoPocoIO.test.Services
         [ExpectedException(typeof(ConnectorNotFoundException))]
         public void ConnectorNotFoundById()
         {
-            var db = new AppDbContext(appDbOptions);
+            var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
             db.Connector.Add(new Connector
             {
                 Id = "12",
@@ -118,7 +120,7 @@ namespace AutoPocoIO.test.Services
         [ExpectedException(typeof(ConnectorNotFoundException))]
         public void ConnectorNotFoundByIdDisabled()
         {
-            var db = new AppDbContext(appDbOptions);
+            var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
             db.Connector.Add(new Connector
             {
                 Id = "45",

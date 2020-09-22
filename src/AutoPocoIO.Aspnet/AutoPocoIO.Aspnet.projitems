@@ -35,6 +35,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ServiceActivator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ServiceInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInjection\ServiceRegistry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityConfiguration\ConnectorConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityConfiguration\VersionedContextEntityConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityConfiguration\RequestLogConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityConfiguration\ResponseLogConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityConfiguration\UserJoinConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ODataQueryExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoggingMiddleware\ContextLogPameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Owin\DashboardMiddleware.cs" />
