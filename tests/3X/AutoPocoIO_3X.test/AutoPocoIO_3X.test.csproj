@@ -33,8 +33,6 @@
   </ItemGroup>
 
 
-  <Import Project="..\..\AutoPocoIO.Shared.test\AutoPocoIO.Shared.test.projitems" Label="Shared" />
-
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
     <DefineConstants>NETFULL;EF31</DefineConstants>
   </PropertyGroup>
