@@ -142,10 +142,10 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
         [TestMethod]
         public void SetExceptionInLogger()
         {
-            ContextLogParameters logParameters = null;
-            logger.Setup(c => c.AddContextInfomation(It.IsAny<ContextLogParameters>()))
+            ContextLogParametersBase logParameters = null;
+            logger.Setup(c => c.AddContextInfomation(It.IsAny<ContextLogParametersBase>()))
 
-                    .Callback<ContextLogParameters>(c => logParameters = c);
+                    .Callback<ContextLogParametersBase>(c => logParameters = c);
             var inner = new Exception("inner");
             var outer = new Mock<Exception>("", inner);
             outer.Setup(c => c.Message).Returns("outer");
@@ -174,9 +174,9 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
         [TestMethod]
         public void SetExceptionWithOuterOnlyInLogger()
         {
-            ContextLogParameters logParameters = null;
-            logger.Setup(c => c.AddContextInfomation(It.IsAny<ContextLogParameters>()))
-                    .Callback<ContextLogParameters>(c => logParameters = c);
+            ContextLogParametersBase logParameters = null;
+            logger.Setup(c => c.AddContextInfomation(It.IsAny<ContextLogParametersBase>()))
+                    .Callback<ContextLogParametersBase>(c => logParameters = c);
 
             var outer = new Mock<Exception>("");
             outer.Setup(c => c.Message).Returns("outer");
@@ -205,9 +205,9 @@ namespace AutoPocoIO.AspNetCore.test.Middleware
         [TestMethod]
         public void SetBaseCaughtExceptionShowsInResponse()
         {
-            ContextLogParameters logParameters = null;
-            logger.Setup(c => c.AddContextInfomation(It.IsAny<ContextLogParameters>()))
-                    .Callback<ContextLogParameters>(c => logParameters = c);
+            ContextLogParametersBase logParameters = null;
+            logger.Setup(c => c.AddContextInfomation(It.IsAny<ContextLogParametersBase>()))
+                    .Callback<ContextLogParametersBase>(c => logParameters = c);
 
             var exception = new Mock<BaseCaughtException>();
             exception.Setup(c => c.Message).Returns("exMessage");

@@ -152,9 +152,9 @@ namespace AutoPocoIO.AspNet.test.Owin
         [TestMethod]
         public void SetExceptionInLogger()
         {
-            ContextLogParameters logParameters = null;
-            logger.Setup(c => c.AddContextInfomation(It.IsAny<ContextLogParameters>()))
-                .Callback<ContextLogParameters>(c => logParameters = c);
+            ContextLogParametersBase logParameters = null;
+            logger.Setup(c => c.AddContextInfomation(It.IsAny<ContextLogParametersBase>()))
+                .Callback<ContextLogParametersBase>(c => logParameters = c);
 
             var inner = new Exception("inner");
             var outer = new Mock<Exception>("", inner);
@@ -180,9 +180,9 @@ namespace AutoPocoIO.AspNet.test.Owin
         [TestMethod]
         public void SetExceptionWithOuterOnlyInLogger()
         {
-            ContextLogParameters logParameters = null;
-            logger.Setup(c => c.AddContextInfomation(It.IsAny<ContextLogParameters>()))
-                .Callback<ContextLogParameters>(c => logParameters = c);
+            ContextLogParametersBase logParameters = null;
+            logger.Setup(c => c.AddContextInfomation(It.IsAny<ContextLogParametersBase>()))
+                .Callback<ContextLogParametersBase>(c => logParameters = c);
 
             var outer = new Mock<Exception>("");
             outer.Setup(c => c.Message).Returns("outer");

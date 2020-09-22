@@ -32,9 +32,6 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <Reference Include="System.Web" />
   </ItemGroup>
-
-
-  <Import Project="..\..\AutoPocoIO.Shared.test\AutoPocoIO.Shared.test.projitems" Label="Shared" />
   
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
     <DefineConstants>NETFULL;EF22</DefineConstants>

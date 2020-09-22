@@ -28,7 +28,7 @@ namespace AutoPocoIO.SwaggerAddons
 
         private static XPathDocument GetResource(Assembly assembly)
         {
-            Stream s = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.SwaggerAddons.AutoPoco.xml");
+            Stream s = assembly.GetManifestResourceStream($"AutoPocoIO.SwaggerAddons.AutoPoco.xml");
             using (XmlReader xr = XmlReader.Create(s, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Prohibit }))
             {
                 XPathDocument xdoc = new XPathDocument(xr);
@@ -40,7 +40,7 @@ namespace AutoPocoIO.SwaggerAddons
         {
             get
             {
-                Assembly thisAssembly = typeof(SwaggerConfig).Assembly;
+                Assembly thisAssembly = typeof(SwaggerExampleType).Assembly;
                 return c =>
                 {
                     c.RootUrl(req => req.RequestUri.GetLeftPart(System.UriPartial.Authority)

@@ -30,14 +30,15 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
         public void GetStatusCode200()
         {
             response.Setup(c => c.StatusCode).Returns(200);
-            Assert.AreEqual("200 : OK", logParameters.DescriptionFromStatusCode(""));
+            Assert.AreEqual("200 : OK", logParameters.DescriptionFromStatusCode);
         }
 
         [TestMethod]
         public void GetStatusCodeCustomCode()
         {
+            logParameters.StatusCode = "OtherPhrase";
             response.Setup(c => c.StatusCode).Returns(401);
-            Assert.AreEqual("401 : OtherPhrase", logParameters.DescriptionFromStatusCode("OtherPhrase"));
+            Assert.AreEqual("401 : OtherPhrase", logParameters.DescriptionFromStatusCode);
         }
     }
 }

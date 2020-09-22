@@ -1,32 +1,28 @@
 ﻿using Microsoft.Owin;
-using System.IO;
+using System.Globalization;
 
 namespace AutoPocoIO.LoggingMiddleware
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ContextLogParameters
+    public class ContextLogParameters : ContextLogParametersBase
     {
         /// <summary>
         /// 
         /// </summary>
         public IOwinContext Context { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string StatusCode { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Exception { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public MemoryStream RequestBuffer { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public MemoryStream ResponseBuffer { get; set; }
+
+        public override string RemoteIpAddress => Context.Request.RemoteIpAddress.ToString(CultureInfo.InvariantCulture);
+
+        public override string DescriptionFromStatusCode
+        {
+            get
+            {
+                var response = Context.Response;
+                return $"{response.StatusCode} : {(string.IsNullOrEmpty(StatusCode) ? response.ReasonPhrase : StatusCode)}";
+            }
+        }
+
     }
 }

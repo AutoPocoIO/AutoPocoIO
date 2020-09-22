@@ -48,12 +48,12 @@
 
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[2.2.0, 2.3.0)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.*" />
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.16" />
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
+
+    <ProjectReference Include="..\AutoPocoIO.Core\AutoPocoIO.Core.csproj" />
 
   </ItemGroup>
   
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'" >
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="4.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters " Version="4.5.5" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.1.0" />
@@ -78,6 +78,5 @@
 
   <Import Project="..\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'net461'" />
   <Import Project="..\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'netcoreapp2.2'" />
-  <Import Project="..\AutoPocoIO.Shared\AutoPocoIO.Shared.projitems" Label="Shared" />
   
 </Project>

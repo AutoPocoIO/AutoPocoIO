@@ -25,16 +25,5 @@ namespace AutoPocoIO.Extensions
                 return request.Query.ToDictionary(kv => kv.Key, kv => kv.Value.ToString(),
                                StringComparer.OrdinalIgnoreCase);
         }
-
-        internal static string DescriptionFromStatusCode(this ContextLogParameters logParameters, string statusCode)
-        {
-            var response = logParameters.Context.Response;
-            return $"{response.StatusCode} : {(string.IsNullOrEmpty(statusCode) ? ReasonPhrases.GetReasonPhrase(response.StatusCode) : statusCode)}";
-        }
-
-        internal static string GetIPFromLogParameters(this ContextLogParameters logParameters)
-        {
-            return logParameters.Context.Connection.RemoteIpAddress.ToString();
-        }
     }
 }
