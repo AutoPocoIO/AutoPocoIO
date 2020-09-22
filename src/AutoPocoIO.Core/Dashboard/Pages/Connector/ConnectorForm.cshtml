@@ -1,0 +1,72 @@
+﻿@* Generator: Template TypeVisibility: public GeneratePrettyNames: True DisableLinePragmas: true  Namespace: AutoPocoIO.Dashboard.Pages *@
+
+@using AutoPocoIO.Middleware
+@using AutoPocoIO.Dashboard.ViewModels
+@inherits RazorPage
+
+<div class="container pt-4 mt-5">
+    <h1>Create Connector</h1>
+    <hr />
+    <form class="mt-5" method="post">
+        <input type="hidden" name="id" value="@(GetViewBagValue<ConnectorViewModel>("model").Id)" />
+        <div class="form-group">
+            <label for="resourceType">Resource Type</label>
+            <select class="form-control" name="resourceType">
+                <option></option>
+                @foreach(var type in GetViewBagValue<IEnumerable<ResouceTypeViewModel>>("resourceTypes"))
+                {
+                    <option value="@type.ProviderName" @(GetViewBagValue<ConnectorViewModel>("model").ResourceType == type.ProviderName ? "selected" : "")>@type.DisplayName.Split('.').Last()</option>
+                }
+            </select>
+            <div class="errorMessage"><span class="text-danger">@GetError("errors", nameof(ConnectorViewModel.ResourceType))</span></div>
+        </div>
+        <div class="form-group">
+            <label for="connectorName">Connector Name</label>
+            <input type="text" class="form-control" name="connectorName" aria-describedby="connectorHelp" placeholder="e.g. Adventureworks"
+                   value="@(GetViewBagValue<ConnectorViewModel>("model").Name)" />
+            <small id="connectorHelp" class="form-text text-muted">This is the name used in all calls to this schema</small>
+            <div class="errorMessage"><span class="text-danger">@GetError("errors", nameof(ConnectorViewModel.Name))</span></div>
+        </div>
+        <div class="form-group">
+            <label for="serverName">Servername</label>
+            <input type="text" class="form-control" name="serverName" placeholder="Database Server Name"
+                   value="@(GetViewBagValue<ConnectorViewModel>("model").DataSource)" />
+            <div class="errorMessage"><span class="text-danger">@GetError("errors", nameof(ConnectorViewModel.DataSource))</span></div>
+        </div>
+        <div class="form-group">
+            <label for="databaseName">Database Name</label>
+            <input type="text" class="form-control" name="databaseName"
+                   value="@(GetViewBagValue<ConnectorViewModel>("model").InitialCatalog)" />
+            <div class="errorMessage"><span class="text-danger">@GetError("errors", nameof(ConnectorViewModel.InitialCatalog))</span></div>
+        </div>
+        <div class="form-group">
+            <label for="schema">Schema</label>
+            <input type="text" class="form-control" name="schema"
+                   value="@(GetViewBagValue<ConnectorViewModel>("model").Schema)" />
+            <div class="errorMessage"><span class="text-danger">@GetError("errors", nameof(ConnectorViewModel.Schema))</span></div>
+        </div>
+        <div class="form-group">
+            <label for="userId">Database User Account Name</label>
+            <input type="text" class="form-control" name="userId"
+                   value="@(GetViewBagValue<ConnectorViewModel>("model").UserId)" />
+            <div class="errorMessage"><span class="text-danger">@GetError("errors", nameof(ConnectorViewModel.UserId))</span></div>
+        </div>
+        <div class="form-group">
+            <label for="password">Database User Account Password</label>
+            <input type="password" class="form-control" name="password"
+                   value="@(GetViewBagValue<ConnectorViewModel>("model").Password)" />
+            <div class="errorMessage"><span class="text-danger">@GetError("errors", nameof(ConnectorViewModel.Password))</span></div>
+        </div>
+        <div class="form-group">
+            <label for="recordLimit">Maximum Records Returned</label>
+            <input type="text" class="form-control" name="recordLimit"
+                   value="@(GetViewBagValue<ConnectorViewModel>("model").RecordLimit)" />
+            <div class="errorMessage"><span class="text-danger">@GetError("errors", nameof(ConnectorViewModel.RecordLimit))</span></div>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" name="isEnabled" @(GetViewBagValue<ConnectorViewModel>("model").IsActive ? "checked" : "")>
+            <label class="form-check-label" for="isEnabled">Active</label>
+        </div>
+        <button type="submit" class="btn btn-info mt-3">Submit</button>
+    </form>
+</div>

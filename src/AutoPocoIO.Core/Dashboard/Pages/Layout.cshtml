@@ -1,0 +1,74 @@
+﻿@* Generator: Template TypeVisibility: internal GeneratePrettyNames: True DisableLinePragmas: true  Namespace: AutoPocoIO.Dashboard.Pages *@
+
+@using AutoPocoIO.Middleware
+@inherits RazorPage
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    @RenderSection("css")
+    
+
+    <!--Custom CSS-->
+    <style>
+
+        .container {
+            max-width: 1400px;
+        }
+
+        a {
+            color: darkcyan;
+        }
+
+        .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+            background-color: darkcyan;
+        }
+    </style>
+
+
+    <title>@Title</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+        <a class="navbar-brand" href="@TransformUrl("/")">AutoPoco Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="@TransformUrl("/Connectors")">Connectors <span class="badge badge-pill badge-info">@ConnectorCount()</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@TransformUrl("/DataDictionary")">Data Dictionary</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@TransformUrl("/Requests")">Request History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@TransformUrl("/swagger")">Developer Console</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div>
+        @RenderBody()
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+    @RenderSection("script")
+</body>
+</html>
