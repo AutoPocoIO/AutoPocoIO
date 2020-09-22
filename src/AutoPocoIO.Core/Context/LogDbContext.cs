@@ -14,8 +14,8 @@ namespace AutoPocoIO.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new RequestLogConfiguration());
-            modelBuilder.ApplyConfiguration(new ResponseLogConfiguration());
+            //modelBuilder.ApplyConfiguration(new RequestLogConfiguration());
+            //modelBuilder.ApplyConfiguration(new ResponseLogConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

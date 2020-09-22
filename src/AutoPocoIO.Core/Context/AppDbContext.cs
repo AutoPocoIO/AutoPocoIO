@@ -16,7 +16,7 @@ namespace AutoPocoIO.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             Check.NotNull(modelBuilder, nameof(modelBuilder));
-            modelBuilder.CreateModel();
+          //  modelBuilder.CreateModel();
 
             base.OnModelCreating(modelBuilder);
 

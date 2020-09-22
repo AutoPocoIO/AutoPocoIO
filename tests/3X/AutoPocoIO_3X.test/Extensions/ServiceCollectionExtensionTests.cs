@@ -37,7 +37,7 @@ namespace AutoPocoIO.test.Extensions
 #elif NETCORE2_2
             Assert.AreEqual(97, services.Count());
 #else
-            Assert.AreEqual(142, services.Count());
+            Assert.AreEqual(141, services.Count());
 #endif
         }
 
