@@ -13,7 +13,10 @@ Or use AutoPoco to expose your database via a REST Web API. Use OData to query a
 * [AspNet Core](#aspnet-core)
 
 ### Installation
-Install the provider package corresponding to your target database(s). 
+```
+dotnet add package AutoPocoIO
+```
+Then install the provider package corresponding to your target database(s). 
 ```
 dotnet add package AutoPocoIO.MsSql
 ```
