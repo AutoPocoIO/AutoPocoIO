@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>8aaa2e58-1ea7-4a81-a8b9-9f8d55345446</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>AutoPocoIO.Core.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Api\Interfaces\ISchemaOperations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\Interfaces\IStoredProcedureOperations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\Interfaces\ITableOperations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\Interfaces\IViewOperations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\SchemaOperations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\StoredProcedureOperations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\TableOperations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\ViewOperations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\AutoPocoConstants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\ExceptionMessages.Designer.cs">
+      <DependentUpon>ExceptionMessages.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\HttpMethodTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Context\AppDbContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Context\LogDbContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomAttributes\CompoundPrimaryKeyAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomAttributes\DatabaseNameAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomAttributes\ReferencedDbObjectAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomAttributes\UseOdataInSwaggerAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\DashboardRoutes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\DashboardServiceProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Extensions\ModelExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\IRazorForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\Connector\ConnectorForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\Connector\ConnectorForm.cshtml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\Connector\ConnectorsPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\Connector\ConnectorsPage.cshtml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\DashboardPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\DashboardPage.cshtml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\DataDictionary\DataDictionaryPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\DataDictionary\DataDictionaryPage.cshtml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\DataDictionary\ObjectDetailsPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\DataDictionary\ObjectDetailsPage.cshtml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\DataDictionary\SchemaPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\DataDictionary\SchemaPage.cshtml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\Layout.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\Layout.cshtml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\RequestHistory\RequestHistoryPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\RequestHistory\RequestHistoryPage.cshtml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Repos\ConnectorRepo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Repos\DashboardRepo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Repos\DataDictionaryRepo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Repos\IConnectorRepo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Repos\IDashboardRepo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Repos\IDataDictionaryRepo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Repos\IRequestHistoryRepo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Repos\RequestHistoryRepo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\ViewModels\ConnectorViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\ViewModels\NavigationPropertyViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\ViewModels\RequestGridViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\ViewModels\ResouceTypeViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\ViewModels\SchemaViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\DbAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\DbContextBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\DbSchema.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\DbSchemaBuilderBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\Interfaces\IDbAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\Interfaces\IDbContextBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\Interfaces\IDbSchema.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\Interfaces\IDbSchemaBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\Interfaces\ISchemaInitializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\Interfaces\ISchemaQueries.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\SchemaInitializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Enums\DBOjectTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Enums\OperationType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Enums\ResourceEnums.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\Column.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\Config.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\CustomList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\DataType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\DBParameter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\PocoBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\PrimaryKeyInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\StoredProcedure.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\Table.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\View.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Runtime\DynamicClassBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Runtime\DynamicTypeBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Runtime\ReflectionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Services\Migrations\MigrationsAssembly.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Util\DbTypeMapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Util\EncryptDecrypt.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Util\IDbTypeMapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Util\Utils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityConfiguration\ConnectorConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityConfiguration\ContextEntityConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityConfiguration\IContextEntityConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityConfiguration\RequestLogConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityConfiguration\ResponseLogConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityConfiguration\UserJoinConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\BaseCaughtException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Check.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ConnectorNotFoundException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\EntityValidationException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\NoPrimaryKeyFoundException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\OpenConnectorException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\PrimaryKeyNotFoundException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\PrimaryKeyTypeMismatchException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\StoreProcedureNotFoundException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\TableNotFoundException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ViewNotFoundException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\AutoPocoConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DynamicObjectExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DynamicQueryable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DynamicSchemaExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ModelBuilderExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ResourceExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\SchemaBuilderExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ServiceCollectionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\TableExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Factories\ConnectionStringFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Factories\Interfaces\IConnectionStringFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Factories\Interfaces\IResourceFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Factories\ResourceFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GlobalSuppressions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\ContextLogParametersBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\Dispatchers\CommandDispatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\Dispatchers\FormDispatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\Dispatchers\RazorPageDispatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\Dispatchers\RazorPageDispatcher`.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\Dispatchers\RedirectDispatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\ILayoutPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\IMiddlewareContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\IMiddlewareDispatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\IMiddlewareRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\IMiddlewareResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\NonEscapedString.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\RazorPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\RouteCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\AppDb.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\AppDb.designer.cs">
+      <DependentUpon>AppDb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\AppMigrationContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\LogDb.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\LogDb.designer.cs">
+      <DependentUpon>LogDb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\LoggingMigrationContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\MigrationNames.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\Snapshots\AppDbContextModelSnapshot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\Snapshots\LogDbContextModelSnapshot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\AutoPocoOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ColumnDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Internal\Connector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Internal\LogRequestAndResponseCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Internal\RequestLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Internal\ResponseLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Internal\UserJoin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\LoggingApiContextValues.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SchemaDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\StoredProcedureDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\StoredProcedureParameterDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\TableDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\UserJoinConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\ConnectionInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\Interfaces\IConnectionStringBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\Interfaces\IOperationResource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\OperationResource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\ServiceProviderCache.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\AppAdminService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\AppDatabaseSetupService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\AutoPocoServiceOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interface\IAppAdminService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interface\IAppDatabaseSetupService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interface\ILoggingService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interface\IReplaceServices.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interface\IRequestQueryStringService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interface\ITimeProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\LoggingService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\TimeProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SwaggerAddons\SwaggerExampleType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Constants\ExceptionMessages.resx">
+      <CustomToolNamespace>AutoPocoIO.Constants</CustomToolNamespace>
+      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)SwaggerAddons\AutoPoco.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)SwaggerAddons\swagger.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Dashboard\Pages\Connector\ConnectorForm.cshtml" />
+    <None Include="$(MSBuildThisFileDirectory)Dashboard\Pages\Connector\ConnectorsPage.cshtml" />
+    <None Include="$(MSBuildThisFileDirectory)Dashboard\Pages\DashboardPage.cshtml" />
+    <None Include="$(MSBuildThisFileDirectory)Dashboard\Pages\DataDictionary\DataDictionaryPage.cshtml" />
+    <None Include="$(MSBuildThisFileDirectory)Dashboard\Pages\DataDictionary\ObjectDetailsPage.cshtml" />
+    <None Include="$(MSBuildThisFileDirectory)Dashboard\Pages\DataDictionary\SchemaPage.cshtml" />
+    <None Include="$(MSBuildThisFileDirectory)Dashboard\Pages\Layout.cshtml" />
+    <None Include="$(MSBuildThisFileDirectory)Dashboard\Pages\RequestHistory\RequestHistoryPage.cshtml" />
+  </ItemGroup>
+</Project>

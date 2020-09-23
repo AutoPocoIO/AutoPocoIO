@@ -1,11 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net461;netcoreapp2.2;netcoreapp3.1</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
-    <AssemblyOriginatorKeyFile>..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
+    <AssemblyName>AutoPocoIO.Core.test</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,12 +18,16 @@
     <PackageReference Include="Moq" Version="4.13.0" />
     <PackageReference Include="OpenCover" Version="4.7.922" />
 
-    <ProjectReference Include="..\..\src\AutoPocoIO.Core\AutoPocoIO.Core.csproj" />
+    <ProjectReference Include="..\..\..\src\AutoPocoIO_2X.Core\AutoPocoIO_2X.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461'">
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <Reference Include="System.Web" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DynamicSchema\Db\" />
   </ItemGroup>
 
 
@@ -32,5 +37,6 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">
     <DefineConstants>NETCORE;</DefineConstants>
   </PropertyGroup>
+  <Import Project="..\..\AutoPocoIO.Core.Shared.test\AutoPocoIO.Core.Shared.test.projitems" Label="Shared" />
 
 </Project>

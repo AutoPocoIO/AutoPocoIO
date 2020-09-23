@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Label="Globals">
     <SccProjectName>SAK</SccProjectName>
@@ -33,16 +33,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="SwaggerAddons\AutoPoco.xml" />
-    <None Remove="SwaggerAddons\swagger.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="SwaggerAddons\AutoPoco.xml" />
-    <EmbeddedResource Include="SwaggerAddons\swagger.css" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\..\sln\AutoPocoIcon.jpeg">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
@@ -56,34 +46,21 @@
       <IncludeAssets>runtime;build;analyzers</IncludeAssets>
     </PackageReference>
 
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[2.2.0, )" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[2.2.0, 2.3.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.*" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.16" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
 
   </ItemGroup>
 
+
+  <Import Project="..\AutoPocoIO.Core.Shared\AutoPocoIO.Core.Shared.projitems" Label="Shared" />
+
   <ItemGroup>
-    <Compile Update="Constants\ExceptionMessages.Designer.cs">
+    <Compile Update="..\AutoPocoIO.Core.Shared\Constants\ExceptionMessages.Designer.cs">
       <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ExceptionMessages.resx</DependentUpon>
     </Compile>
-    <Compile Update="Migrations\AppDb.designer.cs">
-      <DependentUpon>AppDb.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Migrations\LogDb.designer.cs">
-      <DependentUpon>LogDb.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <EmbeddedResource Update="Constants\ExceptionMessages.resx">
-      <CustomToolNamespace>AutoPocoIO.Constants</CustomToolNamespace>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 
 

@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>a1a053c9-7f60-4fea-a5f5-5ca9705de569</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>AutoPocoIO.Core.Shared.test</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Api\ApiOperationBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\SchemaDefinitionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\StoredProcOperationsNoLoggingTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\StoredProcOperationsWithLoggingTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\TableOperationsNoLoggingTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\TableOperationsWithLoggingTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\ViewOperationsNoLoggingTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Api\ViewOperationsWithLogging.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\TimeProviderTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomAttributes\DatabaseNameAttributeTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\ConnectorFormPageTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\ConnectorPageTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\DashboardPageTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\DataDictionaryTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\LayoutPageTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\PageTestBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Pages\RequestHistoryTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Repos\ConnectorRepoTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Repos\ConnectorRepoValidateTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Repos\DashboardRepoTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Repos\DataDictionaryRepoTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\Repos\RequestHistoryRepoTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\ServiceTests\ConnectorServiceTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\ServiceTests\DashboardServiceTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\ServiceTests\DataDictionaryServiceTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dashboard\ServiceTests\GeneralDashboardServiceTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\ContextBaseTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\DbAdapterTests.classes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\DbAdapterTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\DbCrudOperations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\DbSchemaTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\DbTypeMapperTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\EncryptDecryptTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\SchemaBuilderBaseStoredProcedure.classes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\SchemaBuilderBaseTests.classes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\SchemaBuilderBaseTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\SchemaInitializerTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\SchmeaBuilderBaseStoredProcedure.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Db\SchmeaBuilderDataTableBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\ConfigTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\DataTypeTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\PocoBaseTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\TableHashCodeTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Models\VariableNameTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Runtime\AssemblyCaching.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Runtime\DynamicClassBuilderTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Runtime\DynamicTypeBuilderTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Runtime\ReflectionExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Services\MigrationAssemblyTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Utils\CheckConnectorNames.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Utils\CheckTableNames.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSchema\Utils\UtilsTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\CheckTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ConnectorNotFoundExceptionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\EntityValidationExceptionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\NoPrimaryKeyFoundExceptionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\OpenConnectorExceptionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\StoreProcedureNotFoundExceptionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\TableNotFoundExceptionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ViewNotFoundExceptionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DynamicObjectExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DynamicQueryableTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DynamicSchemaExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DynamicSchemaSProcExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DynamicSchemaTableExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DynamicSchemaViewExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\JoinAndGroupJoinParameterNullTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\JoinAndGroupJoinTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ModelBuilderExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ResourceExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\SchemaBuilderExtensionsTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\TableExtensionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Factories\ConnectionStringFactoryTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Factories\ResourceFactoryTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\DispatcherTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\RazorPageTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Middleware\RouteCollectionTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\AppDbSnapShotTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\AppDbTargetModelTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\AppDbUpDownTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\LogDbSnapShotTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\LogDbTargetModelTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\LogDbUpDownTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Migrations\UserJoinTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\OperationResourceTest.classes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\OperationResourceTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\AppAdminServiceTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\AppDatabaseSetupServiceTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\LoggingServiceTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestHelpers\DbAccessUnitTestBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestHelpers\EfPolyFills.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestHelpers\PrivateType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestHelpers\SwaggerPolyFill.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestHelpers\TestCategories.cs" />
+  </ItemGroup>
+</Project>
