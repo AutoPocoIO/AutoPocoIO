@@ -48,9 +48,9 @@ build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish
   - cmd:  nuget sources add -Name github -Source https://nuget.pkg.github.com/AutoPocoIO/index.json -UserName %GIT_HUB_USER% -Password %GIT_HUB_PASS% 
   # Builder AutoPocoIO.Core
-  - cmd: nuget restore ./sln/AutoPocoIO.Core.sln -verbosity quiet 
-  - cmd: dotnet build ./sln/AutoPocoIO.Core.sln /p:IsAppVeyor=true --verbosity m -c %CONFIG%
-  - cmd: dotnet pack src/AutoPocoIO.Core/AutoPocoIO.Core.csproj -p:PackageVersion="%VERSION%-beta.%APPVEYOR_BUILD_NUMBER%" -c %CONFIG%
+  - cmd: nuget restore ./sln/AutoPocoIO%PROJECT_SUFFIX%.Core.sln -verbosity quiet 
+  - cmd: dotnet build ./sln/AutoPocoIO%PROJECT_SUFFIX%.Core.sln /p:IsAppVeyor=true --verbosity m -c %CONFIG%
+  - cmd: dotnet pack src/AutoPocoIO%PROJECT_SUFFIX%.Core/AutoPocoIO%PROJECT_SUFFIX%.Core.csproj -p:PackageVersion="%VERSION%-beta.%APPVEYOR_BUILD_NUMBER%" -c %CONFIG%
   # Builder AutoPocoIO
   - cmd: nuget restore ./sln/AutoPocoIO%PROJECT_SUFFIX%.sln -verbosity quiet 
   - cmd: dotnet build ./sln/AutoPocoIO%PROJECT_SUFFIX%.sln /p:IsAppVeyor=true --verbosity m -c %CONFIG%
@@ -58,9 +58,9 @@ build_script:
   
 test_script:
  # run the unit tests
-  - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.Core.test\AutoPocoIO.Core.test.csproj --framework net461 $env:OPENCOVER_SUFFIX" 
-  - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.Core.test\AutoPocoIO.Core.test.csproj --framework netcoreapp2.2 $env:OPENCOVER_SUFFIX" 
-  - ps: iex "$env:OPENCOVER_PREFIX tests\AutoPocoIO.Core.test\AutoPocoIO.Core.test.csproj --framework netcoreapp3.1 $env:OPENCOVER_SUFFIX" 
+  - ps: iex "$env:OPENCOVER_PREFIX tests\$env:TEST_FOLDER\AutoPocoIO$env:PROJECT_SUFFIX.Core.test\AutoPocoIO$env:PROJECT_SUFFIX.Core.test.csproj --framework net461 $env:OPENCOVER_SUFFIX" 
+  - ps: iex "$env:OPENCOVER_PREFIX tests\$env:TEST_FOLDER\AutoPocoIO$env:PROJECT_SUFFIX.Core.test\AutoPocoIO$env:PROJECT_SUFFIX.Core.test.csproj --framework netcoreapp2.2 $env:OPENCOVER_SUFFIX" 
+  - ps: iex "$env:OPENCOVER_PREFIX tests\$env:TEST_FOLDER\AutoPocoIO$env:PROJECT_SUFFIX.Core.test\AutoPocoIO$env:PROJECT_SUFFIX.Core.test.csproj --framework netcoreapp3.1 $env:OPENCOVER_SUFFIX" 
   - ps: iex "$env:OPENCOVER_PREFIX tests\$env:TEST_FOLDER\AutoPocoIO$env:PROJECT_SUFFIX.test\AutoPocoIO$env:PROJECT_SUFFIX.test.csproj --framework net461 $env:OPENCOVER_SUFFIX" 
   - ps: iex "$env:OPENCOVER_PREFIX tests\$env:TEST_FOLDER\AutoPocoIO$env:PROJECT_SUFFIX.AspNet.test\AutoPocoIO$env:PROJECT_SUFFIX.AspNet.test.csproj --framework net461 $env:OPENCOVER_SUFFIX"
   - ps: iex "$env:OPENCOVER_PREFIX tests\$env:TEST_FOLDER\AutoPocoIO$env:PROJECT_SUFFIX.test\AutoPocoIO$env:PROJECT_SUFFIX.test.csproj --framework $env:CORE_VERSION $env:OPENCOVER_SUFFIX"
