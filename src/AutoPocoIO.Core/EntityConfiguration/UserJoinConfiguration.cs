@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoPocoIO.EntityConfiguration
 {
-    internal class UserJoinConfiguration : IEntityTypeConfiguration<UserJoin>
+    internal class UserJoinEntityConfiguration : IEntityTypeConfiguration<UserJoin>
     {
         public void Configure(EntityTypeBuilder<UserJoin> builder)
         {

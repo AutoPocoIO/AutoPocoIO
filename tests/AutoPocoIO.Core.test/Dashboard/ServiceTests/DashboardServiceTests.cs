@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.Context;
 using AutoPocoIO.Dashboard;
+using AutoPocoIO.EntityConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,6 +24,7 @@ namespace AutoPocoIO.test.Dashboard.ServiceTests
             info.SetValue(dashBoardProvider, null);
 
             ServiceCollection rootCollection = new ServiceCollection();
+            rootCollection.AddSingleton<IContextEntityConfiguration>(new ContextEntityConfiguration());
             rootCollection.AddSingleton<DbContextOptions<AppDbContext>>();
             rootCollection.AddSingleton<DbContextOptions<LogDbContext>>();
 

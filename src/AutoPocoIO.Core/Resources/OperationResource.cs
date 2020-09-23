@@ -4,6 +4,7 @@ using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.DynamicSchema.Runtime;
 using AutoPocoIO.DynamicSchema.Util;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.Extensions;
 using AutoPocoIO.Factories;
@@ -70,9 +71,12 @@ namespace AutoPocoIO.Resources
         public virtual void ApplyServices(IServiceCollection services, IServiceProvider rootProvider)
         {
             var options = rootProvider.GetRequiredService<DbContextOptions<AppDbContext>>();
+            var contextConfig = rootProvider.GetService<IContextEntityConfiguration>();
 
             services.TryAddScoped<AppDbContext>();
             services.TryAddScoped(c => options);
+            if(contextConfig != null)
+                services.TryAddTransient(c => contextConfig);
 
             services.TryAddScoped<DynamicClassBuilder>();
             services.TryAddScoped<IDbAdapter, DbAdapter>();

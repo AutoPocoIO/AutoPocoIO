@@ -1,6 +1,7 @@
 ﻿using AutoPocoIO.Context;
 using AutoPocoIO.Dashboard.Pages;
 using AutoPocoIO.Dashboard.Repos;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Middleware;
 using AutoPocoIO.Resources;
@@ -64,6 +65,10 @@ namespace AutoPocoIO.Dashboard
                 var logOptions = rootProvider.GetRequiredService<DbContextOptions<LogDbContext>>();
                 services.AddScoped(c => appOptions);
                 services.AddScoped(c => logOptions);
+
+                var contextConfig = rootProvider.GetService<IContextEntityConfiguration>();
+                if (contextConfig != null)
+                    services.TryAddTransient(c => contextConfig);
 
 
                 //Connector

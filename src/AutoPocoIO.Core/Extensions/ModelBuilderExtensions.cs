@@ -9,7 +9,7 @@ namespace AutoPocoIO.Extensions
         public static void CreateModel(this ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ConnectorConfiguration());
-            modelBuilder.ApplyConfiguration(new EntityConfiguration.UserJoinConfiguration());
+            modelBuilder.ApplyConfiguration(new EntityConfiguration.UserJoinEntityConfiguration());
 
         }
 

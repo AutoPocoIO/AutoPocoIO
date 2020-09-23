@@ -9,7 +9,7 @@ namespace AutoPocoIO.EntityConfiguration
         {
             Check.NotNull(modelBuilder, nameof(modelBuilder));
             modelBuilder.ApplyConfiguration(new ConnectorConfiguration());
-            modelBuilder.ApplyConfiguration(new UserJoinConfiguration());
+            modelBuilder.ApplyConfiguration(new UserJoinEntityConfiguration());
         }
 
         public void SetupLogDbContext(ModelBuilder modelBuilder)

@@ -61,6 +61,7 @@ namespace AutoPocoIO.test.Resources
 
             defaultServices = new ServiceCollection();
             defaultServices.AddSingleton(config);
+            defaultServices.AddSingleton<IContextEntityConfiguration>(new ContextEntityConfiguration());
             defaultServices.AddSingleton(new AppDbContext(appDbOptions, new ContextEntityConfiguration()));
             defaultServices.AddSingleton(appDbOptions);
             defaultServices.AddSingleton(Mock.Of<IDbSchemaBuilder>());
@@ -1141,6 +1142,7 @@ namespace AutoPocoIO.test.Resources
             var serviceReplacer = new Mock<IReplaceServices<OperationResource>>();
 
             var rootServices = new ServiceCollection();
+            rootServices.AddSingleton(new ContextEntityConfiguration());
             rootServices.AddSingleton(serviceReplacer.Object);
             rootServices.AddSingleton(appDbOptions);
 
