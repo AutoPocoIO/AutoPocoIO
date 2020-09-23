@@ -33,8 +33,8 @@ namespace AutoPocoIO.LoggingMiddleware
         /// <returns></returns>
         public virtual async Task InvokeAsync(HttpContext context, ILoggingService loggingService)
         {
-            Check.NotNull(context, nameof(context));
-            Check.NotNull(loggingService, nameof(loggingService));
+            if (context == null) throw new ArgumentNullException(nameof(context));
+            if (loggingService == null) throw new ArgumentNullException(nameof(loggingService));
 
             string statusCode = null;
             string exception = null;

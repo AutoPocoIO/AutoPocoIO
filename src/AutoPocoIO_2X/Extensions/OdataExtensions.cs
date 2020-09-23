@@ -4,6 +4,7 @@ using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNet.OData.Routing;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -26,8 +27,8 @@ namespace AutoPocoIO.Extensions
         /// <returns></returns>
         public static IQueryable<object> ApplyQuery<T>(this IQueryable<T> query, int recordLimit, IDictionary<string, string> queryString)
         {
-            Check.NotNull(query, nameof(query));
-            Check.NotNull(queryString, nameof(queryString));
+            if (query == null) throw new ArgumentNullException(nameof(query));
+            if (queryString == null) throw new ArgumentNullException(nameof(queryString));
 
             var defaultOdataQuerySettings = new ODataQuerySettings();
             var settings = new ODataValidationSettings

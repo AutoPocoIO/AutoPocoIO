@@ -3,6 +3,7 @@ using AutoPocoIO.Exceptions;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,8 +28,8 @@ namespace AutoPocoIO.SwaggerAddons
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
 #endif
         {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(context, nameof(context));
+            if (operation == null) throw new ArgumentNullException(nameof(operation));
+            if (context == null) throw new ArgumentNullException(nameof(context));
 
             if (context.MethodInfo.GetCustomAttributes(false).Any(c => c.GetType() == typeof(UseOdataInSwaggerAttribute)))
             {

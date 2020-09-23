@@ -19,9 +19,9 @@ namespace AutoPocoIO.SwaggerAddons
         /// <param name="type">Current value to check.</param>
         public void Apply(Schema schema, SchemaRegistry schemaRegistry, Type type)
         {
-            Check.NotNull(schema, nameof(schema));
-            Check.NotNull(schemaRegistry, nameof(schemaRegistry));
-            Check.NotNull(type, nameof(type));
+            if (schema == null) throw new ArgumentNullException(nameof(schema));
+            if (schemaRegistry == null) throw new ArgumentNullException(nameof(schemaRegistry));
+            if (type == null) throw new ArgumentNullException(nameof(type));
 
             if (type == typeof(JToken))
             {

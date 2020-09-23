@@ -18,7 +18,8 @@ namespace AutoPocoIO.Extensions
         /// <returns></returns>
         public static T GetRequiredService<T>(this IDependencyResolver dependencyResolver)
         {
-            Check.NotNull(dependencyResolver, nameof(dependencyResolver));
+            if (dependencyResolver == null) throw new ArgumentNullException(nameof(dependencyResolver));
+
             var service = dependencyResolver.GetService(typeof(T));
             if (service == null)
                 throw new ArgumentNullException(typeof(T).ToString(), ExceptionMessages.ServiceNotRegistered);

@@ -1,6 +1,7 @@
 ﻿using AutoPocoIO.CustomAttributes;
 using AutoPocoIO.Exceptions;
 using Swashbuckle.Swagger;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http.Description;
@@ -22,9 +23,9 @@ namespace AutoPocoIO.SwaggerAddons
         /// <param name="apiDescription">The description of the api method.</param>
         public void Apply(Operation operation, SchemaRegistry schemaRegistry, ApiDescription apiDescription)
         {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(schemaRegistry, nameof(schemaRegistry));
-            Check.NotNull(apiDescription, nameof(apiDescription));
+            if (operation == null) throw new ArgumentNullException(nameof(operation));
+            if (schemaRegistry == null) throw new ArgumentNullException(nameof(schemaRegistry));
+            if (apiDescription == null) throw new ArgumentNullException(nameof(apiDescription));
 
             var responseType = apiDescription.ResponseType();
             if (responseType != null)

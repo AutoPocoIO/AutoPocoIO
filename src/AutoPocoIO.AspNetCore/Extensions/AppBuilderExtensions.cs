@@ -37,8 +37,8 @@ namespace AutoPocoIO.Extensions
 
         public static IApplicationBuilder UseAutoPoco(this IApplicationBuilder builder, AutoPocoOptions options)
         {
-            Check.NotNull(options, nameof(options));
-            Check.NotNull(builder, nameof(builder));
+            if (options == null) throw new ArgumentNullException(nameof(options));
+            if (builder == null) throw new ArgumentNullException(nameof(builder));
 
             if (options.DashboardPath.Length <= 1 || options.DashboardPath[0] != '/')
                 throw new ArgumentException(ExceptionMessages.MiddlewarePath, nameof(options));

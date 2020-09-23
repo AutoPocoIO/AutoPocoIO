@@ -7,6 +7,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using AutoPocoIO.Exceptions;
 using System.Runtime.InteropServices;
+using System;
 
 #if NETFULL
 using System.Web.Http;
@@ -71,7 +72,7 @@ namespace AutoPocoIO.WebApi
         [HttpGet]
         public object Get(string connectorName, string tableName, string id)
         {
-            Check.NotNull(id, nameof(id));
+            if (id == null) throw new ArgumentNullException(nameof(id));
             return _tableOps.GetById(connectorName, tableName, _loggingService, id.Split(new[] { ';' }, System.StringSplitOptions.RemoveEmptyEntries));
         }
 
@@ -115,7 +116,7 @@ namespace AutoPocoIO.WebApi
         [HttpDelete]
         public object Delete(string connectorName, string tableName, string id)
         {
-            Check.NotNull(id, nameof(id));
+            if (id == null) throw new ArgumentNullException(nameof(id));
             return _tableOps.DeleteRow(connectorName, tableName, _loggingService, id.Split(new[] { ';' }, System.StringSplitOptions.RemoveEmptyEntries));
         }
     }

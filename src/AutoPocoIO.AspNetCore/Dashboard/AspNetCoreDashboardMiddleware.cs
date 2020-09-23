@@ -37,10 +37,9 @@ namespace AutoPocoIO.Dashboard
         /// <returns></returns>
         public async Task Invoke(HttpContext httpContext, IServiceProvider provider, ILoggingService loggingService)
         {
-            Check.NotNull(httpContext, nameof(httpContext));
-            Check.NotNull(provider, nameof(provider));
-            Check.NotNull(loggingService, nameof(loggingService));
-
+            if (httpContext == null) throw new ArgumentNullException(nameof(httpContext));
+            if (provider == null) throw new ArgumentNullException(nameof(provider));
+            if (loggingService == null) throw new ArgumentNullException(nameof(loggingService));
 
             SetupServices(provider);
 
@@ -50,7 +49,7 @@ namespace AutoPocoIO.Dashboard
             string basePath = "/" + AutoPocoConfiguration.DashboardPathPrefix;
 
             if (!httpContext.Request.PathBase.ToString().Equals(basePath, StringComparison.InvariantCultureIgnoreCase))
-                routeToSearch = httpContext.Request.Path.Value.Replace(basePath, "");
+                routeToSearch = httpContext.Request.Path.Value.Replace(basePath, string.Empty, StringComparison.OrdinalIgnoreCase);
 
             var findResult = _routes.Routes.FindDispatcher(context, routeToSearch);
 

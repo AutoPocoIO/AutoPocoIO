@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace AutoPocoIO.EntityConfiguration
 {
@@ -7,14 +8,14 @@ namespace AutoPocoIO.EntityConfiguration
     {
         public void SetupAppDbContext(ModelBuilder modelBuilder)
         {
-            Check.NotNull(modelBuilder, nameof(modelBuilder));
+            if (modelBuilder == null) throw new ArgumentNullException(nameof(modelBuilder));
             modelBuilder.ApplyConfiguration(new ConnectorConfiguration());
             modelBuilder.ApplyConfiguration(new UserJoinConfiguration());
         }
 
         public void SetupLogDbContext(ModelBuilder modelBuilder)
         {
-            Check.NotNull(modelBuilder, nameof(modelBuilder));
+            if (modelBuilder == null) throw new ArgumentNullException(nameof(modelBuilder));
             modelBuilder.ApplyConfiguration(new RequestLogConfiguration());
             modelBuilder.ApplyConfiguration(new ResponseLogConfiguration());
 

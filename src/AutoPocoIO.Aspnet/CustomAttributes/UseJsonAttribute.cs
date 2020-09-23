@@ -12,7 +12,7 @@ namespace AutoPocoIO.CustomAttributes
     {
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {
-            Check.NotNull(actionExecutedContext, nameof(actionExecutedContext));
+            if (actionExecutedContext == null) throw new ArgumentNullException(nameof(actionExecutedContext));
 
             if (actionExecutedContext.Response != null)
             {

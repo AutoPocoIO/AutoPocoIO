@@ -44,7 +44,7 @@ namespace AutoPocoIO.Extensions
         /// <returns></returns>
         public static IServiceCollection RegisterControllers(this IServiceCollection services, Assembly assembly)
         {
-            Check.NotNull(assembly, nameof(assembly));
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
 
             var controllers = assembly.GetTypes()
                 .Where(c => (typeof(IController).IsAssignableFrom(c) || typeof(IHttpController).IsAssignableFrom(c)) &&

@@ -56,7 +56,8 @@ namespace AutoPocoIO.Extensions
         /// <exception cref="ArgumentException">This must have an IOC container registered</exception>
         public static IAppBuilder UseAutoPoco(this IAppBuilder builder, HttpConfiguration config)
         {
-            Check.NotNull(config, nameof(config));
+            if (config == null) throw new ArgumentNullException(nameof(config));
+
             if (config.DependencyResolver.GetType().FullName == "System.Web.Http.Dependencies.EmptyResolver")
                 throw new ArgumentException(ExceptionMessages.DependencyResolverMissing, nameof(config));
 
@@ -74,8 +75,8 @@ namespace AutoPocoIO.Extensions
 
         public static IAppBuilder UseAutoPoco(this IAppBuilder builder, HttpConfiguration config, AutoPocoOptions options)
         {
-            Check.NotNull(options, nameof(options));
-            Check.NotNull(config, nameof(config));
+            if (options == null) throw new ArgumentNullException(nameof(options));
+            if (config == null) throw new ArgumentNullException(nameof(config));
 
             if (options.DashboardPath.Length <= 1 || options.DashboardPath[0] != '/')
                 throw new ArgumentException(ExceptionMessages.MiddlewarePath, nameof(options));

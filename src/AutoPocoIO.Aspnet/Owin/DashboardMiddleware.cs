@@ -49,7 +49,7 @@ namespace AutoPocoIO.Owin
         ///<inheritdoc/>
         public async Task Invoke(IOwinContext context)
         {
-            Check.NotNull(context, nameof(context));
+            if (context == null) throw new ArgumentNullException(nameof(context));
 
             //Only try if at basepath
             if (context.Request.Path.StartsWithSegments(new PathString(_basePath)) &&
