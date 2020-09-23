@@ -34,6 +34,9 @@ namespace AutoPocoIO.test.Services
         [TestInitialize]
         public void Initialize()
         {
+            AutoPocoConfiguration.SaltVector = "";
+            AutoPocoConfiguration.SecretKey = "";
+
 
             mig = new Mock<IMigrationsAssembly>();
 
@@ -88,6 +91,13 @@ namespace AutoPocoIO.test.Services
                                                          appMigDb,
                                                          appDb,
                                                          factory.Object);
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            AutoPocoConfiguration.SaltVector = "";
+            AutoPocoConfiguration.SecretKey = "";
         }
 
         [TestMethod]
