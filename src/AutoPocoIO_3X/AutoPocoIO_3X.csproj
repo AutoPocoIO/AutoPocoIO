@@ -16,6 +16,7 @@
     <Authors>AutoPocoIO</Authors>
     <RepositoryUrl>https://github.com/AutoPocoIO/AutoPocoIO</RepositoryUrl>
     <OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
+    <Description>Auto generate POCO classes at runtime for use in .NET Framework &amp; .NET Core applications. No DbContext required; classes are created from database schema.</Description>
     <LangVersion>8.0</LangVersion>
     <AssemblyName>AutoPocoIO</AssemblyName>
     <RootNamespace>AutoPocoIO</RootNamespace>
