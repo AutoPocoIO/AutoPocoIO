@@ -26,13 +26,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO_3X.AspNetCore.te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO_3X.test", "..\tests\3X\AutoPocoIO_3X.test\AutoPocoIO_3X.test.csproj", "{8B376098-B3BB-42BD-B3B8-AF87EAFAB42B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO.Core", "..\src\AutoPocoIO.Core\AutoPocoIO.Core.csproj", "{EB8A482C-A464-417C-922D-8B78B7110CAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO_3X.Core", "..\src\AutoPocoIO_3X.Core\AutoPocoIO_3X.Core.csproj", "{73AEC646-57B9-49F7-A7A5-EBCD732D381A}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.Core.Shared", "..\src\AutoPocoIO.Core.Shared\AutoPocoIO.Core.Shared.shproj", "{8AAA2E58-1EA7-4A81-A8B9-9F8D55345446}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\tests\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.test.projitems*{308c60f3-748f-405d-a104-12fd7730d788}*SharedItemsImports = 13
 		..\src\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems*{38f8d4ff-ff0f-48ad-8cb1-1618ef4d1de9}*SharedItemsImports = 13
 		..\src\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems*{55917236-7c5b-42ac-9d5e-90d6bdf6182b}*SharedItemsImports = 5
+		..\src\AutoPocoIO.Core.Shared\AutoPocoIO.Core.Shared.projitems*{73aec646-57b9-49f7-a7a5-ebcd732d381a}*SharedItemsImports = 5
+		..\src\AutoPocoIO.Core.Shared\AutoPocoIO.Core.Shared.projitems*{8aaa2e58-1ea7-4a81-a8b9-9f8d55345446}*SharedItemsImports = 13
 		..\tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.projitems*{a3f5b21a-325b-4859-9a6d-759b9a073b58}*SharedItemsImports = 13
 		..\tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.projitems*{ca59816b-a1a6-44db-bdbf-b822edd01d34}*SharedItemsImports = 5
 		..\tests\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.test.projitems*{dd886d30-342e-4906-bdae-9cab094c1aaf}*SharedItemsImports = 5
@@ -59,10 +63,10 @@ Global
 		{8B376098-B3BB-42BD-B3B8-AF87EAFAB42B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B376098-B3BB-42BD-B3B8-AF87EAFAB42B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B376098-B3BB-42BD-B3B8-AF87EAFAB42B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB8A482C-A464-417C-922D-8B78B7110CAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB8A482C-A464-417C-922D-8B78B7110CAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB8A482C-A464-417C-922D-8B78B7110CAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB8A482C-A464-417C-922D-8B78B7110CAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73AEC646-57B9-49F7-A7A5-EBCD732D381A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73AEC646-57B9-49F7-A7A5-EBCD732D381A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73AEC646-57B9-49F7-A7A5-EBCD732D381A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73AEC646-57B9-49F7-A7A5-EBCD732D381A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

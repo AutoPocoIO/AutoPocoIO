@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Label="Globals">
     <SccProjectName>SAK</SccProjectName>
@@ -24,11 +24,12 @@
     <PackageIcon>AutoPocoIcon.jpeg</PackageIcon>
     <PackageTags>autopoco poco-generator poco</PackageTags>
     <PackageProjectUrl>http://autopoco.io/</PackageProjectUrl>
-    <FileVersion>2.2.0.0</FileVersion>
-    <AssemblyVersion>2.2.0.0</AssemblyVersion>
+    <FileVersion>3.1.0.0</FileVersion>
+    <AssemblyVersion>3.1.0.0</AssemblyVersion>
     <AssemblyOriginatorKeyFile>..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <NeutralLanguage>en-us</NeutralLanguage>
+    <LangVersion>8.0</LangVersion>
     <!--<DocumentationFile>SwaggerAddons\AutoPoco.xml</DocumentationFile>-->
   </PropertyGroup>
 
@@ -46,12 +47,11 @@
       <IncludeAssets>runtime;build;analyzers</IncludeAssets>
     </PackageReference>
 
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[2.2.0, 2.3.0)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[3.1.0, 3.2.0)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.*" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.16" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-
   </ItemGroup>
 
 

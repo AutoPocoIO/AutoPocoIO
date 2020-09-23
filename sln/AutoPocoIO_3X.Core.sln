@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPocoIO_3X.Core", "..\src\AutoPocoIO_3X.Core\AutoPocoIO_3X.Core.csproj", "{8F0EE60C-410B-4BA9-AFE0-E08A72EEFD0B}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.Core.Shared", "..\src\AutoPocoIO.Core.Shared\AutoPocoIO.Core.Shared.shproj", "{8AAA2E58-1EA7-4A81-A8B9-9F8D55345446}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", "{E205CC4E-5F5B-4516-9301-2ED703072048}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoPocoIO_3X.Core.test", "..\tests\3X\AutoPocoIO_3X.Core.test\AutoPocoIO_3X.Core.test.csproj", "{83FB55F3-BAE1-4059-B07E-EFC35D2395D9}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.Core.Shared.test", "..\tests\AutoPocoIO.Core.Shared.test\AutoPocoIO.Core.Shared.test.shproj", "{A1A053C9-7F60-4FEA-A5F5-5CA9705DE569}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\tests\AutoPocoIO.Core.Shared.test\AutoPocoIO.Core.Shared.test.projitems*{83fb55f3-bae1-4059-b07e-efc35d2395d9}*SharedItemsImports = 5
+		..\src\AutoPocoIO.Core.Shared\AutoPocoIO.Core.Shared.projitems*{8aaa2e58-1ea7-4a81-a8b9-9f8d55345446}*SharedItemsImports = 13
+		..\src\AutoPocoIO.Core.Shared\AutoPocoIO.Core.Shared.projitems*{8f0ee60c-410b-4ba9-afe0-e08a72eefd0b}*SharedItemsImports = 5
+		..\tests\AutoPocoIO.Core.Shared.test\AutoPocoIO.Core.Shared.test.projitems*{a1a053c9-7f60-4fea-a5f5-5ca9705de569}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F0EE60C-410B-4BA9-AFE0-E08A72EEFD0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F0EE60C-410B-4BA9-AFE0-E08A72EEFD0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F0EE60C-410B-4BA9-AFE0-E08A72EEFD0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F0EE60C-410B-4BA9-AFE0-E08A72EEFD0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83FB55F3-BAE1-4059-B07E-EFC35D2395D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83FB55F3-BAE1-4059-B07E-EFC35D2395D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83FB55F3-BAE1-4059-B07E-EFC35D2395D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83FB55F3-BAE1-4059-B07E-EFC35D2395D9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{83FB55F3-BAE1-4059-B07E-EFC35D2395D9} = {E205CC4E-5F5B-4516-9301-2ED703072048}
+		{A1A053C9-7F60-4FEA-A5F5-5CA9705DE569} = {E205CC4E-5F5B-4516-9301-2ED703072048}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E02B234B-1FA4-4766-89AC-2848C7780B57}
+	EndGlobalSection
+EndGlobal
