@@ -6,3 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "<Pending>", Scope = "namespaceanddescendants", Target = "AutoPocoIO.DynamicSchema.Services")]
+[assembly: SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "<Pending>", Scope = "namespaceanddescendants", Target = "AutoPocoIO.Exceptions")]

@@ -9,7 +9,7 @@ namespace AutoPocoIO.Context
 {
     public class AppDbContext : DbContext
     {
-        private IContextEntityConfiguration _config;
+        private readonly IContextEntityConfiguration _config;
 
         public AppDbContext(DbContextOptions<AppDbContext> options, IContextEntityConfiguration config) : base(options)
         {

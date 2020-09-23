@@ -22,7 +22,7 @@ namespace AutoPocoIO.test.Extensions
         [TestInitialize]
         public void Init()
         {
-            using (var db = new AppDbContext(appDbOptionsPro, new ContextEntityConfiguration()))
+            using (AppDbContext db = new AppDbContext(appDbOptionsPro, new ContextEntityConfiguration()))
             {
                 db.Connector.AddRange(new Connector
                 {

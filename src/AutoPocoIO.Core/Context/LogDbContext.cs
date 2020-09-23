@@ -7,7 +7,7 @@ namespace AutoPocoIO.Context
 
     public class LogDbContext : DbContext
     {
-        private IContextEntityConfiguration _config;
+        private readonly IContextEntityConfiguration _config;
 
         public LogDbContext(DbContextOptions<LogDbContext> options, IContextEntityConfiguration config) : base(options)
         {
@@ -17,8 +17,6 @@ namespace AutoPocoIO.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             _config.SetupLogDbContext(modelBuilder);
-            //modelBuilder.ApplyConfiguration(new RequestLogConfiguration());
-            //modelBuilder.ApplyConfiguration(new ResponseLogConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

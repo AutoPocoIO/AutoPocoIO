@@ -5,7 +5,7 @@ namespace AutoPocoIO.Exceptions
 {
     public class PrimaryKeyTypeMismatchException : BaseCaughtException
     {
-        private string _message;
+        private readonly string _message;
 
         public PrimaryKeyTypeMismatchException(PrimaryKeyInformation keyInfo, Type typeFound)
         {

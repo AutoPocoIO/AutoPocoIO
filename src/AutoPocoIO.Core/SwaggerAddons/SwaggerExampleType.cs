@@ -4,22 +4,22 @@ namespace AutoPocoIO.SwaggerAddons
 {
     public class SwaggerExampleType
     {
-        public Guid Id;
-        public string Column1;
-        public int Column2;
+        public Guid Id { get; set; }
+        public string Column1 { get; set; }
+        public int Column2 { get; set; }
     }
 
     public class SwaggerTableDefType
     {
-        public string Name;
-        public string Type;
-        public string Length;
-        public bool IsNullable;
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string Length { get; set; }
+        public bool IsNullable { get; set; }
     }
 
     public class SwaggerColumnDefType : SwaggerTableDefType
     {
-        public bool IsPK;
-        public bool IsFK;
+        public bool IsPK { get; set; }
+        public bool IsFK { get; set; }
     }
 }
