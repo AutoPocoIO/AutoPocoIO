@@ -30,8 +30,8 @@ namespace AutoPocoIO.test.TestHelpers
                .Options;
 
             //Set up DI
-            var logDb = new LogDbContext(LogDbOptions, new VersionedContextEntityConfiguration());
-            var appDb = new AppDbContext(AppDbOptions, new VersionedContextEntityConfiguration());
+            var logDb = new LogDbContext(LogDbOptions);
+            var appDb = new AppDbContext(AppDbOptions);
 
             TimeProvider = new Mock<ITimeProvider>();
 
