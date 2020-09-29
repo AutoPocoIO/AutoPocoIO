@@ -49,7 +49,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void InsertAddsConnectionToDb()
         {
-            var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
+            var db = new AppDbContext(appDbOptions);
             var repo = new ConnectorRepo(db, factory, new IOperationResource[] { });
 
             ConnectorViewModel model = new ConnectorViewModel
@@ -68,7 +68,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             string id = repo.Insert(model);
 
             Connector actual;
-            using (var db1 = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new AppDbContext(appDbOptions))
             {
                 actual = db1.Connector.First(c => c.Name == "name1");
             }
@@ -85,7 +85,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void UpdateConnectionToDb()
         {
-            using (var db1 = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new AppDbContext(appDbOptions))
             {
                 db1.Connector.Add(new Connector
                 {
@@ -96,7 +96,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
                 db1.SaveChanges();
             }
 
-            var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
+            var db = new AppDbContext(appDbOptions);
             var repo = new ConnectorRepo(db, factory, new IOperationResource[] { });
 
             ConnectorViewModel model = new ConnectorViewModel
@@ -114,7 +114,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             repo.Save(model);
 
             Connector actual;
-            using (var db1 = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new AppDbContext(appDbOptions))
             {
                 actual = db1.Connector.First(c => c.Name == "name11");
             }
@@ -131,7 +131,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void GetConnectorById()
         {
-            using (var db1 = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new AppDbContext(appDbOptions))
             {
                 db1.Connector.Add(new Connector
                 {
@@ -144,7 +144,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
                 db1.SaveChanges();
             }
 
-            var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
+            var db = new AppDbContext(appDbOptions);
             var resource = new Mock<IOperationResource>();
             resource.Setup(c => c.ResourceType).Returns("type1");
             var repo = new ConnectorRepo(db, factory, new IOperationResource[] { resource.Object });
@@ -157,7 +157,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void ListConnectorsOrdersByName()
         {
-            using (var db1 = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new AppDbContext(appDbOptions))
             {
                 db1.Connector.AddRange(new Connector
                 {
@@ -173,7 +173,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
                 db1.SaveChanges();
             }
 
-            var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
+            var db = new AppDbContext(appDbOptions);
             var repo = new ConnectorRepo(db, factory, new IOperationResource[] { });
 
             var results = repo.ListConnectors();
@@ -185,7 +185,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void DeleteConnectorRemovesFromDb()
         {
-            using (var db1 = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new AppDbContext(appDbOptions))
             {
                 db1.Connector.AddRange(new Connector
                 {
@@ -201,12 +201,12 @@ namespace AutoPocoIO.test.Dashboard.Repos
                 db1.SaveChanges();
             }
 
-            var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
+            var db = new AppDbContext(appDbOptions);
             var repo = new ConnectorRepo(db, factory, new IOperationResource[] { });
 
             repo.Delete("2");
 
-            using (var db1 = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new AppDbContext(appDbOptions))
             {
                 var results = db1.Connector.ToList();
                 Assert.AreEqual(1, results.Count());
@@ -217,7 +217,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void GetConnectorCountFromDb()
         {
-            using (var db1 = new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new AppDbContext(appDbOptions))
             {
                 db1.Connector.AddRange(new Connector
                 {
@@ -233,7 +233,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
                 db1.SaveChanges();
             }
 
-            var db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
+            var db = new AppDbContext(appDbOptions);
             var repo = new ConnectorRepo(db, factory, new IOperationResource[] { });
 
             var count = repo.ConnectorCount();

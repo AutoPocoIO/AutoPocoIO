@@ -26,7 +26,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
               .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
               .Options;
 
-            db = new AppDbContext(appDbOptions, new ContextEntityConfiguration());
+            db = new AppDbContext(appDbOptions);
             repo = new ConnectorRepo(db, Mock.Of<IConnectionStringFactory>(), new IOperationResource[] { });
             errors = new Dictionary<string, string>();
         }

@@ -23,7 +23,7 @@ namespace AutoPocoIO.test.Extensions
         [TestMethod]
         public void JoinNoResults()
         {
-            var db = new AppDbContext(AppDbOptions, new ContextEntityConfiguration());
+            var db = new AppDbContext(AppDbOptions);
             var results = db.Connector.Join<dynamic>(db.UserJoin, "Id", "Id", "new(outer.Name, inner.Alias)");
             Assert.AreEqual(0, results.Count());
         }
@@ -31,7 +31,7 @@ namespace AutoPocoIO.test.Extensions
         [TestMethod]
         public void JoinWithStringValues()
         {
-            var db = new AppDbContext(AppDbOptions, new ContextEntityConfiguration());
+            var db = new AppDbContext(AppDbOptions);
             db.Connector.Add(new Connector
             {
                 Id = "1",

@@ -43,7 +43,7 @@ namespace AutoPocoIO.test.Extensions
                .AddSingleton(config)
                .AddSingleton(schemaBuilder.Object)
                .AddSingleton(schemaInitializer.Object)
-               .AddSingleton(new AppDbContext(appDbOptions, new ContextEntityConfiguration()))
+               .AddSingleton(new AppDbContext(appDbOptions))
                .AddTransient(c => connStringFactory.Object)
                .BuildServiceProvider();
 

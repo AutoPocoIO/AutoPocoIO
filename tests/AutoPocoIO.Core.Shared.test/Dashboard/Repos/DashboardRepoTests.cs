@@ -32,7 +32,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             timeProvider.Setup(c => c.LocalToday).Returns(today.AddHours(-4));  //Local time is previous day from 0000 UTC
             timeProvider.Setup(c => c.UtcOffset).Returns(TimeSpan.FromHours(-4));
 
-            var db = new LogDbContext(dbOptions, new ContextEntityConfiguration());
+            var db = new LogDbContext(dbOptions);
             repo = new DashboardRepo(db, timeProvider.Object);
 
             guid = Guid.NewGuid();
@@ -41,7 +41,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void GetRequestsForToday()
         {
-            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, DateTimeUtc = today, RequestType = "GET" },
@@ -60,7 +60,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void GetRequestsForLocalToday()
         {
-            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, DateTimeUtc = today, RequestType = "GET" },
@@ -79,7 +79,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void GetRequestsOnlyHttpOps()
         {
-            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, DateTimeUtc = today, RequestType = "GET" },
@@ -101,7 +101,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void GetRequestsForLocal2Days()
         {
-            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, DateTimeUtc = today, RequestType = "GET" },
@@ -120,7 +120,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void GetRequestsForLocal2DaysNegativePassed()
         {
-            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, DateTimeUtc = today, RequestType = "GET" },
@@ -147,7 +147,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         public void TotalRequestsTime()
         {
 
-            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, RequestGuid = guid, DateTimeUtc = today, RequestType = "GET" },
@@ -173,7 +173,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         public void CountSuccessfullRequests()
         {
 
-            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, RequestGuid = guid, DateTimeUtc = today, RequestType = "GET" },
@@ -200,7 +200,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         public void SuccessfullRequestsTime()
         {
 
-            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, RequestGuid = guid, DateTimeUtc = today, RequestType = "GET" },
@@ -226,7 +226,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         public void CountFailedRequests()
         {
 
-            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, RequestGuid = guid, DateTimeUtc = today, RequestType = "GET" },
@@ -252,7 +252,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         public void FailedRequestsTime()
         {
 
-            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, RequestGuid = guid, DateTimeUtc = today, RequestType = "GET" },
@@ -279,7 +279,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         public void UnauthorizedRequest()
         {
 
-            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, RequestGuid = guid, DateTimeUtc = today, RequestType = "GET" },
@@ -306,7 +306,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         public void UnauthorizedRequestsTime()
         {
 
-            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, RequestGuid = guid, DateTimeUtc = today, RequestType = "GET" },
@@ -331,7 +331,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void GetByTodaysStatusBy2Hour()
         {
-            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, RequestGuid = guid, DateTimeUtc = today, RequestType = "GET" },
@@ -368,7 +368,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         [TestMethod]
         public void GetByTodaysStatusByDays()
         {
-            using (var db1 = new LogDbContext(dbOptions, new ContextEntityConfiguration()))
+            using (var db1 = new LogDbContext(dbOptions))
             {
                 db1.RequestLogs.AddRange(
                     new RequestLog { RequestId = 1, RequestGuid = guid, DateTimeUtc = today, RequestType = "GET" },

@@ -22,7 +22,7 @@ namespace AutoPocoIO.test.Extensions
         [TestInitialize]
         public void Init()
         {
-            using (AppDbContext db = new AppDbContext(appDbOptionsPro, new ContextEntityConfiguration()))
+            using (AppDbContext db = new AppDbContext(appDbOptionsPro))
             {
                 db.Connector.AddRange(new Connector
                 {
@@ -50,7 +50,7 @@ namespace AutoPocoIO.test.Extensions
         public void UnionUsedConnectorWithJoinsPkMatch()
         {
             var config = new Config { IncludedTable = "pk" };
-            config.LoadUserDefinedTables(new Connector { Id = "1", ConnectionStringDecrypted = "newConn" }, new AppDbContext(appDbOptionsPro, new ContextEntityConfiguration()));
+            config.LoadUserDefinedTables(new Connector { Id = "1", ConnectionStringDecrypted = "newConn" }, new AppDbContext(appDbOptionsPro));
 
             CollectionAssert.AreEqual(new[] { "newConn", "conn1", "conn2" }, config.UsedConnectors.ToList());
         }
@@ -59,7 +59,7 @@ namespace AutoPocoIO.test.Extensions
         public void UnionUsedConnectorWithJoinsFkMatch()
         {
             var config = new Config { IncludedTable = "fk" };
-            config.LoadUserDefinedTables(new Connector { Id = "2", ConnectionStringDecrypted = "newConn" }, new AppDbContext(appDbOptionsPro, new ContextEntityConfiguration()));
+            config.LoadUserDefinedTables(new Connector { Id = "2", ConnectionStringDecrypted = "newConn" }, new AppDbContext(appDbOptionsPro));
 
             CollectionAssert.AreEqual(new[] { "newConn", "conn1", "conn2" }, config.UsedConnectors.ToList());
         }
@@ -68,7 +68,7 @@ namespace AutoPocoIO.test.Extensions
         public void UnionUsedConnectorWithDistinct()
         {
             var config = new Config { IncludedTable = "fk" };
-            config.LoadUserDefinedTables(new Connector { Id = "2", ConnectionStringDecrypted = "conn1" }, new AppDbContext(appDbOptionsPro, new ContextEntityConfiguration()));
+            config.LoadUserDefinedTables(new Connector { Id = "2", ConnectionStringDecrypted = "conn1" }, new AppDbContext(appDbOptionsPro));
 
             CollectionAssert.AreEqual(new[] { "conn1", "conn2" }, config.UsedConnectors.ToList());
         }
@@ -77,7 +77,7 @@ namespace AutoPocoIO.test.Extensions
         public void UnionUsedConnectorWithJoinsNoMatch()
         {
             var config = new Config { IncludedTable = "fk" };
-            config.LoadUserDefinedTables(new Connector { Id = "3", ConnectionStringDecrypted = "newConn" }, new AppDbContext(appDbOptionsPro, new ContextEntityConfiguration()));
+            config.LoadUserDefinedTables(new Connector { Id = "3", ConnectionStringDecrypted = "newConn" }, new AppDbContext(appDbOptionsPro));
 
             CollectionAssert.AreEqual(new[] { "newConn" }, config.UsedConnectors.ToList());
         }

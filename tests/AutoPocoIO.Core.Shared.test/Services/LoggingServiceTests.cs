@@ -41,7 +41,7 @@ namespace AutoPocoIO.test.Services
             loggingService.LogAll().Wait();
 
 
-            using (var db = new LogDbContext(LogDbOptions, new ContextEntityConfiguration()))
+            using (var db = new LogDbContext(LogDbOptions))
             {
                 Assert.AreEqual(1, db.RequestLogs.Count());
                 Assert.AreEqual(1, db.ResponseLogs.Count());
@@ -64,7 +64,7 @@ namespace AutoPocoIO.test.Services
             loggingService.AddViewToLogger("conn1", "vw1");
             loggingService.LogAll().Wait();
 
-            using (var db = new LogDbContext(LogDbOptions, new ContextEntityConfiguration()))
+            using (var db = new LogDbContext(LogDbOptions))
             {
                 Assert.AreEqual(1, db.RequestLogs.Count());
                 Assert.AreEqual(1, db.ResponseLogs.Count());
@@ -85,7 +85,7 @@ namespace AutoPocoIO.test.Services
             loggingService.AddSprocToLogger("conn1", "proc1", HttpMethodType.POST);
             loggingService.LogAll().Wait();
 
-            using (var db = new LogDbContext(LogDbOptions, new ContextEntityConfiguration()))
+            using (var db = new LogDbContext(LogDbOptions))
             {
                 Assert.AreEqual(1, db.RequestLogs.Count());
                 Assert.AreEqual(1, db.ResponseLogs.Count());
@@ -106,7 +106,7 @@ namespace AutoPocoIO.test.Services
             loggingService.AddSchemaToLogger("conn1");
             loggingService.LogAll().Wait();
 
-            using (var db = new LogDbContext(LogDbOptions, new ContextEntityConfiguration()))
+            using (var db = new LogDbContext(LogDbOptions))
             {
                 Assert.AreEqual(1, db.RequestLogs.Count());
                 Assert.AreEqual(1, db.ResponseLogs.Count());
@@ -129,7 +129,7 @@ namespace AutoPocoIO.test.Services
             loggingService.LogAll().Wait();
 
 
-            using (var db = new LogDbContext(LogDbOptions, new ContextEntityConfiguration()))
+            using (var db = new LogDbContext(LogDbOptions))
             {
                 Assert.AreEqual(2, db.RequestLogs.Count());
                 Assert.AreEqual(2, db.ResponseLogs.Count());
