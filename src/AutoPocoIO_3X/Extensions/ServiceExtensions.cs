@@ -27,17 +27,13 @@ namespace AutoPocoIO.Extensions
         /// <returns></returns>
         public static IServiceCollection AddAutoPoco(this IServiceCollection services, Action<AutoPocoServiceOptions> options)
         {
-            Check.NotNull(options, nameof(options));
+            if (options == null) throw new ArgumentNullException(nameof(options));
 
             AutoPocoServiceOptions events = new AutoPocoServiceOptions();
             options(events);
             services.AddSingleton(events);
 
-
-            services.AddAutoPoco();
-            services.TryAddTransient<IRequestQueryStringService, RequestQueryStringService>();
-            services.AddTransient<IContextEntityConfiguration, VersionedContextEntityConfiguration>();
-            return services;
+            return services.AddAutoPoco();
         }
     }
 }

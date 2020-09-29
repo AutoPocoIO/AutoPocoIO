@@ -9,17 +9,16 @@ namespace AutoPocoIO.Context
 {
     public class AppDbContext : DbContext
     {
-        private readonly IContextEntityConfiguration _config;
-
-        public AppDbContext(DbContextOptions<AppDbContext> options, IContextEntityConfiguration config) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            _config = config;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             Check.NotNull(modelBuilder, nameof(modelBuilder));
-            _config.SetupAppDbContext(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new ConnectorConfiguration());
+            modelBuilder.ApplyConfiguration(new UserJoinEntityConfiguration());
 
             base.OnModelCreating(modelBuilder);
 

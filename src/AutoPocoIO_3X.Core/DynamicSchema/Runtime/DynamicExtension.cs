@@ -42,6 +42,11 @@ namespace AutoPocoIO.DynamicSchema.Runtime
             Check.NotNull(optionBuilder, nameof(optionBuilder));
 
             optionBuilder.ReplaceService<ISqlExpressionFactory, Services.CrossDb.SqlExpressionFactory>();
+            optionBuilder.ReplaceService<IQueryableMethodTranslatingExpressionVisitorFactory, Services.CrossDb.RelationalQueryableMethodTranslatingExpressionVisitorFactory>();
+            optionBuilder.ReplaceService<Services.CrossDb.IQuerySqlGeneratorFactoryWithCrossDb, Services.CrossDb.QuerySqlGeneratorFactory>();
+            optionBuilder.ReplaceService<IQuerySqlGeneratorFactory, Services.CrossDb.QuerySqlGeneratorFactory>();
+            optionBuilder.ReplaceService<IShapedQueryCompilingExpressionVisitorFactory, Services.CrossDb.RelationalShapedQueryCompilingExpressionVisitorFactory>();
+            optionBuilder.ReplaceService<IQueryTranslationPostprocessorFactory, Services.CrossDb.RelationalQueryTranslationPostprocessorFactory>();
             return optionBuilder;
 
         }

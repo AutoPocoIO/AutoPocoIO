@@ -49,7 +49,7 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
              .UseInMemoryDatabase(databaseName: "appDb" + Guid.NewGuid().ToString())
              .Options;
 
-            var db = new AppDbContext(appDbOptions, new VersionedContextEntityConfiguration());
+            var db = new AppDbContext(appDbOptions);
 
             //Configure with default .net core services
             hostBuilder = WebHost.CreateDefaultBuilder(new string[0]).UseStartup<TestStartup>();

@@ -25,6 +25,7 @@ namespace AutoPocoIO.Extensions
         {
             //Try to add if missing
             services.TryAddSingleton(new AutoPocoServiceOptions());
+            services.TryAddTransient<IRequestQueryStringService, RequestQueryStringService>();
 
             return services
                 .AddDatabaseOperations()

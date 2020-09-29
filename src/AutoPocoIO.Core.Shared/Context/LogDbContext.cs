@@ -1,22 +1,23 @@
 ﻿using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace AutoPocoIO.Context
 {
 
     public class LogDbContext : DbContext
     {
-        private readonly IContextEntityConfiguration _config;
-
-        public LogDbContext(DbContextOptions<LogDbContext> options, IContextEntityConfiguration config) : base(options)
+        public LogDbContext(DbContextOptions<LogDbContext> options) : base(options)
         {
-            _config = config;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            _config.SetupLogDbContext(modelBuilder);
+            if (modelBuilder == null) throw new ArgumentNullException(nameof(modelBuilder));
+
+            modelBuilder.ApplyConfiguration(new RequestLogConfiguration());
+            modelBuilder.ApplyConfiguration(new ResponseLogConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

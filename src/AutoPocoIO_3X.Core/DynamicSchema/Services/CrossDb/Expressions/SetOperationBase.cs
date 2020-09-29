@@ -3,7 +3,7 @@ using System;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
-    internal abstract class SetOperationBase : TableExpressionBase
+    public abstract class SetOperationBase : TableExpressionBase
     {
         protected SetOperationBase( string alias, SelectExpression source1, SelectExpression source2, bool distinct)
             : base(alias)
