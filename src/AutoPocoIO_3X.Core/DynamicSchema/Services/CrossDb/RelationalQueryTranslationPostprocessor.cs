@@ -31,7 +31,7 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 
             if (!(AppContext.TryGetSwitch("Microsoft.EntityFrameworkCore.Issue12729", out var enabled) && enabled))
             {
-                query = new CaseWhenFlatteningExpressionVisitor(SqlExpressionFactory).Visit(query);
+                //query = new CaseWhenFlatteningExpressionVisitor(SqlExpressionFactory).Visit(query);
             }
 
             if (!UseRelationalNulls)
@@ -44,6 +44,6 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
             return query;
         }
 
-        protected virtual Expression OptimizeSqlExpression(Expression query) => _sqlExpressionOptimizingExpressionVisitor.Visit(query);
+        protected override Expression OptimizeSqlExpression(Expression query) => _sqlExpressionOptimizingExpressionVisitor.Visit(query);
     }
 }

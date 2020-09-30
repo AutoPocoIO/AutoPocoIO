@@ -35,11 +35,11 @@ namespace AutoPocoIO.test.Extensions
             var provider = services.BuildServiceProvider();
 
 #if NETFULL
-            Assert.AreEqual(26, services.Count());
+            Assert.AreEqual(27, services.Count());
 #elif NETCORE2_2
             Assert.AreEqual(97, services.Count());
 #else
-            Assert.AreEqual(141, services.Count());
+            Assert.AreEqual(142, services.Count());
 #endif
         }
 
