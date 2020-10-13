@@ -49,5 +49,9 @@ namespace AutoPocoIO.DynamicSchema.Db
         /// Execute stored procedure command
         /// </summary>
         void GetStoredProcedures();
+        /// <summary>
+        /// Execute list schemas command
+        /// </summary>
+        void GetSchemas();
     }
 }

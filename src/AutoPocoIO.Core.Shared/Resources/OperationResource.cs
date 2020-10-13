@@ -274,17 +274,10 @@ namespace AutoPocoIO.Resources
         }
 
         ///<inheritdoc/>
-        public virtual IEnumerable<SchemaDefinition> ListSchemas()
+        public virtual IEnumerable<string> ListSchemas()
         {
-            //Return all tables and the connector their schema belongs too
-            return AppDbContext.Connector.Where(c => c.InitialCatalog == DatabaseName)
-                                   .OrderBy(c => c.Schema)
-                                   .Select(c => new SchemaDefinition
-                                   {
-                                       Name = c.Schema,
-                                       ConnectorId = c.Id,
-                                       ConnectorName = c.Name
-                                   });
+            SchemaInitializer.FindSchemas();
+            return DbSchema.SchemaNames;
 
         }
         ///<inheritdoc/>
@@ -501,6 +494,6 @@ namespace AutoPocoIO.Resources
 
         private static string UserJoinPrefix(UserJoinConfiguration userJoin) => "UJ_" + userJoin.Alias;
 
-
+   
     }
 }

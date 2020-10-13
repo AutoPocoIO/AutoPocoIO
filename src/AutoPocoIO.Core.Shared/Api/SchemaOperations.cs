@@ -3,6 +3,7 @@ using AutoPocoIO.Factories;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
 using AutoPocoIO.Services;
+using System.Collections.Generic;
 
 namespace AutoPocoIO.Api
 {
@@ -30,6 +31,13 @@ namespace AutoPocoIO.Api
             loggingService?.AddSchemaToLogger(connectorName);
             IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.Any, string.Empty);
             return resource.GetSchemaDefinition();
+        }
+
+        public IEnumerable<string> ListSchemas(string connectorName, ILoggingService loggingService = null)
+        {
+            loggingService?.AddSchemaToLogger(connectorName);
+            IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.Any, string.Empty);
+            return resource.ListSchemas();
         }
     }
 }

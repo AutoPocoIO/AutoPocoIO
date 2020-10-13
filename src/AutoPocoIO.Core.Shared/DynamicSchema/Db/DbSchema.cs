@@ -18,6 +18,7 @@ namespace AutoPocoIO.DynamicSchema.Db
             Columns = new List<Column>();
             Views = new List<View>();
             StoredProcedures = new List<StoredProcedure>();
+            SchemaNames = new List<string>();
         }
 
         ///<inheritdoc/>
@@ -28,6 +29,8 @@ namespace AutoPocoIO.DynamicSchema.Db
         public virtual List<View> Views { get; }
         ///<inheritdoc/>
         public virtual List<StoredProcedure> StoredProcedures { get; }
+        ///<inheritdoc/>
+        public virtual List<string> SchemaNames { get; }
 
         /// <summary>
         /// Overall hash code for the request
@@ -56,6 +59,7 @@ namespace AutoPocoIO.DynamicSchema.Db
             Columns.Clear();
             Views.Clear();
             StoredProcedures.Clear();
+            SchemaNames.Clear();
         }
     }
 }

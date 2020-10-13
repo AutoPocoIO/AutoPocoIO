@@ -87,6 +87,11 @@ namespace AutoPocoIO.test.DynamicSchema.Db
                 //}
                 return null;
             }
+
+            protected override IDbCommand BuildSchemaListCommand(IDbConnection dbConnection)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private class SchmeaBuilder2 : DbSchemaBuilderBase
@@ -123,6 +128,10 @@ namespace AutoPocoIO.test.DynamicSchema.Db
             }
 
             protected override IDbCommand BuildTablesViewsCommand(IDbConnection dbConnection)
+            {
+                throw new NotImplementedException();
+            }
+            protected override IDbCommand BuildSchemaListCommand(IDbConnection dbConnection)
             {
                 throw new NotImplementedException();
             }

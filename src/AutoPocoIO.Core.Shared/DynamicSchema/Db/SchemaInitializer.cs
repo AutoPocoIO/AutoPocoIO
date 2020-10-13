@@ -23,6 +23,12 @@ namespace AutoPocoIO.DynamicSchema.Db
             _config.ConnectionString = connector.ConnectionStringDecrypted;
         }
 
+        public void FindSchemas()
+        {
+            _dbSchema.Reset();
+            _schemaBuilder.GetSchemas();
+        }
+
         public void Initilize()
         {
             _dbSchema.Reset();

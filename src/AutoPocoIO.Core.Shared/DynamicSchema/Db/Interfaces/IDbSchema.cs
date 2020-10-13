@@ -28,5 +28,10 @@ namespace AutoPocoIO.DynamicSchema.Db
         /// Views found.
         /// </summary>
         List<View> Views { get; }
+
+        /// <summary>
+        /// Schemas found.
+        /// </summary>
+        List<string> SchemaNames { get; }
     }
 }

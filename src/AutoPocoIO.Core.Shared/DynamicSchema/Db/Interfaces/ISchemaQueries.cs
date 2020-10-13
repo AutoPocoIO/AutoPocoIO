@@ -22,5 +22,11 @@
         /// </summary>
         /// <returns>string database query for tables, views.</returns>
         string BuildTablesViewCommand();
+
+        /// <summary>
+        /// List all schema anmes.
+        /// </summary>
+        /// <returns>string of command text.</returns>
+        string BuildListSchemasCommand();
     }
 }

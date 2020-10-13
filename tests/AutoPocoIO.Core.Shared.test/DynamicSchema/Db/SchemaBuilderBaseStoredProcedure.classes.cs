@@ -76,6 +76,11 @@ namespace AutoPocoIO.test.DynamicSchema.Db
                 }
                 return null;
             }
+
+            protected override IDbCommand BuildSchemaListCommand(IDbConnection dbConnection)
+            {
+                throw new NotImplementedException();
+            }
         }
 
     }

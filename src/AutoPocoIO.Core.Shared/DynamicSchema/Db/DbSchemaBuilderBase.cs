@@ -53,6 +53,12 @@ namespace AutoPocoIO.DynamicSchema.Db
         /// <param name="dbConnection">Database to pull the information from.</param>
         /// <returns></returns>
         protected abstract IDbCommand BuildTablesViewsCommand(IDbConnection dbConnection);
+        /// <summary>
+        /// Create command to get all schema names.
+        /// </summary>
+        /// <param name="dbConnection">Database to pull the information from.</param>
+        /// <returns></returns>
+        protected abstract IDbCommand BuildSchemaListCommand(IDbConnection dbConnection);
 
         ///<inheritdoc/>
         public abstract string ResourceType { get; }
@@ -145,6 +151,23 @@ namespace AutoPocoIO.DynamicSchema.Db
             foreach (DataRow row in dtSchema.Rows)
             {
                 currentTable = AddTableAndColumns(row, currentTable);
+            }
+        }
+
+        public virtual void GetSchemas()
+        {
+            DataTable dtSchema = null;
+            using (var connection = CreateConnection())
+            {
+                using (var command = BuildSchemaListCommand(connection))
+                {
+                    dtSchema = ExecuteSchemaCommand(command);
+                }
+            }
+
+            foreach (DataRow row in dtSchema.Rows)
+            {
+                _dbSchema.SchemaNames.Add(row[0].ToString());
             }
         }
 

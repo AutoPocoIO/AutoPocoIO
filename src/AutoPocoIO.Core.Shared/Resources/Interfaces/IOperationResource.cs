@@ -144,6 +144,12 @@ namespace AutoPocoIO.Resources
         /// <returns>A list for each object type (Table, View, Stored Procedure)</returns>
         SchemaDefinition GetSchemaDefinition();
         /// <summary>
+        /// List all schemas in the database objects
+        /// </summary>
+        /// <returns>A list of each schema name</returns>
+        IEnumerable<string> ListSchemas();
+
+        /// <summary>
         /// List all parameters
         /// </summary>
         /// <returns></returns>
