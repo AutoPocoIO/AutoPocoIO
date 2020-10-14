@@ -30,12 +30,14 @@
     <Folder Include="DynamicSchema\Db\" />
   </ItemGroup>
 
-
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
+    <DefineConstants>EF22</DefineConstants>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
-    <DefineConstants>NETCORE;</DefineConstants>
+    <DefineConstants>NETCORE;EF22</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">
-    <DefineConstants>NETCORE;</DefineConstants>
+    <DefineConstants>NETCORE;EF22</DefineConstants>
   </PropertyGroup>
   <Import Project="..\..\AutoPocoIO.Core.Shared.test\AutoPocoIO.Core.Shared.test.projitems" Label="Shared" />
 

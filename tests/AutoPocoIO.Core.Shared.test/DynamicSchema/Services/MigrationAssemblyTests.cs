@@ -12,6 +12,10 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
+#if EF22
+using Microsoft.EntityFrameworkCore.Internal;
+#endif
+
 namespace AutoPocoIO.test.DynamicSchema.Services
 {
     [TestClass]
