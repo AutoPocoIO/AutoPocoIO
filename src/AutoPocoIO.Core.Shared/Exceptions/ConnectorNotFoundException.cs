@@ -1,4 +1,6 @@
-﻿namespace AutoPocoIO.Exceptions
+﻿using System;
+
+namespace AutoPocoIO.Exceptions
 {
     /// <summary>
     /// Exception that sets status to 400 (Bad Request)
@@ -19,7 +21,7 @@
         /// Initialize exception with connector id
         /// </summary>
         /// <param name="id">Connector id</param>
-        public ConnectorNotFoundException(int id) : base(System.Net.HttpStatusCode.BadRequest)
+        public ConnectorNotFoundException(Guid id) : base(System.Net.HttpStatusCode.BadRequest)
         {
             connectorName = $"with Id '{id}'";
         }

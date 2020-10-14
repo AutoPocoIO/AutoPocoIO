@@ -27,7 +27,7 @@ namespace AutoPocoIO.Services
             }
         }
 
-        public Connector GetConnectionById(string id)
+        public Connector GetConnectionById(Guid id)
         {
             try
             {

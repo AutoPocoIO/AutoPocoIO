@@ -32,11 +32,11 @@ namespace AutoPocoIO.test.Factories
         [TestMethod]
         public void GetResouceByConnectorId()
         {
-
-            appAdminService.Setup(c => c.GetConnectionById("1"))
+             Guid id = Guid.NewGuid();
+            appAdminService.Setup(c => c.GetConnectionById(id))
                 .Returns(new Connector() { ResourceType = "type1" });
 
-            var resource = _resourceFactory.GetResource("1", "obj1");
+            var resource = _resourceFactory.GetResource(id, "obj1");
             Assert.IsInstanceOfType(resource, typeof(IOperationResource));
         }
 

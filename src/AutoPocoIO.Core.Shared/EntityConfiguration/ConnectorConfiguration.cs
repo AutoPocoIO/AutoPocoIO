@@ -11,6 +11,9 @@ namespace AutoPocoIO.EntityConfiguration
             builder.HasIndex(c => c.Name)
                  .IsUnique()
                  .HasName("IDX_ConnectorName");
+
+            builder.Property(c => c.Id)
+               .HasConversion<string>();
         }
     }
 }

@@ -80,6 +80,18 @@ namespace AutoPocoIO.Dashboard.Extensions
             return match.Groups[key].Value;
         }
 
+        /// <summary>
+        /// Get Guid value from Regex match
+        /// </summary>
+        /// <param name="match">Regex match</param>
+        /// <param name="key">Group to parse to Guid</param>
+        /// <returns></returns>
+        public static Guid ToGuid(this Match match, string key)
+        {
+            Check.NotNull(match, nameof(match));
+            return Guid.Parse(match.Groups[key].Value);
+        }
+
         private static object FindValue(Type type, string value)
         {
             object property;

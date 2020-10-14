@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.Dashboard.Repos;
 using AutoPocoIO.Middleware;
+using System;
 
 namespace AutoPocoIO.Dashboard.Pages
 {
@@ -13,7 +14,7 @@ namespace AutoPocoIO.Dashboard.Pages
             _repo = repo;
         }
 
-        public virtual void ListDbObjects(string connectorId)
+        public virtual void ListDbObjects(Guid connectorId)
         {
             ViewBag["model"] = _repo.ListSchemaObject(connectorId);
         }

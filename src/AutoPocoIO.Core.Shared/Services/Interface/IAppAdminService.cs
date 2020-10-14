@@ -1,10 +1,11 @@
 ﻿using AutoPocoIO.Models;
+using System;
 
 namespace AutoPocoIO.Services
 {
     public interface IAppAdminService
     {
-        Connector GetConnectionById(string id);
+        Connector GetConnectionById(Guid id);
         Connector GetConnection(string connectionName);
     }
 }

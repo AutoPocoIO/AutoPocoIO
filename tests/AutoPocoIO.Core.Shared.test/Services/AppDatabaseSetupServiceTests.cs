@@ -67,8 +67,8 @@ namespace AutoPocoIO.test.Services
             appDb = new AppDbContext(appOptionBuilder.Options);
 
             appDb.Connector.AddRange(
-                new Connector { Id = "1", Name = "appDb" },
-                new Connector { Id = "3", Name = "logDb" }
+                new Connector { Id = Guid.NewGuid(), Name = "appDb" },
+                new Connector { Id = Guid.NewGuid(), Name = "logDb" }
                 );
             appDb.SaveChanges();
 

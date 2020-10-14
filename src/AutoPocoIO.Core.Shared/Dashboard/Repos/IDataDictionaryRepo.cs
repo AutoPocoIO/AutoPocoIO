@@ -1,13 +1,14 @@
 ﻿using AutoPocoIO.Dashboard.ViewModels;
 using AutoPocoIO.Models;
+using System;
 using System.Collections.Generic;
 
 namespace AutoPocoIO.Dashboard.Repos
 {
     internal interface IDataDictionaryRepo
     {
-        SchemaViewModel ListSchemaObject(string connectorId);
-        TableDefinition ListTableDetails(string connectorId, string name);
-        IEnumerable<NavigationPropertyViewModel> ListNavigationProperties(string connectorId, string name);
+        SchemaViewModel ListSchemaObject(Guid connectorId);
+        TableDefinition ListTableDetails(Guid connectorId, string name);
+        IEnumerable<NavigationPropertyViewModel> ListNavigationProperties(Guid connectorId, string name);
     }
 }

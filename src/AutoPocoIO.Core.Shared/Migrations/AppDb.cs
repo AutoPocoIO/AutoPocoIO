@@ -14,7 +14,7 @@ namespace AutoPocoIO.Migrations
                 schema: "AutoPoco",
                 columns: table => new
                 {
-                    Id = table.Column<string>(maxLength: 128, nullable: false),
+                    Id = table.Column<string>(maxLength: 36, nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: true),
                     ResourceType = table.Column<string>(maxLength: 50, nullable: true),
                     Schema = table.Column<string>(maxLength: 50, nullable: true),
@@ -36,10 +36,10 @@ namespace AutoPocoIO.Migrations
                 schema: "AutoPoco",
                 columns: table => new
                 {
-                    Id = table.Column<string>(maxLength: 128, nullable: false),
+                    Id = table.Column<string>(maxLength: 36, nullable: false),
                     Alias = table.Column<string>(maxLength: 50, nullable: false),
-                    PKConnectorId = table.Column<string>(maxLength: 128, nullable: true),
-                    FKConnectorId = table.Column<string>(maxLength: 128, nullable: true),
+                    PKConnectorId = table.Column<string>(maxLength: 36, nullable: true),
+                    FKConnectorId = table.Column<string>(maxLength: 36, nullable: true),
                     PKTableName = table.Column<string>(maxLength: 100, nullable: false),
                     FKTableName = table.Column<string>(maxLength: 100, nullable: false),
                     PKColumn = table.Column<string>(maxLength: 500, nullable: false),
@@ -54,14 +54,14 @@ namespace AutoPocoIO.Migrations
                         principalSchema: "AutoPoco",
                         principalTable: "Connector",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserJoin_Connector_PKConnectorId",
                         column: x => x.PKConnectorId,
                         principalSchema: "AutoPoco",
                         principalTable: "Connector",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(

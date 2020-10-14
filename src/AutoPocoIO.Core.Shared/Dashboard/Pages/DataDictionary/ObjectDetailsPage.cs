@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.Dashboard.Repos;
 using AutoPocoIO.Middleware;
+using System;
 
 namespace AutoPocoIO.Dashboard.Pages
 {
@@ -13,7 +14,7 @@ namespace AutoPocoIO.Dashboard.Pages
             _repo = repo;
         }
 
-        public virtual void ListTableDetails(string connectorId, string name)
+        public virtual void ListTableDetails(Guid connectorId, string name)
         {
             ViewBag["model"] = _repo.ListTableDetails(connectorId, name);
             ViewBag["navs"] = _repo.ListNavigationProperties(connectorId, name);

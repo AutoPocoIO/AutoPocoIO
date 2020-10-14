@@ -7,6 +7,7 @@ using AutoPocoIO.Middleware.Dispatchers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,6 +16,8 @@ namespace AutoPocoIO.test.Dashboard.Pages
     [TestClass]
     public class ConnectorFormPageTests : PageTestBase
     {
+        private Guid id = Guid.NewGuid();
+
         [TestMethod]
         [TestCategory(TestCategories.Integration)]
         public void NewConnectorRoute()
@@ -36,11 +39,12 @@ namespace AutoPocoIO.test.Dashboard.Pages
         [TestCategory(TestCategories.Integration)]
         public void GetConnectorRoute()
         {
+            
             var routes = new DashboardRoutes();
-            var dispatcher = routes.Routes.FindDispatcher(Context, "/Connectors/Connector/123");
+            var dispatcher = routes.Routes.FindDispatcher(Context, $"/Connectors/Connector/{id}");
 
             var page = new Mock<ConnectorForm>(Mock.Of<IConnectorRepo>(), Mock.Of<ILayoutPage>());
-            page.Setup(c => c.GetById("123")).Verifiable();
+            page.Setup(c => c.GetById(id)).Verifiable();
 
             Services.AddSingleton(page.Object);
             Context.UriMatch = dispatcher.Item2;
@@ -56,7 +60,7 @@ namespace AutoPocoIO.test.Dashboard.Pages
             SetupContext("post");
 
             var routes = new DashboardRoutes();
-            var dispatcher = routes.Routes.FindDispatcher(Context, "/Connectors/Connector/123");
+            var dispatcher = routes.Routes.FindDispatcher(Context, $"/Connectors/Connector/{id}");
 
             var page = new Mock<ConnectorForm>(Mock.Of<IConnectorRepo>(), Mock.Of<ILayoutPage>());
             page.Setup(c => c.Save()).Verifiable();
@@ -86,7 +90,7 @@ namespace AutoPocoIO.test.Dashboard.Pages
         {
             var formValues = new Dictionary<string, string[]>
             {
-                {"id", new[]{"1234"} },
+                {"id", new[]{id.ToString()} },
                 {"connectorName", new[]{"name1"} },
                 {"serverName", new[]{"serv"} },
                 {"databaseName", new[]{"db1"} },
@@ -102,7 +106,7 @@ namespace AutoPocoIO.test.Dashboard.Pages
 
             var model = (ConnectorViewModel)new PrivateObject(page).GetField("model");
 
-            Assert.AreEqual("1234", model.Id);
+            Assert.AreEqual(id, model.Id);
             Assert.AreEqual("type1", model.ResourceType);
             Assert.AreEqual("name1", model.Name);
             Assert.AreEqual("serv", model.DataSource);
@@ -118,12 +122,12 @@ namespace AutoPocoIO.test.Dashboard.Pages
         [TestCategory(TestCategories.Unit)]
         public void SetViewBagToConnectorById()
         {
-            var connector = new ConnectorViewModel { Id = "123", Name = "abc" };
+            var connector = new ConnectorViewModel { Id = id, Name = "abc" };
 
             var repo = new Mock<IConnectorRepo>();
-            repo.Setup(c => c.GetById("123")).Returns(connector);
+            repo.Setup(c => c.GetById(id)).Returns(connector);
             var page = new ConnectorForm(repo.Object, Mock.Of<ILayoutPage>());
-            page.GetById("123");
+            page.GetById(id);
 
             Assert.AreEqual(connector, page.ViewBag["model"]);
         }
@@ -132,7 +136,7 @@ namespace AutoPocoIO.test.Dashboard.Pages
         [TestCategory(TestCategories.Unit)]
         public void ErrorSetsViewBagAndReturnsPage()
         {
-            var connector = new ConnectorViewModel { Id = "123", Name = "abc" };
+            var connector = new ConnectorViewModel { Id = id, Name = "abc" };
             var errors = new Dictionary<string, string>() { { "error", "val" } };
 
             var repo = new Mock<IConnectorRepo>();
@@ -164,7 +168,7 @@ namespace AutoPocoIO.test.Dashboard.Pages
             var connector = new ConnectorViewModel { Name = "abc" };
 
             var repo = new Mock<IConnectorRepo>();
-            repo.Setup(c => c.Insert(connector)).Returns("123");
+            repo.Setup(c => c.Insert(connector)).Returns(id);
             repo.Setup(c => c.Validate(connector, new Dictionary<string, string>())).Verifiable();
 
             var page = new ConnectorForm(repo.Object, Mock.Of<ILayoutPage>());
@@ -178,17 +182,17 @@ namespace AutoPocoIO.test.Dashboard.Pages
             Assert.AreEqual(1, Logging.LogCount);
             Assert.AreEqual("POST", Logging.PublicRequests.First().RequestType);
             Assert.IsInstanceOfType(dispatcher, typeof(RedirectDispatcher));
-            Assert.AreEqual("/Connectors/Connector/123", new PrivateObject(dispatcher).GetField("_location"));
+            Assert.AreEqual($"/Connectors/Connector/{id}", new PrivateObject(dispatcher).GetField("_location"));
         }
 
         [TestMethod]
         [TestCategory(TestCategories.Unit)]
         public void UpdateLogsAndRedirects()
         {
-            var connector = new ConnectorViewModel { Id = "123", Name = "abc" };
+            var connector = new ConnectorViewModel { Id = id, Name = "abc" };
 
             var repo = new Mock<IConnectorRepo>();
-            repo.Setup(c => c.Save(connector)).Returns("123");
+            repo.Setup(c => c.Save(connector)).Returns(id);
             repo.Setup(c => c.Validate(connector, new Dictionary<string, string>())).Verifiable();
 
             var page = new ConnectorForm(repo.Object, Mock.Of<ILayoutPage>());
@@ -202,7 +206,7 @@ namespace AutoPocoIO.test.Dashboard.Pages
             Assert.AreEqual(1, Logging.LogCount);
             Assert.AreEqual("PUT", Logging.PublicRequests.First().RequestType);
             Assert.IsInstanceOfType(dispatcher, typeof(RedirectDispatcher));
-            Assert.AreEqual("/Connectors/Connector/123", new PrivateObject(dispatcher).GetField("_location"));
+            Assert.AreEqual($"/Connectors/Connector/{id}", new PrivateObject(dispatcher).GetField("_location"));
         }
 
 

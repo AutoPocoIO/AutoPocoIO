@@ -83,6 +83,7 @@ namespace AutoPocoIO.test.DynamicSchema.Db
         [TestMethod]
         public void FindRecord()
         {
+            Guid id = Guid.NewGuid();
             using (var dbContextBase = new DbContextBase(options, new Dictionary<string, Type>() { { "tbl", typeof(Connector) } }, new List<Table>()))
             {
                 db.Setup(c => c.SetupDataContext("Table"));
@@ -91,14 +92,14 @@ namespace AutoPocoIO.test.DynamicSchema.Db
 
                 dbContextBase.Add(new Connector
                 {
-                    Id = "1",
+                    Id = id,
                     Name = "init",
                     Port = 123
                 });
                 dbContextBase.SaveChanges();
                 Assert.AreEqual(1, dbContextBase.Set<Connector>().Count(), "Inital state invalid");
 
-                var connector = db.Object.Find("Table", new object[] { "1" });
+                var connector = db.Object.Find("Table", new object[] { id });
                 Assert.AreEqual("init", ((Connector)connector).Name);
                 Assert.AreEqual(123, ((Connector)connector).Port);
                 db.Verify(c => c.SetupDataContext("Table"), Times.Once);

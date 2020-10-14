@@ -3,6 +3,7 @@ using AutoPocoIO.Dashboard.ViewModels;
 using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Models;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -17,7 +18,7 @@ namespace AutoPocoIO.Dashboard.Repos
             _resourceFactory = resourceFactory;
         }
 
-        public SchemaViewModel ListSchemaObject(string connectorId)
+        public SchemaViewModel ListSchemaObject(Guid connectorId)
         {
             var resource = _resourceFactory.GetResource(connectorId, string.Empty);
             resource.LoadSchema();
@@ -32,13 +33,13 @@ namespace AutoPocoIO.Dashboard.Repos
             };
         }
 
-        public TableDefinition ListTableDetails(string connectorId, string name)
+        public TableDefinition ListTableDetails(Guid connectorId, string name)
         {
             var resource = _resourceFactory.GetResourceById(connectorId, OperationType.Any, name);
             return resource.GetTableDefinition();
         }
 
-        public IEnumerable<NavigationPropertyViewModel> ListNavigationProperties(string connectorId, string name)
+        public IEnumerable<NavigationPropertyViewModel> ListNavigationProperties(Guid connectorId, string name)
         {
             var resource = _resourceFactory.GetResourceById(connectorId, OperationType.Any, name);
             var data = resource.GetResourceRecords(new Dictionary<string, string>());

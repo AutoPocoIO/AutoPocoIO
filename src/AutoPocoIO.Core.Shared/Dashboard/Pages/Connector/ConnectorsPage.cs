@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.Dashboard.Repos;
 using AutoPocoIO.Middleware;
+using System;
 
 namespace AutoPocoIO.Dashboard.Pages
 {
@@ -32,6 +33,6 @@ namespace AutoPocoIO.Dashboard.Pages
         /// Remove connector
         /// </summary>
         /// <param name="id">Connector Id</param>
-        public virtual void Delete(string id) => _repo.Delete(id);
+        public virtual void Delete(Guid id) => _repo.Delete(id);
     }
 }

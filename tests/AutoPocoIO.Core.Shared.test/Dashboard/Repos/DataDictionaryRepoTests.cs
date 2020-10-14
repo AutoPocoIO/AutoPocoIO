@@ -8,6 +8,7 @@ using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,6 +18,8 @@ namespace AutoPocoIO.test.Dashboard.Repos
     [TestCategory(TestCategories.Unit)]
     public class DataDictionaryRepoTests
     {
+        Guid id = Guid.NewGuid();
+
         [TestMethod]
         public void ListDbObjects()
         {
@@ -34,15 +37,15 @@ namespace AutoPocoIO.test.Dashboard.Repos
             resource.Setup(c => c.Connector).Returns(new Models.Connector { Name = "test" });
             resource.Setup(c => c.DbSchema).Returns(schema.Object);
             var factory = new Mock<IResourceFactory>();
-            factory.Setup(c => c.GetResource("123", "")).Returns(resource.Object);
+            factory.Setup(c => c.GetResource(id, "")).Returns(resource.Object);
 
             var repo = new DataDictionaryRepo(factory.Object);
 
-            var result = repo.ListSchemaObject("123");
+            var result = repo.ListSchemaObject(id);
 
 
             resource.Verify(c => c.LoadSchema(), Times.Once);
-            Assert.AreEqual("123", result.ConnectorId);
+            Assert.AreEqual(id, result.ConnectorId);
             Assert.AreEqual("test", result.ConnectorName);
             CollectionAssert.AreEqual(new[] { table }, result.Tables);
             CollectionAssert.AreEqual(new[] { view }, result.Views);
@@ -57,11 +60,11 @@ namespace AutoPocoIO.test.Dashboard.Repos
             resource.Setup(c => c.GetTableDefinition()).Returns(tableDef);
 
             var factory = new Mock<IResourceFactory>();
-            factory.Setup(c => c.GetResourceById("123", OperationType.Any, "tbl12")).Returns(resource.Object);
+            factory.Setup(c => c.GetResourceById(id, OperationType.Any, "tbl12")).Returns(resource.Object);
 
             var repo = new DataDictionaryRepo(factory.Object);
 
-            var result = repo.ListTableDetails("123", "tbl12");
+            var result = repo.ListTableDetails(id, "tbl12");
             Assert.AreEqual(tableDef, result);
         }
 
@@ -80,10 +83,10 @@ namespace AutoPocoIO.test.Dashboard.Repos
             resource.Setup(c => c.GetResourceRecords(new Dictionary<string, string>())).Returns(new List<OneToManyNav>().AsQueryable());
 
             var factory = new Mock<IResourceFactory>();
-            factory.Setup(c => c.GetResourceById("123", OperationType.Any, "tbl12")).Returns(resource.Object);
+            factory.Setup(c => c.GetResourceById(id, OperationType.Any, "tbl12")).Returns(resource.Object);
 
             var repo = new DataDictionaryRepo(factory.Object);
-            var result = repo.ListNavigationProperties("123", "tbl12");
+            var result = repo.ListNavigationProperties(id, "tbl12");
 
             Assert.AreEqual(1, result.Count());
 
@@ -107,10 +110,10 @@ namespace AutoPocoIO.test.Dashboard.Repos
             resource.Setup(c => c.GetResourceRecords(new Dictionary<string, string>())).Returns(new List<ManyToOneNav>().AsQueryable());
 
             var factory = new Mock<IResourceFactory>();
-            factory.Setup(c => c.GetResourceById("123", OperationType.Any, "tbl12")).Returns(resource.Object);
+            factory.Setup(c => c.GetResourceById(id, OperationType.Any, "tbl12")).Returns(resource.Object);
 
             var repo = new DataDictionaryRepo(factory.Object);
-            var result = repo.ListNavigationProperties("123", "tbl12");
+            var result = repo.ListNavigationProperties(id, "tbl12");
 
             Assert.AreEqual(1, result.Count());
 
@@ -133,10 +136,10 @@ namespace AutoPocoIO.test.Dashboard.Repos
             resource.Setup(c => c.GetResourceRecords(new Dictionary<string, string>())).Returns(new List<SkipStrings>().AsQueryable());
 
             var factory = new Mock<IResourceFactory>();
-            factory.Setup(c => c.GetResourceById("123", OperationType.Any, "tbl12")).Returns(resource.Object);
+            factory.Setup(c => c.GetResourceById(id, OperationType.Any, "tbl12")).Returns(resource.Object);
 
             var repo = new DataDictionaryRepo(factory.Object);
-            var result = repo.ListNavigationProperties("123", "tbl12");
+            var result = repo.ListNavigationProperties(id, "tbl12");
 
             Assert.AreEqual(0, result.Count());
         }
@@ -153,10 +156,10 @@ namespace AutoPocoIO.test.Dashboard.Repos
             resource.Setup(c => c.GetResourceRecords(new Dictionary<string, string>())).Returns(new List<SkipPrivateProperties>().AsQueryable());
 
             var factory = new Mock<IResourceFactory>();
-            factory.Setup(c => c.GetResourceById("123", OperationType.Any, "tbl12")).Returns(resource.Object);
+            factory.Setup(c => c.GetResourceById(id, OperationType.Any, "tbl12")).Returns(resource.Object);
 
             var repo = new DataDictionaryRepo(factory.Object);
-            var result = repo.ListNavigationProperties("123", "tbl12");
+            var result = repo.ListNavigationProperties(id, "tbl12");
 
             Assert.AreEqual(0, result.Count());
         }

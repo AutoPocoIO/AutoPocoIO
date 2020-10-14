@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
-    <DefineConstants>NETCORE;EF31</DefineConstants>
+    <DefineConstants>EF31</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
     <DefineConstants>NETCORE;EF31</DefineConstants>

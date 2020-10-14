@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Net;
 
 namespace AutoPocoIO.test.Exceptions
@@ -25,8 +26,9 @@ namespace AutoPocoIO.test.Exceptions
         [TestMethod]
         public void ErrorMessageWithIdIsPopulated()
         {
-            var ex = new ConnectorNotFoundException(12);
-            Assert.AreEqual("Connector with Id '12' not found.", ex.Message);
+            Guid id = Guid.NewGuid();
+            var ex = new ConnectorNotFoundException(id);
+            Assert.AreEqual($"Connector with Id '{id}' not found.", ex.Message);
         }
 
         [TestMethod]
@@ -46,7 +48,8 @@ namespace AutoPocoIO.test.Exceptions
         [TestMethod]
         public void HttpStatusCodeWithIdIsPopulated()
         {
-            var ex = new ConnectorNotFoundException(12);
+            Guid id = Guid.NewGuid();
+            var ex = new ConnectorNotFoundException(id);
             Assert.AreEqual(HttpStatusCode.BadRequest, ex.ResponseCode);
         }
     }

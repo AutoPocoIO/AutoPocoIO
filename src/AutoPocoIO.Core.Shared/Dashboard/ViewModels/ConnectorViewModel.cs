@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.DynamicSchema.Util;
+using System;
 
 namespace AutoPocoIO.Dashboard.ViewModels
 {
@@ -10,7 +11,7 @@ namespace AutoPocoIO.Dashboard.ViewModels
         /// <summary>
         /// Unique connector id.
         /// </summary>
-        public string Id { get; set; }
+        public Guid? Id { get; set; }
         /// <summary>
         /// Friendly name for connector.
         /// </summary>

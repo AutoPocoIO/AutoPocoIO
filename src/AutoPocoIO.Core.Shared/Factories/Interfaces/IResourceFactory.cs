@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.Resources;
+using System;
 
 namespace AutoPocoIO.Factories
 {
@@ -16,7 +17,7 @@ namespace AutoPocoIO.Factories
         /// <returns></returns>
         /// <exception cref="System.ArgumentException"></exception>
         /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-        IOperationResource GetResource(string connectorId, string dbObjectName);
+        IOperationResource GetResource(Guid connectorId, string dbObjectName);
         /// <summary>
         /// Get resouce by connector id.
         /// </summary>
@@ -26,7 +27,7 @@ namespace AutoPocoIO.Factories
         /// <returns></returns>
         /// <exception cref="System.ArgumentException"></exception>
         /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-        IOperationResource GetResourceById(string connectorId, OperationType dbAction, string dbObjectName);
+        IOperationResource GetResourceById(Guid connectorId, OperationType dbAction, string dbObjectName);
         /// <summary>
         /// Get resouce by connector name.
         /// </summary>

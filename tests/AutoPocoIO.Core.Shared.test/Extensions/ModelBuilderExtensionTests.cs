@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Linq;
 
 namespace AutoPocoIO.test.Extensions
@@ -47,14 +48,14 @@ namespace AutoPocoIO.test.Extensions
 
             Assert.AreEqual(2, data.Length);
 
-            Assert.AreEqual("4b6b6ba7-0209-4b89-91cb-0e2a67aa37c1", data[0].Id);
+            Assert.AreEqual(Guid.Parse("4b6b6ba7-0209-4b89-91cb-0e2a67aa37c1"), data[0].Id);
             Assert.AreEqual("appDb", data[0].Name);
             Assert.AreEqual("", data[0].ResourceType);
             Assert.AreEqual("", data[0].ConnectionString);
             Assert.AreEqual("AutoPoco", data[0].Schema);
             Assert.AreEqual(500, data[0].RecordLimit);
 
-            Assert.AreEqual("4d74e770-54e9-4b0f-8f13-59ccb0808654", data[1].Id);
+            Assert.AreEqual(Guid.Parse("4d74e770-54e9-4b0f-8f13-59ccb0808654"), data[1].Id);
             Assert.AreEqual("logDb", data[1].Name);
             Assert.AreEqual("", data[1].ResourceType);
             Assert.AreEqual("", data[1].ConnectionString);
@@ -83,10 +84,10 @@ namespace AutoPocoIO.test.Extensions
 
             Assert.AreEqual(1, data.Length);
 
-            Assert.AreEqual("abd7f037-cc34-44fb-89f5-2e4a06772a01", data[0].Id);
+            Assert.AreEqual(Guid.Parse("abd7f037-cc34-44fb-89f5-2e4a06772a01"), data[0].Id);
             Assert.AreEqual("Response", data[0].Alias);
-            Assert.AreEqual("4d74e770-54e9-4b0f-8f13-59ccb0808654", data[0].PKConnectorId);
-            Assert.AreEqual("4d74e770-54e9-4b0f-8f13-59ccb0808654", data[0].FKConnectorId);
+            Assert.AreEqual(Guid.Parse("4d74e770-54e9-4b0f-8f13-59ccb0808654"), data[0].PKConnectorId);
+            Assert.AreEqual(Guid.Parse("4d74e770-54e9-4b0f-8f13-59ccb0808654"), data[0].FKConnectorId);
             Assert.AreEqual("Request", data[0].PKTableName);
             Assert.AreEqual("RequestId,RequestGuid", data[0].PKColumn);
             Assert.AreEqual("Response", data[0].FKTableName);

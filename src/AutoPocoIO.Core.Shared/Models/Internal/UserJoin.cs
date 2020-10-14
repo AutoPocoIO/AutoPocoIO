@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoPocoIO.Models
@@ -7,14 +8,14 @@ namespace AutoPocoIO.Models
     public class UserJoin
     {
         [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         [MaxLength(50)]
         [Required]
         public string Alias { get; set; }
         [ForeignKey("PKConnector")]
-        public string PKConnectorId { get; set; }
+        public Guid PKConnectorId { get; set; }
         [ForeignKey("FKConnector")]
-        public string FKConnectorId { get; set; }
+        public Guid FKConnectorId { get; set; }
         [MaxLength(100)]
         [Required]
         public string PKTableName { get; set; }

@@ -6,6 +6,7 @@ using AutoPocoIO.Middleware;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 
 namespace AutoPocoIO.test.Dashboard.Pages
@@ -13,6 +14,8 @@ namespace AutoPocoIO.test.Dashboard.Pages
     [TestClass]
     public class ConnectorPageTests : PageTestBase
     {
+        Guid id = Guid.NewGuid();
+
         [TestMethod]
         [TestCategory(TestCategories.Integration)]
         public void ConnectorsListRoute()
@@ -37,10 +40,10 @@ namespace AutoPocoIO.test.Dashboard.Pages
             SetupContext("post");
 
             var routes = new DashboardRoutes();
-            var dispatcher = routes.Routes.FindDispatcher(Context, "/Connectors/Delete/12");
+            var dispatcher = routes.Routes.FindDispatcher(Context, $"/Connectors/Delete/{id}");
 
             var page = new Mock<ConnectorsPage>(Mock.Of<IConnectorRepo>(), Mock.Of<ILayoutPage>());
-            page.Setup(c => c.Delete("12")).Verifiable();
+            page.Setup(c => c.Delete(id)).Verifiable();
 
             Services.AddSingleton(page.Object);
 
@@ -72,10 +75,10 @@ namespace AutoPocoIO.test.Dashboard.Pages
         {
             var list = new List<ConnectorViewModel>() { new ConnectorViewModel() };
             var repo = new Mock<IConnectorRepo>();
-            repo.Setup(c => c.Delete("123")).Verifiable();
+            repo.Setup(c => c.Delete(id)).Verifiable();
 
             var page = new ConnectorsPage(repo.Object, Mock.Of<ILayoutPage>());
-            page.Delete("123");
+            page.Delete(id);
 
             repo.Verify();
         }

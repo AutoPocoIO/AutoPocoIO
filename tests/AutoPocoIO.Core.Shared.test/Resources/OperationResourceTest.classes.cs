@@ -1,5 +1,4 @@
 ﻿using AutoPocoIO.DynamicSchema.Db;
-using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
@@ -15,7 +14,7 @@ namespace AutoPocoIO.test.Resources
     {
         private class ViewModel1
         {
-            public string Id { get; set; }
+            public Guid Id { get; set; }
             public string Name { get; set; }
             public string Name2 { get; set; }
         }

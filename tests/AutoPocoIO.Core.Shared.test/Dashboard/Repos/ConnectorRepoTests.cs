@@ -1,7 +1,6 @@
 ﻿using AutoPocoIO.Context;
 using AutoPocoIO.Dashboard.Repos;
 using AutoPocoIO.Dashboard.ViewModels;
-using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Factories;
 using AutoPocoIO.Models;
 using AutoPocoIO.Resources;
@@ -20,6 +19,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
         private DbContextOptions<AppDbContext> appDbOptions;
         private IConnectionStringFactory factory;
         private ConnectionInformation connectionInformation = null;
+        Guid id = Guid.NewGuid();
 
         [TestInitialize]
         public void Init()
@@ -65,7 +65,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
 
 
 
-            string id = repo.Insert(model);
+            Guid id = repo.Insert(model);
 
             Connector actual;
             using (var db1 = new AppDbContext(appDbOptions))
@@ -89,7 +89,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             {
                 db1.Connector.Add(new Connector
                 {
-                    Id = "12",
+                    Id = id,
                     Name = "name123"
                 });
 
@@ -101,7 +101,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
 
             ConnectorViewModel model = new ConnectorViewModel
             {
-                Id = "12",
+                Id = id,
                 Name = "name11",
                 ResourceType = "type1",
                 RecordLimit = 12,
@@ -135,7 +135,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             {
                 db1.Connector.Add(new Connector
                 {
-                    Id = "12",
+                    Id = id,
                     Name = "name123",
                     ResourceType = "type1",
                     ConnectionString = "conn1"
@@ -149,7 +149,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             resource.Setup(c => c.ResourceType).Returns("type1");
             var repo = new ConnectorRepo(db, factory, new IOperationResource[] { resource.Object });
             
-            var actual = repo.GetById("12");
+            var actual = repo.GetById(id);
 
             Assert.AreEqual("name123", actual.Name);
         }
@@ -161,12 +161,12 @@ namespace AutoPocoIO.test.Dashboard.Repos
             {
                 db1.Connector.AddRange(new Connector
                 {
-                    Id = "1",
+                    Id = id,
                     Name = "name123",
                 },
                 new Connector
                 {
-                    Id = "2",
+                    Id = Guid.NewGuid(),
                     Name = "aname123",
                 });
 
@@ -189,12 +189,12 @@ namespace AutoPocoIO.test.Dashboard.Repos
             {
                 db1.Connector.AddRange(new Connector
                 {
-                    Id = "1",
+                    Id = Guid.NewGuid(),
                     Name = "name123",
                 },
                 new Connector
                 {
-                    Id = "2",
+                    Id = id,
                     Name = "aname123",
                 });
 
@@ -204,7 +204,7 @@ namespace AutoPocoIO.test.Dashboard.Repos
             var db = new AppDbContext(appDbOptions);
             var repo = new ConnectorRepo(db, factory, new IOperationResource[] { });
 
-            repo.Delete("2");
+            repo.Delete(id);
 
             using (var db1 = new AppDbContext(appDbOptions))
             {
@@ -221,12 +221,12 @@ namespace AutoPocoIO.test.Dashboard.Repos
             {
                 db1.Connector.AddRange(new Connector
                 {
-                    Id = "1",
+                    Id = Guid.NewGuid(),
                     Name = "name123",
                 },
                 new Connector
                 {
-                    Id = "2",
+                    Id = Guid.NewGuid(),
                     Name = "aname123",
                 });
 

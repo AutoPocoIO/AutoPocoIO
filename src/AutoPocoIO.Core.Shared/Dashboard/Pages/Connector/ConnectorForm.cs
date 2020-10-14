@@ -4,6 +4,7 @@ using AutoPocoIO.Dashboard.Repos;
 using AutoPocoIO.Dashboard.ViewModels;
 using AutoPocoIO.Middleware;
 using AutoPocoIO.Middleware.Dispatchers;
+using System;
 using System.Collections.Generic;
 using static AutoPocoIO.AutoPocoConstants;
 
@@ -40,8 +41,8 @@ namespace AutoPocoIO.Dashboard.Pages
             _repo.Validate(model, errors);
             if (errors.Count == 0)
             {
-                string id;
-                if (string.IsNullOrEmpty(model.Id))
+                Guid id;
+                if (model.Id == null)
                 {
                     LoggingService.AddTableToLogger(DefaultConnectors.AppDB, DefaultTables.Connectors, HttpMethodType.POST);
                     id = _repo.Insert(model);
@@ -64,7 +65,7 @@ namespace AutoPocoIO.Dashboard.Pages
         /// Get connector by id and set viewbag
         /// </summary>
         /// <param name="id">Connector id</param>
-        public virtual void GetById(string id)
+        public virtual void GetById(Guid id)
         {
             ViewBag["resourceTypes"] = _repo.ListResoureTypes();
             ViewBag["model"] = _repo.GetById(id);
@@ -74,7 +75,7 @@ namespace AutoPocoIO.Dashboard.Pages
         {
             model = new ConnectorViewModel()
             {
-                Id = values.FindValue<string>("id"),
+                Id = values.FindValue<Guid?>("id"),
                 ResourceType = values.FindValue<string>("resourceType"),
                 Name = values.FindValue<string>("connectorName"),
                 DataSource = values.FindValue<string>("serverName"),

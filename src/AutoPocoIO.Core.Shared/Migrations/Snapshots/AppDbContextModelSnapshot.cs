@@ -19,7 +19,7 @@ namespace AutoPocoIO.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(128);
+                        .HasMaxLength(36);
 
                     b.Property<string>("ConnectionString");
 
@@ -83,7 +83,7 @@ namespace AutoPocoIO.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(128);
+                        .HasMaxLength(36);
 
                     b.Property<string>("Alias")
                         .IsRequired()
@@ -94,7 +94,7 @@ namespace AutoPocoIO.Migrations
                         .HasMaxLength(500);
 
                     b.Property<string>("FKConnectorId")
-                         .HasMaxLength(128);
+                         .HasMaxLength(36);
 
                     b.Property<string>("FKTableName")
                         .IsRequired()
@@ -105,7 +105,7 @@ namespace AutoPocoIO.Migrations
                         .HasMaxLength(500);
 
                     b.Property<string>("PKConnectorId")
-                            .HasMaxLength(128);
+                            .HasMaxLength(36);
 
                     b.Property<string>("PKTableName")
                         .IsRequired()

@@ -1,11 +1,9 @@
 ﻿using AutoPocoIO.Context;
-using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.Models;
 using AutoPocoIO.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System;
 
 namespace AutoPocoIO.test.Services
@@ -15,6 +13,7 @@ namespace AutoPocoIO.test.Services
     public class AppAdminServiceTests
     {
         DbContextOptions<AppDbContext> appDbOptions;
+        private Guid id = Guid.NewGuid();
 
         [TestInitialize]
         public void Init()
@@ -30,7 +29,7 @@ namespace AutoPocoIO.test.Services
             var db = new AppDbContext(appDbOptions);
             db.Connector.Add(new Connector
             {
-                Id = "1",
+                Id = id,
                 Name = "connName1",
                 IsActive = true
             });
@@ -40,7 +39,7 @@ namespace AutoPocoIO.test.Services
 
             var connector = appAdminService.GetConnection("connName1");
 
-            Assert.AreEqual("1", connector.Id);
+            Assert.AreEqual(id, connector.Id);
             Assert.AreEqual("connName1", connector.Name);
         }
 
@@ -106,14 +105,14 @@ namespace AutoPocoIO.test.Services
             var db = new AppDbContext(appDbOptions);
             db.Connector.Add(new Connector
             {
-                Id = "12",
+                Id = id,
                 Name = "connName1",
                 IsActive = true
             });
             db.SaveChanges();
 
             IAppAdminService appAdminService = new AppAdminService(db);
-            _ = appAdminService.GetConnectionById("45");
+            _ = appAdminService.GetConnectionById(Guid.NewGuid());
         }
 
         [TestMethod]
@@ -123,14 +122,14 @@ namespace AutoPocoIO.test.Services
             var db = new AppDbContext(appDbOptions);
             db.Connector.Add(new Connector
             {
-                Id = "45",
+                Id = id,
                 Name = "connName1",
                 IsActive = false
             });
             db.SaveChanges();
 
             IAppAdminService appAdminService = new AppAdminService(db);
-            _ = appAdminService.GetConnectionById("45");
+            _ = appAdminService.GetConnectionById(id);
         }
     }
 }

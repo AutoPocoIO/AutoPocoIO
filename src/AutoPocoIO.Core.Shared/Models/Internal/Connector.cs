@@ -16,14 +16,14 @@ namespace AutoPocoIO.Models
         /// </summary>
         public Connector()
         {
-            Id = Guid.NewGuid().ToString();
+            Id = Guid.NewGuid();
         }
 
         /// <summary>
         /// Unique connector id.
         /// </summary>
         [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         /// <summary>
         /// Friendly name for connector.
         /// </summary>

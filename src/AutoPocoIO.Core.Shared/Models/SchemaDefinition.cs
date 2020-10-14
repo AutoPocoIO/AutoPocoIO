@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace AutoPocoIO.Models
@@ -17,7 +18,7 @@ namespace AutoPocoIO.Models
         /// Database id for the connector
         /// </summary>
         [JsonProperty(Order = -2)]
-        public string ConnectorId { get; set; }
+        public Guid ConnectorId { get; set; }
 
         /// <summary>
         /// Alias of the connector

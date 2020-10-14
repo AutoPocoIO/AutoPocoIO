@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AutoPocoIO.Models
 {
@@ -10,7 +11,7 @@ namespace AutoPocoIO.Models
         /// <summary>
         /// AutoPoco connector id
         /// </summary>
-        public string ConnectorId { get; set; }
+        public Guid ConnectorId { get; set; }
 
         /// <summary>
         /// AutoPoco connector name

@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.Dashboard.ViewModels;
+using System;
 using System.Collections.Generic;
 
 namespace AutoPocoIO.Dashboard.Repos
@@ -23,19 +24,19 @@ namespace AutoPocoIO.Dashboard.Repos
         /// </summary>
         /// <param name="model">Values to update connector.</param>
         /// <returns></returns>
-        string Save(ConnectorViewModel model);
+        Guid Save(ConnectorViewModel model);
         /// <summary>
         /// Get a single connector
         /// </summary>
         /// <param name="id">Connector Id</param>
         /// <returns></returns>
-        ConnectorViewModel GetById(string id);
+        ConnectorViewModel GetById(Guid id);
         /// <summary>
         /// Insert a connector.
         /// </summary>
         /// <param name="model">Values to create a connector.</param>
         /// <returns></returns>
-        string Insert(ConnectorViewModel model);
+        Guid Insert(ConnectorViewModel model);
         /// <summary>
         /// Validate connector values on Insert/Update
         /// </summary>
@@ -46,7 +47,7 @@ namespace AutoPocoIO.Dashboard.Repos
         /// Remove connector.
         /// </summary>
         /// <param name="id">Connector Id to remove.</param>
-        void Delete(string id);
+        void Delete(Guid id);
         /// <summary>
         /// List all registered resource types
         /// </summary>

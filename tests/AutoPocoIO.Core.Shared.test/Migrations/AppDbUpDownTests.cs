@@ -62,7 +62,7 @@ namespace AutoPocoIO.test.Migrations
 
             Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "Id").ClrType);
             Assert.IsFalse(op.Columns.First(c => c.Name == "Id").IsNullable);
-            Assert.AreEqual(128, op.Columns.First(c => c.Name == "Id").MaxLength);
+            Assert.AreEqual(36, op.Columns.First(c => c.Name == "Id").MaxLength);
 
             Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "Name").ClrType);
             Assert.IsTrue(op.Columns.First(c => c.Name == "Name").IsNullable);
@@ -117,12 +117,12 @@ namespace AutoPocoIO.test.Migrations
             var fk = op.ForeignKeys.First(c => c.Name == "FK_UserJoin_Connector_FKConnectorId");
             CollectionAssert.AreEqual(new[] { "FKConnectorId" }, fk.Columns);
             Assert.AreEqual("AutoPoco.Connector.Id", $"{fk.PrincipalSchema}.{fk.PrincipalTable}.{fk.PrincipalColumns[0]}");
-            Assert.AreEqual(ReferentialAction.Restrict, fk.OnDelete);
+            Assert.AreEqual(ReferentialAction.Cascade, fk.OnDelete);
 
             fk = op.ForeignKeys.First(c => c.Name == "FK_UserJoin_Connector_PKConnectorId");
             CollectionAssert.AreEqual(new[] { "PKConnectorId" }, fk.Columns);
             Assert.AreEqual("AutoPoco.Connector.Id", $"{fk.PrincipalSchema}.{fk.PrincipalTable}.{fk.PrincipalColumns[0]}");
-            Assert.AreEqual(ReferentialAction.Restrict, fk.OnDelete);
+            Assert.AreEqual(ReferentialAction.Cascade, fk.OnDelete);
 
 
             //Index
@@ -140,7 +140,7 @@ namespace AutoPocoIO.test.Migrations
 
             Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "Id").ClrType);
             Assert.IsFalse(op.Columns.First(c => c.Name == "Id").IsNullable);
-            Assert.AreEqual(128, op.Columns.First(c => c.Name == "Id").MaxLength);
+            Assert.AreEqual(36, op.Columns.First(c => c.Name == "Id").MaxLength);
 
             Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "Alias").ClrType);
             Assert.IsFalse(op.Columns.First(c => c.Name == "Alias").IsNullable);
@@ -148,11 +148,11 @@ namespace AutoPocoIO.test.Migrations
 
             Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "PKConnectorId").ClrType);
             Assert.IsTrue(op.Columns.First(c => c.Name == "PKConnectorId").IsNullable);
-            Assert.AreEqual(128, op.Columns.First(c => c.Name == "PKConnectorId").MaxLength);
+            Assert.AreEqual(36, op.Columns.First(c => c.Name == "PKConnectorId").MaxLength);
 
             Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "FKConnectorId").ClrType);
             Assert.IsTrue(op.Columns.First(c => c.Name == "FKConnectorId").IsNullable);
-            Assert.AreEqual(128, op.Columns.First(c => c.Name == "FKConnectorId").MaxLength);
+            Assert.AreEqual(36, op.Columns.First(c => c.Name == "FKConnectorId").MaxLength);
 
             Assert.AreEqual(typeof(string), op.Columns.First(c => c.Name == "PKTableName").ClrType);
             Assert.IsFalse(op.Columns.First(c => c.Name == "PKTableName").IsNullable);

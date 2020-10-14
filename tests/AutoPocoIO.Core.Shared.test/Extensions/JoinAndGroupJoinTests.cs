@@ -1,10 +1,9 @@
 ﻿using AutoPocoIO.Context;
-using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Extensions;
 using AutoPocoIO.Models;
 using AutoPocoIO.test.TestHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 namespace AutoPocoIO.test.Extensions
@@ -13,6 +12,7 @@ namespace AutoPocoIO.test.Extensions
     [TestCategory(TestCategories.Unit)]
     public class JoinAndGroupJoinTests : DbAccessUnitTestBase
     {
+        
         private class ViewModel1
         {
             public string Id { get; set; }
@@ -31,15 +31,16 @@ namespace AutoPocoIO.test.Extensions
         [TestMethod]
         public void JoinWithStringValues()
         {
+            Guid id = Guid.NewGuid();
             var db = new AppDbContext(AppDbOptions);
             db.Connector.Add(new Connector
             {
-                Id = "1",
+                Id = id,
                 Name = "Name2"
             });
             db.UserJoin.Add(new UserJoin
             {
-                Id = "1",
+                Id = id,
                 Alias = "Alias"
             });
             db.SaveChanges();
