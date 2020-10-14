@@ -38,7 +38,7 @@ namespace AutoPocoIO.Api
         public IResourceFactory ResourceFactory { get; }
 
         /// <inheritdoc />
-        public (IQueryable<object> list, int connectorMax) GetAll(string connectorName, string tableName, ILoggingService loggingService = null)
+        public virtual (IQueryable<object> list, int connectorMax) GetAll(string connectorName, string tableName, ILoggingService loggingService = null)
         {
             Check.NotEmpty(connectorName, nameof(connectorName));
             Check.NotEmpty(tableName, nameof(tableName));
@@ -52,7 +52,7 @@ namespace AutoPocoIO.Api
         }
 
         /// <inheritdoc />
-        public IQueryable<TViewModel> GetAll<TViewModel>(string connectorName, string tableName, ILoggingService loggingService = null)
+        public virtual IQueryable<TViewModel> GetAll<TViewModel>(string connectorName, string tableName, ILoggingService loggingService = null)
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET);
             IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.read, tableName);
@@ -73,7 +73,7 @@ namespace AutoPocoIO.Api
         }
 
         /// <inheritdoc />
-        public object GetById(string connectorName, string tableName, ILoggingService loggingService, params object[] id)
+        public virtual object GetById(string connectorName, string tableName, ILoggingService loggingService, params object[] id)
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET, id);
 
@@ -83,13 +83,13 @@ namespace AutoPocoIO.Api
         }
 
         /// <inheritdoc />
-        public object GetById(string connectorName, string tableName, params object[] id)
+        public virtual object GetById(string connectorName, string tableName, params object[] id)
         {
             return GetById(connectorName, tableName, null, id);
         }
 
         /// <inheritdoc />
-        public TViewModel GetById<TViewModel>(string connectorName, string tableName, ILoggingService loggingService, params object[] id) where TViewModel : class
+        public virtual TViewModel GetById<TViewModel>(string connectorName, string tableName, ILoggingService loggingService, params object[] id) where TViewModel : class
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET, id);
 
@@ -108,13 +108,13 @@ namespace AutoPocoIO.Api
         }
 
         /// <inheritdoc />
-        public TViewModel GetById<TViewModel>(string connectorName, string tableName,  params object[] id) where TViewModel : class
+        public virtual TViewModel GetById<TViewModel>(string connectorName, string tableName,  params object[] id) where TViewModel : class
         {
             return GetById<TViewModel>(connectorName, tableName, null, id);
         }
 
         /// <inheritdoc />
-        public object CreateNewRow(string connectorName, string tableName, JToken value, ILoggingService loggingService = null)
+        public virtual object CreateNewRow(string connectorName, string tableName, JToken value, ILoggingService loggingService = null)
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.POST);
             Check.NotNull(value, nameof(value));
@@ -125,7 +125,7 @@ namespace AutoPocoIO.Api
         }
 
         /// <inheritdoc />
-        public TViewModel CreateNewRow<TViewModel>(string connectorName, string tableName, TViewModel value, ILoggingService loggingService = null) where TViewModel : class
+        public virtual TViewModel CreateNewRow<TViewModel>(string connectorName, string tableName, TViewModel value, ILoggingService loggingService = null) where TViewModel : class
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.POST);
 
@@ -136,7 +136,7 @@ namespace AutoPocoIO.Api
 
 
         /// <inheritdoc />
-        public object UpdateRow(string connectorName, string tableName, JToken value, ILoggingService loggingService = null)
+        public virtual object UpdateRow(string connectorName, string tableName, JToken value, ILoggingService loggingService = null)
         {
             Check.NotNull(value, nameof(value));
 
@@ -159,7 +159,7 @@ namespace AutoPocoIO.Api
         }
 
         /// <inheritdoc />
-        public TViewModel UpdateRow<TViewModel>(string connectorName, string tableName, TViewModel value, ILoggingService loggingService = null) where TViewModel : class
+        public virtual TViewModel UpdateRow<TViewModel>(string connectorName, string tableName, TViewModel value, ILoggingService loggingService = null) where TViewModel : class
         {
             IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.write, tableName);
 
@@ -181,7 +181,7 @@ namespace AutoPocoIO.Api
         }
 
         /// <inheritdoc />
-        public object DeleteRow(string connectorName, string tableName, ILoggingService loggingService, params object[] id)
+        public virtual object DeleteRow(string connectorName, string tableName, ILoggingService loggingService, params object[] id)
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.DELETE, id);
 
@@ -190,13 +190,13 @@ namespace AutoPocoIO.Api
         }
 
         /// <inheritdoc />
-        public object DeleteRow(string connectorName, string tableName, params object[] id)
+        public virtual object DeleteRow(string connectorName, string tableName, params object[] id)
         {
             return DeleteRow(connectorName, tableName, null, id);
         }
 
         /// <inheritdoc />
-        public TableDefinition Definition(string connectorName, string tableName, ILoggingService loggingService = null)
+        public virtual TableDefinition Definition(string connectorName, string tableName, ILoggingService loggingService = null)
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET);
             IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.Any, tableName);
@@ -204,7 +204,7 @@ namespace AutoPocoIO.Api
         }
 
         /// <inheritdoc />
-        public ColumnDefinition Definition(string connectorName, string tableName, string columnName, ILoggingService loggingService = null)
+        public virtual ColumnDefinition Definition(string connectorName, string tableName, string columnName, ILoggingService loggingService = null)
         {
             loggingService?.AddTableToLogger(connectorName, tableName, HttpMethodType.GET);
             IOperationResource resource = ResourceFactory.GetResource(connectorName, OperationType.Any, tableName);
