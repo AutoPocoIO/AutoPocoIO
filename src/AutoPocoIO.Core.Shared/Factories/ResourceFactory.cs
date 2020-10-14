@@ -56,7 +56,7 @@ namespace AutoPocoIO.Factories
             IOperationResource resource;
             try
             {
-                resource = _resources.First(c => c.ResourceType == connector.ResourceType);
+                resource = _resources.Last(c => c.ResourceType == connector.ResourceType);
             }
             catch (InvalidOperationException)
             {
