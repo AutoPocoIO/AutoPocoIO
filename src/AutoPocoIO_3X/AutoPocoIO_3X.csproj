@@ -48,9 +48,6 @@
       <IncludeAssets>runtime;build;analyzers</IncludeAssets>
     </PackageReference>
 
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[3.1.0, 3.2)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.*" />
-    
     <ProjectReference Include="..\AutoPocoIO_3X.Core\AutoPocoIO_3X.Core.csproj" />
 
   </ItemGroup>
