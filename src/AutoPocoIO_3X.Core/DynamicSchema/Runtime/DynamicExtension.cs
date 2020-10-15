@@ -47,6 +47,7 @@ namespace AutoPocoIO.DynamicSchema.Runtime
             optionBuilder.ReplaceService<IQuerySqlGeneratorFactory, Services.CrossDb.QuerySqlGeneratorFactory>();
             optionBuilder.ReplaceService<IShapedQueryCompilingExpressionVisitorFactory, Services.CrossDb.RelationalShapedQueryCompilingExpressionVisitorFactory>();
             optionBuilder.ReplaceService<IQueryTranslationPostprocessorFactory, Services.CrossDb.RelationalQueryTranslationPostprocessorFactory>();
+            optionBuilder.ReplaceService<IRelationalSqlTranslatingExpressionVisitorFactory, Services.CrossDb.RelationalSqlTranslatingExpressionVisitorFactory>();
             return optionBuilder;
 
         }

@@ -20,7 +20,7 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 
     internal class RelationalQueryableMethodTranslatingExpressionVisitor : Microsoft.EntityFrameworkCore.Query.RelationalQueryableMethodTranslatingExpressionVisitor
     {
-        private readonly RelationalSqlTranslatingExpressionVisitor _sqlTranslator;
+        private readonly Microsoft.EntityFrameworkCore.Query.RelationalSqlTranslatingExpressionVisitor _sqlTranslator;
         private readonly IModel _model;
         protected readonly ISqlExpressionFactoryWithCrossDb _sqlExpressionFactory;
         private readonly RelationalProjectionBindingExpressionVisitor _projectionBindingExpressionVisitor;
@@ -863,11 +863,11 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
         private class WeakEntityExpandingExpressionVisitor : ExpressionVisitor
         {
             private SelectExpression _selectExpression;
-            private readonly RelationalSqlTranslatingExpressionVisitor _sqlTranslator;
+            private readonly Microsoft.EntityFrameworkCore.Query.RelationalSqlTranslatingExpressionVisitor _sqlTranslator;
             private readonly ISqlExpressionFactoryWithCrossDb _sqlExpressionFactory;
 
             public WeakEntityExpandingExpressionVisitor(
-                RelationalSqlTranslatingExpressionVisitor sqlTranslator,
+                Microsoft.EntityFrameworkCore.Query.RelationalSqlTranslatingExpressionVisitor sqlTranslator,
                 ISqlExpressionFactoryWithCrossDb sqlExpressionFactory)
             {
                 _sqlTranslator = sqlTranslator;
