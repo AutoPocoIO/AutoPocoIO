@@ -256,9 +256,14 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
                 var original1 = resultSelector.Parameters[0];
                 var original2 = resultSelector.Parameters[1];
 
-                var newResultSelectorBody = new ReplacingExpressionVisitor(
-                        new Expression[] { original1, original2 },
-                        new[] { translatedKey, source.ShaperExpression })
+                //Switched to dictionary 
+                var replacements = new Dictionary<Expression, Expression>
+                {
+                    { original1, translatedKey},
+                    {original2,  source.ShaperExpression}
+                };
+
+                var newResultSelectorBody = new ReplacingExpressionVisitor(replacements)
                     .Visit(resultSelector.Body);
 
                 newResultSelectorBody = ExpandWeakEntities(selectExpression, newResultSelectorBody);
