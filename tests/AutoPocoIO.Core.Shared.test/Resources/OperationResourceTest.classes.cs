@@ -22,6 +22,7 @@ namespace AutoPocoIO.test.Resources
         private class ViewModel2
         {
             public string Id1 { get; set; }
+            public Guid Id2 { get; set; }
             public string Name3 { get; set; }
             public string Name4 { get; set; }
         }

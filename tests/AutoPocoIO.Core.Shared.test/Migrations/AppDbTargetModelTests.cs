@@ -64,7 +64,7 @@ namespace AutoPocoIO.test.Migrations
 
             Assert.AreEqual(typeof(string), entity.FindProperty("Id").ClrType);
             Assert.AreEqual(ValueGenerated.OnAdd, entity.FindProperty("Id").ValueGenerated);
-            Assert.AreEqual(128, entity.FindProperty("Id").GetMaxLength());
+            Assert.AreEqual(36, entity.FindProperty("Id").GetMaxLength());
 
             Assert.AreEqual(typeof(string), entity.FindProperty("ConnectionString").ClrType);
             Assert.AreEqual(typeof(string), entity.FindProperty("DataSource").ClrType);
@@ -121,7 +121,7 @@ namespace AutoPocoIO.test.Migrations
 
             Assert.AreEqual(typeof(string), entity.FindProperty("Id").ClrType);
             Assert.AreEqual(ValueGenerated.OnAdd, entity.FindProperty("Id").ValueGenerated);
-            Assert.AreEqual(128, entity.FindProperty("Id").GetMaxLength());
+            Assert.AreEqual(36, entity.FindProperty("Id").GetMaxLength());
 
             Assert.AreEqual(typeof(string), entity.FindProperty("Alias").ClrType);
             Assert.AreEqual(50, entity.FindProperty("Alias").GetMaxLength());
@@ -132,7 +132,7 @@ namespace AutoPocoIO.test.Migrations
             Assert.IsFalse(entity.FindProperty("FKColumn").IsColumnNullable());
 
             Assert.AreEqual(typeof(string), entity.FindProperty("FKConnectorId").ClrType);
-            Assert.AreEqual(128, entity.FindProperty("FKConnectorId").GetMaxLength());
+            Assert.AreEqual(36, entity.FindProperty("FKConnectorId").GetMaxLength());
 
             Assert.AreEqual(typeof(string), entity.FindProperty("FKTableName").ClrType);
             Assert.AreEqual(100, entity.FindProperty("FKTableName").GetMaxLength());
@@ -143,7 +143,7 @@ namespace AutoPocoIO.test.Migrations
             Assert.IsFalse(entity.FindProperty("PKColumn").IsColumnNullable());
 
             Assert.AreEqual(typeof(string), entity.FindProperty("PKConnectorId").ClrType);
-            Assert.AreEqual(128, entity.FindProperty("PKConnectorId").GetMaxLength());
+            Assert.AreEqual(36, entity.FindProperty("PKConnectorId").GetMaxLength());
 
             Assert.AreEqual(typeof(string), entity.FindProperty("PKTableName").ClrType);
             Assert.AreEqual(100, entity.FindProperty("PKTableName").GetMaxLength());

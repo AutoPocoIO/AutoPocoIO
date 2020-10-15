@@ -161,7 +161,7 @@ namespace AutoPocoIO.test.Resources
                     PKColumn = "Id",
                     FKConnectorId = id,
                     FKTableName = "tbl2",
-                    FKColumn = "Id1",
+                    FKColumn = "Id2",
                 });
 
                 db.SaveChanges();
@@ -169,7 +169,7 @@ namespace AutoPocoIO.test.Resources
 
 
             var list = new List<ViewModel1> { new ViewModel1 { Id = id, Name = "a" }, new ViewModel1 { Id = id2, Name = "b" } }.AsQueryable();
-            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = "1", Name3 = "a1" }, new ViewModel2 { Id1 = "2", Name3 = "b1" } }.AsQueryable();
+            var ujlist = new List<ViewModel2> { new ViewModel2 { Id2 = id, Name3 = "a1" }, new ViewModel2 { Id2 = id2, Name3 = "b1" } }.AsQueryable();
 
             var pkTable = new Table { Database = "db1", Schema = "sch", Name = "tbl1" };
             pkTable.Columns.Add(new Column { PKName = "pk", ColumnName = "Id" });
@@ -197,12 +197,12 @@ namespace AutoPocoIO.test.Resources
 
             var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
             resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
-            IQueryable<dynamic> results = resource.GetResourceRecords(new Dictionary<string, string>() { { "$expand", "UJ_pkJoinListFromId1" } });
+            IQueryable<dynamic> results = resource.GetResourceRecords(new Dictionary<string, string>() { { "$expand", "UJ_pkJoinListFromId2" } });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             Assert.AreEqual("a", results.First().Name);
-            Assert.AreEqual(1, ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId1).Count());
-            Assert.AreEqual("a1", ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId1).First().Name3);
+            Assert.AreEqual(1, ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId2).Count());
+            Assert.AreEqual("a1", ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId2).First().Name3);
         }
 
         [TestMethod]
@@ -220,7 +220,7 @@ namespace AutoPocoIO.test.Resources
                     PKColumn = "Id,Name",
                     FKConnectorId = id,
                     FKTableName = "tbl2",
-                    FKColumn = "Id1,Name3",
+                    FKColumn = "Id2,Name3",
                 });
 
                 db.SaveChanges();
@@ -228,7 +228,7 @@ namespace AutoPocoIO.test.Resources
 
 
             var list = new List<ViewModel1> { new ViewModel1 { Id = id, Name = "a" }, new ViewModel1 { Id = id2, Name = "b" } }.AsQueryable();
-            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = "1", Name3 = "a" }, new ViewModel2 { Id1 = "2", Name3 = "b" } }.AsQueryable();
+            var ujlist = new List<ViewModel2> { new ViewModel2 { Id2 = id, Name3 = "a" }, new ViewModel2 { Id2 = id2, Name3 = "b" } }.AsQueryable();
 
             var pkTable = new Table { Database = "db1", Schema = "sch", Name = "tbl1" };
             pkTable.Columns.Add(new Column { PKName = "pk", ColumnName = "Id" });
@@ -256,12 +256,12 @@ namespace AutoPocoIO.test.Resources
 
             var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
             resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
-            IQueryable<dynamic> results = resource.GetResourceRecords(new Dictionary<string, string>() { { "$expand", "UJ_pkJoinListFromId1AndName3" } });
+            IQueryable<dynamic> results = resource.GetResourceRecords(new Dictionary<string, string>() { { "$expand", "UJ_pkJoinListFromId2AndName3" } });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             Assert.AreEqual("a", results.First().Name);
-            Assert.AreEqual(1, ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId1AndName3).Count());
-            Assert.AreEqual("a", ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId1AndName3).First().Name3);
+            Assert.AreEqual(1, ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId2AndName3).Count());
+            Assert.AreEqual("a", ((IEnumerable<dynamic>)results.First().UJ_pkJoinListFromId2AndName3).First().Name3);
         }
 
         [TestMethod]
@@ -394,7 +394,7 @@ namespace AutoPocoIO.test.Resources
                     Alias = "fkJoin",
                     PKConnectorId = id,
                     PKTableName = "tbl2",
-                    PKColumn = "Id1",
+                    PKColumn = "Id2",
                     FKConnectorId = id,
                     FKTableName = "tbl1",
                     FKColumn = "Id",
@@ -405,7 +405,7 @@ namespace AutoPocoIO.test.Resources
 
 
             var list = new List<ViewModel1> { new ViewModel1 { Id = id, Name = "a" }, new ViewModel1 { Id = id2, Name = "b" } }.AsQueryable();
-            var ujlist = new List<ViewModel2> { new ViewModel2 { Id1 = "1", Name3 = "a1" }, new ViewModel2 { Id1 = "2", Name3 = "b1" } }.AsQueryable();
+            var ujlist = new List<ViewModel2> { new ViewModel2 { Id2 = id, Name3 = "a1" }, new ViewModel2 { Id2 = id2, Name3 = "b1" } }.AsQueryable();
 
             var pkTable = new Table { Database = "db1", Schema = "sch", Name = "tbl1" };
             pkTable.Columns.Add(new Column { PKName = "pk", ColumnName = "Id" });
@@ -433,12 +433,12 @@ namespace AutoPocoIO.test.Resources
 
             var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
             resource.ConfigureAction(defaultConnector, OperationType.read, "tbl1");
-            IQueryable<dynamic> results = resource.GetResourceRecords(new Dictionary<string, string>() { { "$expand", "UJ_fkJoinListFromId1" } });
+            IQueryable<dynamic> results = resource.GetResourceRecords(new Dictionary<string, string>() { { "$expand", "UJ_fkJoinListFromId2" } });
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             Assert.AreEqual("a", results.First().Name);
-            Assert.AreEqual(1, ((IEnumerable<dynamic>)results.First().UJ_fkJoinListFromId1).Count());
-            Assert.AreEqual("a1", ((IEnumerable<dynamic>)results.First().UJ_fkJoinListFromId1).First().Name3);
+            Assert.AreEqual(1, ((IEnumerable<dynamic>)results.First().UJ_fkJoinListFromId2).Count());
+            Assert.AreEqual("a1", ((IEnumerable<dynamic>)results.First().UJ_fkJoinListFromId2).First().Name3);
         }
 
         [TestMethod]
@@ -590,7 +590,7 @@ namespace AutoPocoIO.test.Resources
         [TestMethod]
         public void GetResourceByIdWithNavProperties()
         {
-            var list = new[] { new { Id2 = "1", Name5 = "name1", ViewModel1 = new { Id = "3" }, OtherObject = new { other = 1 } } }
+            var list = new[] { new { Id2 = "1", Name5 = "name1", ViewModel1 = new { Id = id }, OtherObject = new { other = 1 } } }
                         .ToList()
                         .AsQueryable();
             defaultServices.AddSingleton(c =>
@@ -609,7 +609,7 @@ namespace AutoPocoIO.test.Resources
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
             Assert.IsInstanceOfType(results, typeof(ViewModel3));
             Assert.IsNull(results.GetType().GetProperty("OtherObject"));
-            Assert.AreEqual("3", results.ViewModel1.Id);
+            Assert.AreEqual(id, results.ViewModel1.Id);
         }
 
         [TestMethod]
