@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
-    internal class UnionExpression : SetOperationBase
+    public class UnionExpression : SetOperationBase
     {
         public UnionExpression(string alias, SelectExpression source1, SelectExpression source2, bool distinct)
             : base(alias, source1, source2, distinct)

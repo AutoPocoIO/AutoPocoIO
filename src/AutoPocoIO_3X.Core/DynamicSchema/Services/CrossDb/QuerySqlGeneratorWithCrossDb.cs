@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
-    internal class QuerySqlGeneratorWithCrossDb : Microsoft.EntityFrameworkCore.Query.QuerySqlGenerator
+    public class QuerySqlGeneratorWithCrossDb : Microsoft.EntityFrameworkCore.Query.QuerySqlGenerator
     {
         private static readonly Regex _composableSql
       = new Regex(@"^\s*?SELECT\b", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(value: 1000.0));
