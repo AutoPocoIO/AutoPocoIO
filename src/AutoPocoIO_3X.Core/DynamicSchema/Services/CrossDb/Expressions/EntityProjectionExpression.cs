@@ -99,7 +99,9 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
         public sealed override ExpressionType NodeType => ExpressionType.Extension;
         public override Type Type => EntityType.ClrType;
 
+#pragma warning disable CA1716 // Identifiers should not match keywords
         public virtual ColumnExpression BindProperty(IProperty property)
+#pragma warning restore CA1716 // Identifiers should not match keywords
         {
             if (!EntityType.IsAssignableFrom(property.DeclaringEntityType)
                 && !property.DeclaringEntityType.IsAssignableFrom(EntityType))

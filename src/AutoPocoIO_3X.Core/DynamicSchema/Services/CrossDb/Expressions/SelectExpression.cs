@@ -16,6 +16,7 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
     /// Override to add Datbase
     /// </summary>
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1304:Specify CultureInfo", Justification = "<Pending>")]
     public class SelectExpression : TableExpressionBase
     {
         private readonly IDictionary<EntityProjectionExpression, IDictionary<IProperty, int>> _entityProjectionCache
@@ -61,6 +62,7 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
             _orderings = orderings;
         }
 
+       
         internal SelectExpression(IEntityType entityType)
             : this(
                 entityType, new TableExpression(
@@ -295,7 +297,9 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
                     break;
 
                 default:
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
                     throw new InvalidOperationException("Invalid keySelector for Group By");
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
             }
         }
 
@@ -511,14 +515,18 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
                 || select2._projection.Any())
             {
                 throw new InvalidOperationException(
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
                     "Can't process set operations after client evaluation, consider moving the operation"
                     + " before the last Select() call (see issue #16243)");
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
             }
 
             if (select1._projectionMapping.Count != select2._projectionMapping.Count)
             {
                 // Should not be possible after compiler checks
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
                 throw new InvalidOperationException("Different projection mapping count in set operation");
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
             }
 
             foreach (var joinedMapping in select1._projectionMapping.Join(
@@ -541,7 +549,9 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
                     // TODO: with #15586 we'll be able to also allow different store types which are implicitly convertible to one another.
                     if (innerColumn1.TypeMapping.StoreType != innerColumn2.TypeMapping.StoreType)
                     {
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
                         throw new InvalidOperationException("Set operations over different store types are currently unsupported");
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
                     }
 
                     var alias = GenerateUniqueAlias(

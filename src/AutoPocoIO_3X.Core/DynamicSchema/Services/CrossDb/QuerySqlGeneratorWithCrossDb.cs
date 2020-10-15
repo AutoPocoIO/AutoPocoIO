@@ -134,7 +134,9 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
             {
                 // ReSharper disable once CoVariantArrayConversion
                 // InvariantCulture not needed since substitutions are all strings
+#pragma warning disable CA1305 // Specify IFormatProvider
                 sql = string.Format(sql, substitutions);
+#pragma warning restore CA1305 // Specify IFormatProvider
             }
 
             _relationalCommandBuilder.AppendLines(sql);
@@ -222,9 +224,12 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
         {
             Visit(projectionExpression.Expression);
 
+#pragma warning disable CA1307, CA1820 // Specify StringComparison
             if (!string.Equals(string.Empty, projectionExpression.Alias)
+
                 && !(projectionExpression.Expression is ColumnExpression column
                     && string.Equals(column.Name, projectionExpression.Alias)))
+#pragma warning restore CA1307, CA1820 // Specify StringComparison 
             {
                 _relationalCommandBuilder.Append(AliasSeparator + _sqlGenerationHelper.DelimitIdentifier(projectionExpression.Alias));
             }
@@ -565,7 +570,7 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
             return inExpression;
         }
 
-        private bool IsNonComposedSetOperation(SelectExpression selectExpression)
+        private static bool IsNonComposedSetOperation(SelectExpression selectExpression)
             => selectExpression.Offset == null
             && selectExpression.Limit == null
             && !selectExpression.IsDistinct

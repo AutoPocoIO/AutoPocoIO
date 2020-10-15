@@ -73,7 +73,9 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 
         private bool Equals(ColumnExpression columnExpression)
             => base.Equals(columnExpression)
+#pragma warning disable CA1307 // Specify StringComparison
                 && string.Equals(Name, columnExpression.Name)
+#pragma warning restore CA1307 // Specify StringComparison
                 && Table.Equals(columnExpression.Table)
                 && IsNullable == columnExpression.IsNullable;
 

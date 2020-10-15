@@ -572,7 +572,9 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
                 {
                     if (sqlExpression.TypeMapping == null)
                     {
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
                         throw new InvalidOperationException("Null TypeMapping in Sql Tree");
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
                     }
                 }
 

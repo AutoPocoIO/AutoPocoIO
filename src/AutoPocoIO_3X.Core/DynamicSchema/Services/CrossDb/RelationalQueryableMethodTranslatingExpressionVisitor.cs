@@ -25,7 +25,9 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
         protected readonly ISqlExpressionFactoryWithCrossDb _sqlExpressionFactory;
         private readonly RelationalProjectionBindingExpressionVisitor _projectionBindingExpressionVisitor;
         private readonly WeakEntityExpandingExpressionVisitor _weakEntityExpandingExpressionVisitor;
+#pragma warning disable CS0649 // Never assigned
         private readonly bool _subquery;
+#pragma warning restore CS0649 // Never assigned
 
         public RelationalQueryableMethodTranslatingExpressionVisitor(QueryableMethodTranslatingExpressionVisitorDependencies dependencies,
                                                                      RelationalQueryableMethodTranslatingExpressionVisitorDependencies relationalDependencies,
@@ -1016,7 +1018,9 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 
                     var joinPredicate = _sqlTranslator.Translate(Expression.Equal(outerKey, innerKey));
                     _selectExpression.AddLeftJoin(innerSelectExpression, joinPredicate, null);
+#pragma warning disable CA1826 // Do not use Enumerable methods on indexable collections. Instead use the collection directly
                     var leftJoinTable = ((LeftJoinExpression)_selectExpression.Tables.Last()).Table;
+#pragma warning restore CA1826 // Do not use Enumerable methods on indexable collections. Instead use the collection directly
                     innerShaper = new EntityShaperExpression(
                         targetEntityType,
                         new EntityProjectionExpression(targetEntityType, leftJoinTable, true),

@@ -533,7 +533,9 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 
                 if (extensionExpression is GroupByShaperExpression)
                 {
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
                     throw new InvalidOperationException("Client side GroupBy is not supported.");
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
                 }
 
                 return base.VisitExtension(extensionExpression);

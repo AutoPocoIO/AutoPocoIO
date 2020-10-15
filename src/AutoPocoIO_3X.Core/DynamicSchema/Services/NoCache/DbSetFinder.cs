@@ -29,14 +29,18 @@ namespace AutoPocoIO.DynamicSchema.Services.NoCache
                          && p.DeclaringType != typeof(DbContext)
                          && p.PropertyType.GetTypeInfo().IsGenericType
                          && (p.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>)
+#pragma warning disable CS0618 // Type or member is obsolete
                              || p.PropertyType.GetGenericTypeDefinition() == typeof(DbQuery<>)))
+#pragma warning restore CS0618 // Type or member is obsolete
                 .OrderBy(p => p.Name)
                 .Select(
                     p => new DbSetProperty(
                         p.Name,
                         p.PropertyType.GetTypeInfo().GenericTypeArguments.Single(),
                         p.SetMethod == null ? null : factory.Create(p),
+#pragma warning disable CS0618 // Type or member is obsolete
                         p.PropertyType.GetGenericTypeDefinition() == typeof(DbQuery<>)))
+#pragma warning restore CS0618 // Type or member is obsolete
                 .ToArray();
         }
 

@@ -245,7 +245,7 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
             }
         }
 
-        private EntityProjectionExpression GetMappedEntityProjectionExpression(SelectExpression selectExpression)
+        private static EntityProjectionExpression GetMappedEntityProjectionExpression(SelectExpression selectExpression)
            => (EntityProjectionExpression)selectExpression.GetMappedProjection(new ProjectionMember());
 
         private SqlExpression IsNotNull(IProperty property, EntityProjectionExpression entityProjection)
