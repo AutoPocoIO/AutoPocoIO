@@ -24,7 +24,6 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 
         public override Expression Process(Expression query)
         {
-            query = base.Process(query);
             query = new SelectExpressionProjectionApplyingExpressionVisitor().Visit(query);
             query = new CollectionJoinApplyingExpressionVisitor().Visit(query);
             query = new TableAliasUniquifyingExpressionVisitor().Visit(query);

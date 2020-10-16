@@ -25,9 +25,7 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
         protected readonly ISqlExpressionFactoryWithCrossDb _sqlExpressionFactory;
         private readonly RelationalProjectionBindingExpressionVisitor _projectionBindingExpressionVisitor;
         private readonly WeakEntityExpandingExpressionVisitor _weakEntityExpandingExpressionVisitor;
-#pragma warning disable CS0649 // Never assigned
         private readonly bool _subquery;
-#pragma warning restore CS0649 // Never assigned
 
         public RelationalQueryableMethodTranslatingExpressionVisitor(QueryableMethodTranslatingExpressionVisitorDependencies dependencies,
                                                                      RelationalQueryableMethodTranslatingExpressionVisitorDependencies relationalDependencies,
@@ -43,8 +41,16 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
         protected RelationalQueryableMethodTranslatingExpressionVisitor(RelationalQueryableMethodTranslatingExpressionVisitor parentVisitor)
             : base(parentVisitor)
         {
+            _model = parentVisitor._model;
+            _sqlTranslator = parentVisitor._sqlTranslator;
+            _weakEntityExpandingExpressionVisitor = parentVisitor._weakEntityExpandingExpressionVisitor;
+            _projectionBindingExpressionVisitor = new RelationalProjectionBindingExpressionVisitor(this, _sqlTranslator);
             _sqlExpressionFactory = parentVisitor._sqlExpressionFactory;
+            _subquery = true;
         }
+
+        protected override QueryableMethodTranslatingExpressionVisitor CreateSubqueryVisitor()
+           => new RelationalQueryableMethodTranslatingExpressionVisitor(this);
 
         protected override ShapedQueryExpression CreateShapedQueryExpression(Type elementType)
         {
