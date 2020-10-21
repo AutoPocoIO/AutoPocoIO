@@ -117,12 +117,12 @@ namespace AutoPocoIO.test.Migrations
             var fk = op.ForeignKeys.First(c => c.Name == "FK_UserJoin_Connector_FKConnectorId");
             CollectionAssert.AreEqual(new[] { "FKConnectorId" }, fk.Columns);
             Assert.AreEqual("AutoPoco.Connector.Id", $"{fk.PrincipalSchema}.{fk.PrincipalTable}.{fk.PrincipalColumns[0]}");
-            Assert.AreEqual(ReferentialAction.Cascade, fk.OnDelete);
+            Assert.AreEqual(ReferentialAction.Restrict, fk.OnDelete);
 
             fk = op.ForeignKeys.First(c => c.Name == "FK_UserJoin_Connector_PKConnectorId");
             CollectionAssert.AreEqual(new[] { "PKConnectorId" }, fk.Columns);
             Assert.AreEqual("AutoPoco.Connector.Id", $"{fk.PrincipalSchema}.{fk.PrincipalTable}.{fk.PrincipalColumns[0]}");
-            Assert.AreEqual(ReferentialAction.Cascade, fk.OnDelete);
+            Assert.AreEqual(ReferentialAction.Restrict, fk.OnDelete);
 
 
             //Index
