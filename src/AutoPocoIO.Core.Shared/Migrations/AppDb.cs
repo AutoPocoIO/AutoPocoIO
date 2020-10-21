@@ -54,14 +54,14 @@ namespace AutoPocoIO.Migrations
                         principalSchema: "AutoPoco",
                         principalTable: "Connector",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_UserJoin_Connector_PKConnectorId",
                         column: x => x.PKConnectorId,
                         principalSchema: "AutoPoco",
                         principalTable: "Connector",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
