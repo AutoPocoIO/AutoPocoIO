@@ -24,7 +24,7 @@ namespace AutoPocoIO.Extensions
         /// <param name="recordLimit">Maxium number or records to return.</param>
         /// <param name="queryString">Http request query strings to parse for odata syntax.</param>
         /// <returns></returns>
-        public static IQueryable<object> ApplyQuery<T>(this IQueryable<T> query, int recordLimit, IDictionary<string, string> queryString)
+        public static IQueryable<object> ApplyQuery(this IQueryable query, int recordLimit, IDictionary<string, string> queryString)
         {
             Check.NotNull(query, nameof(query));
             Check.NotNull(queryString, nameof(queryString));
