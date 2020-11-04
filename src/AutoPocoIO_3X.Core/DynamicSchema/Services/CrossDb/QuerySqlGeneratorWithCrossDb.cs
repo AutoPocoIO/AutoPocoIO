@@ -142,6 +142,13 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
             _relationalCommandBuilder.AppendLines(sql);
         }
 
+        protected override Expression VisitSqlFragment(SqlFragmentExpression sqlFragmentExpression)
+        {
+            _relationalCommandBuilder.Append(sqlFragmentExpression.Sql);
+
+            return sqlFragmentExpression;
+        }
+
         protected Expression VisitSelect(SelectExpression selectExpression)
         {
             if (IsNonComposedSetOperation(selectExpression))
@@ -294,6 +301,14 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
                 .Append(_sqlGenerationHelper.DelimitIdentifier(tableExpression.Alias));
 
             return tableExpression;
+        }
+
+        protected override Expression VisitSqlConstant(SqlConstantExpression sqlConstantExpression)
+        {
+            _relationalCommandBuilder
+                .Append(sqlConstantExpression.TypeMapping.GenerateSqlLiteral(sqlConstantExpression.Value));
+
+            return sqlConstantExpression;
         }
 
         protected override Expression VisitSqlParameter(SqlParameterExpression sqlParameterExpression)
