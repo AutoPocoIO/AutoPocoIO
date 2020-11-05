@@ -5,6 +5,7 @@ using AutoPocoIO.Factories;
 using AutoPocoIO.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace AutoPocoIO.Dashboard.Repos
@@ -45,7 +46,7 @@ namespace AutoPocoIO.Dashboard.Repos
             var data = resource.GetResourceRecords(new Dictionary<string, string>());
 
             var properties = new List<NavigationPropertyViewModel>();
-            foreach (var property in data.ElementType.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance))
+            foreach (var property in data.AsQueryable().ElementType.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance))
             {
                 if (property.PropertyType.IsClass && property.PropertyType != typeof(string))
                 {

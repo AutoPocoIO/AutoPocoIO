@@ -161,6 +161,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Internal\ResponseLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Internal\UserJoin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\LoggingApiContextValues.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\NavigationPropertyDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\SchemaDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\StoredProcedureDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\StoredProcedureParameterDefinition.cs" />

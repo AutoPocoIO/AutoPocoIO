@@ -3,8 +3,10 @@ using AutoPocoIO.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 
 namespace AutoPocoIO.test.Extensions
 {
@@ -212,6 +214,37 @@ namespace AutoPocoIO.test.Extensions
             _ = obj.AsDictionary();
             Assert.Fail("Exception not thrown");
         }
+
+
+        [TestMethod]
+        public void DynamicGroupJoin()
+        {
+            var listEntity = new List<Entity>
+            {
+                new Entity {Prop1 = 1, Prop2 = "1"},
+                new Entity {Prop1 = 4, Prop2 = "Still exists"}
+            };
+
+            var listEntity2 = new List<Entity2>
+            {
+                new Entity2 {Prop1 = 1, Prop3 = "123"},
+                new Entity2 {Prop1 = 2, Prop3 = "not this"}
+            };
+
+           var rtest= Enumerable.ToLookup(listEntity2, c => c.Prop1);
+
+            var group = listEntity.LeftJoin(listEntity2, "Prop1", "Prop1", "new(outer.Prop1, group as Entity2)")
+                .ToList();
+
+            Assert.AreEqual(2, group.Count);
+            Assert.AreEqual(1, group.First<dynamic>().Prop1);
+
+            var groupList = (IEnumerable<dynamic>)group.First<dynamic>().Entity2;
+
+            Assert.AreEqual(1, groupList.Count());
+            Assert.AreEqual("123", groupList.First<dynamic>().Prop3);
+        }
+
 
         private class NoProps { }
         private class Entity

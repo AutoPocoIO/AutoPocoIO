@@ -10,6 +10,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using DynamicExpression = System.Linq.Dynamic.Core.DynamicExpressionParser;
+using System.Linq.AutoPoco;
+using System.Collections;
 
 namespace AutoPocoIO.Extensions
 {
@@ -198,18 +200,82 @@ namespace AutoPocoIO.Extensions
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T">dynamic list</typeparam>
-        /// <param name="outer">outer side of the join</param>
-        /// <param name="inner">inner side of the join</param>
-        /// <param name="outerSelector">key value to join on. Example 1: outer.id, Example 2: new(outer.id, outer.name) </param>
-        /// <param name="innerSelector">key value to join on. Example 1: inner.id, Example 2: new(inner.id, inner.name)</param>
-        /// <param name="resultsSelector">How to display results. Example : new(group as Address, outer.name as Homeowner)</param>
-        /// <param name="values">Parameters</param>
-        /// <returns></returns>
-        public static IQueryable<T> GroupJoin<T>(this IQueryable<T> outer, IQueryable<T> inner, string outerSelector, string innerSelector, string resultsSelector, params object[] values)
+#if EF22
+             public static IEnumerable<T> LeftJoin<T>(this IQueryable<T> outer, IQueryable<T> inner, string outerSelector, string innerSelector, string resultsSelector, params object[] values)
+             {
+                    return GroupJoins<T>(outer, inner, outerSelector, innerSelector, resultsSelector);
+             }
+#else
+        public static IEnumerable<object> LeftJoin(this IEnumerable outer, IEnumerable inner, string outerKeySelector, string innerKeySelector, string resultSelector, params object[] values)
+        {
+            Check.NotNull(outer, nameof(outer));
+            Check.NotNull(inner, nameof(inner));
+            Check.NotEmpty(outerKeySelector, nameof(outerKeySelector));
+            Check.NotEmpty(innerKeySelector, nameof(innerKeySelector));
+
+            Check.NotEmpty(resultSelector, nameof(resultSelector));
+
+            Type innerElementType = inner.AsQueryable().ElementType;
+
+            var outerParameter = Expression.Parameter(outer.AsQueryable().ElementType, "outer");
+            var innerParameter = Expression.Parameter(innerElementType, "inner");
+            var groupParameter = Expression.Parameter(typeof(IEnumerable<>)
+                .MakeGenericType(innerElementType), "group");
+
+            LambdaExpression outerLambda = DynamicExpression.ParseLambda(new[] { outerParameter },
+               null, outerKeySelector, values);
+
+            LambdaExpression innerLambda = DynamicExpression.ParseLambda(new[] { innerParameter },
+               outerLambda.Body.Type, innerKeySelector, values);
+
+            LambdaExpression resultLambda = DynamicExpression.ParseLambda(new[] { outerParameter, groupParameter },
+                null, resultSelector, values);
+
+            MethodInfo method = typeof(Enumerable).GetMethods().First(c => c.Name == "ToLookup")
+                .MakeGenericMethod(new[] { innerElementType, outerLambda.Body.Type });
+
+            MethodInfo containsMethod = typeof(DynamicObjectExtensions).GetMethod(nameof(DynamicContans), BindingFlags.Static | BindingFlags.NonPublic)
+                 .MakeGenericMethod(new[] { outerLambda.Body.Type, innerElementType });
+
+            var lookup = Expression.Lambda(Expression.Call(method,
+              Expression.Constant(inner),
+              innerLambda)).Compile().DynamicInvoke();
+
+            foreach(var outerElement in outer)
+            {
+                var key = outerLambda.Compile().DynamicInvoke(outerElement);
+                var val = Expression.Lambda(Expression.Call(containsMethod,
+                                            Expression.Constant(lookup),
+                                            Expression.Constant(key)))
+                                    .Compile()
+                                    .DynamicInvoke();
+
+                yield return resultLambda.Compile().DynamicInvoke(outerElement, val);
+
+            }
+
+
+        }
+
+        private static IEnumerable<TSource> DynamicContans<TKey, TSource>(ILookup<TKey, TSource> lookup, TKey key)
+        {
+            return lookup.Contains(key) ? lookup[key] : new List<TSource>();
+        }    
+
+#endif
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <typeparam name="T">dynamic list</typeparam>
+            /// <param name="outer">outer side of the join</param>
+            /// <param name="inner">inner side of the join</param>
+            /// <param name="outerSelector">key value to join on. Example 1: outer.id, Example 2: new(outer.id, outer.name) </param>
+            /// <param name="innerSelector">key value to join on. Example 1: inner.id, Example 2: new(inner.id, inner.name)</param>
+            /// <param name="resultsSelector">How to display results. Example : new(group as Address, outer.name as Homeowner)</param>
+            /// <param name="values">Parameters</param>
+            /// <returns></returns>
+            public static IQueryable<T> GroupJoin<T>(this IQueryable<T> outer, IQueryable<T> inner, string outerSelector, string innerSelector, string resultsSelector, params object[] values)
         {
             return (IQueryable<T>)GroupJoin((IQueryable)outer, (IQueryable)inner, outerSelector, innerSelector, resultsSelector, values);
         }

@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.Exceptions;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -18,20 +19,21 @@ namespace System.Linq.AutoPoco
     internal static class DynamicQueryable
     {
 
-        public static IQueryable<T> ProjectTo<T>(this IQueryable source)
+        public static IQueryable<T> ProjectTo<T>(this IEnumerable source)
         {
-            Type sourceType = source.ElementType;
+            var sourceAsQueryable = source.AsQueryable();
+            Type sourceType = sourceAsQueryable.ElementType;
             Type destType = typeof(T);
 
             var values = new List<object>();
             string selector = AddProperties(sourceType, destType, values);
 
-            LambdaExpression lambda = DynamicExpression.ParseLambda(source.ElementType, destType, selector, values.ToArray());
-            return (IQueryable<T>)source.Provider.CreateQuery(
+            LambdaExpression lambda = DynamicExpression.ParseLambda(sourceAsQueryable.ElementType, destType, selector, values.ToArray());
+            return (IQueryable<T>)sourceAsQueryable.Provider.CreateQuery(
                 Expression.Call(
                     typeof(Queryable), "Select",
-                    new Type[] { source.ElementType, lambda.Body.Type },
-                    source.Expression, Expression.Quote(lambda)));
+                    new Type[] { sourceAsQueryable.ElementType, lambda.Body.Type },
+                    sourceAsQueryable.Expression, Expression.Quote(lambda)));
 
 
         }
