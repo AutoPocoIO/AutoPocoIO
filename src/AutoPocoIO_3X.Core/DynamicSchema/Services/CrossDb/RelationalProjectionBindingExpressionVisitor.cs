@@ -14,7 +14,7 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
     /// <summary>
     /// Cross db override
     /// </summary>
-    internal class RelationalProjectionBindingExpressionVisitor : Microsoft.EntityFrameworkCore.Query.Internal.RelationalProjectionBindingExpressionVisitor
+    internal class RelationalProjectionBindingExpressionVisitor : ExpressionVisitor//Microsoft.EntityFrameworkCore.Query.Internal.RelationalProjectionBindingExpressionVisitor
     {
         private readonly RelationalQueryableMethodTranslatingExpressionVisitor _queryableMethodTranslatingExpressionVisitor;
         private readonly Microsoft.EntityFrameworkCore.Query.RelationalSqlTranslatingExpressionVisitor _sqlTranslator;
@@ -31,7 +31,7 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
         public RelationalProjectionBindingExpressionVisitor(
             Microsoft.EntityFrameworkCore.Query.RelationalQueryableMethodTranslatingExpressionVisitor queryableMethodTranslatingExpressionVisitor,
             Microsoft.EntityFrameworkCore.Query.RelationalSqlTranslatingExpressionVisitor sqlTranslatingExpressionVisitor)
-            : base(queryableMethodTranslatingExpressionVisitor, sqlTranslatingExpressionVisitor)
+            //: base(queryableMethodTranslatingExpressionVisitor, sqlTranslatingExpressionVisitor)
         {
             _queryableMethodTranslatingExpressionVisitor = queryableMethodTranslatingExpressionVisitor as RelationalQueryableMethodTranslatingExpressionVisitor;
             _sqlTranslator = sqlTranslatingExpressionVisitor;

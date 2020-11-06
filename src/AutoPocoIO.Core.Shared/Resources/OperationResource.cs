@@ -503,11 +503,12 @@ namespace AutoPocoIO.Resources
                     expandTables.Remove(UserJoinReverseListName(userJoin));
             }
 
+            Type orginialType = list.ElementType;
             foreach(var nav in expandTables)
             {
                 list = list.Include(nav);
             }
-            return list;
+            return (IQueryable<object>) list.OfType(orginialType);
         }
         private IQueryable<object> ExpandUserJoins(IQueryable<object> list, IDictionary<string, string> queryString)
         {
