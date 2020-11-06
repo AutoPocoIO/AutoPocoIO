@@ -206,7 +206,23 @@ namespace AutoPocoIO.Extensions
                     return GroupJoins<T>(outer, inner, outerSelector, innerSelector, resultsSelector);
              }
 #else
-        public static IEnumerable<object> LeftJoin(this IEnumerable outer, IEnumerable inner, string outerKeySelector, string innerKeySelector, string resultSelector, params object[] values)
+
+
+        public static (IEnumerable<object> results, Type resultType) LeftJoinWithResultType(this IEnumerable outer, IEnumerable inner, string outerKeySelector, string innerKeySelector, string resultSelector, params object[] values)
+        {
+            Type innerElementType = inner.AsQueryable().ElementType;
+
+            var outerParameter = Expression.Parameter(outer.AsQueryable().ElementType, "outer");
+            var groupParameter = Expression.Parameter(typeof(IEnumerable<>)
+                .MakeGenericType(innerElementType), "group");
+
+            LambdaExpression resultLambda = DynamicExpression.ParseLambda(new[] { outerParameter, groupParameter },
+                null, resultSelector, values);
+
+            return (outer.LeftJoin(inner, outerKeySelector, innerKeySelector, resultSelector, values), resultLambda.Body.Type);
+        }
+
+        public static IQueryable<object> LeftJoin(this IEnumerable outer, IEnumerable inner, string outerKeySelector, string innerKeySelector, string resultSelector, params object[] values)
         {
             Check.NotNull(outer, nameof(outer));
             Check.NotNull(inner, nameof(inner));
@@ -241,41 +257,42 @@ namespace AutoPocoIO.Extensions
               Expression.Constant(inner),
               innerLambda)).Compile().DynamicInvoke();
 
+            List<object> retList = new List<object>();
             foreach(var outerElement in outer)
             {
                 var key = outerLambda.Compile().DynamicInvoke(outerElement);
                 var val = Expression.Lambda(Expression.Call(containsMethod,
                                             Expression.Constant(lookup),
-                                            Expression.Constant(key)))
+                                            Expression.Convert(Expression.Constant(key), outerLambda.Body.Type)))
                                     .Compile()
                                     .DynamicInvoke();
 
-                yield return resultLambda.Compile().DynamicInvoke(outerElement, val);
+                retList.Add(resultLambda.Compile().DynamicInvoke(outerElement, val));
 
             }
 
-
+            return (IQueryable<object>)System.Linq.Dynamic.Core.DynamicQueryableExtensions.OfType(retList.AsQueryable(), resultLambda.Body.Type);
         }
 
         private static IEnumerable<TSource> DynamicContans<TKey, TSource>(ILookup<TKey, TSource> lookup, TKey key)
         {
             return lookup.Contains(key) ? lookup[key] : new List<TSource>();
-        }    
+        }
 
 #endif
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <typeparam name="T">dynamic list</typeparam>
-            /// <param name="outer">outer side of the join</param>
-            /// <param name="inner">inner side of the join</param>
-            /// <param name="outerSelector">key value to join on. Example 1: outer.id, Example 2: new(outer.id, outer.name) </param>
-            /// <param name="innerSelector">key value to join on. Example 1: inner.id, Example 2: new(inner.id, inner.name)</param>
-            /// <param name="resultsSelector">How to display results. Example : new(group as Address, outer.name as Homeowner)</param>
-            /// <param name="values">Parameters</param>
-            /// <returns></returns>
-            public static IQueryable<T> GroupJoin<T>(this IQueryable<T> outer, IQueryable<T> inner, string outerSelector, string innerSelector, string resultsSelector, params object[] values)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T">dynamic list</typeparam>
+        /// <param name="outer">outer side of the join</param>
+        /// <param name="inner">inner side of the join</param>
+        /// <param name="outerSelector">key value to join on. Example 1: outer.id, Example 2: new(outer.id, outer.name) </param>
+        /// <param name="innerSelector">key value to join on. Example 1: inner.id, Example 2: new(inner.id, inner.name)</param>
+        /// <param name="resultsSelector">How to display results. Example : new(group as Address, outer.name as Homeowner)</param>
+        /// <param name="values">Parameters</param>
+        /// <returns></returns>
+        public static IQueryable<T> GroupJoin<T>(this IQueryable<T> outer, IQueryable<T> inner, string outerSelector, string innerSelector, string resultsSelector, params object[] values)
         {
             return (IQueryable<T>)GroupJoin((IQueryable)outer, (IQueryable)inner, outerSelector, innerSelector, resultsSelector, values);
         }

@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 
 namespace AutoPocoIO.test.Extensions
 {
@@ -234,6 +235,35 @@ namespace AutoPocoIO.test.Extensions
            var rtest= Enumerable.ToLookup(listEntity2, c => c.Prop1);
 
             var group = listEntity.LeftJoin(listEntity2, "Prop1", "Prop1", "new(outer.Prop1, group as Entity2)")
+               .ToList();
+
+            Assert.AreEqual(2, group.Count);
+            Assert.AreEqual(1, group.First<dynamic>().Prop1);
+
+            var groupList = (IEnumerable<dynamic>)group.First<dynamic>().Entity2;
+
+            Assert.AreEqual(1, groupList.Count());
+            Assert.AreEqual("123", groupList.First<dynamic>().Prop3);
+        }
+
+        [TestMethod]
+        public void DynamicGroupJoinWithNullableCast()
+        {
+            var listEntity = new List<Entity>
+            {
+                new Entity {Prop1 = 1, Prop2 = "1"},
+                new Entity {Prop1 = 4, Prop2 = "Still exists"}
+            };
+
+            var listEntity2 = new List<Entity2>
+            {
+                new Entity2 {Prop1 = 1, Prop3 = "123"},
+                new Entity2 {Prop1 = 2, Prop3 = "not this"}
+            };
+
+            var rtest = Enumerable.ToLookup(listEntity2, c => c.Prop1);
+
+           var group = listEntity.LeftJoin(listEntity2, "Int32?(Prop1)", "Int32?(Prop1)", "new(outer.Prop1, group as Entity2)")
                 .ToList();
 
             Assert.AreEqual(2, group.Count);
@@ -243,6 +273,33 @@ namespace AutoPocoIO.test.Extensions
 
             Assert.AreEqual(1, groupList.Count());
             Assert.AreEqual("123", groupList.First<dynamic>().Prop3);
+        }
+
+        [TestMethod]
+        public void DynamicGroupJoinWithNestedSelectInResults()
+        {
+            var listEntity = new List<Entity>
+            {
+                new Entity {Prop1 = 1, Prop2 = "1"},
+                new Entity {Prop1 = 4, Prop2 = "Still exists"}
+            };
+
+            var listEntity2 = new List<Entity2>
+            {
+                new Entity2 {Prop1 = 1, Prop3 = "123"},
+                new Entity2 {Prop1 = 2, Prop3 = "not this"}
+            };
+
+            var rtest = Enumerable.ToLookup(listEntity2, c => c.Prop1);
+
+            var group = listEntity.LeftJoin(listEntity2, "Int32?(Prop1)", "Int32?(Prop1)", "new(outer.Prop1, group as Entity2)");
+            var groupListSubSelect = group.Select("new(Prop1 as Prop2, Entity2.Select(new(Prop3)) as Nested)");
+
+            Assert.AreEqual(2, groupListSubSelect.Count());
+
+            var groupList = (IEnumerable<dynamic>)(groupListSubSelect.First().Nested);
+            Assert.AreEqual("123", groupList.First().Prop3);
+            
         }
 
 

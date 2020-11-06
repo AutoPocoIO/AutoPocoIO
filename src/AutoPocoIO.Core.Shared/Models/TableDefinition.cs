@@ -37,5 +37,9 @@ namespace AutoPocoIO.Models
         /// List of table column details
         /// </summary>
         public IEnumerable<ColumnDefinition> Columns { get; set; }
+        /// <summary>
+        /// List of available joins
+        /// </summary>
+        public IEnumerable<NavigationPropertyDefinition> NavigationProperties { get; set; }
     }
 }

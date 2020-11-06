@@ -207,6 +207,12 @@ namespace System.Linq.AutoPoco
             return Expression.Lambda(parser.Parse(resultType), parameters);
         }
 
+        public static LambdaExpression ParseLambda(ParameterExpression[] parameters, Type resultType, string expression, params object[] values)
+        {
+            ExpressionParser parser = new ExpressionParser(parameters, expression, values, resultType);
+            return Expression.Lambda(parser.Parse(resultType), parameters);
+        }
+
         public static Type CreateClass(IEnumerable<DynamicProperty> properties)
         {
             return ClassFactory.Instance().GetDynamicClass(properties);

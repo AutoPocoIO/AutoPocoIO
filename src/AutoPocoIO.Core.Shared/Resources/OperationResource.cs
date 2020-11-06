@@ -1,4 +1,5 @@
 ﻿using AutoPocoIO.Context;
+using AutoPocoIO.CustomAttributes;
 using AutoPocoIO.DynamicSchema.Db;
 using AutoPocoIO.DynamicSchema.Enums;
 using AutoPocoIO.DynamicSchema.Models;
@@ -16,9 +17,11 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.AutoPoco;
 using System.Linq.Dynamic.Core;
+using System.Reflection;
 
 namespace AutoPocoIO.Resources
 {
@@ -172,6 +175,7 @@ namespace AutoPocoIO.Resources
             LoadDbAdapter();
             IQueryable<object> list = (IQueryable<object>)Db.GetAll(DbSchema.GetTableName(DatabaseName, SchemaName, DbObjectName));
 
+            list = ExpandNavProperties(list, queryString);
             list = ExpandUserJoins(list, queryString);
 
             return list;
@@ -356,7 +360,7 @@ namespace AutoPocoIO.Resources
         public virtual TableDefinition GetTableDefinition()
         {
             this.LoadDbAdapter();
-            return DbSchema.Tables
+            TableDefinition definition = DbSchema.Tables
                                      .Where(c => DbObjectName.Equals(c.Name, StringComparison.OrdinalIgnoreCase))
                                      .Select(c => new TableDefinition
                                      {
@@ -382,6 +386,85 @@ namespace AutoPocoIO.Resources
                                          })
                                      })
                                      .FirstOrDefault();
+
+
+            definition.NavigationProperties = ListNavigationProperties();
+            return definition;
+        }
+
+        protected virtual IEnumerable<NavigationPropertyDefinition> ListNavigationProperties()
+        {
+            Db.SetupDataContext(DbSchema.GetTableName(DatabaseName, SchemaName, DbObjectName));
+
+            var properties = Db.DbSetEntityType.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+            var fkAttrs = properties.Select(c => new { Attr = c.GetCustomAttribute<ForeignKeyAttribute>(), Name = c.Name })
+                                   .Where(c => c.Attr != null);
+
+            var inverseAttrs = properties.Select(c => new { Attr = c.GetCustomAttribute<InversePropertyAttribute>(), Name = c.Name })
+                                    .Where(c => c.Attr != null);
+
+            foreach (var property in properties)
+            {
+                if (property.PropertyType.IsClass && property.PropertyType != typeof(string)
+                    && property.GetCustomAttribute<ReferencedDbObjectAttribute>() != null)
+                {
+                    NavigationPropertyDefinition navigationProperty = new NavigationPropertyDefinition()
+                    {
+                        Name = property.Name,
+                        ReferencedSchema = property.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName,
+                        ReferencedTable = property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName,
+
+                    };
+                    if (typeof(System.Collections.IEnumerable).IsAssignableFrom(property.PropertyType))
+                    {
+                        navigationProperty.Relationship = "Many to 1";
+                    }
+                    else
+                    {
+                        navigationProperty.Relationship = "1 to Many";
+
+                    }
+
+                    //Self referencing fk
+                    if (property.GetCustomAttribute<InversePropertyAttribute>() == null)
+                    {
+                        navigationProperty.FromProperty = DbSchema.Tables.FirstOrDefault(c => c.Name == property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName).PrimaryKeys;
+                        navigationProperty.ToProperty = string.Join(", ", fkAttrs.Where(c => c.Attr.Name == property.Name)
+                                                                .Select(c => c.Name));
+                    }
+                    else
+                    {
+                        var inverseProperty = property.GetCustomAttribute<InversePropertyAttribute>().Property;
+
+
+                        navigationProperty.ToProperty = DbSchema.Tables.FirstOrDefault(c => c.Name == property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName).PrimaryKeys;
+                        navigationProperty.FromProperty = string.Join(", ", fkAttrs.Where(c => c.Attr.Name == inverseProperty)
+                                                               .Select(c => c.Name));
+                    }
+
+                    yield return navigationProperty;
+
+
+                   
+                }
+            }
+
+            var userJoins = Config.UserDefinedJoins;
+
+            foreach (var userJoin in userJoins)
+            {
+                yield return new NavigationPropertyDefinition()
+                {
+                    Name = UserJoinListName(userJoin),
+                    ReferencedSchema = userJoin.DependentSchema,
+                    ReferencedTable = userJoin.DependentTable,
+                    FromProperty = userJoin.PrincipalColumns,
+                    ToProperty = userJoin.DependentColumns,
+                    IsUserDefinied = true,
+                    Relationship = "Many to Many"
+                };
+            }
+
         }
         ///<inheritdoc/>
         public virtual void LoadProc()
@@ -407,6 +490,25 @@ namespace AutoPocoIO.Resources
             SchemaInitializer.Initilize();
         }
 
+        private IQueryable<object> ExpandNavProperties(IQueryable<object> list, IDictionary<string, string> queryString)
+        {
+            var userJoins = Config.UserDefinedJoins;
+            List<string> expandTables = queryString.ContainsKey("$expand") ? queryString["$expand"].Replace(" ", "").Split(',').ToList() : new List<string>();
+            foreach (var userJoin in userJoins)
+            {
+                //Not a user join
+                if (expandTables.Contains(UserJoinListName(userJoin)))
+                    expandTables.Remove(UserJoinListName(userJoin));
+                else if (expandTables.Contains(UserJoinReverseListName(userJoin)))
+                    expandTables.Remove(UserJoinReverseListName(userJoin));
+            }
+
+            foreach(var nav in expandTables)
+            {
+                list = list.Include(nav);
+            }
+            return list;
+        }
         private IQueryable<object> ExpandUserJoins(IQueryable<object> list, IDictionary<string, string> queryString)
         {
             Table outerTable = DbSchema.GetTable(DatabaseName, SchemaName, DbObjectName);
@@ -462,8 +564,9 @@ namespace AutoPocoIO.Resources
             string outerKeySelector = FormatJoinObject(outerColumn.Split(','), list.ElementType, "outer");
             string innerKeySelector = FormatJoinObject(innerColumn.Split(','), inner.ElementType, "inner");
 
-            list = list.GroupJoin(inner, outerKeySelector, innerKeySelector,
-                    $"new ({outerColumns}, group as  {prefix}ListFrom{innerColumn.Replace(",", "And")})");
+            list = list.LeftJoin(inner, outerKeySelector, innerKeySelector,
+                    $"new ({outerColumns}, group as  {prefix}ListFrom{innerColumn.Replace(",", "And")})")
+                    .AsQueryable();
 
             return list;
         }
