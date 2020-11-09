@@ -143,7 +143,7 @@ namespace AutoPocoIO.test.Resources
             var results = resource.GetResourceRecords(new Dictionary<string, string>());
 
             schemaInitializer.Verify(c => c.Initilize(), Times.Once);
-            Assert.AreEqual(list, results);
+            CollectionAssert.AreEqual(list.ToList(), results.ToList());
         }
 
         [TestMethod]

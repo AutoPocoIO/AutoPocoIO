@@ -1,5 +1,6 @@
 ﻿using AutoPocoIO.Context;
 using AutoPocoIO.DynamicSchema.Runtime;
+using AutoPocoIO.EntityConfiguration;
 using AutoPocoIO.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -72,29 +73,49 @@ namespace AutoPocoIO.test.DynamicSchema.Runtime
         }
 
 
-        //private class context1 : DbContext
-        //{
-        //    public context1(DbContextOptions options) : base(options)
-        //    {
-        //    }
+        private class context1 : DbContext
+        {
+            public context1(DbContextOptions options) : base(options)
+            {
+            }
 
-        //    public DbSet<Connector> Connectors {get;set;}
-        //}
+            protected override void OnModelCreating(ModelBuilder modelBuilder)
+            {
 
-        //[TestMethod]
-        //public void CheckTakeWorks()
-        //{
-        //    var appDbOptions = new DbContextOptionsBuilder()
-        //         .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=DataVault;Integrated Security=True;MultipleActiveResultSets=True;App=EntityFramework")
-        //         .ReplaceEFCrossDbServices();
+                modelBuilder.ApplyConfiguration(new ConnectorConfiguration());
+                modelBuilder.ApplyConfiguration(new UserJoinEntityConfiguration());
 
-        //    var context = new context1(appDbOptions.Options);
+                base.OnModelCreating(modelBuilder);
+
+            }
+
+            public DbSet<Connector> Connectors { get; set; }
+            public DbSet<UserJoin> UserJoins { get; set; }
+        }
+
+        [TestMethod]
+        public void CheckIncludeBuildsQuery()
+        {
+            var appDbOptions = new DbContextOptionsBuilder()
+                  .UseSqlite("DataSource=appDb" + Guid.NewGuid().ToString())
+                 .ReplaceEFCrossDbServices();
+
+            var context = new context1(appDbOptions.Options);
+            string exception = "";
+            try
+            {
+                var result = context.UserJoins
+                    .Include("PKConnector");
+                
+                result.ToList();
+            }
+            catch(Microsoft.Data.Sqlite.SqliteException ex)
+            {
+                exception = ex.Message;
+            }
 
 
-        //    context.Connectors.Select(c => new { c.Name, c.Port })
-        //        .Take(1)
-        //        .ToList();
-
-        //}
+            Assert.AreEqual("SQLite Error 1: 'no such table: UserJoin'.", exception);
+        }
     }
 }
