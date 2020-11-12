@@ -1374,6 +1374,7 @@ namespace AutoPocoIO.test.Resources
                 FKName = "fk1Name",
                 ColumnName = "Fk1",
                 TableName = "DependentEndNavigation",
+                ReferencedDatabase = "db1",
                 ReferencedSchema = "sch1",
                 ReferencedTable = "tbl1"
             });
@@ -1613,7 +1614,7 @@ namespace AutoPocoIO.test.Resources
             Assert.AreEqual("sch1", onetoMany.ReferencedSchema);
             Assert.AreEqual("DependentEndNavigation", onetoMany.ReferencedTable);
             Assert.AreEqual("1 to Many", onetoMany.Relationship);
-            Assert.AreEqual("Pk1", onetoMany.FromProperty);
+            Assert.AreEqual("Pk1,PkOther", onetoMany.FromProperty);
             Assert.AreEqual("Pk2", onetoMany.ToProperty);
 
         }
