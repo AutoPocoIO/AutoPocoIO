@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [ExcludeFromCodeCoverage]
     public class EntityProjectionExpression : Expression
     {
         private readonly IDictionary<IProperty, ColumnExpression> _propertyExpressionsCache

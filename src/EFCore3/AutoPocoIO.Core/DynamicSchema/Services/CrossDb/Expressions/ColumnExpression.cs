@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using AutoPocoIO.Exceptions;
 using AutoPocoIO.Extensions;
@@ -13,6 +14,7 @@ using Microsoft.EntityFrameworkCore.Utilities;
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
     [DebuggerDisplay("{DebuggerDisplay(),nq}")]
+    [ExcludeFromCodeCoverage]
     public class ColumnExpression : SqlExpression
     {
         internal ColumnExpression(IProperty property, TableExpressionBase table, bool nullable)

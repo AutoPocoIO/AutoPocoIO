@@ -2,6 +2,7 @@
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class RelationalQueryTranslationPostprocessorFactory : Microsoft.EntityFrameworkCore.Query.Internal.RelationalQueryTranslationPostprocessorFactory
     {
         private readonly QueryTranslationPostprocessorDependencies _dependencies;

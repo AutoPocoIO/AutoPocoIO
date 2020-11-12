@@ -7,6 +7,7 @@ using System.Reflection;
 
 namespace AutoPocoIO.Extensions
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal static class EntityTypeExtensions
     {
         public static string GetDatabase(this IEntityType entityType)

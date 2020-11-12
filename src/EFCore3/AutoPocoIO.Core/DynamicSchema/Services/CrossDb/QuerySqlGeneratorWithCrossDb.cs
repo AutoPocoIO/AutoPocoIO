@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class QuerySqlGeneratorWithCrossDb : Microsoft.EntityFrameworkCore.Query.QuerySqlGenerator
     {
         private static readonly Regex _composableSql

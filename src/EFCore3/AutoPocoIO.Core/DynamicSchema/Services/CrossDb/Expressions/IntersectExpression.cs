@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class IntersectExpression : SetOperationBase
     {
         public IntersectExpression(string alias, SelectExpression source1, SelectExpression source2, bool distinct)

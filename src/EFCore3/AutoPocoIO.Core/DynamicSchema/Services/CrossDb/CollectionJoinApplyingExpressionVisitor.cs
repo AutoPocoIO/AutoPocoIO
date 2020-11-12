@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class CollectionJoinApplyingExpressionVisitor : Microsoft.EntityFrameworkCore.Query.Internal.CollectionJoinApplyingExpressionVisitor
     {
         private int _collectionId;

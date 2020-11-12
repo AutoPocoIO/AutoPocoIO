@@ -9,6 +9,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class RelationalCommandCache : Microsoft.EntityFrameworkCore.Query.Internal.RelationalCommandCache
     {
         private readonly IMemoryCache _memoryCache;

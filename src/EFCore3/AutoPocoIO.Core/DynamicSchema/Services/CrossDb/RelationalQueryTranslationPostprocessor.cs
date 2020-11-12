@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class RelationalQueryTranslationPostprocessor : Microsoft.EntityFrameworkCore.Query.RelationalQueryTranslationPostprocessor
     {
         private readonly SqlExpressionOptimizingExpressionVisitor _sqlExpressionOptimizingExpressionVisitor;

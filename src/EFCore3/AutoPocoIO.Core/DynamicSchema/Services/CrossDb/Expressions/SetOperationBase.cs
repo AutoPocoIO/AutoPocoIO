@@ -3,6 +3,7 @@ using System;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public abstract class SetOperationBase : TableExpressionBase
     {
         protected SetOperationBase( string alias, SelectExpression source1, SelectExpression source2, bool distinct)

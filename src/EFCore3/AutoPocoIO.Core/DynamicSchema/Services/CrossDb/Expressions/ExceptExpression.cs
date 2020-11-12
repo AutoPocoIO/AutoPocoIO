@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [ExcludeFromCodeCoverage]
     public class ExceptExpression : SetOperationBase
     {
         public ExceptExpression(string alias, SelectExpression source1, SelectExpression source2, bool distinct)

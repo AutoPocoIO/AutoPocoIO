@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal partial class RelationalShapedQueryCompilingExpressionVisitor
     {
         private class RelationalProjectionBindingRemovingExpressionVisitor : ExpressionVisitor

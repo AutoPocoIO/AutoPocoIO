@@ -14,6 +14,7 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
     /// <summary>
     /// Cross db override
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class RelationalProjectionBindingExpressionVisitor : ExpressionVisitor//Microsoft.EntityFrameworkCore.Query.Internal.RelationalProjectionBindingExpressionVisitor
     {
         private readonly RelationalQueryableMethodTranslatingExpressionVisitor _queryableMethodTranslatingExpressionVisitor;

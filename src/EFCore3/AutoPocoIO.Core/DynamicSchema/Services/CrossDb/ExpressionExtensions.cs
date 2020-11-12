@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal static class ExpressionExtensions
     {
         public static LambdaExpression UnwrapLambdaFromQuote(this Expression expression)

@@ -8,6 +8,7 @@ namespace AutoPocoIO.DynamicSchema.Services.CrossDb
     /// <summary>
     /// Cross db override
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class SqlExpressionOptimizingExpressionVisitor : Microsoft.EntityFrameworkCore.Query.Internal.SqlExpressionOptimizingExpressionVisitor
     {
         protected readonly ISqlExpressionFactoryWithCrossDb _sqlExpressionFactory;

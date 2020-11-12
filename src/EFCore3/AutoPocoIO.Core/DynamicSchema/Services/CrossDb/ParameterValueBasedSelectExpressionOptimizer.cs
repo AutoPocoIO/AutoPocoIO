@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore.Storage.Internal;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class ParameterValueBasedSelectExpressionOptimizer
     {
         private readonly ISqlExpressionFactory _sqlExpressionFactory;

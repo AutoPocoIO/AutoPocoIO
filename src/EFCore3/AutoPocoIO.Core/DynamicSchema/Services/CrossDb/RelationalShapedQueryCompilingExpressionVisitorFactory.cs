@@ -5,6 +5,7 @@ using System.Text;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class RelationalShapedQueryCompilingExpressionVisitorFactory : Microsoft.EntityFrameworkCore.Query.Internal.RelationalShapedQueryCompilingExpressionVisitorFactory
     {
         private readonly ShapedQueryCompilingExpressionVisitorDependencies _dependencies;

@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class RelationalSqlTranslatingExpressionVisitor : Microsoft.EntityFrameworkCore.Query.RelationalSqlTranslatingExpressionVisitor
     {
         private readonly IModel _model;

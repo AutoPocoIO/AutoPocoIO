@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class RelationalSqlTranslatingExpressionVisitorFactory : Microsoft.EntityFrameworkCore.Query.IRelationalSqlTranslatingExpressionVisitorFactory
     {
         private readonly RelationalSqlTranslatingExpressionVisitorDependencies _dependencies;

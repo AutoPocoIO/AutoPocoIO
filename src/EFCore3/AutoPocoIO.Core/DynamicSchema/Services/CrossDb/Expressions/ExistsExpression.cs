@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [ExcludeFromCodeCoverage]
     public class ExistsExpression : SqlExpression
     {
         public ExistsExpression(SelectExpression subquery, bool negated, RelationalTypeMapping typeMapping)

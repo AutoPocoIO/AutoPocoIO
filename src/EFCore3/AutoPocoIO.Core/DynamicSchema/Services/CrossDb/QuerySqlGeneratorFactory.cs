@@ -2,6 +2,7 @@
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class QuerySqlGeneratorFactory : Microsoft.EntityFrameworkCore.Query.Internal.QuerySqlGeneratorFactory, IQuerySqlGeneratorFactoryWithCrossDb
     {
         private readonly QuerySqlGeneratorDependencies _dependencies;

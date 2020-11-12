@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 
 namespace AutoPocoIO.DynamicSchema.Services.CrossDb
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class NullSemanticsRewritingExpressionVisitor : Microsoft.EntityFrameworkCore.Query.Internal.NullSemanticsRewritingExpressionVisitor
     {
         protected readonly ISqlExpressionFactoryWithCrossDb _sqlExpressionFactory;
