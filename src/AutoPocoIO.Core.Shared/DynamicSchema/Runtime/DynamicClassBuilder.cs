@@ -367,7 +367,7 @@ namespace AutoPocoIO.DynamicSchema.Runtime
             }
         }
 
-        private static string DependentToPrimaryObjectName(Column column, Table table)
+        internal static string DependentToPrimaryObjectName(Column column, Table table)
         {
             StringBuilder builder = new StringBuilder();
             builder.AppendUppercaseFirst(column.UserDefinedFKAlias ?? column.ReferencedTable);
@@ -377,7 +377,7 @@ namespace AutoPocoIO.DynamicSchema.Runtime
             return builder.ToString();
         }
 
-        private static string PrimaryToDepdenty1To1ObjectName(Column column)
+        internal static string PrimaryToDepdenty1To1ObjectName(Column column)
         {
             StringBuilder builder = new StringBuilder();
             builder.AppendUppercaseFirst(column.UserDefinedFKAlias ?? column.TableName);
@@ -387,7 +387,7 @@ namespace AutoPocoIO.DynamicSchema.Runtime
             return builder.ToString();
         }
 
-        private static string PrimaryToDependenty1ToManyListName(Column column, Table table)
+        internal static string PrimaryToDependenty1ToManyListName(Column column, Table table)
         {
             StringBuilder builder = new StringBuilder();
             builder.AppendUppercaseFirst(column.UserDefinedFKAlias ?? column.TableName);

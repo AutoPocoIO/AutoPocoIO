@@ -55,6 +55,7 @@ namespace AutoPocoIO.test.Resources
 
             public IServiceProvider ExposeProvider { get => base.InternalServiceProvider; }
             public void SetConnector(Connector connector) => this.Connector = connector;
+            public void SetDbObject(string name) => this.DbObjectName = name;
 
             public override void ApplyServices(IServiceCollection service, IServiceProvider rootProvider)
             {
@@ -65,6 +66,11 @@ namespace AutoPocoIO.test.Resources
             public override IDictionary<string, object> ExecuteProc(IDictionary<string, object> parameterDictionary)
             {
                 throw new NotImplementedException();
+            }
+
+            public IEnumerable<NavigationPropertyDefinition>  ListNavsPublic()
+            {
+                return ListNavigationProperties();
             }
         }
 

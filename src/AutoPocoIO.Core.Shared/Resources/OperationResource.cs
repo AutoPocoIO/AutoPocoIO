@@ -17,11 +17,13 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.AutoPoco;
 using System.Linq.Dynamic.Core;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 
 namespace AutoPocoIO.Resources
 {
@@ -56,7 +58,7 @@ namespace AutoPocoIO.Resources
         ///<inheritdoc/>
         public string SchemaName => Connector.Schema;
         ///<inheritdoc/>
-        public virtual string DbObjectName { get; private set; }
+        public virtual string DbObjectName { get; protected set; }
         ///<inheritdoc/>
         public virtual IDbSchema DbSchema { get; }
         ///<inheritdoc/>
@@ -394,58 +396,56 @@ namespace AutoPocoIO.Resources
 
         protected virtual IEnumerable<NavigationPropertyDefinition> ListNavigationProperties()
         {
-            Db.SetupDataContext(DbSchema.GetTableName(DatabaseName, SchemaName, DbObjectName));
 
-            var properties = Db.DbSetEntityType.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
-            var fkAttrs = properties.Select(c => new { Attr = c.GetCustomAttribute<ForeignKeyAttribute>(), Name = c.Name })
-                                   .Where(c => c.Attr != null);
-
-            var inverseAttrs = properties.Select(c => new { Attr = c.GetCustomAttribute<InversePropertyAttribute>(), Name = c.Name })
-                                    .Where(c => c.Attr != null);
-
-            foreach (var property in properties)
+            Table targetTable = DbSchema.GetTable(DatabaseName, SchemaName, DbObjectName);
+            var primaryKeys = targetTable.Columns.Where(c => c.IsPK).Select(c => c.ColumnName)
+                                                 .ToImmutableHashSet();
+            //Many to One
+            foreach (var columnGroup in targetTable.Columns.Where(c => c.IsFK).GroupBy(c => c.FKName))
             {
-                if (property.PropertyType.IsClass && property.PropertyType != typeof(string)
-                    && property.GetCustomAttribute<ReferencedDbObjectAttribute>() != null)
+                Table primaryTable = DbSchema.GetTable(columnGroup.First().ReferencedDatabase, columnGroup.First().ReferencedSchema, columnGroup.First().ReferencedTable);
+                NavigationPropertyDefinition navigationProperty = new NavigationPropertyDefinition()
                 {
+                    Name = DynamicClassBuilder.DependentToPrimaryObjectName(columnGroup.First(), targetTable),
+                    ReferencedSchema = primaryTable.Schema,
+                    ReferencedTable = primaryTable.Name,
+                    FromProperty = string.Join(",", columnGroup),
+                    ToProperty = string.Join(",", primaryTable.Columns.Where(c => c.IsPK)),
+                    Relationship = "Many to 1"
+                };
+
+                yield return navigationProperty;
+            }
+
+
+            foreach (var table in DbSchema.Tables)
+            {
+
+                var tablePks = table.Columns.Where(c => c.IsPK).Select(c => c.ColumnName)
+                                            .ToImmutableHashSet();
+                //1 to Many or One to Many
+                foreach (var columnGroup in table.Columns.Where(c => c.IsFK && c.ReferencedVariableName == targetTable.VariableName)
+                                                        .GroupBy(c => c.FKName))
+                {
+                    var groupColumns = columnGroup.Select(c => c.ColumnName);
+                    var groupRefColumn = columnGroup.Select(c => c.ReferencedColumn);
+
+
+
+                    bool isOneToOne = tablePks.SetEquals(groupColumns) && primaryKeys.SetEquals(groupRefColumn);
+
                     NavigationPropertyDefinition navigationProperty = new NavigationPropertyDefinition()
                     {
-                        Name = property.Name,
-                        ReferencedSchema = property.GetCustomAttribute<ReferencedDbObjectAttribute>().SchemaName,
-                        ReferencedTable = property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName,
-
+                        Name = isOneToOne? DynamicClassBuilder.PrimaryToDepdenty1To1ObjectName(columnGroup.First()): 
+                        DynamicClassBuilder.PrimaryToDependenty1ToManyListName(columnGroup.First(), table),
+                        ReferencedSchema = table.Schema,
+                        ReferencedTable = table.Name,
+                        FromProperty = string.Join(",", targetTable.Columns.Where(c => c.IsPK)),
+                        ToProperty = string.Join(",", columnGroup),
+                        Relationship = isOneToOne ? "1 to 1" : "1 to Many"
                     };
-                    if (typeof(System.Collections.IEnumerable).IsAssignableFrom(property.PropertyType))
-                    {
-                        navigationProperty.Relationship = "Many to 1";
-                    }
-                    else
-                    {
-                        navigationProperty.Relationship = "1 to Many";
 
-                    }
-
-                    //Self referencing fk
-                    if (property.GetCustomAttribute<InversePropertyAttribute>() == null)
-                    {
-                        navigationProperty.FromProperty = DbSchema.Tables.FirstOrDefault(c => c.Name == property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName).PrimaryKeys;
-                        navigationProperty.ToProperty = string.Join(", ", fkAttrs.Where(c => c.Attr.Name == property.Name)
-                                                                .Select(c => c.Name));
-                    }
-                    else
-                    {
-                        var inverseProperty = property.GetCustomAttribute<InversePropertyAttribute>().Property;
-
-
-                        navigationProperty.ToProperty = DbSchema.Tables.FirstOrDefault(c => c.Name == property.GetCustomAttribute<ReferencedDbObjectAttribute>().TableName).PrimaryKeys;
-                        navigationProperty.FromProperty = string.Join(", ", fkAttrs.Where(c => c.Attr.Name == inverseProperty)
-                                                               .Select(c => c.Name));
-                    }
-
-                    yield return navigationProperty;
-
-
-                   
+                        yield return navigationProperty;
                 }
             }
 

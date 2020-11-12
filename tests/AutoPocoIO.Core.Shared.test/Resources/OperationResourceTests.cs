@@ -1342,5 +1342,281 @@ namespace AutoPocoIO.test.Resources
             mockDb.Verify();
         }
 
+        [TestMethod]
+        public void OneToManyRelationshipNavProperty()
+        {
+            var dbSchema = new Mock<IDbSchema>();
+            var primaryTable = new Table
+            {
+                PrimaryKeys = "primary1",
+                Database = "db1",
+                Schema = "sch1",
+                Name = "tbl1"
+            };
+
+            primaryTable.Columns.Add(new Column
+            {
+                PKName = "thePk",
+                ColumnName = "Pk1",
+                TableName = "tbl1"
+            });
+
+            var dependentTable = new Table
+            {
+                PrimaryKeys = "primary2",
+                Database = "db1",
+                Schema = "sch1",
+                Name = "DependentEndNavigation"
+            };
+
+            dependentTable.Columns.Add(new Column
+            {
+                FKName = "fk1Name",
+                ColumnName = "Fk1",
+                TableName = "DependentEndNavigation",
+                ReferencedSchema = "sch1",
+                ReferencedTable = "tbl1"
+            });
+
+
+
+            dbSchema.Setup(c => c.Tables).Returns(
+                new List<Table>
+                {
+                    primaryTable,
+                    dependentTable
+                });
+
+            defaultServices.AddSingleton(dbSchema.Object);
+
+            ResetServiceProviderCache();
+
+            var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
+            resource.SetConnector(new Connector { InitialCatalog = "db1", Schema = "sch1" } );
+            resource.SetDbObject("tbl1");
+
+            var navs = resource.ListNavsPublic().ToList();
+
+            var onetoMany = navs.First(c => c.Name == "DependentEndNavigationListFromFk1");
+
+            Assert.AreEqual("sch1", onetoMany.ReferencedSchema);
+            Assert.AreEqual("DependentEndNavigation", onetoMany.ReferencedTable);
+            Assert.AreEqual("1 to Many", onetoMany.Relationship);
+            Assert.AreEqual("Pk1", onetoMany.FromProperty);
+            Assert.AreEqual("Fk1", onetoMany.ToProperty);
+
+        }
+
+        [TestMethod]
+        public void ManyToOneRelationshipNavProperty()
+        {
+            var dbSchema = new Mock<IDbSchema>();
+            var primaryTable = new Table
+            {
+                PrimaryKeys = "primary1",
+                Database = "db1",
+                Schema = "sch1",
+                Name = "tbl1"
+            };
+
+            primaryTable.Columns.Add(new Column
+            {
+                PKName = "thePk",
+                ColumnName = "Pk1",
+                TableName = "tbl1"
+            });
+
+            var dependentTable = new Table
+            {
+                PrimaryKeys = "primary2",
+                Database = "db1",
+                Schema = "sch1",
+                Name = "DependentEndNavigation"
+            };
+
+            dependentTable.Columns.Add(new Column
+            {
+                FKName = "fk1Name",
+                ColumnName = "Fk1",
+                TableName = "DependentEndNavigation",
+                ReferencedDatabase = "db1",
+                ReferencedSchema = "sch1",
+                ReferencedTable = "tbl1"
+            });
+
+
+
+            dbSchema.Setup(c => c.Tables).Returns(
+                new List<Table>
+                {
+                    primaryTable,
+                    dependentTable
+                });
+
+            defaultServices.AddSingleton(dbSchema.Object);
+
+            ResetServiceProviderCache();
+
+            var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
+            resource.SetConnector(new Connector { InitialCatalog = "db1", Schema = "sch1" });
+            resource.SetDbObject("DependentEndNavigation");
+
+            var navs = resource.ListNavsPublic().ToList();
+
+            var onetoMany = navs.First(c => c.Name == "Tbl1ObjectFromFk1");
+
+            Assert.AreEqual("sch1", onetoMany.ReferencedSchema);
+            Assert.AreEqual("tbl1", onetoMany.ReferencedTable);
+            Assert.AreEqual("Many to 1", onetoMany.Relationship);
+            Assert.AreEqual("Fk1", onetoMany.FromProperty);
+            Assert.AreEqual("Pk1", onetoMany.ToProperty);
+
+        }
+
+        [TestMethod]
+        public void OneToOneRelationshipNavProperty()
+        {
+
+            var dbSchema = new Mock<IDbSchema>();
+            var primaryTable = new Table
+            {
+                PrimaryKeys = "primary1",
+                Database = "db1",
+                Schema = "sch1",
+                Name = "tbl1"
+            };
+
+            primaryTable.Columns.Add(new Column
+            {
+                PKName = "thePk",
+                ColumnName = "Pk1",
+                TableName = "tbl1"
+            });
+
+            var dependentTable = new Table
+            {
+                PrimaryKeys = "primary2",
+                Database = "db1",
+                Schema = "sch1",
+                Name = "DependentEndNavigation"
+            };
+
+            dependentTable.Columns.Add(new Column
+            {
+                PKName = "Pk1Name",
+                FKName = "Fk1Name",
+                ColumnName = "Pk2",
+                TableName = "DependentEndNavigation",
+                ReferencedDatabase = "db1",
+                ReferencedSchema = "sch1",
+                ReferencedTable = "tbl1",
+                ReferencedColumn = "Pk1"
+            });
+
+
+
+            dbSchema.Setup(c => c.Tables).Returns(
+                new List<Table>
+                {
+                    primaryTable,
+                    dependentTable
+                });
+
+            defaultServices.AddSingleton(dbSchema.Object);
+
+            ResetServiceProviderCache();
+
+            var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
+            resource.SetConnector(new Connector { InitialCatalog = "db1", Schema = "sch1" });
+            resource.SetDbObject("tbl1");
+
+            var navs = resource.ListNavsPublic().ToList();
+
+            var onetoMany = navs.First(c => c.Name == "DependentEndNavigationObjectFromPk1");
+
+            Assert.AreEqual("sch1", onetoMany.ReferencedSchema);
+            Assert.AreEqual("DependentEndNavigation", onetoMany.ReferencedTable);
+            Assert.AreEqual("1 to 1", onetoMany.Relationship);
+            Assert.AreEqual("Pk1", onetoMany.FromProperty);
+            Assert.AreEqual("Pk2", onetoMany.ToProperty);
+
+        }
+
+        [TestMethod]
+        public void OneToManyRelationshipNavPropertyWhenLinkSomePrimaryKey()
+        {
+
+            var dbSchema = new Mock<IDbSchema>();
+            var primaryTable = new Table
+            {
+                PrimaryKeys = "primary1",
+                Database = "db1",
+                Schema = "sch1",
+                Name = "tbl1"
+            };
+
+            primaryTable.Columns.Add(new Column
+            {
+                PKName = "thePk",
+                ColumnName = "Pk1",
+                TableName = "tbl1"
+            });
+
+            primaryTable.Columns.Add(new Column
+            {
+                PKName = "thePk",
+                ColumnName = "PkOther",
+                TableName = "tbl1"
+            });
+
+            var dependentTable = new Table
+            {
+                PrimaryKeys = "primary2",
+                Database = "db1",
+                Schema = "sch1",
+                Name = "DependentEndNavigation"
+            };
+
+            dependentTable.Columns.Add(new Column
+            {
+                PKName = "Pk1Name",
+                FKName = "Fk1Name",
+                ColumnName = "Pk2",
+                TableName = "DependentEndNavigation",
+                ReferencedDatabase = "db1",
+                ReferencedSchema = "sch1",
+                ReferencedTable = "tbl1",
+                ReferencedColumn = "Pk1"
+            });
+
+
+
+            dbSchema.Setup(c => c.Tables).Returns(
+                new List<Table>
+                {
+                    primaryTable,
+                    dependentTable
+                });
+
+            defaultServices.AddSingleton(dbSchema.Object);
+
+            ResetServiceProviderCache();
+
+            var resource = new TestResourceServices(defaultServices.BuildServiceProvider());
+            resource.SetConnector(new Connector { InitialCatalog = "db1", Schema = "sch1" });
+            resource.SetDbObject("tbl1");
+
+            var navs = resource.ListNavsPublic().ToList();
+
+            var onetoMany = navs.First(c => c.Name == "DependentEndNavigationListFromPk2");
+
+            Assert.AreEqual("sch1", onetoMany.ReferencedSchema);
+            Assert.AreEqual("DependentEndNavigation", onetoMany.ReferencedTable);
+            Assert.AreEqual("1 to Many", onetoMany.Relationship);
+            Assert.AreEqual("Pk1", onetoMany.FromProperty);
+            Assert.AreEqual("Pk2", onetoMany.ToProperty);
+
+        }
+
     }
 }

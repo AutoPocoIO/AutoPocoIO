@@ -1,7 +1,5 @@
 ﻿using AutoPocoIO.DynamicSchema.Models;
 using AutoPocoIO.Exceptions;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
