@@ -32,7 +32,7 @@
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
 
-    <ProjectReference Include="..\..\..\src\AutoPocoIO_2X\AutoPocoIO_2X.csproj" />
+    <ProjectReference Include="..\..\..\src\EFCore2\AutoPocoIO\AutoPocoIO.EFCore2.csproj" />
     <Reference Include="System.Web" />
   </ItemGroup>
 

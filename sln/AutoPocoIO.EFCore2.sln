@@ -1,0 +1,84 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.AspNet", "..\src\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.shproj", "{38F8D4FF-FF0F-48AD-8CB1-1618EF4D1DE9}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.AspNetCore", "..\src\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.shproj", "{E2D69D9D-44AC-41CE-9BD8-AC886BE7312E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", "{A32711B5-2BDF-411D-BA02-96377A99601A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DF5FC0FD-DF9C-4DC5-BD4C-9A4F89722B0C}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+	EndProjectSection
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.Core.Shared", "..\src\AutoPocoIO.Core.Shared\AutoPocoIO.Core.Shared.shproj", "{8AAA2E58-1EA7-4A81-A8B9-9F8D55345446}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO.EFCore2", "..\src\EFCore2\AutoPocoIO\AutoPocoIO.EFCore2.csproj", "{99C59F96-BCDA-4703-94F8-BD95D03AA713}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO.Core.EFCore2", "..\src\EFCore2\AutoPocoIO.Core\AutoPocoIO.Core.EFCore2.csproj", "{4E51B72C-F679-4472-9C05-17EE0C2389AB}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.AspNet.Shared.test", "..\tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.Shared.test.shproj", "{1F3AC0B3-3F41-4BC4-92ED-5F0E12CDB950}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.AspNetCore.Shared.test", "..\tests\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.Shared.test.shproj", "{E75225B3-E9AC-4234-AB60-C72020F3BEE0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO.AspNet.EFCore2.test", "..\tests\EFCore2\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.EFCore2.test.csproj", "{CFB0D940-FC46-41BC-A367-58D7B5B4808A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO.AspNetCore.EFCore2.test", "..\tests\EFCore2\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.EFCore2.test.csproj", "{616D4CAF-D587-4EDC-9E63-29E659B6E460}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO.EFCore2.test", "..\tests\EFCore2\AutoPocoIO.test\AutoPocoIO.EFCore2.test.csproj", "{276423A7-924C-47BC-AD35-B93B4873E202}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.projitems*{1f3ac0b3-3f41-4bc4-92ed-5f0e12cdb950}*SharedItemsImports = 13
+		..\src\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems*{38f8d4ff-ff0f-48ad-8cb1-1618ef4d1de9}*SharedItemsImports = 13
+		..\src\AutoPocoIO.Core.Shared\AutoPocoIO.Core.Shared.projitems*{4e51b72c-f679-4472-9c05-17ee0c2389ab}*SharedItemsImports = 5
+		..\tests\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.test.projitems*{616d4caf-d587-4edc-9e63-29e659b6e460}*SharedItemsImports = 5
+		..\src\AutoPocoIO.Core.Shared\AutoPocoIO.Core.Shared.projitems*{8aaa2e58-1ea7-4a81-a8b9-9f8d55345446}*SharedItemsImports = 13
+		..\src\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems*{99c59f96-bcda-4703-94f8-bd95d03aa713}*SharedItemsImports = 5
+		..\tests\AutoPocoIO.AspNet.test\AutoPocoIO.AspNet.test.projitems*{cfb0d940-fc46-41bc-a367-58d7b5b4808a}*SharedItemsImports = 5
+		..\src\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems*{e2d69d9d-44ac-41ce-9bd8-ac886be7312e}*SharedItemsImports = 13
+		..\tests\AutoPocoIO.AspNetCore.test\AutoPocoIO.AspNetCore.test.projitems*{e75225b3-e9ac-4234-ab60-c72020f3bee0}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99C59F96-BCDA-4703-94F8-BD95D03AA713}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99C59F96-BCDA-4703-94F8-BD95D03AA713}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99C59F96-BCDA-4703-94F8-BD95D03AA713}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99C59F96-BCDA-4703-94F8-BD95D03AA713}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E51B72C-F679-4472-9C05-17EE0C2389AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E51B72C-F679-4472-9C05-17EE0C2389AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E51B72C-F679-4472-9C05-17EE0C2389AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E51B72C-F679-4472-9C05-17EE0C2389AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFB0D940-FC46-41BC-A367-58D7B5B4808A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFB0D940-FC46-41BC-A367-58D7B5B4808A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFB0D940-FC46-41BC-A367-58D7B5B4808A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFB0D940-FC46-41BC-A367-58D7B5B4808A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{616D4CAF-D587-4EDC-9E63-29E659B6E460}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{616D4CAF-D587-4EDC-9E63-29E659B6E460}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{616D4CAF-D587-4EDC-9E63-29E659B6E460}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{616D4CAF-D587-4EDC-9E63-29E659B6E460}.Release|Any CPU.Build.0 = Release|Any CPU
+		{276423A7-924C-47BC-AD35-B93B4873E202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{276423A7-924C-47BC-AD35-B93B4873E202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{276423A7-924C-47BC-AD35-B93B4873E202}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{276423A7-924C-47BC-AD35-B93B4873E202}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1F3AC0B3-3F41-4BC4-92ED-5F0E12CDB950} = {A32711B5-2BDF-411D-BA02-96377A99601A}
+		{E75225B3-E9AC-4234-AB60-C72020F3BEE0} = {A32711B5-2BDF-411D-BA02-96377A99601A}
+		{CFB0D940-FC46-41BC-A367-58D7B5B4808A} = {A32711B5-2BDF-411D-BA02-96377A99601A}
+		{616D4CAF-D587-4EDC-9E63-29E659B6E460} = {A32711B5-2BDF-411D-BA02-96377A99601A}
+		{276423A7-924C-47BC-AD35-B93B4873E202} = {A32711B5-2BDF-411D-BA02-96377A99601A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {31B24E56-75B5-4A44-AD1A-AD02D0C3DCD7}
+	EndGlobalSection
+EndGlobal

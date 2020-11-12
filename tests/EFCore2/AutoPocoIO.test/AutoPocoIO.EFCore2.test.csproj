@@ -24,7 +24,7 @@
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
     <PackageReference Include="OpenCover" Version="4.7.922" />
 
-    <ProjectReference Include="..\..\..\src\AutoPocoIO_2X\AutoPocoIO_2X.csproj" />
+    <ProjectReference Include="..\..\..\src\EFCore2\AutoPocoIO\AutoPocoIO.EFCore2.csproj" />
   </ItemGroup>
 
   

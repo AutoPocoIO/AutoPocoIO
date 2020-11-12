@@ -27,7 +27,7 @@
     <PackageProjectUrl>http://autopoco.io/</PackageProjectUrl>
     <FileVersion>2.2.0.0</FileVersion>
     <AssemblyVersion>2.2.0.0</AssemblyVersion>
-    <AssemblyOriginatorKeyFile>..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <!--<DocumentationFile>SwaggerAddons\AutoPoco.xml</DocumentationFile>-->
   </PropertyGroup>
@@ -35,7 +35,7 @@
   <ItemGroup>
     <None Remove="SwaggerAddons\AutoPoco.xml" />
     <None Remove="SwaggerAddons\swagger.css" />
-    <None Include="..\..\sln\AutoPocoIcon.jpeg">
+    <None Include="..\..\..\sln\AutoPocoIcon.jpeg">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
@@ -49,7 +49,7 @@
 
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[2.2.0, 2.3.0)" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.*" />
-    <ProjectReference Include="..\AutoPocoIO_2X.Core\AutoPocoIO_2X.Core.csproj" />
+    <ProjectReference Include="..\AutoPocoIO.Core\AutoPocoIO.Core.EFCore2.csproj" />
   </ItemGroup>
   
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
@@ -67,9 +67,6 @@
 
     <Reference Include="System.Web" />
   </ItemGroup>
-  <ItemGroup>
-   
-  </ItemGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
     <DefineConstants>NETCORE;EF22;NETCORE2_2</DefineConstants>
@@ -78,7 +75,7 @@
     <DefineConstants>NETFULL;EF22</DefineConstants>
   </PropertyGroup>
 
-  <Import Project="..\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'net461'" />
-  <Import Project="..\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'netcoreapp2.2'" />
+  <Import Project="..\..\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'net461'" />
+  <Import Project="..\..\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'netcoreapp2.2'" />
   
 </Project>

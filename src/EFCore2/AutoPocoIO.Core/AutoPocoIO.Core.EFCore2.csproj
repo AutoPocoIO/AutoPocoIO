@@ -27,14 +27,14 @@
     <PackageProjectUrl>http://autopoco.io/</PackageProjectUrl>
     <FileVersion>2.2.0.0</FileVersion>
     <AssemblyVersion>2.2.0.0</AssemblyVersion>
-    <AssemblyOriginatorKeyFile>..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <NeutralLanguage>en-us</NeutralLanguage>
     <!--<DocumentationFile>SwaggerAddons\AutoPoco.xml</DocumentationFile>-->
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\sln\AutoPocoIcon.jpeg">
+    <None Include="..\..\..\sln\AutoPocoIcon.jpeg">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
@@ -56,10 +56,13 @@
   </ItemGroup>
 
 
-  <Import Project="..\AutoPocoIO.Core.Shared\AutoPocoIO.Core.Shared.projitems" Label="Shared" />
+  <Import Project="..\..\AutoPocoIO.Core.Shared\AutoPocoIO.Core.Shared.projitems" Label="Shared" />
 
   <ItemGroup>
     <Compile Update="..\AutoPocoIO.Core.Shared\Constants\ExceptionMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Update="C:\Users\pjames\source\repos\AutoPocoIO\src\AutoPocoIO.Core.Shared\Constants\ExceptionMessages.Designer.cs">
       <DesignTime>True</DesignTime>
     </Compile>
   </ItemGroup>

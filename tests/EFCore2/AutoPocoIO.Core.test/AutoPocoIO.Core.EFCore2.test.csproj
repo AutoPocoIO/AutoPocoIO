@@ -18,7 +18,7 @@
     <PackageReference Include="Moq" Version="4.13.0" />
     <PackageReference Include="OpenCover" Version="4.7.922" />
 
-    <ProjectReference Include="..\..\..\src\AutoPocoIO_2X.Core\AutoPocoIO_2X.Core.csproj" />
+    <ProjectReference Include="..\..\..\src\EFCore2\AutoPocoIO.Core\AutoPocoIO.Core.EFCore2.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461'">
