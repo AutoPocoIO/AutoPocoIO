@@ -25,9 +25,9 @@ namespace AutoPocoIO.AspNetCore.test.Extensions
                 services.AddAutoPoco();
 
             }
-#pragma warning disable IDE0060 // Remove unused parameter
+#pragma warning disable IDE0060, CS0618 // Remove unused parameter
             public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore IDE0060, CS0618 // Remove unused parameter
             {
             }
         }

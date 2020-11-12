@@ -69,6 +69,7 @@ namespace AutoPocoIO.WebApi
         [SwaggerResponse(200, "Single value found by the primary key", typeof(SwaggerExampleType))]
         [SwaggerOperation("getTableById")]
         [HttpGet]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null check in method")]
         public object Get(string connectorName, string tableName, string id)
         {
             Check.NotNull(id, nameof(id));
@@ -113,6 +114,7 @@ namespace AutoPocoIO.WebApi
         [Route("{id}")]
         [SwaggerResponse(200, "Deleted object", typeof(SwaggerExampleType))]
         [HttpDelete]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null check in method")]
         public object Delete(string connectorName, string tableName, string id)
         {
             Check.NotNull(id, nameof(id));

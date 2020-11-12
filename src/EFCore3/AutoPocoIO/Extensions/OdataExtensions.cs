@@ -24,6 +24,7 @@ namespace AutoPocoIO.Extensions
         /// <param name="recordLimit">Maxium number or records to return.</param>
         /// <param name="queryString">Http request query strings to parse for odata syntax.</param>
         /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Null checks in NotNull method")]
         public static IQueryable<object> ApplyQuery(this IQueryable query, int recordLimit, IDictionary<string, string> queryString)
         {
             Check.NotNull(query, nameof(query));
