@@ -43,9 +43,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.1">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime;build;analyzers</IncludeAssets>
+      <IncludeAssets>runtime; build; analyzers</IncludeAssets>
     </PackageReference>
     <ProjectReference Include="..\AutoPocoIO.Core\AutoPocoIO.Core.EFCore3.csproj" />
   </ItemGroup>
