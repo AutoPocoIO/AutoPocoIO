@@ -28,7 +28,7 @@
     <PackageProjectUrl>http://autopoco.io/</PackageProjectUrl>
     <FileVersion>3.1.0.0</FileVersion>
     <AssemblyVersion>3.1.0.0</AssemblyVersion>
-    <AssemblyOriginatorKeyFile>..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\sln\AutoPocoIO.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <!--<DocumentationFile>SwaggerAddons\AutoPoco.xml</DocumentationFile>-->
   </PropertyGroup>
@@ -36,7 +36,7 @@
   <ItemGroup>
     <None Remove="SwaggerAddons\AutoPoco.xml" />
     <None Remove="SwaggerAddons\swagger.css" />
-    <None Include="..\..\sln\AutoPocoIcon.jpeg">
+    <None Include="..\..\..\sln\AutoPocoIcon.jpeg">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
@@ -47,9 +47,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime;build;analyzers</IncludeAssets>
     </PackageReference>
-
-    <ProjectReference Include="..\AutoPocoIO_3X.Core\AutoPocoIO_3X.Core.csproj" />
-
+    <ProjectReference Include="..\AutoPocoIO.Core\AutoPocoIO.Core.EFCore3.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">
@@ -76,8 +74,8 @@
     <DefineConstants>NETFULL;EF31</DefineConstants>
   </PropertyGroup>
 
-  <Import Project="..\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'net461'" />
-  <Import Project="..\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'netcoreapp3.1'" />
+  <Import Project="..\..\AutoPocoIO.Aspnet\AutoPocoIO.AspNet.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'net461'" />
+  <Import Project="..\..\AutoPocoIO.AspNetCore\AutoPocoIO.AspNetCore.projitems" Label="Shared" Condition=" '$(TargetFramework)' == 'netcoreapp3.1'" />
 
 
 </Project>
