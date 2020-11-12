@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", 
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoPocoIO.Core.Shared.test", "..\tests\AutoPocoIO.Core.Shared.test\AutoPocoIO.Core.Shared.test.shproj", "{A1A053C9-7F60-4FEA-A5F5-5CA9705DE569}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO.Core.test", "..\tests\EFCore3\AutoPocoIO.Core.test\AutoPocoIO.Core.test.csproj", "{4F57576C-E43B-4557-A5EB-14C3AC0BF27C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO.Core.EFCore3.test", "..\tests\EFCore3\AutoPocoIO.Core.test\AutoPocoIO.Core.EFCore3.test.csproj", "{4F57576C-E43B-4557-A5EB-14C3AC0BF27C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoPocoIO.Core.EFCore3", "..\src\EFCore3\AutoPocoIO.Core\AutoPocoIO.Core.EFCore3.csproj", "{BD128907-FBD2-4301-B270-D2A4FFCC7FE5}"
 EndProject
