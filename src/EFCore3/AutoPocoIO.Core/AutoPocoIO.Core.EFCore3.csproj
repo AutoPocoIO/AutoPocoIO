@@ -36,6 +36,13 @@
 
 
   <ItemGroup>
+    <None Include="..\..\..\sln\AutoPocoIcon.jpeg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+  
+  <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime;build;analyzers</IncludeAssets>
